@@ -38,7 +38,8 @@
     "searchCity": "Şehir ara...",
     "timeUntil": "{time} kaldı",
     "passed": "geçti",
-    "clock": ""
+    "clock": "",
+    "tomorrow": "Yarın"
   },
   "calendar": {
     "title": "İslami Takvim",

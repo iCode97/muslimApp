@@ -38,7 +38,8 @@
     "searchCity": "Search city...",
     "timeUntil": "{time} remaining",
     "passed": "passed",
-    "clock": ""
+    "clock": "",
+    "tomorrow": "Tomorrow"
   },
   "calendar": {
     "title": "Islamic Calendar",
