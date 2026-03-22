@@ -99,15 +99,10 @@ const greeting = computed(() => {
       <PrayerTimesCard />
     </div>
 
-    <!-- Placeholder widgets for future features -->
-    <GlassCard variant="subtle" class="animate-fade-in stagger-4">
-      <div class="text-center py-4">
-        <p class="text-sm text-white/30">
-          {{ t('dashboard.nextHoliday') }} — {{ t('common.loading') }}
-        </p>
-        <p class="text-xs text-white/20 mt-1">Phase 3</p>
-      </div>
-    </GlassCard>
+    <!-- Next Holiday Countdown -->
+    <div class="animate-fade-in stagger-4">
+      <HolidayCountdown />
+    </div>
 
     <!-- Quran Reading Progress -->
     <div class="animate-fade-in stagger-5">
