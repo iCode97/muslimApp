@@ -19,6 +19,10 @@ const filteredSurahs = computed(() => {
 onMounted(() => {
   quran.fetchSurahs()
 })
+
+function revelationPlace(place: string): string {
+  return place === 'makkah' ? t('quran.mecca') : t('quran.medina')
+}
 </script>
 
 <template>
@@ -57,19 +61,19 @@ onMounted(() => {
           <!-- Name & Info -->
           <div class="flex-1 min-w-0">
             <div class="flex items-center justify-between">
-              <span class="font-medium text-white/90 truncate">
+              <span class="font-medium text-themed truncate">
                 {{ surah.nameSimple }}
               </span>
-              <span class="font-arabic text-xl text-white/70 shrink-0 ml-2">
+              <span class="font-arabic text-xl text-themed-secondary shrink-0 ml-2">
                 {{ surah.nameArabic }}
               </span>
             </div>
-            <div class="flex items-center gap-2 text-xs text-white/40 mt-0.5">
+            <div class="flex items-center gap-2 text-xs text-themed-muted mt-0.5">
               <span>{{ surah.translatedName }}</span>
               <span>·</span>
               <span>{{ surah.versesCount }} {{ t('quran.verses') }}</span>
               <span>·</span>
-              <span>{{ surah.revelationPlace === 'makkah' ? 'Mekka' : 'Medina' }}</span>
+              <span>{{ revelationPlace(surah.revelationPlace) }}</span>
             </div>
           </div>
         </div>
@@ -77,7 +81,7 @@ onMounted(() => {
 
       <!-- No results -->
       <div v-if="filteredSurahs.length === 0 && searchQuery" class="text-center py-8">
-        <p class="text-white/40 text-sm">Keine Suren gefunden für "{{ searchQuery }}"</p>
+        <p class="text-themed-muted text-sm">{{ t('quran.noSurahsFound', { query: searchQuery }) }}</p>
       </div>
     </div>
   </div>

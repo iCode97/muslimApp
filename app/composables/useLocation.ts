@@ -13,6 +13,7 @@ interface LocationData {
 const STORAGE_KEY = 'muslimapp-location'
 
 export function useLocation() {
+  const { t, locale } = useI18n()
   const location = useState<LocationData | null>('location', () => null)
   const loading = ref(false)
   const error = ref<string | null>(null)
@@ -66,15 +67,16 @@ export function useLocation() {
       }>(`https://api.aladhan.com/v1/qibla/${latitude}/${longitude}`)
 
       // Fallback: use nominatim for city name
+      const acceptLang = locale.value === 'tr' ? 'tr' : locale.value === 'en' ? 'en' : 'de'
       const geoResponse = await $fetch<{
         address: { city?: string, town?: string, state?: string, country: string }
-      }>(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=de`, {
+      }>(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=${acceptLang}`, {
         headers: { 'User-Agent': 'MuslimApp/1.0' },
       })
 
       const addr = geoResponse.address
-      const city = addr.city || addr.town || addr.state || 'Unbekannt'
-      const country = addr.country || 'Unbekannt'
+      const city = addr.city || addr.town || addr.state || t('common.unknown')
+      const country = addr.country || t('common.unknown')
 
       const locationData: LocationData = { latitude, longitude, city, country }
       save(locationData)
@@ -82,7 +84,7 @@ export function useLocation() {
       return locationData
     }
     catch (err) {
-      error.value = 'Standort konnte nicht ermittelt werden. Bitte manuell eingeben.'
+      error.value = t('errors.locationDetect')
       console.error('GPS error:', err)
       return null
     }
@@ -107,7 +109,7 @@ export function useLocation() {
       })
 
       if (!results.length) {
-        error.value = `Stadt "${city}" nicht gefunden.`
+        error.value = t('errors.cityNotFound', { city })
         return null
       }
 
@@ -122,7 +124,7 @@ export function useLocation() {
       return locationData
     }
     catch {
-      error.value = 'Fehler bei der Standortsuche.'
+      error.value = t('errors.locationSearch')
       return null
     }
     finally {

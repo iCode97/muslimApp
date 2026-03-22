@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { Verse } from '~/composables/useQuran'
 
+const { t } = useI18n()
+
 interface Props {
   verse: Verse
   surahId: number
@@ -20,8 +22,8 @@ function handleBookmark() {
 
 // Get translation by language
 function getTranslation(langId: number): string {
-  const t = props.verse.translations.find(tr => tr.id === langId)
-  return t?.text ?? ''
+  const tr = props.verse.translations.find(tr => tr.id === langId)
+  return tr?.text ?? ''
 }
 
 // Turkish translation (Elmalılı Hamdi)
@@ -45,7 +47,7 @@ const germanText = computed(() => getTranslation(27))
     <!-- Arabic text (RTL) -->
     <p
       v-if="verse.textUthmani"
-      class="font-arabic text-2xl leading-loose text-white/90 text-right"
+      class="font-arabic text-2xl leading-loose text-themed text-right"
       dir="rtl"
       lang="ar"
     >
@@ -53,19 +55,19 @@ const germanText = computed(() => getTranslation(27))
     </p>
 
     <!-- Translations -->
-    <div v-if="showTranslations" class="space-y-2 pt-2 border-t border-white/5">
+    <div v-if="showTranslations" class="space-y-2 pt-2 border-t border-[var(--glass-border)]">
       <!-- Turkish (Elmalılı Hamdi) -->
       <div v-if="turkishText">
-        <span class="text-[10px] uppercase tracking-wider text-[var(--color-primary-light)]/60 font-medium">Türkçe</span>
-        <p class="text-sm text-white/60 leading-relaxed mt-0.5">
+        <span class="text-[10px] uppercase tracking-wider text-[var(--color-primary-light)]/60 font-medium">{{ t('quran.turkishTranslation') }}</span>
+        <p class="text-sm text-themed-secondary leading-relaxed mt-0.5">
           {{ turkishText }}
         </p>
       </div>
 
       <!-- German (Bubenheim) -->
       <div v-if="germanText">
-        <span class="text-[10px] uppercase tracking-wider text-[var(--color-gold)]/60 font-medium">Deutsch</span>
-        <p class="text-sm text-white/60 leading-relaxed mt-0.5">
+        <span class="text-[10px] uppercase tracking-wider text-[var(--color-gold)]/60 font-medium">{{ t('quran.germanTranslation') }}</span>
+        <p class="text-sm text-themed-secondary leading-relaxed mt-0.5">
           {{ germanText }}
         </p>
       </div>

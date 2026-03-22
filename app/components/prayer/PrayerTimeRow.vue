@@ -45,7 +45,7 @@ const icons: Record<string, string> = {
       <span
         :class="[
           'tabular-nums font-medium',
-          isNext ? 'text-white text-lg' : 'text-white/70',
+          isNext ? 'text-themed text-lg' : 'text-themed-secondary',
         ]"
       >
         {{ time }}

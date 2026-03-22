@@ -39,6 +39,7 @@ const DIYANET_METHOD = 13
 
 export function usePrayerTimes() {
   const config = useRuntimeConfig()
+  const { t } = useI18n()
   const data = useState<PrayerTimesData | null>('prayer-times', () => null)
   const loading = ref(false)
   const error = ref<string | null>(null)
@@ -160,7 +161,7 @@ export function usePrayerTimes() {
       }
     }
     catch (err) {
-      error.value = 'Gebetszeiten konnten nicht geladen werden.'
+      error.value = t('errors.prayerLoad')
       console.error('Prayer times fetch error:', err)
     }
     finally {

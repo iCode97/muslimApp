@@ -33,7 +33,7 @@ async function handleSearch() {
     <!-- Current location display -->
     <div class="flex items-center justify-between">
       <button
-        class="flex items-center gap-2 text-sm text-white/60 hover:text-white/80 transition-colors"
+        class="flex items-center gap-2 text-sm text-themed-muted hover:text-themed-secondary transition-colors"
         @click="showSearch = !showSearch"
       >
         <span class="text-base">{{'📍'}}</span>

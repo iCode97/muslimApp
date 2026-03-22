@@ -9,10 +9,10 @@ const nextPrayerName = computed(() => prayerTimes.data.value?.nextPrayer?.name ?
 <template>
   <GlassCard variant="default" padding="sm">
     <div class="flex items-center justify-between px-4 pt-2 pb-1">
-      <h2 class="text-sm font-semibold text-white/60 uppercase tracking-wider">
+      <h2 class="text-sm font-semibold text-themed-muted uppercase tracking-wider">
         {{ t('dashboard.allPrayers') }}
       </h2>
-      <span class="text-xs text-white/30">Diyanet</span>
+      <span class="text-xs text-themed-faint">{{ t('prayer.diyanet') }}</span>
     </div>
 
     <div v-if="prayerTimes.loading.value" class="py-8">

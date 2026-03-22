@@ -14,6 +14,7 @@ interface Bookmark {
 const STORAGE_KEY = 'muslimapp-quran-bookmark'
 
 export function useBookmark() {
+  const { t } = useI18n()
   const bookmark = useState<Bookmark | null>('quran-bookmark', () => null)
 
   // Load saved bookmark
@@ -67,10 +68,10 @@ export function useBookmark() {
     const hours = Math.floor(minutes / 60)
     const days = Math.floor(hours / 24)
 
-    if (days > 0) return `vor ${days} Tag${days > 1 ? 'en' : ''}`
-    if (hours > 0) return `vor ${hours} Stunde${hours > 1 ? 'n' : ''}`
-    if (minutes > 0) return `vor ${minutes} Minute${minutes > 1 ? 'n' : ''}`
-    return 'gerade eben'
+    if (days > 0) return t('timeAgo.daysAgo', { n: days }, days)
+    if (hours > 0) return t('timeAgo.hoursAgo', { n: hours }, hours)
+    if (minutes > 0) return t('timeAgo.minutesAgo', { n: minutes }, minutes)
+    return t('timeAgo.justNow')
   }
 
   return {

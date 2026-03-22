@@ -25,9 +25,9 @@ defineEmits<{
       'active:scale-[0.97] disabled:opacity-40 disabled:pointer-events-none',
 
       // Variant
-      variant === 'default' && 'glass hover:bg-white/15',
-      variant === 'primary' && 'glass-primary hover:shadow-[0_0_40px_rgba(45,106,79,0.25)]',
-      variant === 'ghost' && 'hover:bg-white/5',
+      variant === 'default' && 'glass hover:brightness-110',
+      variant === 'primary' && 'glass-primary hover:shadow-[0_0_40px_var(--color-primary-glow)]',
+      variant === 'ghost' && 'hover:brightness-110',
 
       // Size
       size === 'sm' && 'px-3 py-1.5 text-sm',

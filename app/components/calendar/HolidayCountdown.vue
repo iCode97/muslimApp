@@ -5,7 +5,7 @@
  */
 
 const { t } = useI18n()
-const { nextHoliday, fetchUpcomingHolidays, loading } = useHolidays()
+const { nextHoliday, fetchUpcomingHolidays, loading, getHolidayName } = useHolidays()
 
 onMounted(() => {
   fetchUpcomingHolidays()
@@ -26,13 +26,13 @@ onMounted(() => {
 
       <!-- Info -->
       <div class="flex-1 min-w-0">
-        <p class="text-xs text-white/40 uppercase tracking-wider">
+        <p class="text-xs text-themed-muted uppercase tracking-wider">
           {{ t('dashboard.nextHoliday') }}
         </p>
-        <p class="font-semibold text-white/90 truncate mt-0.5">
-          {{ nextHoliday.nameDE }}
+        <p class="font-semibold text-themed truncate mt-0.5">
+          {{ getHolidayName(nextHoliday) }}
         </p>
-        <p class="text-xs text-white/40 mt-0.5">
+        <p class="text-xs text-themed-muted mt-0.5">
           {{ nextHoliday.gregorianDate }}
         </p>
       </div>
@@ -42,7 +42,7 @@ onMounted(() => {
         <p class="text-2xl font-bold text-[var(--color-primary-light)]">
           {{ nextHoliday.daysUntil }}
         </p>
-        <p class="text-[10px] text-white/40 uppercase">
+        <p class="text-[10px] text-themed-muted uppercase">
           {{ t('calendar.days') }}
         </p>
       </div>

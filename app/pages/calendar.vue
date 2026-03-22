@@ -12,8 +12,8 @@ const { t } = useI18n()
       <h1 class="text-2xl font-semibold">
         {{ t('calendar.title') }}
       </h1>
-      <p class="text-sm text-white/50 mt-1">
-        Hijri-Kalender, Feiertage & Kandil-Nächte
+      <p class="text-sm text-themed-muted mt-1">
+        {{ t('calendar.subtitle') }}
       </p>
     </header>
 
