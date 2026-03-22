@@ -49,4 +49,11 @@ export default defineNuxtConfig({
   },
 
   ssr: true,
+
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false,
+    },
+  ],
 })
