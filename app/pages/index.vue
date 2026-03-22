@@ -109,13 +109,9 @@ const greeting = computed(() => {
       </div>
     </GlassCard>
 
-    <GlassCard variant="subtle" class="animate-fade-in stagger-5">
-      <div class="text-center py-4">
-        <p class="text-sm text-white/30">
-          {{ t('quran.title') }} — {{ t('quran.continue') }}
-        </p>
-        <p class="text-xs text-white/20 mt-1">Phase 2</p>
-      </div>
-    </GlassCard>
+    <!-- Quran Reading Progress -->
+    <div class="animate-fade-in stagger-5">
+      <ReadingProgress />
+    </div>
   </div>
 </template>
