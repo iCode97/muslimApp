@@ -12,9 +12,23 @@ const {
   fetchTodayHijri,
   fetchCalendarMonth,
   getMonthInfo,
+  getMonthName,
+  getHolidayName,
 } = useHolidays()
 
-const weekdays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So']
+// Weekday keys for calendar positioning
+const weekdayKeys = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+
+// Localized weekday labels
+const weekdayLabels = computed(() => [
+  t('calendar.weekMon'),
+  t('calendar.weekTue'),
+  t('calendar.weekWed'),
+  t('calendar.weekThu'),
+  t('calendar.weekFri'),
+  t('calendar.weekSat'),
+  t('calendar.weekSun'),
+])
 
 // Initialize with current Hijri month
 onMounted(async () => {
@@ -26,6 +40,12 @@ onMounted(async () => {
 
 // Current month info
 const monthInfo = computed(() => getMonthInfo(currentHijriMonth.value))
+
+// Localized month name
+const monthName = computed(() => {
+  const info = monthInfo.value
+  return info ? getMonthName(info) : '...'
+})
 
 // Navigate months
 async function prevMonth() {
@@ -55,9 +75,9 @@ const calendarGrid = computed(() => {
   const firstDay = calendarDays.value[0]
   if (!firstDay) return []
 
-  // Determine weekday index (0=Mo, 6=So)
+  // Determine weekday index (0=Mon, 6=Sun) using the internal key
   const weekdayMap: Record<string, number> = {
-    Mo: 0, Di: 1, Mi: 2, Do: 3, Fr: 4, Sa: 5, So: 6,
+    Mon: 0, Tue: 1, Wed: 2, Thu: 3, Fri: 4, Sat: 5, Sun: 6,
   }
   const startOffset = weekdayMap[firstDay.weekday] ?? 0
 
@@ -81,10 +101,10 @@ const calendarGrid = computed(() => {
       </GlassButton>
 
       <div class="text-center">
-        <p class="font-semibold text-white/90">
-          {{ monthInfo?.nameDE ?? '...' }}
+        <p class="font-semibold text-themed">
+          {{ monthName }}
         </p>
-        <p class="text-xs text-white/40">
+        <p class="text-xs text-themed-muted">
           {{ monthInfo?.nameAR }} · {{ currentHijriYear }} AH
         </p>
       </div>
@@ -104,11 +124,11 @@ const calendarGrid = computed(() => {
       <!-- Weekday headers -->
       <div class="grid grid-cols-7 gap-1 mb-2">
         <div
-          v-for="day in weekdays"
-          :key="day"
-          class="text-center text-[10px] text-white/30 font-medium uppercase"
+          v-for="(label, idx) in weekdayLabels"
+          :key="idx"
+          class="text-center text-[10px] text-themed-faint font-medium uppercase"
         >
-          {{ day }}
+          {{ label }}
         </div>
       </div>
 
@@ -126,13 +146,13 @@ const calendarGrid = computed(() => {
                 : 'hover:bg-white/5',
             !day ? 'opacity-0' : '',
           ]"
-          :title="day?.holiday?.nameDE"
+          :title="day?.holiday ? getHolidayName(day.holiday) : undefined"
         >
           <!-- Hijri day number -->
           <span
             v-if="day"
             :class="[
-              day.isToday ? 'text-[var(--color-primary-light)]' : 'text-white/70',
+              day.isToday ? 'text-[var(--color-primary-light)]' : 'text-themed-secondary',
             ]"
           >
             {{ day.hijriDay }}
@@ -141,7 +161,7 @@ const calendarGrid = computed(() => {
           <!-- Gregorian day (small) -->
           <span
             v-if="day"
-            class="text-[8px] text-white/25 leading-none"
+            class="text-[8px] text-themed-faint leading-none"
           >
             {{ day.gregorianDay }}.{{ day.gregorianMonth }}
           </span>

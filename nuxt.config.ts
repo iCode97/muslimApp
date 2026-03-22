@@ -35,10 +35,18 @@ export default defineNuxtConfig({
   i18n: {
     locales: [
       { code: 'de', name: 'Deutsch', file: 'de.json' },
+      { code: 'en', name: 'English', file: 'en.json' },
+      { code: 'tr', name: 'Türkçe', file: 'tr.json' },
     ],
     defaultLocale: 'de',
     lazy: true,
     langDir: '../i18n/',
+    strategy: 'no_prefix',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'muslimapp-locale',
+      fallbackLocale: 'de',
+    },
   },
 
   runtimeConfig: {

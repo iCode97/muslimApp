@@ -14,8 +14,8 @@ const activeTab = ref<'surahs' | 'search'>('surahs')
       <h1 class="text-2xl font-semibold">
         {{ t('quran.title') }}
       </h1>
-      <p class="text-sm text-white/50 mt-1">
-        114 {{ t('quran.surahs') }} · Arabisch · Türkisch · Deutsch
+      <p class="text-sm text-themed-muted mt-1">
+        114 {{ t('quran.surahs') }} · {{ t('quran.subtitle') }}
       </p>
     </header>
 
@@ -36,7 +36,7 @@ const activeTab = ref<'surahs' | 'search'>('surahs')
         size="sm"
         @click="activeTab = 'search'"
       >
-        🔍 Suche
+        🔍 {{ t('quran.searchButton') }}
       </GlassButton>
     </div>
 

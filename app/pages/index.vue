@@ -58,11 +58,11 @@ const hijriDisplay = computed(() => {
 // Greeting based on time of day
 const greeting = computed(() => {
   const hour = new Date().getHours()
-  if (hour < 5) return 'Gute Nacht'
-  if (hour < 12) return 'Guten Morgen'
-  if (hour < 17) return 'Guten Nachmittag'
-  if (hour < 21) return 'Guten Abend'
-  return 'Gute Nacht'
+  if (hour < 5) return t('dashboard.goodNight')
+  if (hour < 12) return t('dashboard.goodMorning')
+  if (hour < 17) return t('dashboard.goodAfternoon')
+  if (hour < 21) return t('dashboard.goodEvening')
+  return t('dashboard.goodNight')
 })
 </script>
 
@@ -70,11 +70,11 @@ const greeting = computed(() => {
   <div class="px-4 pt-6 space-y-5 max-w-lg mx-auto">
     <!-- Header -->
     <header class="space-y-1 animate-fade-in">
-      <p class="text-sm text-white/50">
+      <p class="text-sm text-themed-muted">
         {{ greeting }}
       </p>
       <h1 class="text-2xl font-semibold">
-        {{ t('dashboard.greeting') }} 👋
+        {{ t('dashboard.greeting') }}
       </h1>
 
       <!-- Hijri Date -->

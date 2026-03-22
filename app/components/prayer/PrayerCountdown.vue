@@ -13,12 +13,17 @@ const nextPrayerName = computed(() => {
   if (!key) return ''
   return t(prayerTimes.PRAYER_I18N[key] ?? key)
 })
+
+const clockSuffix = computed(() => {
+  const suffix = t('prayer.clock')
+  return suffix ? ` ${suffix}` : ''
+})
 </script>
 
 <template>
   <GlassCard variant="primary" :glow="!countdown.isExpired" padding="lg">
     <div class="text-center">
-      <p class="text-sm text-white/60 mb-1">
+      <p class="text-sm text-themed-muted mb-1">
         {{ t('dashboard.nextPrayer') }}
       </p>
       <p class="text-2xl font-semibold text-[var(--color-primary-light)] mb-3">
@@ -29,9 +34,9 @@ const nextPrayerName = computed(() => {
       </p>
       <p
         v-if="prayerTimes.data.value?.nextPrayer"
-        class="text-sm text-white/40 mt-2"
+        class="text-sm text-themed-muted mt-2"
       >
-        {{ prayerTimes.data.value.nextPrayer.time }} Uhr
+        {{ prayerTimes.data.value.nextPrayer.time }}{{ clockSuffix }}
       </p>
     </div>
   </GlassCard>

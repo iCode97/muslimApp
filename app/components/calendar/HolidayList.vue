@@ -4,7 +4,7 @@
  */
 
 const { t } = useI18n()
-const { holidays, fetchUpcomingHolidays, loading } = useHolidays()
+const { holidays, fetchUpcomingHolidays, loading, getHolidayName, getHolidayDescription } = useHolidays()
 
 onMounted(() => {
   if (holidays.value.length === 0) {
@@ -14,9 +14,9 @@ onMounted(() => {
 
 function typeLabel(type: string): string {
   const map: Record<string, string> = {
-    holiday: 'Feiertag',
-    kandil: 'Kandil-Nacht',
-    observance: 'Gedenktag',
+    holiday: t('calendar.typeHoliday'),
+    kandil: t('calendar.typeKandil'),
+    observance: t('calendar.typeObservance'),
   }
   return map[type] ?? type
 }
@@ -25,15 +25,15 @@ function typeBadgeClass(type: string): string {
   const map: Record<string, string> = {
     holiday: 'bg-[var(--color-primary)]/30 text-[var(--color-primary-light)]',
     kandil: 'bg-[var(--color-gold)]/20 text-[var(--color-gold)]',
-    observance: 'bg-white/10 text-white/60',
+    observance: 'glass-subtle text-themed-muted',
   }
-  return map[type] ?? 'bg-white/10 text-white/60'
+  return map[type] ?? 'glass-subtle text-themed-muted'
 }
 </script>
 
 <template>
   <div class="space-y-3">
-    <h2 class="text-sm font-semibold text-white/60 uppercase tracking-wider px-1">
+    <h2 class="text-sm font-semibold text-themed-muted uppercase tracking-wider px-1">
       {{ t('calendar.holidays') }}
     </h2>
 
@@ -53,8 +53,8 @@ function typeBadgeClass(type: string): string {
         <!-- Info -->
         <div class="flex-1 min-w-0">
           <div class="flex items-center gap-2">
-            <span class="font-medium text-white/90 truncate text-sm">
-              {{ holiday.nameDE }}
+            <span class="font-medium text-themed truncate text-sm">
+              {{ getHolidayName(holiday) }}
             </span>
             <span
               :class="[
@@ -65,11 +65,11 @@ function typeBadgeClass(type: string): string {
               {{ typeLabel(holiday.type) }}
             </span>
           </div>
-          <p class="text-xs text-white/40 mt-0.5">
-            {{ holiday.nameTR }} · {{ holiday.gregorianDate || '—' }}
+          <p class="text-xs text-themed-muted mt-0.5">
+            {{ holiday.gregorianDate || '—' }}
           </p>
-          <p class="text-xs text-white/30 mt-0.5">
-            {{ holiday.description }}
+          <p class="text-xs text-themed-faint mt-0.5">
+            {{ getHolidayDescription(holiday) }}
           </p>
         </div>
 
@@ -85,7 +85,7 @@ function typeBadgeClass(type: string): string {
           >
             {{ holiday.daysUntil ?? '—' }}
           </p>
-          <p class="text-[10px] text-white/30">
+          <p class="text-[10px] text-themed-faint">
             {{ t('calendar.days') }}
           </p>
         </div>

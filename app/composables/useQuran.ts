@@ -46,6 +46,7 @@ const CACHE_PREFIX = 'muslimapp-quran'
 
 export function useQuran() {
   const config = useRuntimeConfig()
+  const { t } = useI18n()
   const baseUrl = config.public.quranBaseUrl
 
   const surahs = useState<Surah[]>('quran-surahs', () => [])
@@ -112,7 +113,7 @@ export function useQuran() {
       }
     }
     catch (err) {
-      error.value = 'Suren konnten nicht geladen werden.'
+      error.value = t('errors.surahLoad')
       console.error('Quran surahs fetch error:', err)
     }
     finally {
@@ -205,7 +206,7 @@ export function useQuran() {
       }
     }
     catch (err) {
-      error.value = 'Verse konnten nicht geladen werden.'
+      error.value = t('errors.verseLoad')
       console.error('Quran verses fetch error:', err)
     }
     finally {
@@ -243,13 +244,13 @@ export function useQuran() {
         return {
           verseKey: r.verse_key,
           text: r.translations?.[0]?.text?.replace(/<[^>]*>/g, '') ?? r.text,
-          surahName: surah?.nameSimple ?? `Sure ${surahNum}`,
+          surahName: surah?.nameSimple ?? `Surah ${surahNum}`,
           verseNumber: verseNum,
         }
       })
     }
     catch (err) {
-      error.value = 'Suche fehlgeschlagen.'
+      error.value = t('errors.searchFailed')
       console.error('Quran search error:', err)
       return []
     }

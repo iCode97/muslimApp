@@ -1,0 +1,123 @@
+{
+  "app": {
+    "name": "MuslimApp",
+    "tagline": "İslami yardımcınız"
+  },
+  "nav": {
+    "dashboard": "Ana Sayfa",
+    "prayer": "Namaz Vakitleri",
+    "quran": "Kur'an",
+    "calendar": "Takvim",
+    "settings": "Ayarlar"
+  },
+  "dashboard": {
+    "greeting": "Selamün Aleyküm",
+    "nextPrayer": "Sonraki Namaz",
+    "in": "kalan",
+    "allPrayers": "Tüm Namaz Vakitleri",
+    "nextHoliday": "Sonraki Bayram",
+    "today": "Bugün",
+    "hijriDate": "Hicri Tarih",
+    "goodNight": "İyi Geceler",
+    "goodMorning": "Günaydın",
+    "goodAfternoon": "İyi Günler",
+    "goodEvening": "İyi Akşamlar"
+  },
+  "prayer": {
+    "fajr": "İmsak",
+    "sunrise": "Güneş",
+    "dhuhr": "Öğle",
+    "asr": "İkindi",
+    "maghrib": "Akşam",
+    "isha": "Yatsı",
+    "imsak": "İmsak",
+    "method": "Hesaplama Yöntemi",
+    "diyanet": "Diyanet",
+    "location": "Konum",
+    "detectLocation": "Konumu bul",
+    "searchCity": "Şehir ara...",
+    "timeUntil": "{time} kaldı",
+    "passed": "geçti",
+    "clock": ""
+  },
+  "calendar": {
+    "title": "İslami Takvim",
+    "holidays": "Bayramlar ve Kandiller",
+    "countdown": "Geri Sayım",
+    "days": "Gün",
+    "hours": "Saat",
+    "minutes": "Dakika",
+    "seconds": "Saniye",
+    "subtitle": "Hicri Takvim, Bayramlar ve Kandil Geceleri",
+    "weekMon": "Pzt",
+    "weekTue": "Sal",
+    "weekWed": "Çar",
+    "weekThu": "Per",
+    "weekFri": "Cum",
+    "weekSat": "Cmt",
+    "weekSun": "Paz",
+    "typeHoliday": "Bayram",
+    "typeKandil": "Kandil Gecesi",
+    "typeObservance": "Anma Günü"
+  },
+  "quran": {
+    "title": "Kur'an-ı Kerim",
+    "surahs": "Sureler",
+    "search": "Kur'an'da ara...",
+    "verses": "Ayet",
+    "bookmark": "Yer İmi",
+    "continue": "Okumaya devam et",
+    "translationsOn": "Çeviriler açık",
+    "translationsOff": "Çeviriler kapalı",
+    "backToSurahs": "Sureler",
+    "noResults": "Sonuç bulunamadı:",
+    "results": "sonuç",
+    "verse": "Ayet",
+    "subtitle": "Arapça · Türkçe · Almanca",
+    "mecca": "Mekke",
+    "medina": "Medine",
+    "noSurahsFound": "\"{query}\" için sure bulunamadı",
+    "turkishTranslation": "Türkçe",
+    "germanTranslation": "Almanca",
+    "bismillah": "Rahman ve Rahim olan Allah'ın adıyla",
+    "searchButton": "Arama"
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "language": "Dil",
+    "calculationMethod": "Hesaplama Yöntemi",
+    "location": "Konum",
+    "about": "Hakkında",
+    "theme": "Görünüm",
+    "themeDark": "Koyu",
+    "themeLight": "Açık",
+    "themeSystem": "Sistem",
+    "noLocation": "Konum ayarlanmadı",
+    "moreMethodsLater": "Daha fazla yöntem ileride eklenecek",
+    "moreLangsLater": "Daha fazla dil ileride eklenecek",
+    "version": "Sürüm",
+    "apiInfo": "Namaz vakitleri: Aladhan API • Kur'an: quran.com API"
+  },
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Bir hata oluştu",
+    "retry": "Tekrar dene",
+    "unknown": "Bilinmiyor"
+  },
+  "errors": {
+    "locationDetect": "Konum tespit edilemedi. Lütfen manuel olarak girin.",
+    "cityNotFound": "\"{city}\" şehri bulunamadı.",
+    "locationSearch": "Konum aranırken hata oluştu.",
+    "prayerLoad": "Namaz vakitleri yüklenemedi.",
+    "calendarLoad": "Takvim yüklenemedi.",
+    "surahLoad": "Sureler yüklenemedi.",
+    "verseLoad": "Ayetler yüklenemedi.",
+    "searchFailed": "Arama başarısız oldu."
+  },
+  "timeAgo": {
+    "daysAgo": "{n} gün önce",
+    "hoursAgo": "{n} saat önce",
+    "minutesAgo": "{n} dakika önce",
+    "justNow": "az önce"
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "app": {
+    "name": "MuslimApp",
+    "tagline": "Your Islamic companion"
+  },
+  "nav": {
+    "dashboard": "Home",
+    "prayer": "Prayer Times",
+    "quran": "Quran",
+    "calendar": "Calendar",
+    "settings": "Settings"
+  },
+  "dashboard": {
+    "greeting": "Assalamu Alaikum",
+    "nextPrayer": "Next Prayer",
+    "in": "in",
+    "allPrayers": "All Prayer Times",
+    "nextHoliday": "Next Holiday",
+    "today": "Today",
+    "hijriDate": "Islamic Date",
+    "goodNight": "Good Night",
+    "goodMorning": "Good Morning",
+    "goodAfternoon": "Good Afternoon",
+    "goodEvening": "Good Evening"
+  },
+  "prayer": {
+    "fajr": "Fajr",
+    "sunrise": "Sunrise",
+    "dhuhr": "Dhuhr",
+    "asr": "Asr",
+    "maghrib": "Maghrib",
+    "isha": "Isha",
+    "imsak": "Imsak",
+    "method": "Calculation Method",
+    "diyanet": "Diyanet",
+    "location": "Location",
+    "detectLocation": "Detect location",
+    "searchCity": "Search city...",
+    "timeUntil": "{time} remaining",
+    "passed": "passed",
+    "clock": ""
+  },
+  "calendar": {
+    "title": "Islamic Calendar",
+    "holidays": "Holidays",
+    "countdown": "Countdown",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "subtitle": "Hijri Calendar, Holidays & Kandil Nights",
+    "weekMon": "Mon",
+    "weekTue": "Tue",
+    "weekWed": "Wed",
+    "weekThu": "Thu",
+    "weekFri": "Fri",
+    "weekSat": "Sat",
+    "weekSun": "Sun",
+    "typeHoliday": "Holiday",
+    "typeKandil": "Kandil Night",
+    "typeObservance": "Observance"
+  },
+  "quran": {
+    "title": "The Noble Quran",
+    "surahs": "Surahs",
+    "search": "Search the Quran...",
+    "verses": "Verses",
+    "bookmark": "Bookmark",
+    "continue": "Continue reading",
+    "translationsOn": "Translations on",
+    "translationsOff": "Translations off",
+    "backToSurahs": "Surahs",
+    "noResults": "No results for:",
+    "results": "result | results",
+    "verse": "Verse",
+    "subtitle": "Arabic · Turkish · German",
+    "mecca": "Mecca",
+    "medina": "Medina",
+    "noSurahsFound": "No surahs found for \"{query}\"",
+    "turkishTranslation": "Turkish",
+    "germanTranslation": "German",
+    "bismillah": "In the name of Allah, the Most Gracious, the Most Merciful",
+    "searchButton": "Search"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "calculationMethod": "Calculation Method",
+    "location": "Location",
+    "about": "About",
+    "theme": "Appearance",
+    "themeDark": "Dark",
+    "themeLight": "Light",
+    "themeSystem": "System",
+    "noLocation": "No location set",
+    "moreMethodsLater": "More methods in a future version",
+    "moreLangsLater": "More languages in a future version",
+    "version": "Version",
+    "apiInfo": "Prayer times via Aladhan API • Quran via quran.com API"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Try again",
+    "unknown": "Unknown"
+  },
+  "errors": {
+    "locationDetect": "Could not detect location. Please enter manually.",
+    "cityNotFound": "City \"{city}\" not found.",
+    "locationSearch": "Error searching for location.",
+    "prayerLoad": "Could not load prayer times.",
+    "calendarLoad": "Could not load calendar.",
+    "surahLoad": "Could not load surahs.",
+    "verseLoad": "Could not load verses.",
+    "searchFailed": "Search failed."
+  },
+  "timeAgo": {
+    "daysAgo": "{n} day ago | {n} days ago",
+    "hoursAgo": "{n} hour ago | {n} hours ago",
+    "minutesAgo": "{n} minute ago | {n} minutes ago",
+    "justNow": "just now"
+  }
+}

@@ -17,7 +17,11 @@
     "allPrayers": "Alle Gebetszeiten",
     "nextHoliday": "Nächster Feiertag",
     "today": "Heute",
-    "hijriDate": "Islamisches Datum"
+    "hijriDate": "Islamisches Datum",
+    "goodNight": "Gute Nacht",
+    "goodMorning": "Guten Morgen",
+    "goodAfternoon": "Guten Nachmittag",
+    "goodEvening": "Guten Abend"
   },
   "prayer": {
     "fajr": "Fajr",
@@ -33,7 +37,8 @@
     "detectLocation": "Standort erkennen",
     "searchCity": "Stadt suchen...",
     "timeUntil": "noch {time}",
-    "passed": "vergangen"
+    "passed": "vergangen",
+    "clock": "Uhr"
   },
   "calendar": {
     "title": "Islamischer Kalender",
@@ -42,7 +47,18 @@
     "days": "Tage",
     "hours": "Stunden",
     "minutes": "Minuten",
-    "seconds": "Sekunden"
+    "seconds": "Sekunden",
+    "subtitle": "Hijri-Kalender, Feiertage & Kandil-Nächte",
+    "weekMon": "Mo",
+    "weekTue": "Di",
+    "weekWed": "Mi",
+    "weekThu": "Do",
+    "weekFri": "Fr",
+    "weekSat": "Sa",
+    "weekSun": "So",
+    "typeHoliday": "Feiertag",
+    "typeKandil": "Kandil-Nacht",
+    "typeObservance": "Gedenktag"
   },
   "quran": {
     "title": "Der edle Koran",
@@ -50,18 +66,58 @@
     "search": "Im Koran suchen...",
     "verses": "Verse",
     "bookmark": "Lesezeichen",
-    "continue": "Weiterlesen"
+    "continue": "Weiterlesen",
+    "translationsOn": "Übersetzungen an",
+    "translationsOff": "Übersetzungen aus",
+    "backToSurahs": "Suren",
+    "noResults": "Keine Ergebnisse für:",
+    "results": "Ergebnis | Ergebnisse",
+    "verse": "Vers",
+    "subtitle": "Arabisch · Türkisch · Deutsch",
+    "mecca": "Mekka",
+    "medina": "Medina",
+    "noSurahsFound": "Keine Suren gefunden für \"{query}\"",
+    "turkishTranslation": "Türkçe",
+    "germanTranslation": "Deutsch",
+    "bismillah": "Im Namen Allahs, des Allerbarmers, des Barmherzigen",
+    "searchButton": "Suche"
   },
   "settings": {
     "title": "Einstellungen",
     "language": "Sprache",
     "calculationMethod": "Berechnungsmethode",
     "location": "Standort",
-    "about": "Über die App"
+    "about": "Über die App",
+    "theme": "Erscheinungsbild",
+    "themeDark": "Dunkel",
+    "themeLight": "Hell",
+    "themeSystem": "System",
+    "noLocation": "Kein Standort festgelegt",
+    "moreMethodsLater": "Weitere Methoden in einer zukünftigen Version",
+    "moreLangsLater": "Weitere Sprachen in einer zukünftigen Version",
+    "version": "Version",
+    "apiInfo": "Gebetszeiten via Aladhan API • Koran via quran.com API"
   },
   "common": {
     "loading": "Wird geladen...",
     "error": "Ein Fehler ist aufgetreten",
-    "retry": "Erneut versuchen"
+    "retry": "Erneut versuchen",
+    "unknown": "Unbekannt"
+  },
+  "errors": {
+    "locationDetect": "Standort konnte nicht ermittelt werden. Bitte manuell eingeben.",
+    "cityNotFound": "Stadt \"{city}\" nicht gefunden.",
+    "locationSearch": "Fehler bei der Standortsuche.",
+    "prayerLoad": "Gebetszeiten konnten nicht geladen werden.",
+    "calendarLoad": "Kalender konnte nicht geladen werden.",
+    "surahLoad": "Suren konnten nicht geladen werden.",
+    "verseLoad": "Verse konnten nicht geladen werden.",
+    "searchFailed": "Suche fehlgeschlagen."
+  },
+  "timeAgo": {
+    "daysAgo": "vor {n} Tag | vor {n} Tagen",
+    "hoursAgo": "vor {n} Stunde | vor {n} Stunden",
+    "minutesAgo": "vor {n} Minute | vor {n} Minuten",
+    "justNow": "gerade eben"
   }
 }

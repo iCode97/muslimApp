@@ -10,7 +10,7 @@ onMounted(() => {
 const surahName = computed(() => {
   if (!bookmark.value) return ''
   const surah = quran.getSurah(bookmark.value.surahId)
-  return surah?.nameSimple ?? bookmark.value.surahName ?? `Sure ${bookmark.value.surahId}`
+  return surah?.nameSimple ?? bookmark.value.surahName ?? `Surah ${bookmark.value.surahId}`
 })
 </script>
 
@@ -23,14 +23,14 @@ const surahName = computed(() => {
     <GlassCard variant="primary" padding="md">
       <div class="flex items-center justify-between">
         <div class="space-y-1">
-          <p class="text-xs text-white/50 uppercase tracking-wider">
+          <p class="text-xs text-themed-muted uppercase tracking-wider">
             {{ t('quran.continue') }}
           </p>
           <p class="font-medium text-[var(--color-primary-light)]">
             {{ surahName }}
           </p>
-          <p class="text-xs text-white/40">
-            Vers {{ bookmark.verseNumber }} · {{ timeAgo() }}
+          <p class="text-xs text-themed-muted">
+            {{ t('quran.verse') }} {{ bookmark.verseNumber }} · {{ timeAgo() }}
           </p>
         </div>
         <div class="text-3xl opacity-50">

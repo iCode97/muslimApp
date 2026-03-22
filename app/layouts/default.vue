@@ -34,7 +34,7 @@ function isActive(path: string): boolean {
             'flex flex-col items-center gap-0.5 py-1.5 px-3 rounded-xl transition-all duration-200 min-w-[56px]',
             isActive(item.path)
               ? 'text-[var(--color-primary-light)] scale-105'
-              : 'text-white/40 hover:text-white/60',
+              : 'text-[var(--nav-inactive)] hover:text-[var(--nav-inactive-hover)]',
           ]"
         >
           <span class="text-xl leading-none">{{ item.icon }}</span>

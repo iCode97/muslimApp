@@ -8,13 +8,16 @@ import holidayData from '../../data/holidays.json'
 export interface Holiday {
   id: string
   nameDE: string
+  nameEN: string
   nameTR: string
   type: 'holiday' | 'kandil' | 'observance'
   hijriMonth: number
   hijriDay: number
   durationDays?: number
   icon: string
-  description: string
+  descriptionDE: string
+  descriptionEN: string
+  descriptionTR: string
   isKandil?: boolean
   // Computed for current year
   gregorianDate?: string
@@ -39,12 +42,14 @@ export interface HijriDay {
 export interface HijriMonthInfo {
   number: number
   nameDE: string
+  nameEN: string
   nameTR: string
   nameAR: string
 }
 
 export function useHolidays() {
   const config = useRuntimeConfig()
+  const { t, locale } = useI18n()
 
   const holidays = useState<Holiday[]>('holidays', () => [])
   const calendarDays = useState<HijriDay[]>('calendar-days', () => [])
@@ -53,7 +58,28 @@ export function useHolidays() {
   const loading = ref(false)
   const error = ref<string | null>(null)
 
-  const hijriMonths: HijriMonthInfo[] = holidayData.hijriMonths
+  const hijriMonths: HijriMonthInfo[] = holidayData.hijriMonths as HijriMonthInfo[]
+
+  // Get localized holiday name
+  function getHolidayName(holiday: Holiday | { nameDE: string, nameEN?: string, nameTR: string }): string {
+    if (locale.value === 'tr') return holiday.nameTR
+    if (locale.value === 'en') return (holiday as Holiday).nameEN ?? holiday.nameDE
+    return holiday.nameDE
+  }
+
+  // Get localized holiday description
+  function getHolidayDescription(holiday: Holiday): string {
+    if (locale.value === 'tr') return holiday.descriptionTR
+    if (locale.value === 'en') return holiday.descriptionEN
+    return holiday.descriptionDE
+  }
+
+  // Get localized month name
+  function getMonthName(monthInfo: HijriMonthInfo): string {
+    if (locale.value === 'tr') return monthInfo.nameTR
+    if (locale.value === 'en') return monthInfo.nameEN
+    return monthInfo.nameDE
+  }
 
   // Get today's Hijri date via Aladhan API
   async function fetchTodayHijri(): Promise<{ day: number, month: number, year: number } | null> {
@@ -136,7 +162,7 @@ export function useHolidays() {
           gregorianDay: gDay,
           gregorianMonth: gMonth,
           gregorianYear: gYear,
-          weekday: translateWeekday(day.gregorian.weekday.en),
+          weekday: mapWeekdayToKey(day.gregorian.weekday.en),
           holiday,
           isToday: checkStr === todayStr,
         }
@@ -146,7 +172,7 @@ export function useHolidays() {
       currentHijriYear.value = year
     }
     catch (err) {
-      error.value = 'Kalender konnte nicht geladen werden.'
+      error.value = t('errors.calendarLoad')
       console.error('Calendar fetch error:', err)
     }
     finally {
@@ -209,7 +235,7 @@ export function useHolidays() {
             gregorianDate: `${g.day}.${String(g.month.number).padStart(2, '0')}.${g.year}`,
             daysUntil: Math.max(0, daysUntil),
             isPast: daysUntil < 0,
-          })
+          } as Holiday)
         }
         catch {
           // Skip holidays that fail to convert
@@ -217,7 +243,7 @@ export function useHolidays() {
             ...h,
             daysUntil: 999,
             isPast: false,
-          })
+          } as Holiday)
         }
       }
 
@@ -241,16 +267,16 @@ export function useHolidays() {
     return hijriMonths.find(m => m.number === monthNumber)
   }
 
-  // Translate weekday to German
-  function translateWeekday(en: string): string {
+  // Map English weekday to a short key used for calendar grid positioning
+  function mapWeekdayToKey(en: string): string {
     const map: Record<string, string> = {
-      Monday: 'Mo',
-      Tuesday: 'Di',
-      Wednesday: 'Mi',
-      Thursday: 'Do',
-      Friday: 'Fr',
-      Saturday: 'Sa',
-      Sunday: 'So',
+      Monday: 'Mon',
+      Tuesday: 'Tue',
+      Wednesday: 'Wed',
+      Thursday: 'Thu',
+      Friday: 'Fri',
+      Saturday: 'Sat',
+      Sunday: 'Sun',
     }
     return map[en] ?? en
   }
@@ -268,5 +294,8 @@ export function useHolidays() {
     fetchCalendarMonth,
     fetchUpcomingHolidays,
     getMonthInfo,
+    getHolidayName,
+    getHolidayDescription,
+    getMonthName,
   }
 }

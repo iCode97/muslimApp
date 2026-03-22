@@ -34,6 +34,12 @@ watch(surahId, async (newId) => {
 // Navigation helpers
 const prevSurah = computed(() => surahId.value > 1 ? surahId.value - 1 : null)
 const nextSurah = computed(() => surahId.value < 114 ? surahId.value + 1 : null)
+
+// Revelation place localized
+const revelationPlace = computed(() => {
+  if (!surah.value) return ''
+  return surah.value.revelationPlace === 'makkah' ? t('quran.mecca') : t('quran.medina')
+})
 </script>
 
 <template>
@@ -43,20 +49,20 @@ const nextSurah = computed(() => surahId.value < 114 ? surahId.value + 1 : null)
       <!-- Back link -->
       <NuxtLink
         to="/quran"
-        class="inline-flex items-center gap-1 text-sm text-white/40 hover:text-white/60 transition-colors"
+        class="inline-flex items-center gap-1 text-sm text-themed-muted hover:text-themed-secondary transition-colors"
       >
         ← {{ t('quran.surahs') }}
       </NuxtLink>
 
       <div v-if="surah" class="text-center space-y-1">
-        <p class="font-arabic text-3xl text-white/80">
+        <p class="font-arabic text-3xl text-themed-secondary">
           {{ surah.nameArabic }}
         </p>
         <h1 class="text-xl font-semibold">
           {{ surah.nameSimple }}
         </h1>
-        <p class="text-sm text-white/40">
-          {{ surah.translatedName }} · {{ surah.versesCount }} {{ t('quran.verses') }} · {{ surah.revelationPlace === 'makkah' ? 'Mekka' : 'Medina' }}
+        <p class="text-sm text-themed-muted">
+          {{ surah.translatedName }} · {{ surah.versesCount }} {{ t('quran.verses') }} · {{ revelationPlace }}
         </p>
       </div>
     </header>
@@ -68,7 +74,7 @@ const nextSurah = computed(() => surahId.value < 114 ? surahId.value + 1 : null)
         size="sm"
         @click="showTranslations = !showTranslations"
       >
-        {{ showTranslations ? '🌐 Übersetzungen an' : '🌐 Übersetzungen aus' }}
+        {{ showTranslations ? '🌐 ' + t('quran.translationsOn') : '🌐 ' + t('quran.translationsOff') }}
       </GlassButton>
     </div>
 
@@ -80,8 +86,8 @@ const nextSurah = computed(() => surahId.value < 114 ? surahId.value + 1 : null)
       <p class="font-arabic text-2xl text-[var(--color-gold)]" dir="rtl" lang="ar">
         بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
       </p>
-      <p class="text-xs text-white/30 mt-1">
-        Im Namen Allahs, des Allerbarmers, des Barmherzigen
+      <p class="text-xs text-themed-faint mt-1">
+        {{ t('quran.bismillah') }}
       </p>
     </div>
 
@@ -117,7 +123,7 @@ const nextSurah = computed(() => surahId.value < 114 ? surahId.value + 1 : null)
         :to="`/quran/${prevSurah}`"
       >
         <GlassButton variant="default" size="sm">
-          ← Sure {{ prevSurah }}
+          ← {{ prevSurah }}
         </GlassButton>
       </NuxtLink>
       <span v-else />
@@ -127,7 +133,7 @@ const nextSurah = computed(() => surahId.value < 114 ? surahId.value + 1 : null)
         :to="`/quran/${nextSurah}`"
       >
         <GlassButton variant="default" size="sm">
-          Sure {{ nextSurah }} →
+          {{ nextSurah }} →
         </GlassButton>
       </NuxtLink>
     </div>

@@ -45,8 +45,8 @@ function onInput() {
 
     <!-- Results -->
     <div v-else-if="results.length > 0" class="space-y-2">
-      <p class="text-xs text-white/40 px-1">
-        {{ results.length }} Ergebnis{{ results.length !== 1 ? 'se' : '' }}
+      <p class="text-xs text-themed-muted px-1">
+        {{ results.length }} {{ t('quran.results', results.length) }}
       </p>
 
       <NuxtLink
@@ -60,11 +60,11 @@ function onInput() {
             <span class="text-xs text-[var(--color-primary-light)] font-medium">
               {{ result.surahName }}
             </span>
-            <span class="text-xs text-white/30">
-              Vers {{ result.verseNumber }}
+            <span class="text-xs text-themed-faint">
+              {{ t('quran.verse') }} {{ result.verseNumber }}
             </span>
           </div>
-          <p class="text-sm text-white/70 leading-relaxed line-clamp-3">
+          <p class="text-sm text-themed-secondary leading-relaxed line-clamp-3">
             {{ result.text }}
           </p>
         </div>
@@ -73,8 +73,8 @@ function onInput() {
 
     <!-- No results -->
     <div v-else-if="hasSearched && !quran.loading.value" class="text-center py-8">
-      <p class="text-white/40 text-sm">
-        Keine Ergebnisse für "{{ searchQuery }}"
+      <p class="text-themed-muted text-sm">
+        {{ t('quran.noResults') }} "{{ searchQuery }}"
       </p>
     </div>
   </div>
