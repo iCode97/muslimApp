@@ -5,7 +5,7 @@
  */
 
 const { t } = useI18n()
-const { location, loadSaved, detectGPS, setCity } = useLocation()
+const { location, loadSaved, detectGPS } = useLocation()
 const prayerTimes = usePrayerTimes()
 
 // Initialize location + prayer times
@@ -14,11 +14,8 @@ onMounted(async () => {
   const saved = loadSaved()
 
   if (!saved) {
-    // Try GPS auto-detect, fallback to Berlin
-    const detected = await detectGPS()
-    if (!detected) {
-      await setCity('Berlin', 'Deutschland')
-    }
+    // Try GPS auto-detect (no fallback — let user search manually)
+    await detectGPS()
   }
 
   // Load cached prayer times first

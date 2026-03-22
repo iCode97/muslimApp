@@ -88,7 +88,7 @@ function switchTheme(mode: 'dark' | 'light' | 'system') {
           {{ t('settings.location') }}
         </h3>
         <p v-if="location" class="text-themed-secondary">
-          📍 {{ location.city }}, {{ location.country }}
+          📍 {{ location.displayName || `${location.city}, ${location.country}` }}
         </p>
         <p v-else class="text-themed-muted italic text-sm">
           {{ t('settings.noLocation') }}

@@ -1,6 +1,7 @@
 /**
  * Composable for fetching and managing prayer times via Aladhan API.
  * Uses Method 13 (Diyanet) as default.
+ * Handles next-day Fajr when all today's prayers have passed.
  */
 
 interface PrayerTime {
@@ -8,6 +9,7 @@ interface PrayerTime {
   time: string       // "HH:mm" format
   timestamp: number  // Unix timestamp for today
   passed: boolean
+  isNextDay?: boolean // true if this is tomorrow's prayer
 }
 
 interface PrayerTimesData {
@@ -21,6 +23,7 @@ interface PrayerTimesData {
     designation: string
   }
   gregorianDate: string
+  tomorrowFajr?: PrayerTime | null  // Pre-fetched for after Isha
 }
 
 // Prayer name mapping
@@ -44,21 +47,27 @@ export function usePrayerTimes() {
   const loading = ref(false)
   const error = ref<string | null>(null)
 
-  // Parse "HH:mm" to today's timestamp
-  function timeToTimestamp(timeStr: string): number {
+  // Parse "HH:mm" to a specific day's timestamp
+  function timeToTimestamp(timeStr: string, date?: Date): number {
     const [hours, minutes] = timeStr.split(':').map(Number)
-    const now = new Date()
-    const date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes, 0)
-    return date.getTime()
+    const d = date ?? new Date()
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate(), hours, minutes, 0).getTime()
   }
 
-  // Format today's date for Aladhan API (DD-MM-YYYY)
-  function formatDate(): string {
-    const now = new Date()
-    const dd = String(now.getDate()).padStart(2, '0')
-    const mm = String(now.getMonth() + 1).padStart(2, '0')
-    const yyyy = now.getFullYear()
+  // Format a date for Aladhan API (DD-MM-YYYY)
+  function formatDate(date?: Date): string {
+    const d = date ?? new Date()
+    const dd = String(d.getDate()).padStart(2, '0')
+    const mm = String(d.getMonth() + 1).padStart(2, '0')
+    const yyyy = d.getFullYear()
     return `${dd}-${mm}-${yyyy}`
+  }
+
+  // Get tomorrow's date
+  function getTomorrow(): Date {
+    const d = new Date()
+    d.setDate(d.getDate() + 1)
+    return d
   }
 
   // Try to load from cache
@@ -87,12 +96,57 @@ export function usePrayerTimes() {
     const prayers = prayerData.prayers.map(p => ({
       ...p,
       passed: now > p.timestamp,
+      isNextDay: false,
     }))
 
-    // Find next upcoming prayer
-    const nextPrayer = prayers.find(p => !p.passed) || null
+    // Find next upcoming prayer today
+    let nextPrayer = prayers.find(p => !p.passed) || null
+
+    // If all today's prayers have passed, use tomorrow's Fajr
+    if (!nextPrayer && prayerData.tomorrowFajr) {
+      nextPrayer = {
+        ...prayerData.tomorrowFajr,
+        passed: false,
+        isNextDay: true,
+      }
+    }
 
     return { ...prayerData, prayers, nextPrayer }
+  }
+
+  // Fetch Fajr time for tomorrow
+  async function fetchTomorrowFajr(latitude: number, longitude: number): Promise<PrayerTime | null> {
+    try {
+      const tomorrow = getTomorrow()
+      const dateStr = formatDate(tomorrow)
+
+      const response = await $fetch<{
+        data: {
+          timings: Record<string, string>
+        }
+      }>(`${config.public.aladhanBaseUrl}/timings/${dateStr}`, {
+        params: {
+          latitude,
+          longitude,
+          method: DIYANET_METHOD,
+        },
+      })
+
+      const cleanTime = response.data.timings.Fajr.replace(/\s*\(.*\)/, '')
+      const timestamp = timeToTimestamp(cleanTime, tomorrow)
+
+      return {
+        name: 'Fajr',
+        time: cleanTime,
+        timestamp,
+        passed: false,
+        isNextDay: true,
+      }
+    }
+    catch (err) {
+      console.error('Tomorrow Fajr fetch error:', err)
+      return null
+    }
   }
 
   // Fetch prayer times from Aladhan API
@@ -138,7 +192,14 @@ export function usePrayerTimes() {
         }
       })
 
-      const nextPrayer = prayers.find(p => !p.passed) || null
+      // Check if all prayers have passed — pre-fetch tomorrow's Fajr
+      const allPassed = prayers.every(p => p.passed)
+      let tomorrowFajr: PrayerTime | null = null
+      if (allPassed) {
+        tomorrowFajr = await fetchTomorrowFajr(latitude, longitude)
+      }
+
+      const nextPrayer = prayers.find(p => !p.passed) || tomorrowFajr || null
 
       const prayerData: PrayerTimesData = {
         prayers,
@@ -151,6 +212,7 @@ export function usePrayerTimes() {
           designation: hijri.designation.abbreviated,
         },
         gregorianDate: dateStr,
+        tomorrowFajr,
       }
 
       data.value = prayerData
@@ -169,10 +231,20 @@ export function usePrayerTimes() {
     }
   }
 
-  // Update passed/next prayer status (call every minute)
+  // Update passed/next prayer status (call every 30s)
   function refresh() {
-    if (data.value) {
-      data.value = recalculatePassed(data.value)
+    if (!data.value) return
+
+    const updated = recalculatePassed(data.value)
+
+    // If we just transitioned to all-passed and don't have tomorrowFajr yet,
+    // we need to fetch it. But we can't do async here, so we trigger it separately.
+    if (!updated.nextPrayer && !data.value.tomorrowFajr) {
+      // Signal that we need tomorrow's data — handled by the watcher in the page
+      data.value = updated
+    }
+    else {
+      data.value = updated
     }
   }
 
@@ -181,6 +253,7 @@ export function usePrayerTimes() {
     loading: readonly(loading),
     error: readonly(error),
     fetchTimes,
+    fetchTomorrowFajr,
     loadCache,
     refresh,
     PRAYER_I18N,

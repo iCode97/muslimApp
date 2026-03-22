@@ -1,13 +1,25 @@
 /**
  * Composable for managing user location (GPS + manual city search).
  * Persists location in localStorage for subsequent visits.
+ * Supports autocomplete search via Nominatim with detailed addresses.
  */
 
 interface LocationData {
   latitude: number
   longitude: number
   city: string
+  state?: string
   country: string
+  displayName: string // "Konstanz, Baden-Württemberg, Deutschland"
+}
+
+export interface LocationSuggestion {
+  latitude: number
+  longitude: number
+  city: string
+  state: string
+  country: string
+  displayName: string
 }
 
 const STORAGE_KEY = 'muslimapp-location'
@@ -15,8 +27,23 @@ const STORAGE_KEY = 'muslimapp-location'
 export function useLocation() {
   const { t, locale } = useI18n()
   const location = useState<LocationData | null>('location', () => null)
+  const suggestions = ref<LocationSuggestion[]>([])
   const loading = ref(false)
+  const searchLoading = ref(false)
   const error = ref<string | null>(null)
+
+  // Get accept-language header based on current locale
+  function getAcceptLang(): string {
+    return locale.value === 'tr' ? 'tr' : locale.value === 'en' ? 'en' : 'de'
+  }
+
+  // Build a display name from parts: "City, State, Country"
+  function buildDisplayName(city: string, state?: string, country?: string): string {
+    const parts = [city]
+    if (state && state !== city) parts.push(state)
+    if (country) parts.push(country)
+    return parts.join(', ')
+  }
 
   // Load from localStorage on init
   function loadSaved(): LocationData | null {
@@ -25,6 +52,10 @@ export function useLocation() {
     if (saved) {
       try {
         const parsed = JSON.parse(saved) as LocationData
+        // Migrate old format without displayName
+        if (!parsed.displayName) {
+          parsed.displayName = buildDisplayName(parsed.city, parsed.state, parsed.country)
+        }
         location.value = parsed
         return parsed
       }
@@ -61,24 +92,27 @@ export function useLocation() {
 
       const { latitude, longitude } = position.coords
 
-      // Reverse geocode via Aladhan (free, no key needed)
-      const response = await $fetch<{
-        data: { city: string, country: string }[]
-      }>(`https://api.aladhan.com/v1/qibla/${latitude}/${longitude}`)
-
-      // Fallback: use nominatim for city name
-      const acceptLang = locale.value === 'tr' ? 'tr' : locale.value === 'en' ? 'en' : 'de'
+      // Reverse geocode via Nominatim for detailed address
       const geoResponse = await $fetch<{
-        address: { city?: string, town?: string, state?: string, country: string }
-      }>(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=${acceptLang}`, {
+        address: {
+          city?: string
+          town?: string
+          village?: string
+          municipality?: string
+          state?: string
+          country: string
+        }
+      }>(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=${getAcceptLang()}&addressdetails=1`, {
         headers: { 'User-Agent': 'MuslimApp/1.0' },
       })
 
       const addr = geoResponse.address
-      const city = addr.city || addr.town || addr.state || t('common.unknown')
+      const city = addr.city || addr.town || addr.village || addr.municipality || t('common.unknown')
+      const state = addr.state || ''
       const country = addr.country || t('common.unknown')
+      const displayName = buildDisplayName(city, state, country)
 
-      const locationData: LocationData = { latitude, longitude, city, country }
+      const locationData: LocationData = { latitude, longitude, city, state, country, displayName }
       save(locationData)
 
       return locationData
@@ -93,51 +127,105 @@ export function useLocation() {
     }
   }
 
-  // Set location manually by city name
-  async function setCity(city: string, country: string): Promise<LocationData | null> {
-    loading.value = true
+  // Search for locations with autocomplete (returns multiple suggestions)
+  async function searchLocations(query: string): Promise<LocationSuggestion[]> {
+    if (!query.trim() || query.trim().length < 2) {
+      suggestions.value = []
+      return []
+    }
+
+    searchLoading.value = true
     error.value = null
 
     try {
-      // Geocode via Nominatim
       const results = await $fetch<Array<{
         lat: string
         lon: string
         display_name: string
-      }>>(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(city + ', ' + country)}&format=json&limit=1`, {
+        address?: {
+          city?: string
+          town?: string
+          village?: string
+          municipality?: string
+          state?: string
+          country?: string
+        }
+      }>>(`https://nominatim.openstreetmap.org/search`, {
+        params: {
+          q: query,
+          format: 'json',
+          limit: 5,
+          addressdetails: 1,
+          'accept-language': getAcceptLang(),
+        },
         headers: { 'User-Agent': 'MuslimApp/1.0' },
       })
 
-      if (!results.length) {
-        error.value = t('errors.cityNotFound', { city })
-        return null
-      }
+      suggestions.value = results.map(r => {
+        const addr = r.address || {}
+        const city = addr.city || addr.town || addr.village || addr.municipality || query
+        const state = addr.state || ''
+        const country = addr.country || ''
 
-      const locationData: LocationData = {
-        latitude: parseFloat(results[0].lat),
-        longitude: parseFloat(results[0].lon),
-        city,
-        country,
-      }
-      save(locationData)
+        return {
+          latitude: parseFloat(r.lat),
+          longitude: parseFloat(r.lon),
+          city,
+          state,
+          country,
+          displayName: buildDisplayName(city, state, country),
+        }
+      })
 
-      return locationData
+      // Deduplicate by displayName
+      const seen = new Set<string>()
+      suggestions.value = suggestions.value.filter(s => {
+        if (seen.has(s.displayName)) return false
+        seen.add(s.displayName)
+        return true
+      })
+
+      return suggestions.value
     }
     catch {
       error.value = t('errors.locationSearch')
-      return null
+      suggestions.value = []
+      return []
     }
     finally {
-      loading.value = false
+      searchLoading.value = false
     }
+  }
+
+  // Select a suggestion and save it
+  function selectSuggestion(suggestion: LocationSuggestion) {
+    const locationData: LocationData = {
+      latitude: suggestion.latitude,
+      longitude: suggestion.longitude,
+      city: suggestion.city,
+      state: suggestion.state,
+      country: suggestion.country,
+      displayName: suggestion.displayName,
+    }
+    save(locationData)
+    suggestions.value = []
+  }
+
+  // Clear suggestions
+  function clearSuggestions() {
+    suggestions.value = []
   }
 
   return {
     location: readonly(location),
+    suggestions: readonly(suggestions),
     loading: readonly(loading),
+    searchLoading: readonly(searchLoading),
     error: readonly(error),
     loadSaved,
     detectGPS,
-    setCity,
+    searchLocations,
+    selectSuggestion,
+    clearSuggestions,
   }
 }

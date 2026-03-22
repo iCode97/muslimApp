@@ -38,7 +38,8 @@
     "searchCity": "Stadt suchen...",
     "timeUntil": "noch {time}",
     "passed": "vergangen",
-    "clock": "Uhr"
+    "clock": "Uhr",
+    "tomorrow": "Morgen"
   },
   "calendar": {
     "title": "Islamischer Kalender",
