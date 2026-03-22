@@ -1,0 +1,67 @@
+{
+  "app": {
+    "name": "MuslimApp",
+    "tagline": "Dein islamischer Begleiter"
+  },
+  "nav": {
+    "dashboard": "Start",
+    "prayer": "Gebetszeiten",
+    "quran": "Koran",
+    "calendar": "Kalender",
+    "settings": "Einstellungen"
+  },
+  "dashboard": {
+    "greeting": "Assalamu Alaikum",
+    "nextPrayer": "Nächstes Gebet",
+    "in": "in",
+    "allPrayers": "Alle Gebetszeiten",
+    "nextHoliday": "Nächster Feiertag",
+    "today": "Heute",
+    "hijriDate": "Islamisches Datum"
+  },
+  "prayer": {
+    "fajr": "Fajr",
+    "sunrise": "Sonnenaufgang",
+    "dhuhr": "Dhuhr",
+    "asr": "Asr",
+    "maghrib": "Maghrib",
+    "isha": "Isha",
+    "imsak": "Imsak",
+    "method": "Berechnungsmethode",
+    "diyanet": "Diyanet",
+    "location": "Standort",
+    "detectLocation": "Standort erkennen",
+    "searchCity": "Stadt suchen...",
+    "timeUntil": "noch {time}",
+    "passed": "vergangen"
+  },
+  "calendar": {
+    "title": "Islamischer Kalender",
+    "holidays": "Feiertage",
+    "countdown": "Countdown",
+    "days": "Tage",
+    "hours": "Stunden",
+    "minutes": "Minuten",
+    "seconds": "Sekunden"
+  },
+  "quran": {
+    "title": "Der edle Koran",
+    "surahs": "Suren",
+    "search": "Im Koran suchen...",
+    "verses": "Verse",
+    "bookmark": "Lesezeichen",
+    "continue": "Weiterlesen"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "language": "Sprache",
+    "calculationMethod": "Berechnungsmethode",
+    "location": "Standort",
+    "about": "Über die App"
+  },
+  "common": {
+    "loading": "Wird geladen...",
+    "error": "Ein Fehler ist aufgetreten",
+    "retry": "Erneut versuchen"
+  }
+}

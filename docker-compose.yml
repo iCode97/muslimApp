@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  muslimapp:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NUXT_PUBLIC_ALADHAN_BASE_URL=https://api.aladhan.com/v1
+      - NUXT_PUBLIC_QURAN_BASE_URL=https://api.quran.com/api/v4
+    restart: unless-stopped

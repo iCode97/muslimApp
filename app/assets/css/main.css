@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   LIQUID GLASS DESIGN SYSTEM
+   Inspired by Apple's Liquid Glass aesthetic
+   ============================================ */
+
+/* Base layer: Custom properties */
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.08);
+  --glass-bg-strong: rgba(255, 255, 255, 0.14);
+  --glass-bg-subtle: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-strong: rgba(255, 255, 255, 0.2);
+  --glass-blur: 20px;
+  --glass-blur-strong: 40px;
+
+  --color-primary: #2D6A4F;
+  --color-primary-light: #40916C;
+  --color-primary-glow: rgba(45, 106, 79, 0.3);
+  --color-bg-start: #0A0A0A;
+  --color-bg-end: #1A1A2E;
+  --color-text: #F0F0F0;
+  --color-text-secondary: #A0A0A0;
+  --color-danger: #E63946;
+  --color-gold: #D4A574;
+}
+
+/* Global base styles */
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: linear-gradient(160deg, var(--color-bg-start), var(--color-bg-end));
+  color: var(--color-text);
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+}
+
+/* Arabic text font */
+.font-arabic {
+  font-family: 'Amiri', 'Traditional Arabic', serif;
+}
+
+/* ============================================
+   GLASS COMPONENTS
+   ============================================ */
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 1rem;
+}
+
+.glass-strong {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur-strong));
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong));
+  border: 1px solid var(--glass-border-strong);
+  border-radius: 1rem;
+}
+
+.glass-subtle {
+  background: var(--glass-bg-subtle);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0.75rem;
+}
+
+.glass-nav {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(var(--glass-blur-strong));
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong));
+  border-top: 1px solid var(--glass-border);
+}
+
+/* Liquid glow effect for active/highlighted elements */
+.glass-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.02) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  pointer-events: none;
+}
+
+/* Primary glow for active prayer time, etc. */
+.glass-primary {
+  background: linear-gradient(
+    135deg,
+    rgba(45, 106, 79, 0.2),
+    rgba(64, 145, 108, 0.1)
+  );
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid rgba(45, 106, 79, 0.3);
+  border-radius: 1rem;
+  box-shadow: 0 0 30px rgba(45, 106, 79, 0.15);
+}
+
+/* ============================================
+   UTILITY ANIMATIONS
+   ============================================ */
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px var(--color-primary-glow); }
+  50% { box-shadow: 0 0 40px var(--color-primary-glow); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out both;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Staggered entry animations for lists */
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.3s; }
+
+/* Safe area for mobile devices */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
