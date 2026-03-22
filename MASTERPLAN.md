@@ -1,196 +1,199 @@
 # MuslimApp — Masterplan
 
 > **Ziel:** Eine mobile-first Progressive Web App (PWA) für Muslime mit Gebetszeiten, islamischem Kalender und Koran-Reader.
-> **Erstellt:** 22. März 2026 | **Status:** Planung
+> **Erstellt:** 22. März 2026 | **Letztes Update:** 22. März 2026 | **Status:** Phase 1–3 abgeschlossen
 
 ---
 
 ## 1. Übersicht & Entscheidungen
 
-| Entscheidung | Wahl | Begründung |
-|---|---|---|
-| Framework | **Nuxt 3** (Vue 3 + TypeScript) | SSR/SSG, PWA-ready, TypeScript-nativ, kostenlos deploybar |
-| Styling | **Tailwind CSS 4** + Custom Liquid Glass Utilities | Apple Liquid Glass Ästhetik via Glassmorphism |
-| State Management | **Pinia** | Standard für Vue 3, leichtgewichtig |
-| PWA | **@vite-plugin-pwa** | Offline-Fähigkeit, Smartphone-Install |
-| i18n | **@nuxtjs/i18n** | Mehrsprachigkeit (Start: DE, später TR + EN) |
-| Deployment | **Docker (Self-Hosting)** + **Cloudflare Pages** als Alternative | Beides kostenlos möglich |
-| Gebetszeiten-API | **Aladhan API** (Method 13 = Diyanet) | Kostenlos, kein API-Key, zuverlässig |
-| Koran-Daten | **quran.com API v4** + **Offline-JSON-Bundle** | Flexibel, Elmalılı Hamdi verfügbar |
-| Hijri-Kalender | **Aladhan API** + **dayjs-hijri** (client-side) | Leichtgewichtig, kein moment.js nötig |
+| Entscheidung | Geplant | Tatsächlich umgesetzt | Notizen |
+|---|---|---|---|
+| Framework | Nuxt 3 (Vue 3 + TypeScript) | **Nuxt 4.4.2** (Vue 3.5 + TypeScript) | Nuxt 4 statt 3 (aktuellere Version) |
+| Styling | Tailwind CSS 4 + Liquid Glass | **Tailwind CSS 3.4** + Custom Glass CSS | Tailwind 4 war inkompatibel, v3 funktioniert einwandfrei |
+| State Management | Pinia | **Nuxt `useState` Composables** | Pinia-Modul inkompatibel mit Nuxt 4, useState reicht aus |
+| PWA | @vite-plugin-pwa | **Noch nicht implementiert** | Geplant für Phase 4 |
+| i18n | @nuxtjs/i18n | **@nuxtjs/i18n 9.5** | DE implementiert, TR + EN vorbereitet |
+| Deployment | Docker + Cloudflare Pages | **Docker implementiert** | CF Pages noch nicht konfiguriert |
+| Gebetszeiten-API | Aladhan API (Method 13) | **Aladhan API (Method 13)** | Funktioniert wie geplant |
+| Koran-Daten | quran.com API v4 + Offline-JSON | **quran.com API v4** | Offline-JSON-Bundle noch nicht integriert |
+| Hijri-Kalender | Aladhan API + dayjs-hijri | **Aladhan API** | dayjs-hijri nicht benötigt, API reicht |
 
 ---
 
 ## 2. Features — Phasen-Übersicht
 
-### Phase 1 — MVP (Kernfunktionen)
-- [x] Projekt-Setup (Nuxt 3, Tailwind, TypeScript, Docker)
-- [ ] **Gebetszeiten** — Tagesansicht mit allen 6 Zeiten + Countdown zum nächsten Gebet
-- [ ] **Standort** — GPS-Erkennung + manuelle Stadtsuche
-- [ ] **Hijri-Datum** — Anzeige auf dem Dashboard
-- [ ] **Liquid Glass UI** — Basis-Komponenten (GlassCard, GlassNav, GlassButton)
-- [ ] **PWA** — Installierbar, Offline-Cache für statische Assets
-- [ ] **Responsive Layout** — Mobile-first, Smartphone-optimiert
+### Phase 1 — MVP (Kernfunktionen) ✅ Abgeschlossen
+- [x] Projekt-Setup (Nuxt 4, Tailwind CSS, TypeScript, Docker)
+- [x] **Gebetszeiten** — Tagesansicht mit allen 6 Zeiten + Live-Countdown zum nächsten Gebet
+- [x] **Standort** — GPS-Erkennung + manuelle Stadtsuche + localStorage-Persistenz
+- [x] **Hijri-Datum** — Anzeige auf dem Dashboard (via Aladhan API)
+- [x] **Liquid Glass UI** — GlassCard, GlassButton, GlassInput, LoadingSpinner
+- [x] **Responsive Layout** — Mobile-first mit Bottom-Navigation (5 Tabs)
+- [x] **Docker** — Multi-Stage Dockerfile + docker-compose.yml
+- [x] **i18n** — Deutsche Lokalisierung (Grundstruktur für TR + EN vorbereitet)
+- [ ] ~~**PWA** — Installierbar, Offline-Cache~~ → Verschoben auf Phase 4
 
-### Phase 2 — Koran
-- [ ] **Koran-Reader** — Surenübersicht + Einzelansicht
-- [ ] **3 Sprachen** — Arabisch (Uthmani) + Türkisch (Elmalılı Hamdi) + Deutsch (Bubenheim)
-- [ ] **Suche** — Volltextsuche über alle Suren
-- [ ] **Lesezeichen** — Letzten Lesestand speichern (localStorage)
-- [ ] **Offline-Modus** — Koran-JSON lokal cachen
+### Phase 2 — Koran ✅ Abgeschlossen
+- [x] **Koran-Reader** — Surenübersicht (114 Suren) + Einzelansicht
+- [x] **3 Sprachen** — Arabisch (Uthmani) + Türkisch (Elmalılı Hamdi Yazır) + Deutsch (Bubenheim)
+- [x] **Suche** — Volltextsuche über den gesamten Koran (via quran.com API)
+- [x] **Lesezeichen** — Letzten Lesestand speichern (localStorage) + "Weiterlesen"-Widget
+- [x] **Übersetzungen Toggle** — Ein-/ausschaltbar für reines Arabisch-Lesen
+- [x] **Suren-Navigation** — Vorherige/Nächste Sure am Ende des Readers
+- [x] **Suren-Filter** — Surenübersicht nach Name/Nummer durchsuchbar
+- [ ] ~~**Offline-Modus** — Koran-JSON lokal cachen~~ → Teilweise (localStorage), volles Offline-Bundle in Phase 4
 
-### Phase 3 — Kalender & Feiertage
-- [ ] **Islamischer Kalender** — Monatsansicht mit Hijri-Daten
-- [ ] **Feiertage** — Alle islamischen Feiertage inkl. türkisch-islamische Kandil-Nächte
-- [ ] **Countdown** — Nächster Feiertag mit Countdown-Widget
-- [ ] **Benachrichtigungen** — Push-Notifications für Feiertage (optional)
+### Phase 3 — Kalender & Feiertage ✅ Abgeschlossen
+- [x] **Islamischer Kalender** — Monatsansicht mit navigierbaren Hijri-Monaten
+- [x] **Kalender-Grid** — Hijri-Tag + gregorianisches Datum + Feiertags-Marker
+- [x] **Feiertage** — 11 islamische Feiertage inkl. 5 Kandil-Nächte (türkisch-islamisch)
+- [x] **Countdown** — Nächster Feiertag mit Tage-Countdown (Dashboard + Kalender)
+- [x] **Feiertage-Liste** — Chronologisch sortiert mit Typ-Badges
+- [x] **Hijri↔Gregorian** — Automatische Datumskonvertierung via Aladhan API
+- [ ] ~~**Benachrichtigungen** — Push-Notifications für Feiertage~~ → Verschoben auf Phase 4
 
-### Phase 4 — Erweiterungen
-- [ ] **Audio-Rezitation** — Verschiedene Rezitatoren (via quran.com API)
-- [ ] **Mehrsprachiges UI** — Türkisch + Englisch
-- [ ] **Weitere Gebetszeit-Quellen** — IGMG, Fazilet etc.
-- [ ] **Qibla-Kompass** — Richtung nach Mekka
+### Phase 4 — Erweiterungen (Geplant)
+- [ ] **PWA** — Service Worker, App-Installation, echte Offline-Fähigkeit
+- [ ] **Audio-Rezitation** — Verschiedene Rezitatoren (via quran.com API, 12+ verfügbar)
+- [ ] **Mehrsprachiges UI** — Türkisch + Englisch (Grundstruktur steht)
+- [ ] **Weitere Gebetszeit-Quellen** — IGMG, Fazilet, wählbar in Einstellungen
+- [ ] **Qibla-Kompass** — Richtung nach Mekka (via Device Orientation API)
 - [ ] **Dua-Sammlung** — Bittgebete für verschiedene Anlässe
-- [ ] **Dark Mode** — Automatisch + manuell
+- [ ] **Dark/Light Mode** — Aktuell nur Dark, Light Mode als Option
+- [ ] **Push-Notifications** — Gebetszeiten-Erinnerungen + Feiertags-Benachrichtigungen
+- [ ] **Koran Offline-Bundle** — Kompletter Koran als JSON für vollständige Offline-Nutzung
 
 ---
 
 ## 3. Technische Architektur
 
-### 3.1 Projektstruktur
+### 3.1 Projektstruktur (Ist-Stand)
 
 ```
 muslimApp/
-├── nuxt.config.ts              # Nuxt-Konfiguration
-├── tailwind.config.ts          # Tailwind + Liquid Glass Theme
-├── Dockerfile                  # Multi-Stage Build
-├── docker-compose.yml          # Deployment-Config
-├── app.config.ts               # App-Konstanten (API-URLs, Method-IDs)
+├── nuxt.config.ts                  # Nuxt-Konfiguration (Module, i18n, Runtime Config)
+├── package.json                    # Dependencies & Scripts
+├── tsconfig.json                   # TypeScript-Konfiguration
+├── Dockerfile                      # Multi-Stage Production Build
+├── docker-compose.yml              # Docker Compose Deployment
+├── .dockerignore                   # Docker Build Excludes
+├── .gitignore                      # Git Excludes
+├── MASTERPLAN.md                   # Dieses Dokument
+├── README.md                       # Projekt-Dokumentation
 │
 ├── app/
-│   ├── components/
-│   │   ├── ui/                 # Liquid Glass Design System
-│   │   │   ├── GlassCard.vue
-│   │   │   ├── GlassButton.vue
-│   │   │   ├── GlassNav.vue
-│   │   │   ├── GlassModal.vue
-│   │   │   └── GlassInput.vue
-│   │   │
-│   │   ├── prayer/             # Gebetszeiten
-│   │   │   ├── PrayerTimesCard.vue      # Hauptwidget
-│   │   │   ├── PrayerCountdown.vue      # Countdown nächstes Gebet
-│   │   │   ├── PrayerTimeRow.vue        # Einzelne Gebetszeit-Zeile
-│   │   │   └── LocationSelector.vue     # Stadt/GPS Auswahl
-│   │   │
-│   │   ├── quran/              # Koran-Reader
-│   │   │   ├── SurahList.vue            # Surenübersicht
-│   │   │   ├── SurahView.vue            # Sure lesen
-│   │   │   ├── VerseDisplay.vue         # Einzelner Vers (AR + Übersetzung)
-│   │   │   ├── QuranSearch.vue          # Suchfeld + Ergebnisse
-│   │   │   └── ReadingProgress.vue      # Lesezeichen-Anzeige
-│   │   │
-│   │   └── calendar/           # Kalender & Feiertage
-│   │       ├── HijriCalendar.vue        # Monatskalender
-│   │       ├── HolidayCard.vue          # Feiertag-Karte
-│   │       ├── HolidayCountdown.vue     # Countdown nächster Feiertag
-│   │       └── HolidayList.vue          # Jahresübersicht
+│   ├── app.vue                     # Root-Komponente (NuxtLayout + NuxtPage)
 │   │
-│   ├── composables/            # Shared Business Logic
-│   │   ├── usePrayerTimes.ts            # Gebetszeiten laden + cachen
-│   │   ├── useLocation.ts              # GPS + Geocoding
-│   │   ├── useHijriDate.ts             # Hijri-Konvertierung
-│   │   ├── useQuran.ts                 # Koran-Daten laden
-│   │   ├── useQuranSearch.ts           # Koran-Suche
-│   │   ├── useHolidays.ts             # Feiertage berechnen
-│   │   ├── useBookmark.ts             # Lesezeichen (localStorage)
-│   │   └── useCountdown.ts            # Generischer Countdown
-│   │
-│   ├── pages/
-│   │   ├── index.vue                   # Dashboard (Gebetszeiten + Hijri + nächster Feiertag)
-│   │   ├── prayer.vue                  # Detaillierte Gebetszeiten (Woche/Monat)
-│   │   ├── quran/
-│   │   │   ├── index.vue               # Surenübersicht
-│   │   │   └── [surah].vue             # Einzelne Sure lesen
-│   │   ├── calendar.vue                # Hijri-Kalender + Feiertage
-│   │   └── settings.vue                # Einstellungen (Standort, Sprache, Methode)
+│   ├── assets/css/
+│   │   └── main.css                # Tailwind + Liquid Glass Design System
 │   │
 │   ├── layouts/
-│   │   └── default.vue                 # Haupt-Layout mit Bottom-Nav
+│   │   └── default.vue             # Haupt-Layout mit Bottom-Navigation (5 Tabs)
 │   │
-│   ├── server/
-│   │   └── api/                        # Nuxt Server-Routes (API-Proxy)
-│   │       ├── prayer-times.get.ts     # Proxy → Aladhan API
-│   │       ├── quran/
-│   │       │   ├── [surah].get.ts      # Proxy → quran.com API
-│   │       │   └── search.get.ts       # Proxy → quran.com Search
-│   │       └── hijri.get.ts            # Proxy → Aladhan Hijri
+│   ├── pages/
+│   │   ├── index.vue               # Dashboard (Gebetszeiten + Feiertag + Lesezeichen)
+│   │   ├── prayer.vue              # Detaillierte Gebetszeiten
+│   │   ├── quran/
+│   │   │   ├── index.vue           # Surenübersicht + Suche
+│   │   │   └── [surah].vue         # Einzelne Sure lesen
+│   │   ├── calendar.vue            # Hijri-Kalender + Feiertage
+│   │   └── settings.vue            # Einstellungen
 │   │
-│   └── assets/
-│       └── css/
-│           ├── main.css                # Tailwind Imports
-│           └── glass.css               # Liquid Glass Custom Styles
+│   ├── components/
+│   │   ├── ui/                     # Liquid Glass Design System
+│   │   │   ├── GlassCard.vue       #   Glassmorphism-Karte (4 Varianten)
+│   │   │   ├── GlassButton.vue     #   Button (3 Varianten + 3 Größen)
+│   │   │   ├── GlassInput.vue      #   Eingabefeld mit Icon
+│   │   │   └── LoadingSpinner.vue  #   Lade-Animation (3 Größen)
+│   │   │
+│   │   ├── prayer/                 # Gebetszeiten
+│   │   │   ├── PrayerTimesCard.vue #   Liste aller 6 Gebetszeiten
+│   │   │   ├── PrayerCountdown.vue #   Countdown zum nächsten Gebet
+│   │   │   ├── PrayerTimeRow.vue   #   Einzelne Gebetszeit-Zeile mit Icon
+│   │   │   └── LocationSelector.vue#   GPS-Erkennung + Stadtsuche
+│   │   │
+│   │   ├── quran/                  # Koran-Reader
+│   │   │   ├── SurahList.vue       #   114 Suren mit Filter
+│   │   │   ├── VerseDisplay.vue    #   Einzelner Vers (AR + TR + DE)
+│   │   │   ├── QuranSearch.vue     #   Volltextsuche mit Debounce
+│   │   │   └── ReadingProgress.vue #   Lesezeichen-Widget ("Weiterlesen")
+│   │   │
+│   │   └── calendar/               # Kalender & Feiertage
+│   │       ├── HijriCalendar.vue   #   Monatskalender-Grid mit Navigation
+│   │       ├── HolidayCountdown.vue#   Nächster Feiertag + Tage-Countdown
+│   │       └── HolidayList.vue     #   Alle Feiertage chronologisch
+│   │
+│   └── composables/                # Shared Business Logic
+│       ├── useLocation.ts          #   GPS + Stadtsuche + Persistenz
+│       ├── usePrayerTimes.ts       #   Aladhan API + Caching + Refresh
+│       ├── useCountdown.ts         #   Generischer Countdown-Timer
+│       ├── useQuran.ts             #   quran.com API (Suren, Verse, Suche)
+│       ├── useBookmark.ts          #   Koran-Lesezeichen (localStorage)
+│       └── useHolidays.ts          #   Feiertage + Hijri-Kalender (Aladhan API)
 │
 ├── data/
-│   ├── holidays.json                   # Islamische Feiertage (Hijri-basiert)
-│   └── kandil.json                     # Türkisch-islamische Kandil-Nächte
-│
-├── public/
-│   ├── icons/                          # PWA-Icons (192x192, 512x512)
-│   ├── fonts/                          # Arabische Schriftart (z.B. Amiri)
-│   └── manifest.json                   # PWA Manifest
+│   └── holidays.json               # 11 Feiertage + 12 Hijri-Monate (Statische Daten)
 │
 ├── i18n/
-│   ├── de.json                         # Deutsche UI-Texte
-│   ├── tr.json                         # Türkische UI-Texte (Phase 4)
-│   └── en.json                         # Englische UI-Texte (Phase 4)
+│   └── de.json                     # Deutsche UI-Texte (50+ Übersetzungsschlüssel)
 │
-└── tests/
-    ├── composables/                    # Unit Tests
-    └── components/                     # Component Tests
+└── public/
+    └── favicon.svg                 # App-Icon (SVG mit islamischem Grün)
 ```
 
-### 3.2 Datenfluss-Architektur
+### 3.2 Datenfluss-Architektur (Ist-Stand)
 
 ```
-┌──────────────────────────────────────────────────────┐
-│                    BROWSER (Client)                    │
-│                                                        │
-│  ┌─────────┐  ┌──────────┐  ┌──────────┐  ┌────────┐ │
-│  │Dashboard │  │  Prayer  │  │  Quran   │  │Calendar│ │
-│  │  Page    │  │  Page    │  │  Pages   │  │  Page  │ │
-│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └───┬────┘ │
-│       │              │             │             │      │
-│  ┌────┴──────────────┴─────────────┴─────────────┴──┐  │
-│  │              Pinia Store (State)                   │  │
-│  │  • prayerTimes  • quranData  • holidays           │  │
-│  │  • location     • bookmarks  • settings           │  │
-│  └──────────────────────┬────────────────────────────┘  │
-│                         │                                │
-│  ┌──────────────────────┴────────────────────────────┐  │
-│  │            Composables (Business Logic)            │  │
-│  │  usePrayerTimes / useQuran / useHolidays / etc.   │  │
-│  └──────────────────────┬────────────────────────────┘  │
-│                         │                                │
-│       ┌─────────────────┤ localStorage                   │
-│       │  Offline Cache  │ (Bookmarks, Settings,          │
-│       │  (Service Worker)│  cached Prayer Times)         │
-│       └─────────────────┘                                │
-└─────────────────────────┬────────────────────────────────┘
-                          │ HTTP (fetch/ofetch)
-┌─────────────────────────┴────────────────────────────────┐
-│                 NUXT SERVER (SSR / API Proxy)             │
+┌──────────────────────────────────────────────────────────┐
+│                      BROWSER (Client)                     │
 │                                                           │
-│  /api/prayer-times  →  https://api.aladhan.com/v1/       │
-│  /api/quran/:surah  →  https://api.quran.com/api/v4/     │
-│  /api/hijri         →  https://api.aladhan.com/v1/gToH/  │
-└──────────────────────────────────────────────────────────┘
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐ │
+│  │ Dashboard │  │ Prayer   │  │  Quran   │  │ Calendar │ │
+│  │   Page    │  │  Page    │  │  Pages   │  │   Page   │ │
+│  └─────┬─────┘  └─────┬────┘  └─────┬────┘  └─────┬────┘ │
+│        │               │             │              │      │
+│  ┌─────┴───────────────┴─────────────┴──────────────┴───┐ │
+│  │           Nuxt useState (Reactive State)              │ │
+│  │  • location  • prayerTimes  • quranSurahs            │ │
+│  │  • quranVerses  • holidays  • bookmark               │ │
+│  └──────────────────────┬────────────────────────────────┘ │
+│                          │                                  │
+│  ┌───────────────────────┴───────────────────────────────┐ │
+│  │              Composables (Business Logic)              │ │
+│  │  useLocation / usePrayerTimes / useQuran /            │ │
+│  │  useBookmark / useHolidays / useCountdown             │ │
+│  └───────────┬───────────────────────┬───────────────────┘ │
+│              │                       │                      │
+│   ┌──────────┴──────────┐  ┌────────┴────────┐            │
+│   │    localStorage      │  │   Browser APIs   │           │
+│   │  • Standort          │  │  • Geolocation   │           │
+│   │  • Gebetszeiten-Cache│  │  • (PWA Phase 4) │           │
+│   │  • Koran-Cache       │  │                  │           │
+│   │  • Lesezeichen       │  └──────────────────┘           │
+│   └─────────────────────┘                                   │
+└──────────────────────────┬──────────────────────────────────┘
+                           │ HTTP ($fetch / ofetch)
+                           │
+      ┌────────────────────┴────────────────────────────┐
+      │              EXTERNE APIs (kostenlos)             │
+      │                                                   │
+      │  Aladhan API         quran.com API v4             │
+      │  ├─ /timings         ├─ /chapters                 │
+      │  ├─ /gToH            ├─ /verses/by_chapter        │
+      │  ├─ /hToG            ├─ /quran/verses/uthmani     │
+      │  └─ /hijriCalendar   └─ /search                   │
+      │                                                   │
+      │  Nominatim (OpenStreetMap)                        │
+      │  └─ /reverse + /search (Geocoding)                │
+      └───────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 4. API-Referenz (verifiziert)
+## 4. API-Referenz
 
-### 4.1 Aladhan — Gebetszeiten
+### 4.1 Aladhan — Gebetszeiten + Hijri-Kalender
 
 | Eigenschaft | Wert |
 |---|---|
@@ -199,27 +202,14 @@ muslimApp/
 | **Rate-Limit** | Nicht dokumentiert, fair use |
 | **Diyanet-Methode** | `method=13` |
 
-**Wichtige Endpoints:**
+**Genutzte Endpoints:**
 
-```
-# Gebetszeiten nach Koordinaten
-GET /v1/timings/{DD-MM-YYYY}?latitude={lat}&longitude={lng}&method=13
-
-# Gebetszeiten nach Stadt
-GET /v1/timingsByCity/{DD-MM-YYYY}?city=Berlin&country=Germany&method=13
-
-# Monatskalender
-GET /v1/calendarByCity/{year}/{month}?city=Berlin&country=Germany&method=13
-
-# Gregorian → Hijri
-GET /v1/gToH/{DD-MM-YYYY}
-
-# Hijri Kalender (ganzer Monat)
-GET /v1/hijriCalendar/{month}/{year}
-```
-
-**Response-Felder (Gebetszeiten):**
-`Fajr`, `Sunrise`, `Dhuhr`, `Asr`, `Sunset`, `Maghrib`, `Isha`, `Imsak`, `Midnight`
+| Endpoint | Verwendung | Composable |
+|---|---|---|
+| `GET /timings/{DD-MM-YYYY}?latitude&longitude&method=13` | Gebetszeiten für Koordinaten | `usePrayerTimes` |
+| `GET /gToH/{DD-MM-YYYY}` | Gregorian → Hijri Konvertierung | `useHolidays` |
+| `GET /hToG/{DD-MM-YYYY}` | Hijri → Gregorian Konvertierung | `useHolidays` |
+| `GET /hijriCalendar/{month}/{year}` | Hijri-Monatskalender | `useHolidays` |
 
 ### 4.2 quran.com — Koran
 
@@ -228,226 +218,151 @@ GET /v1/hijriCalendar/{month}/{year}
 | **Base-URL** | `https://api.quran.com/api/v4/` |
 | **Auth** | Keine (kostenlos, kein API-Key) |
 
-**Wichtige Endpoints:**
+**Genutzte Endpoints:**
 
-```
-# Alle Suren
-GET /api/v4/chapters
+| Endpoint | Verwendung | Composable |
+|---|---|---|
+| `GET /chapters?language=de` | Alle 114 Suren laden | `useQuran` |
+| `GET /quran/verses/uthmani?chapter_number={id}` | Arabischer Text (Uthmani) | `useQuran` |
+| `GET /verses/by_chapter/{id}?translations=52,27` | Verse mit Übersetzungen | `useQuran` |
+| `GET /search?q={query}&language={lang}` | Volltextsuche | `useQuran` |
 
-# Verse einer Sure mit Übersetzung
-GET /api/v4/verses/by_chapter/{surah_id}?translations=52,27&language=de
-# 52 = Elmalılı Hamdi Yazır (TR)
-# 27 = Bubenheim (DE)
-
-# Arabischer Text (Uthmani)
-GET /api/v4/quran/verses/uthmani?chapter_number={id}
-
-# Volltextsuche
-GET /api/v4/search?q={query}&language=tr
-
-# Verfügbare Übersetzungen
-GET /api/v4/resources/translations
-```
-
-**Translations-IDs für uns:**
+**Translations-IDs:**
 
 | ID | Sprache | Übersetzer |
 |---|---|---|
 | **52** | Türkisch | Elmalılı Hamdi Yazır |
-| 77 | Türkisch | Diyanet İşleri |
 | **27** | Deutsch | Bubenheim & Elyas |
 
-### 4.3 Hijri-Kalender (Client-Side)
+### 4.3 Nominatim — Geocoding
 
-```
-npm: dayjs + dayjs-hijri
-```
-Für Offline-Konvertierung ohne API-Call. Aladhan als Fallback/Verifizierung.
+| Endpoint | Verwendung |
+|---|---|
+| `GET /reverse?lat&lon&format=json` | GPS-Koordinaten → Stadtname |
+| `GET /search?q={city}&format=json` | Stadtname → Koordinaten |
 
 ---
 
 ## 5. Islamische Feiertage — Datenmodell
 
-### Standard-Feiertage (jährlich wiederkehrend im Hijri-Kalender)
+Definiert in `data/holidays.json`. Alle Daten sind im Hijri-Kalender angegeben und werden automatisch in gregorianische Daten umgerechnet.
 
-| Feiertag | Hijri-Datum | Typ |
+### Feiertage & Gedenktage
+
+| Feiertag | Hijri-Datum | Typ | Türkisch |
+|---|---|---|---|
+| Islamisches Neujahr | 1. Muharram | Feiertag | Hicri Yılbaşı |
+| Aschura | 10. Muharram | Gedenktag | Aşure Günü |
+| Mawlid an-Nabi | 12. Rabi al-Awwal | Feiertag | Mevlid Kandili |
+| Tag von Arafat | 9. Dhul-Hiddscha | Gedenktag | Arefe Günü |
+| Eid al-Fitr | 1.–3. Schawwal | Feiertag | Ramazan Bayramı |
+| Eid al-Adha | 10.–13. Dhul-Hiddscha | Feiertag | Kurban Bayramı |
+
+### Kandil-Nächte (Türkisch-Islamisch)
+
+| Kandil | Hijri-Datum | Türkisch |
 |---|---|---|
-| Islamisches Neujahr (Muharrem) | 1. Muharrem | Feiertag |
-| Aschura | 10. Muharrem | Gedenktag |
-| Mawlid an-Nabī (Geburtstag des Propheten) | 12. Rabīʿ al-Awwal | Feiertag |
-| Isrā und Miʿrāǧ | 27. Rajab | Gedenktag |
-| Lailat al-Barāʾa (Beraat) | 15. Schaʿbān | Kandil |
-| Beginn Ramadan | 1. Ramadan | Fastenmonat |
-| Lailat al-Qadr | 27. Ramadan | Kandil |
-| Eid al-Fitr (Ramazan Bayramı) | 1.-3. Schawwāl | Feiertag |
-| Eid al-Adha (Kurban Bayramı) | 10.-13. Dhū l-Ḥiǧǧa | Feiertag |
-
-### Kandil-Nächte (türkisch-islamisch)
-
-| Kandil | Hijri-Datum |
-|---|---|
-| Mevlid Kandili | 12. Rabīʿ al-Awwal |
-| Regaip Kandili | 1. Freitagnacht im Rajab |
-| Mirac Kandili | 27. Rajab |
-| Berat Kandili | 15. Schaʿbān |
-| Kadir Gecesi | 27. Ramadan |
-
-> **Hinweis:** Genaue gregorianische Daten variieren jährlich. Diese werden entweder über die Aladhan-API berechnet oder als jährlich gepflegte JSON-Datei bereitgestellt.
+| Regaip Kandili | 1. Rajab | Regaip Kandili |
+| Miraç Kandili | 27. Rajab | Miraç Kandili |
+| Berat Kandili | 15. Sha'ban | Berat Kandili |
+| Beginn Ramadan | 1. Ramadan | Ramazan Başlangıcı |
+| Kadir Gecesi | 27. Ramadan | Kadir Gecesi |
 
 ---
 
 ## 6. Liquid Glass Design System
 
-### Grundprinzipien
+### Implementierte Varianten
 
-Apple's Liquid Glass basiert auf:
-1. **Glassmorphism** — Halbtransparente Hintergründe mit Blur
-2. **Dynamische Lichtbrechung** — Subtile Farbverläufe die auf Kontext reagieren
-3. **Weiche Tiefe** — Mehrstufige Schatten, keine harten Kanten
-4. **Flüssige Animationen** — Smooth Transitions überall
-
-### Tailwind-Umsetzung
-
-```css
-/* glass.css — Custom Utilities */
-
-@layer components {
-  .glass {
-    @apply bg-white/10 backdrop-blur-xl border border-white/20
-           rounded-2xl shadow-lg shadow-black/5;
-  }
-
-  .glass-strong {
-    @apply bg-white/20 backdrop-blur-2xl border border-white/30
-           rounded-2xl shadow-xl shadow-black/10;
-  }
-
-  .glass-subtle {
-    @apply bg-white/5 backdrop-blur-md border border-white/10
-           rounded-xl;
-  }
-
-  .glass-nav {
-    @apply bg-white/15 backdrop-blur-2xl border-t border-white/20
-           shadow-[0_-4px_30px_rgba(0,0,0,0.1)];
-  }
-
-  .glass-dark {
-    @apply bg-black/20 backdrop-blur-xl border border-white/10
-           rounded-2xl shadow-lg;
-  }
-
-  /* Liquid Light Effect */
-  .glass-glow {
-    @apply relative overflow-hidden;
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.1) 0%,
-      rgba(255, 255, 255, 0.05) 50%,
-      rgba(255, 255, 255, 0.15) 100%
-    );
-  }
-}
-```
+| CSS-Klasse | Verwendung | Eigenschaften |
+|---|---|---|
+| `.glass` | Standard-Karten | 8% weiß, 20px blur, 12% border |
+| `.glass-strong` | Hervorgehobene Karten | 14% weiß, 40px blur, 20% border |
+| `.glass-subtle` | Dezente Hintergründe | 4% weiß, 12px blur, 6% border |
+| `.glass-primary` | Aktive Elemente (nächstes Gebet) | Grüner Gradient, 30px glow |
+| `.glass-nav` | Bottom-Navigation | 10% weiß, 40px blur, top border |
+| `.glass-glow` | Pulsierende Hervorhebung | Light-Gradient overlay |
 
 ### Farbpalette
 
-```
-Primary Gradient:  #1B4332 → #2D6A4F (Islamisches Grün)
-Accent:            #40916C (Helles Grün)
-Background:        #0A0A0A → #1A1A2E (Dunkler Gradient)
-Glass-Tint:        rgba(255, 255, 255, 0.05–0.20)
-Text Primary:      #F0F0F0
-Text Secondary:    #A0A0A0
-Danger/Alert:      #E63946
-```
+| Rolle | Wert | Verwendung |
+|---|---|---|
+| Primary | `#2D6A4F` → `#40916C` | Islamisches Grün, aktive Elemente |
+| Background | `#0A0A0A` → `#1A1A2E` | App-Hintergrund (Gradient) |
+| Gold | `#D4A574` | Hijri-Datum, Kandil-Nächte |
+| Text | `#F0F0F0` / `#A0A0A0` | Primär / Sekundär |
+| Danger | `#E63946` | Fehlermeldungen |
 
 ---
 
 ## 7. Deployment
 
-### Docker (Self-Hosting)
-
-```dockerfile
-# Dockerfile — Multi-Stage Build
-FROM node:22-alpine AS builder
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm run build
-
-FROM node:22-alpine AS runner
-WORKDIR /app
-COPY --from=builder /app/.output ./.output
-ENV HOST=0.0.0.0
-ENV PORT=3000
-EXPOSE 3000
-CMD ["node", ".output/server/index.mjs"]
-```
-
-```yaml
-# docker-compose.yml
-version: "3.8"
-services:
-  muslimapp:
-    build: .
-    ports:
-      - "3000:3000"
-    environment:
-      - NUXT_PUBLIC_ALADHAN_BASE_URL=https://api.aladhan.com/v1
-      - NUXT_PUBLIC_QURAN_BASE_URL=https://api.quran.com/api/v4
-    restart: unless-stopped
-```
-
-### Cloudflare Pages (Kostenlos-Alternative)
+### Docker (Implementiert)
 
 ```bash
-# nuxt.config.ts → preset: 'cloudflare-pages'
-# Dann: npx wrangler pages deploy .output/public
+# Bauen und starten
+docker compose up -d
+
+# Manuell
+docker build -t muslimapp .
+docker run -p 3000:3000 muslimapp
 ```
 
-**Kostenfrei:** Unlimited Requests, Global CDN, Auto-SSL.
+Umgebungsvariablen (optional, Defaults sind gesetzt):
+- `NUXT_PUBLIC_ALADHAN_BASE_URL` — Aladhan API URL
+- `NUXT_PUBLIC_QURAN_BASE_URL` — quran.com API URL
+
+### Cloudflare Pages (Geplant für Phase 4)
+
+Noch nicht konfiguriert. Erfordert `nitro.preset: 'cloudflare-pages'` in nuxt.config.ts.
 
 ---
 
 ## 8. Performance-Strategie
 
-| Maßnahme | Umsetzung |
-|---|---|
-| **Lazy Loading** | Koran-Daten nur bei Bedarf laden (per Sure) |
-| **API-Caching** | Gebetszeiten für den Tag cachen (localStorage + Pinia) |
-| **Service Worker** | Statische Assets + Schriftarten offline verfügbar |
-| **Image-Optimierung** | Nuxt Image für PWA-Icons |
-| **Code Splitting** | Automatisch via Nuxt (route-basiert) |
-| **Arabische Font** | `font-display: swap` + Subset für Koran-Zeichen |
+| Maßnahme | Status | Details |
+|---|---|---|
+| **Lazy Loading** | ✅ | Koran-Verse werden pro Sure geladen |
+| **API-Caching** | ✅ | Gebetszeiten + Koran-Daten in localStorage |
+| **Code Splitting** | ✅ | Automatisch via Nuxt (route-basiert) |
+| **Arabische Font** | ✅ | Amiri via Google Fonts mit `display=swap` |
+| **Service Worker** | ❌ | Geplant für Phase 4 (PWA) |
+| **Koran Offline-Bundle** | ❌ | Geplant für Phase 4 |
 
 ---
 
-## 9. Nächste Schritte (Umsetzungsreihenfolge)
+## 9. Umsetzungshistorie
 
-```
-Schritt 1:  Nuxt 3 Projekt initialisieren + Tailwind + TypeScript + PWA
-Schritt 2:  Liquid Glass Design System (GlassCard, GlassNav, GlassButton)
-Schritt 3:  Layout + Bottom-Navigation + Dashboard-Seite (Skeleton)
-Schritt 4:  Standort-Erkennung (GPS + manuelle Suche)
-Schritt 5:  Gebetszeiten via Aladhan API (Method 13) + Countdown
-Schritt 6:  Hijri-Datum-Anzeige auf Dashboard
-Schritt 7:  Docker-Setup + erstes Deployment
-Schritt 8:  Koran — Surenübersicht + Reader (Arabisch + TR + DE)
-Schritt 9:  Koran — Suche + Lesezeichen
-Schritt 10: Islamischer Kalender + Feiertage + Kandil-Nächte
-Schritt 11: Countdown-Widget für nächsten Feiertag
-Schritt 12: i18n vorbereiten (DE als Standard)
-```
+| Schritt | Beschreibung | Status | PR |
+|---|---|---|---|
+| 1 | Nuxt 4 + Tailwind + TypeScript + Docker Setup | ✅ | #2 |
+| 2 | Liquid Glass Design System | ✅ | #2 |
+| 3 | Layout + Bottom-Navigation + Dashboard | ✅ | #2 |
+| 4 | Standort-Erkennung (GPS + manuelle Suche) | ✅ | #2 |
+| 5 | Gebetszeiten via Aladhan API + Countdown | ✅ | #2 |
+| 6 | Hijri-Datum auf Dashboard | ✅ | #2 |
+| 7 | Docker-Setup | ✅ | #2 |
+| 8 | Koran — Surenübersicht + Reader (AR + TR + DE) | ✅ | #3 |
+| 9 | Koran — Suche + Lesezeichen | ✅ | #3 |
+| 10 | Islamischer Kalender + Feiertage + Kandil-Nächte | ✅ | #4 |
+| 11 | Countdown-Widget für nächsten Feiertag | ✅ | #4 |
+| 12 | i18n Deutsch als Standard | ✅ | #2 |
 
 ---
 
-## 10. Offene Punkte / Zukunft
+## 10. Offene Punkte / Phase 4+
 
-- [ ] Diyanet-Daten direkt scrapen als Alternative zu Aladhan?
-- [ ] Push-Notifications für Gebetszeiten (erfordert Notification API)
-- [ ] User-Accounts / Cloud-Sync für Lesezeichen?
-- [ ] Tasbih (digitaler Gebetszähler)?
-- [ ] Hadith-Sammlung?
-- [ ] Widget für Android/iOS Homescreen?
+| Feature | Priorität | Aufwand | Notizen |
+|---|---|---|---|
+| PWA (Service Worker, Installation) | Hoch | Mittel | `@vite-plugin-pwa` oder Nuxt PWA Module |
+| Audio-Rezitation | Hoch | Mittel | quran.com API hat 12+ Rezitatoren |
+| UI Mehrsprachigkeit (TR + EN) | Mittel | Gering | i18n-Grundstruktur steht, nur JSON-Dateien nötig |
+| Weitere Gebetszeit-Methoden | Mittel | Gering | Aladhan unterstützt 15+ Methoden |
+| Qibla-Kompass | Mittel | Mittel | Device Orientation API + Berechnung |
+| Push-Notifications | Mittel | Hoch | Notification API + ggf. Backend |
+| Dua-Sammlung | Niedrig | Mittel | Statische JSON-Daten + Reader |
+| Light Mode | Niedrig | Gering | CSS-Variablen umschalten |
+| Tasbih (Gebetszähler) | Niedrig | Gering | Einfacher Counter mit Haptic Feedback |
+| Diyanet direkt scrapen | Niedrig | Hoch | Instabile Quelle, Aladhan reicht |
+| User-Accounts / Cloud-Sync | Niedrig | Hoch | Erfordert Backend-Infrastruktur |
+| Hadith-Sammlung | Niedrig | Mittel | sunnah.com API oder statische Daten |
