@@ -14,6 +14,7 @@ interface PrayerTime {
 
 interface PrayerTimesData {
   prayers: PrayerTime[]
+  tomorrowPrayers: PrayerTime[]  // Full tomorrow prayer list for two-section view
   nextPrayer: PrayerTime | null
   hijriDate: {
     day: string
@@ -23,7 +24,6 @@ interface PrayerTimesData {
     designation: string
   }
   gregorianDate: string
-  tomorrowFajr?: PrayerTime | null  // Pre-fetched for after Isha
 }
 
 // Prayer name mapping
@@ -103,49 +103,42 @@ export function usePrayerTimes() {
     let nextPrayer = prayers.find(p => !p.passed) || null
 
     // If all today's prayers have passed, use tomorrow's Fajr
-    if (!nextPrayer && prayerData.tomorrowFajr) {
-      nextPrayer = {
-        ...prayerData.tomorrowFajr,
-        passed: false,
-        isNextDay: true,
+    if (!nextPrayer && prayerData.tomorrowPrayers.length > 0) {
+      const tomorrowFajr = prayerData.tomorrowPrayers.find(p => p.name === 'Fajr')
+      if (tomorrowFajr) {
+        nextPrayer = { ...tomorrowFajr, passed: false, isNextDay: true }
       }
     }
 
     return { ...prayerData, prayers, nextPrayer }
   }
 
-  // Fetch Fajr time for tomorrow
-  async function fetchTomorrowFajr(latitude: number, longitude: number): Promise<PrayerTime | null> {
+  // Fetch all prayer times for tomorrow
+  async function fetchTomorrowPrayers(latitude: number, longitude: number): Promise<PrayerTime[]> {
     try {
       const tomorrow = getTomorrow()
       const dateStr = formatDate(tomorrow)
 
       const response = await $fetch<{
-        data: {
-          timings: Record<string, string>
-        }
+        data: { timings: Record<string, string> }
       }>(`${config.public.aladhanBaseUrl}/timings/${dateStr}`, {
-        params: {
-          latitude,
-          longitude,
-          method: DIYANET_METHOD,
-        },
+        params: { latitude, longitude, method: DIYANET_METHOD },
       })
 
-      const cleanTime = response.data.timings.Fajr.replace(/\s*\(.*\)/, '')
-      const timestamp = timeToTimestamp(cleanTime, tomorrow)
-
-      return {
-        name: 'Fajr',
-        time: cleanTime,
-        timestamp,
-        passed: false,
-        isNextDay: true,
-      }
+      return PRAYER_KEYS.map(key => {
+        const cleanTime = response.data.timings[key].replace(/\s*\(.*\)/, '')
+        return {
+          name: key,
+          time: cleanTime,
+          timestamp: timeToTimestamp(cleanTime, tomorrow),
+          passed: false,
+          isNextDay: true,
+        }
+      })
     }
     catch (err) {
-      console.error('Tomorrow Fajr fetch error:', err)
-      return null
+      console.error('Tomorrow prayers fetch error:', err)
+      return []
     }
   }
 
@@ -192,17 +185,17 @@ export function usePrayerTimes() {
         }
       })
 
-      // Check if all prayers have passed — pre-fetch tomorrow's Fajr
-      const allPassed = prayers.every(p => p.passed)
-      let tomorrowFajr: PrayerTime | null = null
-      if (allPassed) {
-        tomorrowFajr = await fetchTomorrowFajr(latitude, longitude)
-      }
+      // Always fetch tomorrow's prayers for the two-section view
+      const tomorrowPrayers = await fetchTomorrowPrayers(latitude, longitude)
 
-      const nextPrayer = prayers.find(p => !p.passed) || tomorrowFajr || null
+      const allPassed = prayers.every(p => p.passed)
+      const tomorrowFajr = tomorrowPrayers.find(p => p.name === 'Fajr') || null
+      const nextPrayer = prayers.find(p => !p.passed)
+        || (allPassed && tomorrowFajr ? { ...tomorrowFajr, passed: false, isNextDay: true } : null)
 
       const prayerData: PrayerTimesData = {
         prayers,
+        tomorrowPrayers,
         nextPrayer,
         hijriDate: {
           day: hijri.day,
@@ -212,7 +205,6 @@ export function usePrayerTimes() {
           designation: hijri.designation.abbreviated,
         },
         gregorianDate: dateStr,
-        tomorrowFajr,
       }
 
       data.value = prayerData
@@ -234,18 +226,7 @@ export function usePrayerTimes() {
   // Update passed/next prayer status (call every 30s)
   function refresh() {
     if (!data.value) return
-
-    const updated = recalculatePassed(data.value)
-
-    // If we just transitioned to all-passed and don't have tomorrowFajr yet,
-    // we need to fetch it. But we can't do async here, so we trigger it separately.
-    if (!updated.nextPrayer && !data.value.tomorrowFajr) {
-      // Signal that we need tomorrow's data — handled by the watcher in the page
-      data.value = updated
-    }
-    else {
-      data.value = updated
-    }
+    data.value = recalculatePassed(data.value)
   }
 
   return {
@@ -253,7 +234,6 @@ export function usePrayerTimes() {
     loading: readonly(loading),
     error: readonly(error),
     fetchTimes,
-    fetchTomorrowFajr,
     loadCache,
     refresh,
     PRAYER_I18N,

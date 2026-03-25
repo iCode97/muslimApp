@@ -4,6 +4,7 @@ interface Props {
   time: string
   passed: boolean
   isNext: boolean
+  isNextDay?: boolean
 }
 
 const props = defineProps<Props>()
@@ -31,12 +32,18 @@ const icons: Record<string, string> = {
     :class="[
       'flex items-center justify-between py-3 px-4 rounded-xl transition-all duration-300',
       isNext ? 'glass-primary' : '',
-      passed && !isNext ? 'opacity-40' : '',
+      passed && !isNext ? 'opacity-35' : '',
     ]"
   >
     <div class="flex items-center gap-3">
       <span class="text-lg w-7 text-center">{{ icons[props.name] || '' }}</span>
-      <span :class="['font-medium', isNext ? 'text-[var(--color-primary-light)]' : '']">
+      <span
+        :class="[
+          'font-medium',
+          isNext ? 'text-[var(--color-primary-light)]' : '',
+          passed && !isNext ? 'line-through' : '',
+        ]"
+      >
         {{ displayName }}
       </span>
     </div>
@@ -46,6 +53,7 @@ const icons: Record<string, string> = {
         :class="[
           'tabular-nums font-medium',
           isNext ? 'text-themed text-lg' : 'text-themed-secondary',
+          passed && !isNext ? 'line-through' : '',
         ]"
       >
         {{ time }}

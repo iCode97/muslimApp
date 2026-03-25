@@ -39,7 +39,9 @@
     "timeUntil": "{time} remaining",
     "passed": "passed",
     "clock": "",
-    "tomorrow": "Tomorrow"
+    "tomorrow": "Tomorrow",
+    "showMore": "Show all times",
+    "showLess": "Show less"
   },
   "calendar": {
     "title": "Islamic Calendar",

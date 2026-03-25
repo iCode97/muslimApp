@@ -42,32 +42,32 @@
 
 /* Light Theme */
 [data-theme="light"] {
-  --glass-bg: rgba(0, 0, 0, 0.04);
-  --glass-bg-strong: rgba(0, 0, 0, 0.08);
-  --glass-bg-subtle: rgba(0, 0, 0, 0.02);
-  --glass-border: rgba(0, 0, 0, 0.1);
-  --glass-border-strong: rgba(0, 0, 0, 0.16);
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-bg-strong: rgba(255, 255, 255, 0.8);
+  --glass-bg-subtle: rgba(255, 255, 255, 0.45);
+  --glass-border: rgba(0, 0, 0, 0.12);
+  --glass-border-strong: rgba(0, 0, 0, 0.2);
   --glass-blur: 20px;
   --glass-blur-strong: 40px;
 
   --color-primary: #2D6A4F;
-  --color-primary-light: #40916C;
+  --color-primary-light: #1B5E3B;
   --color-primary-glow: rgba(45, 106, 79, 0.15);
-  --color-bg-start: #F5F5F7;
-  --color-bg-end: #E8E8F0;
+  --color-bg-start: #F0F0F4;
+  --color-bg-end: #E0E0EA;
   --color-text: #1A1A1A;
-  --color-text-secondary: #5A5A5A;
-  --color-text-muted: rgba(0, 0, 0, 0.45);
-  --color-text-faint: rgba(0, 0, 0, 0.3);
+  --color-text-secondary: #4A4A4A;
+  --color-text-muted: rgba(0, 0, 0, 0.55);
+  --color-text-faint: rgba(0, 0, 0, 0.4);
   --color-danger: #D62839;
-  --color-gold: #B8864A;
+  --color-gold: #9E6B30;
 
   --nav-bg: rgba(255, 255, 255, 0.85);
-  --nav-border: rgba(0, 0, 0, 0.1);
-  --nav-inactive: rgba(0, 0, 0, 0.4);
-  --nav-inactive-hover: rgba(0, 0, 0, 0.6);
+  --nav-border: rgba(0, 0, 0, 0.12);
+  --nav-inactive: rgba(0, 0, 0, 0.45);
+  --nav-inactive-hover: rgba(0, 0, 0, 0.65);
 
-  --scrollbar-thumb: rgba(0, 0, 0, 0.1);
+  --scrollbar-thumb: rgba(0, 0, 0, 0.12);
 
   color-scheme: light;
 }

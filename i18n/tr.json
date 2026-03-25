@@ -39,7 +39,9 @@
     "timeUntil": "{time} kaldı",
     "passed": "geçti",
     "clock": "",
-    "tomorrow": "Yarın"
+    "tomorrow": "Yarın",
+    "showMore": "Tüm vakitleri göster",
+    "showLess": "Daha az göster"
   },
   "calendar": {
     "title": "İslami Takvim",
