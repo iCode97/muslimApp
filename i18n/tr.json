@@ -82,8 +82,11 @@
     "noSurahsFound": "\"{query}\" için sure bulunamadı",
     "turkishTranslation": "Türkçe",
     "germanTranslation": "Almanca",
+    "englishTranslation": "İngilizce",
     "bismillah": "Rahman ve Rahim olan Allah'ın adıyla",
-    "searchButton": "Arama"
+    "searchButton": "Arama",
+    "minChars": "Ayet aramak için en az 3 karakter girin",
+    "tapArabic": "Çeviriyi görmek için Arapça metne dokunun"
   },
   "settings": {
     "title": "Ayarlar",

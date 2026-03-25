@@ -1,6 +1,7 @@
 /**
  * Composable for fetching Quran data via quran.com API v4.
  * Supports Arabic (Uthmani), Turkish (Elmalılı Hamdi), and German (Bubenheim) translations.
+ * Language-aware: surahs and search use the active app locale.
  */
 
 export interface Surah {
@@ -36,39 +37,60 @@ export interface SearchResult {
   verseNumber: number
 }
 
+import { SURAH_NAMES_DE } from '~/data/surah-names-de'
+
 // Translation IDs from quran.com API
 const TRANSLATIONS = {
   turkish: 52,     // Elmalılı Hamdi Yazır
   german: 27,      // Bubenheim & Elyas
+  english: 20,     // Sahih International
 } as const
+
+// Map app locale → quran.com API language code
+const LOCALE_MAP: Record<string, string> = {
+  de: 'de',
+  en: 'en',
+  tr: 'tr',
+}
 
 const CACHE_PREFIX = 'muslimapp-quran'
 
 export function useQuran() {
   const config = useRuntimeConfig()
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
   const baseUrl = config.public.quranBaseUrl
 
   const surahs = useState<Surah[]>('quran-surahs', () => [])
+  const surahsLocale = useState<string>('quran-surahs-locale', () => '')
   const currentVerses = useState<Verse[]>('quran-verses', () => [])
   const loading = ref(false)
+  const searchLoading = ref(false)
   const error = ref<string | null>(null)
 
-  // Fetch all 114 surahs
-  async function fetchSurahs(): Promise<void> {
-    // Return from cache if available
-    if (surahs.value.length > 0) return
+  // Get API language from current locale
+  function apiLang(): string {
+    return LOCALE_MAP[locale.value] ?? 'en'
+  }
 
-    // Try localStorage cache
-    if (import.meta.client) {
-      const cached = localStorage.getItem(`${CACHE_PREFIX}-surahs`)
+  // Fetch all 114 surahs (locale-aware, cached per language)
+  async function fetchSurahs(forceRefresh = false): Promise<void> {
+    const lang = apiLang()
+
+    // Return from memory if same language
+    if (!forceRefresh && surahs.value.length > 0 && surahsLocale.value === lang) return
+
+    // Try localStorage cache for this language
+    const cacheKey = `${CACHE_PREFIX}-surahs-${lang}`
+    if (!forceRefresh && import.meta.client) {
+      const cached = localStorage.getItem(cacheKey)
       if (cached) {
         try {
           surahs.value = JSON.parse(cached)
+          surahsLocale.value = lang
           return
         }
         catch {
-          localStorage.removeItem(`${CACHE_PREFIX}-surahs`)
+          localStorage.removeItem(cacheKey)
         }
       }
     }
@@ -91,7 +113,7 @@ export function useQuran() {
           translated_name: { name: string }
         }>
       }>(`${baseUrl}/chapters`, {
-        params: { language: 'de' },
+        params: { language: lang },
       })
 
       surahs.value = response.chapters.map(ch => ({
@@ -104,12 +126,16 @@ export function useQuran() {
         nameArabic: ch.name_arabic,
         versesCount: ch.verses_count,
         pages: ch.pages,
-        translatedName: ch.translated_name.name,
+        // quran.com API returns English names for language=de, so we use local translations
+        translatedName: lang === 'de'
+          ? (SURAH_NAMES_DE[ch.id] ?? ch.translated_name.name)
+          : ch.translated_name.name,
       }))
 
-      // Cache in localStorage
+      surahsLocale.value = lang
+
       if (import.meta.client) {
-        localStorage.setItem(`${CACHE_PREFIX}-surahs`, JSON.stringify(surahs.value))
+        localStorage.setItem(cacheKey, JSON.stringify(surahs.value))
       }
     }
     catch (err) {
@@ -126,7 +152,6 @@ export function useQuran() {
     loading.value = true
     error.value = null
 
-    // Try localStorage cache for this surah + page
     const cacheKey = `${CACHE_PREFIX}-surah-${surahId}-p${page}`
     if (import.meta.client) {
       const cached = localStorage.getItem(cacheKey)
@@ -143,9 +168,8 @@ export function useQuran() {
     }
 
     try {
-      const translationIds = `${TRANSLATIONS.turkish},${TRANSLATIONS.german}`
+      const translationIds = `${TRANSLATIONS.turkish},${TRANSLATIONS.german},${TRANSLATIONS.english}`
 
-      // Fetch Arabic text + translations in parallel
       const [arabicRes, translationRes] = await Promise.all([
         $fetch<{
           verses: Array<{
@@ -155,9 +179,7 @@ export function useQuran() {
             text_uthmani: string
           }>
         }>(`${baseUrl}/quran/verses/uthmani`, {
-          params: {
-            chapter_number: surahId,
-          },
+          params: { chapter_number: surahId },
         }),
         $fetch<{
           verses: Array<{
@@ -174,7 +196,7 @@ export function useQuran() {
         }>(`${baseUrl}/verses/by_chapter/${surahId}`, {
           params: {
             translations: translationIds,
-            language: 'de',
+            language: apiLang(),
             per_page: perPage,
             page,
             fields: 'verse_key',
@@ -182,10 +204,8 @@ export function useQuran() {
         }),
       ])
 
-      // Merge Arabic text with translations
       currentVerses.value = translationRes.verses.map((tv, index) => {
         const arabicVerse = arabicRes.verses[index + (page - 1) * perPage]
-
         return {
           id: tv.id,
           verseNumber: tv.verse_number,
@@ -193,14 +213,13 @@ export function useQuran() {
           textUthmani: arabicVerse?.text_uthmani ?? '',
           translations: tv.translations.map(t => ({
             id: t.resource_id,
-            text: t.text.replace(/<[^>]*>/g, ''), // Strip HTML tags
+            text: t.text.replace(/<[^>]*>/g, ''),
             resourceName: t.resource_name,
             languageName: t.language_name,
           })),
         }
       })
 
-      // Cache
       if (import.meta.client) {
         localStorage.setItem(cacheKey, JSON.stringify(currentVerses.value))
       }
@@ -214,11 +233,11 @@ export function useQuran() {
     }
   }
 
-  // Search the Quran
-  async function search(query: string, language: string = 'de'): Promise<SearchResult[]> {
+  // Search the Quran — uses current app locale
+  async function search(query: string): Promise<SearchResult[]> {
     if (!query.trim()) return []
 
-    loading.value = true
+    searchLoading.value = true
     error.value = null
 
     try {
@@ -233,7 +252,7 @@ export function useQuran() {
       }>(`${baseUrl}/search`, {
         params: {
           q: query,
-          language,
+          language: apiLang(),
         },
       })
 
@@ -255,11 +274,10 @@ export function useQuran() {
       return []
     }
     finally {
-      loading.value = false
+      searchLoading.value = false
     }
   }
 
-  // Get a specific surah by ID
   function getSurah(id: number): Surah | undefined {
     return surahs.value.find(s => s.id === id)
   }
@@ -268,6 +286,7 @@ export function useQuran() {
     surahs: readonly(surahs),
     currentVerses: readonly(currentVerses),
     loading: readonly(loading),
+    searchLoading: readonly(searchLoading),
     error: readonly(error),
     fetchSurahs,
     fetchVerses,

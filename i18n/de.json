@@ -82,8 +82,11 @@
     "noSurahsFound": "Keine Suren gefunden für \"{query}\"",
     "turkishTranslation": "Türkçe",
     "germanTranslation": "Deutsch",
+    "englishTranslation": "Englisch",
     "bismillah": "Im Namen Allahs, des Allerbarmers, des Barmherzigen",
-    "searchButton": "Suche"
+    "searchButton": "Suche",
+    "minChars": "Mindestens 3 Zeichen für die Verssuche",
+    "tapArabic": "Tippe auf den arabischen Text, um die Übersetzung einzublenden"
   },
   "settings": {
     "title": "Einstellungen",

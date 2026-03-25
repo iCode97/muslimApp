@@ -1,10 +1,11 @@
 <script setup lang="ts">
 /**
- * Single Surah view — Arabic text with Turkish + German translations.
- * Saves reading progress as bookmark on verse tap.
+ * Single Surah view — Arabic text with Turkish, German & English translations.
+ * Default translation matches app language; others can be toggled on.
+ * Tapping Arabic text toggles per-verse translation visibility.
  */
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const route = useRoute()
 const quran = useQuran()
 const { save: saveBookmark } = useBookmark()
@@ -13,10 +14,44 @@ const surahId = computed(() => Number(route.params.surah))
 
 const surah = computed(() => quran.getSurah(surahId.value))
 
-const showTranslations = ref(true)
+// Available translation options
+const TRANSLATION_OPTIONS = [
+  { key: 'tr', id: 52, labelKey: 'quran.turkishTranslation' },
+  { key: 'de', id: 27, labelKey: 'quran.germanTranslation' },
+  { key: 'en', id: 20, labelKey: 'quran.englishTranslation' },
+] as const
+
+// Active translation IDs as reactive array (Vue tracks arrays better than Sets)
+const activeTranslations = ref<number[]>([])
+
+// Initialize active translations based on locale
+function initTranslations() {
+  const localeMap: Record<string, number> = { tr: 52, de: 27, en: 20 }
+  const defaultId = localeMap[locale.value] ?? 20
+  activeTranslations.value = [defaultId]
+}
+
+// Toggle a translation on/off
+function toggleTranslation(id: number) {
+  const idx = activeTranslations.value.indexOf(id)
+  if (idx >= 0) {
+    activeTranslations.value = activeTranslations.value.filter(x => x !== id)
+  } else {
+    activeTranslations.value = [...activeTranslations.value, id]
+  }
+}
+
+// Is a specific translation active?
+function isTranslationActive(id: number): boolean {
+  return activeTranslations.value.includes(id)
+}
+
+// Global: are any translations active?
+const showTranslations = computed(() => activeTranslations.value.length > 0)
 
 // Fetch surah list (if not already loaded) + verses
 onMounted(async () => {
+  initTranslations()
   await quran.fetchSurahs()
   await quran.fetchVerses(surahId.value)
 
@@ -67,16 +102,23 @@ const revelationPlace = computed(() => {
       </div>
     </header>
 
-    <!-- Translation toggle -->
-    <div class="flex items-center justify-center gap-3">
-      <GlassButton
-        :variant="showTranslations ? 'primary' : 'default'"
-        size="sm"
-        @click="showTranslations = !showTranslations"
+    <!-- Translation controls -->
+    <div class="flex items-center justify-center gap-2 flex-wrap">
+      <button
+        v-for="opt in TRANSLATION_OPTIONS"
+        :key="opt.id"
+        class="px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200"
+        :class="isTranslationActive(opt.id)
+          ? 'bg-[var(--color-primary)]/20 text-[var(--color-primary-light)]'
+          : 'glass-subtle text-themed-faint'"
+        @click="toggleTranslation(opt.id)"
       >
-        {{ showTranslations ? '🌐 ' + t('quran.translationsOn') : '🌐 ' + t('quran.translationsOff') }}
-      </GlassButton>
+        {{ t(opt.labelKey) }}
+      </button>
     </div>
+    <p v-if="!showTranslations" class="text-[10px] text-themed-faint text-center">
+      {{ t('quran.tapArabic') }}
+    </p>
 
     <!-- Bismillah -->
     <div
@@ -111,7 +153,7 @@ const revelationPlace = computed(() => {
         :key="verse.verseKey"
         :verse="verse"
         :surah-id="surahId"
-        :show-translations="showTranslations"
+        :active-translations="activeTranslations"
         class="animate-fade-in"
       />
     </div>

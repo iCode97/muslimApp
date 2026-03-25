@@ -82,8 +82,11 @@
     "noSurahsFound": "No surahs found for \"{query}\"",
     "turkishTranslation": "Turkish",
     "germanTranslation": "German",
+    "englishTranslation": "English",
     "bismillah": "In the name of Allah, the Most Gracious, the Most Merciful",
-    "searchButton": "Search"
+    "searchButton": "Search",
+    "minChars": "Enter at least 3 characters to search verses",
+    "tapArabic": "Tap the Arabic text to show translation"
   },
   "settings": {
     "title": "Settings",
