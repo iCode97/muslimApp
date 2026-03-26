@@ -8,7 +8,7 @@ const pwa = usePWA()
 
 const tools = [
   { path: '/tasbih', icon: '📿', labelKey: 'more.tasbih', descKey: 'more.tasbihDesc' },
-  { path: '/qibla', icon: '🧭', labelKey: 'more.qibla', descKey: 'more.qiblaDesc', soon: true },
+  { path: '/qibla', icon: '🧭', labelKey: 'more.qibla', descKey: 'more.qiblaDesc' },
   { path: '/dua', icon: '🤲', labelKey: 'more.dua', descKey: 'more.duaDesc', soon: true },
 ]
 </script>

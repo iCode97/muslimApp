@@ -168,6 +168,17 @@
     "roundComplete": "Round complete",
     "nextRound": "Next round"
   },
+  "qibla": {
+    "title": "Qibla Compass",
+    "subtitle": "Direction to Mecca",
+    "direction": "Direction",
+    "distance": "Distance to Kaaba",
+    "needLocation": "Please set a location first",
+    "goToDashboard": "Go to Dashboard",
+    "activateCompass": "Activate Compass",
+    "compassActive": "Compass active — point device towards Qibla",
+    "noCompass": "No compass available. Direction is shown statically."
+  },
   "timeAgo": {
     "daysAgo": "{n} day ago | {n} days ago",
     "hoursAgo": "{n} hour ago | {n} hours ago",

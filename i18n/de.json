@@ -168,6 +168,17 @@
     "roundComplete": "Runde abgeschlossen",
     "nextRound": "Nächste Runde"
   },
+  "qibla": {
+    "title": "Qibla-Kompass",
+    "subtitle": "Richtung nach Mekka",
+    "direction": "Richtung",
+    "distance": "Entfernung zur Kaaba",
+    "needLocation": "Bitte zuerst einen Standort festlegen",
+    "goToDashboard": "Zum Dashboard",
+    "activateCompass": "Kompass aktivieren",
+    "compassActive": "Kompass aktiv — Gerät in Richtung Qibla ausrichten",
+    "noCompass": "Kein Kompass verfügbar. Die Richtung wird statisch angezeigt."
+  },
   "timeAgo": {
     "daysAgo": "vor {n} Tag | vor {n} Tagen",
     "hoursAgo": "vor {n} Stunde | vor {n} Stunden",

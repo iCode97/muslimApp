@@ -168,6 +168,17 @@
     "roundComplete": "Tur tamamlandı",
     "nextRound": "Sonraki tur"
   },
+  "qibla": {
+    "title": "Kıble Pusulası",
+    "subtitle": "Mekke Yönü",
+    "direction": "Yön",
+    "distance": "Kâbe'ye Uzaklık",
+    "needLocation": "Lütfen önce bir konum belirleyin",
+    "goToDashboard": "Ana Sayfaya Git",
+    "activateCompass": "Pusulayı Etkinleştir",
+    "compassActive": "Pusula aktif — cihazı Kıble yönüne çevirin",
+    "noCompass": "Pusula kullanılamıyor. Yön sabit olarak gösteriliyor."
+  },
   "timeAgo": {
     "daysAgo": "{n} gün önce",
     "hoursAgo": "{n} saat önce",
