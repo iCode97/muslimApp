@@ -8,7 +8,8 @@
     "prayer": "Namaz Vakitleri",
     "quran": "Kur'an",
     "calendar": "Takvim",
-    "settings": "Ayarlar"
+    "settings": "Ayarlar",
+    "more": "Daha Fazla"
   },
   "dashboard": {
     "greeting": "Selamün Aleyküm",
@@ -100,6 +101,7 @@
     "themeSystem": "Sistem",
     "noLocation": "Konum ayarlanmadı",
     "moreMethodsLater": "Daha fazla yöntem ileride eklenecek",
+    "methodHint": "Hesaplama yöntemi İmsak ve Yatsı vakitlerini etkiler",
     "moreLangsLater": "Daha fazla dil ileride eklenecek",
     "version": "Sürüm",
     "apiInfo": "Namaz vakitleri: Aladhan API • Kur'an: quran.com API"
@@ -119,6 +121,88 @@
     "surahLoad": "Sureler yüklenemedi.",
     "verseLoad": "Ayetler yüklenemedi.",
     "searchFailed": "Arama başarısız oldu."
+  },
+  "widgets": {
+    "prayerCountdown": "Sonraki Namaz",
+    "prayerTimes": "Tüm Namaz Vakitleri",
+    "holidayCountdown": "Sonraki Bayram",
+    "readingProgress": "Kur'an Yer İmi",
+    "randomVerse": "Rastgele Ayet",
+    "tasbihQuick": "Tesbih",
+    "hijriDate": "Hicri Tarih",
+    "edit": "Düzenle",
+    "done": "Tamam",
+    "configure": "Ana Ekranı Yapılandır",
+    "resetDefaults": "Sıfırla",
+    "openFull": "Aç"
+  },
+  "more": {
+    "title": "Daha Fazla",
+    "subtitle": "Araçlar ve Ayarlar",
+    "tools": "Araçlar",
+    "tasbih": "Tesbih",
+    "tasbihDesc": "Farklı zikir modlarıyla sayaç",
+    "qibla": "Kıble Pusulası",
+    "qiblaDesc": "Mekke yönünü göster",
+    "dua": "Dualar",
+    "duaDesc": "Çeşitli dualar ve yakarışlar",
+    "comingSoon": "Yakında",
+    "settingsSection": "Ayarlar",
+    "settingsDesc": "Dil, görünüm ve daha fazlası",
+    "installApp": "Uygulamayı Yükle",
+    "installDesc": "MuslimApp'i ana ekranına ekle",
+    "install": "Yükle"
+  },
+  "tasbih": {
+    "title": "Tesbih",
+    "subtitle": "Zikir Sayacı",
+    "subhanallah": "Sübhanallah",
+    "alhamdulillah": "Elhamdülillah",
+    "allahuakbar": "Allahu Ekber",
+    "lailaha": "La ilahe illallah",
+    "astaghfirullah": "Estağfurullah",
+    "salawat": "Salavat",
+    "freeMode": "Serbest Mod",
+    "rounds": "Tur",
+    "total": "Toplam",
+    "reset": "Sıfırla",
+    "roundComplete": "Tur tamamlandı",
+    "nextRound": "Sonraki tur"
+  },
+  "notifications": {
+    "title": "Bildirimler",
+    "minutesBefore": "Namaz vaktinden önce bildir",
+    "atTime": "Vaktinde",
+    "prayers": "Namazlar",
+    "prayerIn": "{minutes} dakika içinde",
+    "prayerNow": "Namaz vakti geldi",
+    "denied": "Bildirimler engellendi. Lütfen tarayıcı ayarlarından izin verin."
+  },
+  "dua": {
+    "title": "Dualar",
+    "subtitle": "Çeşitli vesileler için dualar",
+    "all": "Tümü",
+    "cat_morning": "Sabah",
+    "cat_evening": "Akşam",
+    "cat_prayer": "Namaz",
+    "cat_food": "Yemek",
+    "cat_travel": "Yolculuk",
+    "cat_protection": "Korunma",
+    "cat_forgiveness": "Tövbe",
+    "cat_general": "Genel",
+    "tapToExpand": "Transliterasyon ve çeviri için dokunun",
+    "duas": "dua"
+  },
+  "qibla": {
+    "title": "Kıble Pusulası",
+    "subtitle": "Mekke Yönü",
+    "direction": "Yön",
+    "distance": "Kâbe'ye Uzaklık",
+    "needLocation": "Lütfen önce bir konum belirleyin",
+    "goToDashboard": "Ana Sayfaya Git",
+    "activateCompass": "Pusulayı Etkinleştir",
+    "compassActive": "Pusula aktif — cihazı Kıble yönüne çevirin",
+    "noCompass": "Pusula kullanılamıyor. Yön sabit olarak gösteriliyor."
   },
   "timeAgo": {
     "daysAgo": "{n} gün önce",

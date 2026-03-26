@@ -14,15 +14,24 @@ export default defineNuxtConfig({
       meta: [
         { name: 'description', content: 'Gebetszeiten, Koran & islamischer Kalender' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
-        { name: 'theme-color', content: '#0A0A0A' },
+        { name: 'theme-color', content: '#2D6A4F' },
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
         { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
+        { name: 'apple-mobile-web-app-title', content: 'MuslimApp' },
+        { name: 'msapplication-TileColor', content: '#2D6A4F' },
       ],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'manifest', href: '/manifest.json' },
+        { rel: 'apple-touch-icon', href: '/favicon.svg' },
         {
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap',
+        },
+      ],
+      script: [
+        {
+          children: `if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js').catch(() => {}) }) }`,
         },
       ],
     },

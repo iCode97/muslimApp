@@ -8,7 +8,8 @@
     "prayer": "Gebetszeiten",
     "quran": "Koran",
     "calendar": "Kalender",
-    "settings": "Einstellungen"
+    "settings": "Einstellungen",
+    "more": "Mehr"
   },
   "dashboard": {
     "greeting": "Assalamu Alaikum",
@@ -100,6 +101,7 @@
     "themeSystem": "System",
     "noLocation": "Kein Standort festgelegt",
     "moreMethodsLater": "Weitere Methoden in einer zukünftigen Version",
+    "methodHint": "Die Berechnungsmethode beeinflusst die Fajr- und Isha-Zeiten",
     "moreLangsLater": "Weitere Sprachen in einer zukünftigen Version",
     "version": "Version",
     "apiInfo": "Gebetszeiten via Aladhan API • Koran via quran.com API"
@@ -119,6 +121,88 @@
     "surahLoad": "Suren konnten nicht geladen werden.",
     "verseLoad": "Verse konnten nicht geladen werden.",
     "searchFailed": "Suche fehlgeschlagen."
+  },
+  "widgets": {
+    "prayerCountdown": "Nächstes Gebet",
+    "prayerTimes": "Alle Gebetszeiten",
+    "holidayCountdown": "Nächster Feiertag",
+    "readingProgress": "Koran-Lesezeichen",
+    "randomVerse": "Zufälliger Vers",
+    "tasbihQuick": "Tasbih",
+    "hijriDate": "Islamisches Datum",
+    "edit": "Bearbeiten",
+    "done": "Fertig",
+    "configure": "Dashboard konfigurieren",
+    "resetDefaults": "Zurücksetzen",
+    "openFull": "Öffnen"
+  },
+  "more": {
+    "title": "Mehr",
+    "subtitle": "Werkzeuge & Einstellungen",
+    "tools": "Werkzeuge",
+    "tasbih": "Tasbih",
+    "tasbihDesc": "Gebetszähler mit verschiedenen Dhikr-Modi",
+    "qibla": "Qibla-Kompass",
+    "qiblaDesc": "Richtung nach Mekka anzeigen",
+    "dua": "Bittgebete",
+    "duaDesc": "Duas für verschiedene Anlässe",
+    "comingSoon": "Bald verfügbar",
+    "settingsSection": "Einstellungen",
+    "settingsDesc": "Sprache, Erscheinungsbild & mehr",
+    "installApp": "App installieren",
+    "installDesc": "Füge MuslimApp zu deinem Startbildschirm hinzu",
+    "install": "Installieren"
+  },
+  "tasbih": {
+    "title": "Tasbih",
+    "subtitle": "Gebetszähler",
+    "subhanallah": "SubhanAllah",
+    "alhamdulillah": "Alhamdulillah",
+    "allahuakbar": "Allahu Akbar",
+    "lailaha": "La ilaha illallah",
+    "astaghfirullah": "Astaghfirullah",
+    "salawat": "Salawat",
+    "freeMode": "Freier Modus",
+    "rounds": "Runden",
+    "total": "Gesamt",
+    "reset": "Zurücksetzen",
+    "roundComplete": "Runde abgeschlossen",
+    "nextRound": "Nächste Runde"
+  },
+  "notifications": {
+    "title": "Benachrichtigungen",
+    "minutesBefore": "Benachrichtigung vor Gebetszeit",
+    "atTime": "Zur Zeit",
+    "prayers": "Gebete",
+    "prayerIn": "In {minutes} Minuten",
+    "prayerNow": "Es ist Zeit für das Gebet",
+    "denied": "Benachrichtigungen wurden blockiert. Bitte in den Browser-Einstellungen erlauben."
+  },
+  "dua": {
+    "title": "Bittgebete",
+    "subtitle": "Duas für verschiedene Anlässe",
+    "all": "Alle",
+    "cat_morning": "Morgen",
+    "cat_evening": "Abend",
+    "cat_prayer": "Gebet",
+    "cat_food": "Essen",
+    "cat_travel": "Reise",
+    "cat_protection": "Schutz",
+    "cat_forgiveness": "Vergebung",
+    "cat_general": "Allgemein",
+    "tapToExpand": "Tippe für Transliteration & Übersetzung",
+    "duas": "Bittgebete"
+  },
+  "qibla": {
+    "title": "Qibla-Kompass",
+    "subtitle": "Richtung nach Mekka",
+    "direction": "Richtung",
+    "distance": "Entfernung zur Kaaba",
+    "needLocation": "Bitte zuerst einen Standort festlegen",
+    "goToDashboard": "Zum Dashboard",
+    "activateCompass": "Kompass aktivieren",
+    "compassActive": "Kompass aktiv — Gerät in Richtung Qibla ausrichten",
+    "noCompass": "Kein Kompass verfügbar. Die Richtung wird statisch angezeigt."
   },
   "timeAgo": {
     "daysAgo": "vor {n} Tag | vor {n} Tagen",

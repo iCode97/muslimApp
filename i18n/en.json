@@ -8,7 +8,8 @@
     "prayer": "Prayer Times",
     "quran": "Quran",
     "calendar": "Calendar",
-    "settings": "Settings"
+    "settings": "Settings",
+    "more": "More"
   },
   "dashboard": {
     "greeting": "Assalamu Alaikum",
@@ -100,6 +101,7 @@
     "themeSystem": "System",
     "noLocation": "No location set",
     "moreMethodsLater": "More methods in a future version",
+    "methodHint": "The calculation method affects Fajr and Isha times",
     "moreLangsLater": "More languages in a future version",
     "version": "Version",
     "apiInfo": "Prayer times via Aladhan API • Quran via quran.com API"
@@ -119,6 +121,88 @@
     "surahLoad": "Could not load surahs.",
     "verseLoad": "Could not load verses.",
     "searchFailed": "Search failed."
+  },
+  "widgets": {
+    "prayerCountdown": "Next Prayer",
+    "prayerTimes": "All Prayer Times",
+    "holidayCountdown": "Next Holiday",
+    "readingProgress": "Quran Bookmark",
+    "randomVerse": "Random Verse",
+    "tasbihQuick": "Tasbih",
+    "hijriDate": "Islamic Date",
+    "edit": "Edit",
+    "done": "Done",
+    "configure": "Configure Dashboard",
+    "resetDefaults": "Reset",
+    "openFull": "Open"
+  },
+  "more": {
+    "title": "More",
+    "subtitle": "Tools & Settings",
+    "tools": "Tools",
+    "tasbih": "Tasbih",
+    "tasbihDesc": "Prayer counter with different dhikr modes",
+    "qibla": "Qibla Compass",
+    "qiblaDesc": "Find the direction to Mecca",
+    "dua": "Supplications",
+    "duaDesc": "Duas for various occasions",
+    "comingSoon": "Coming soon",
+    "settingsSection": "Settings",
+    "settingsDesc": "Language, appearance & more",
+    "installApp": "Install App",
+    "installDesc": "Add MuslimApp to your home screen",
+    "install": "Install"
+  },
+  "tasbih": {
+    "title": "Tasbih",
+    "subtitle": "Prayer Counter",
+    "subhanallah": "SubhanAllah",
+    "alhamdulillah": "Alhamdulillah",
+    "allahuakbar": "Allahu Akbar",
+    "lailaha": "La ilaha illallah",
+    "astaghfirullah": "Astaghfirullah",
+    "salawat": "Salawat",
+    "freeMode": "Free Mode",
+    "rounds": "Rounds",
+    "total": "Total",
+    "reset": "Reset",
+    "roundComplete": "Round complete",
+    "nextRound": "Next round"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "minutesBefore": "Notify before prayer time",
+    "atTime": "At time",
+    "prayers": "Prayers",
+    "prayerIn": "In {minutes} minutes",
+    "prayerNow": "It's time for prayer",
+    "denied": "Notifications are blocked. Please allow in browser settings."
+  },
+  "dua": {
+    "title": "Supplications",
+    "subtitle": "Duas for various occasions",
+    "all": "All",
+    "cat_morning": "Morning",
+    "cat_evening": "Evening",
+    "cat_prayer": "Prayer",
+    "cat_food": "Food",
+    "cat_travel": "Travel",
+    "cat_protection": "Protection",
+    "cat_forgiveness": "Forgiveness",
+    "cat_general": "General",
+    "tapToExpand": "Tap for transliteration & translation",
+    "duas": "supplications"
+  },
+  "qibla": {
+    "title": "Qibla Compass",
+    "subtitle": "Direction to Mecca",
+    "direction": "Direction",
+    "distance": "Distance to Kaaba",
+    "needLocation": "Please set a location first",
+    "goToDashboard": "Go to Dashboard",
+    "activateCompass": "Activate Compass",
+    "compassActive": "Compass active — point device towards Qibla",
+    "noCompass": "No compass available. Direction is shown statically."
   },
   "timeAgo": {
     "daysAgo": "{n} day ago | {n} days ago",

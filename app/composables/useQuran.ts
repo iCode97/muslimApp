@@ -264,7 +264,7 @@ export function useQuran() {
           verseKey: r.verse_key,
           text: r.translations?.[0]?.text?.replace(/<[^>]*>/g, '') ?? r.text,
           surahName: surah?.nameSimple ?? `Surah ${surahNum}`,
-          verseNumber: verseNum,
+          verseNumber: verseNum ?? 0,
         }
       })
     }

@@ -7,11 +7,14 @@ const navItems = [
   { path: '/prayer', icon: '\u{1F54C}', label: 'nav.prayer' },
   { path: '/quran', icon: '\u{1F4D6}', label: 'nav.quran' },
   { path: '/calendar', icon: '\u{1F4C5}', label: 'nav.calendar' },
-  { path: '/settings', icon: '\u{2699}\u{FE0F}', label: 'nav.settings' },
+  { path: '/more', icon: '\u{2022}\u{2022}\u{2022}', label: 'nav.more' },
 ]
+
+const moreRoutes = ['/more', '/settings', '/tasbih', '/qibla', '/dua']
 
 function isActive(path: string): boolean {
   if (path === '/') return route.path === '/'
+  if (path === '/more') return moreRoutes.some(r => route.path.startsWith(r))
   return route.path.startsWith(path)
 }
 </script>
