@@ -101,6 +101,7 @@
     "themeSystem": "System",
     "noLocation": "No location set",
     "moreMethodsLater": "More methods in a future version",
+    "methodHint": "The calculation method affects Fajr and Isha times",
     "moreLangsLater": "More languages in a future version",
     "version": "Version",
     "apiInfo": "Prayer times via Aladhan API • Quran via quran.com API"

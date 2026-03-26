@@ -101,6 +101,7 @@
     "themeSystem": "Sistem",
     "noLocation": "Konum ayarlanmadı",
     "moreMethodsLater": "Daha fazla yöntem ileride eklenecek",
+    "methodHint": "Hesaplama yöntemi İmsak ve Yatsı vakitlerini etkiler",
     "moreLangsLater": "Daha fazla dil ileride eklenecek",
     "version": "Sürüm",
     "apiInfo": "Namaz vakitleri: Aladhan API • Kur'an: quran.com API"

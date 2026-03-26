@@ -101,6 +101,7 @@
     "themeSystem": "System",
     "noLocation": "Kein Standort festgelegt",
     "moreMethodsLater": "Weitere Methoden in einer zukünftigen Version",
+    "methodHint": "Die Berechnungsmethode beeinflusst die Fajr- und Isha-Zeiten",
     "moreLangsLater": "Weitere Sprachen in einer zukünftigen Version",
     "version": "Version",
     "apiInfo": "Gebetszeiten via Aladhan API • Koran via quran.com API"

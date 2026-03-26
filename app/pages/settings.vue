@@ -1,8 +1,13 @@
 <script setup lang="ts">
+import { PRAYER_METHODS } from '~/data/prayer-methods'
+
 const { t, locale, setLocale, locales } = useI18n()
 const { location } = useLocation()
 const theme = useTheme()
 const notifications = useNotifications()
+const prayerTimes = usePrayerTimes()
+
+const showMethodPicker = ref(false)
 
 onMounted(() => {
   notifications.loadSettings()
@@ -181,15 +186,52 @@ const minutesOptions = [0, 5, 10, 15, 30]
 
     <!-- Calculation Method -->
     <GlassCard>
-      <div class="space-y-2">
+      <div class="space-y-3">
         <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
           {{ t('settings.calculationMethod') }}
         </h3>
-        <p class="text-themed-secondary">
-          🕌 Diyanet İşleri Başkanlığı (Method 13)
-        </p>
+
+        <!-- Current method -->
+        <button
+          class="w-full flex items-center justify-between px-3 py-2 rounded-xl glass-subtle"
+          @click="showMethodPicker = !showMethodPicker"
+        >
+          <div class="text-left">
+            <p class="text-sm text-themed-secondary">
+              🕌 {{ PRAYER_METHODS.find(m => m.id === prayerTimes.method.value)?.name || 'Diyanet' }}
+            </p>
+            <p class="text-xs text-themed-faint">
+              {{ PRAYER_METHODS.find(m => m.id === prayerTimes.method.value)?.region }}
+            </p>
+          </div>
+          <span class="text-themed-faint">{{ showMethodPicker ? '▲' : '▼' }}</span>
+        </button>
+
+        <!-- Method list -->
+        <Transition name="slide">
+          <div v-if="showMethodPicker" class="space-y-1 max-h-60 overflow-y-auto">
+            <button
+              v-for="m in PRAYER_METHODS"
+              :key="m.id"
+              :class="[
+                'w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left transition-all',
+                prayerTimes.method.value === m.id
+                  ? 'bg-[var(--color-primary)] bg-opacity-20 text-[var(--color-primary-light)]'
+                  : 'hover:bg-[var(--glass-bg-subtle)] text-themed-secondary'
+              ]"
+              @click="prayerTimes.setMethod(m.id); showMethodPicker = false"
+            >
+              <div>
+                <p class="text-sm font-medium">{{ m.name }}</p>
+                <p class="text-xs text-themed-faint">{{ m.region }}</p>
+              </div>
+              <span v-if="prayerTimes.method.value === m.id" class="text-[var(--color-primary-light)]">✓</span>
+            </button>
+          </div>
+        </Transition>
+
         <p class="text-xs text-themed-faint">
-          {{ t('settings.moreMethodsLater') }}
+          {{ t('settings.methodHint') }}
         </p>
       </div>
     </GlassCard>
@@ -201,7 +243,7 @@ const minutesOptions = [0, 5, 10, 15, 30]
           {{ t('settings.about') }}
         </h3>
         <p class="text-themed-muted text-sm">
-          MuslimApp v0.4.0 — Phase 4
+          MuslimApp v0.5.0 — Phase 4+
         </p>
         <p class="text-themed-faint text-xs">
           {{ t('settings.apiInfo') }}
@@ -210,3 +252,15 @@ const minutesOptions = [0, 5, 10, 15, 30]
     </GlassCard>
   </div>
 </template>
+
+<style scoped>
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.25s ease;
+}
+.slide-enter-from,
+.slide-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+</style>

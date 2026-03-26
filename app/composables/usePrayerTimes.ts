@@ -38,7 +38,8 @@ const PRAYER_I18N: Record<string, string> = {
 }
 
 const CACHE_KEY = 'muslimapp-prayer-times'
-const DIYANET_METHOD = 13
+const METHOD_KEY = 'muslimapp-prayer-method'
+const DEFAULT_METHOD = 13
 
 export function usePrayerTimes() {
   const config = useRuntimeConfig()
@@ -46,6 +47,22 @@ export function usePrayerTimes() {
   const data = useState<PrayerTimesData | null>('prayer-times', () => null)
   const loading = ref(false)
   const error = ref<string | null>(null)
+  const method = useState<number>('prayer-method', () => {
+    if (import.meta.client) {
+      const saved = localStorage.getItem(METHOD_KEY)
+      return saved ? Number(saved) : DEFAULT_METHOD
+    }
+    return DEFAULT_METHOD
+  })
+
+  function setMethod(methodId: number) {
+    method.value = methodId
+    if (import.meta.client) {
+      localStorage.setItem(METHOD_KEY, String(methodId))
+      // Invalidate cache when method changes
+      localStorage.removeItem(CACHE_KEY)
+    }
+  }
 
   // Parse "HH:mm" to a specific day's timestamp
   function timeToTimestamp(timeStr: string, date?: Date): number {
@@ -122,7 +139,7 @@ export function usePrayerTimes() {
       const response = await $fetch<{
         data: { timings: Record<string, string> }
       }>(`${config.public.aladhanBaseUrl}/timings/${dateStr}`, {
-        params: { latitude, longitude, method: DIYANET_METHOD },
+        params: { latitude, longitude, method: method.value },
       })
 
       return PRAYER_KEYS.map(key => {
@@ -166,7 +183,7 @@ export function usePrayerTimes() {
         params: {
           latitude,
           longitude,
-          method: DIYANET_METHOD,
+          method: method.value,
         },
       })
 
@@ -235,9 +252,11 @@ export function usePrayerTimes() {
     data: readonly(data),
     loading: readonly(loading),
     error: readonly(error),
+    method: readonly(method),
     fetchTimes,
     loadCache,
     refresh,
+    setMethod,
     PRAYER_I18N,
   }
 }
