@@ -168,6 +168,21 @@
     "roundComplete": "Round complete",
     "nextRound": "Next round"
   },
+  "dua": {
+    "title": "Supplications",
+    "subtitle": "Duas for various occasions",
+    "all": "All",
+    "cat_morning": "Morning",
+    "cat_evening": "Evening",
+    "cat_prayer": "Prayer",
+    "cat_food": "Food",
+    "cat_travel": "Travel",
+    "cat_protection": "Protection",
+    "cat_forgiveness": "Forgiveness",
+    "cat_general": "General",
+    "tapToExpand": "Tap for transliteration & translation",
+    "duas": "supplications"
+  },
   "qibla": {
     "title": "Qibla Compass",
     "subtitle": "Direction to Mecca",

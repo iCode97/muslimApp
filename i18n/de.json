@@ -168,6 +168,21 @@
     "roundComplete": "Runde abgeschlossen",
     "nextRound": "Nächste Runde"
   },
+  "dua": {
+    "title": "Bittgebete",
+    "subtitle": "Duas für verschiedene Anlässe",
+    "all": "Alle",
+    "cat_morning": "Morgen",
+    "cat_evening": "Abend",
+    "cat_prayer": "Gebet",
+    "cat_food": "Essen",
+    "cat_travel": "Reise",
+    "cat_protection": "Schutz",
+    "cat_forgiveness": "Vergebung",
+    "cat_general": "Allgemein",
+    "tapToExpand": "Tippe für Transliteration & Übersetzung",
+    "duas": "Bittgebete"
+  },
   "qibla": {
     "title": "Qibla-Kompass",
     "subtitle": "Richtung nach Mekka",

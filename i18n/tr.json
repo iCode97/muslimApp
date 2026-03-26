@@ -168,6 +168,21 @@
     "roundComplete": "Tur tamamlandı",
     "nextRound": "Sonraki tur"
   },
+  "dua": {
+    "title": "Dualar",
+    "subtitle": "Çeşitli vesileler için dualar",
+    "all": "Tümü",
+    "cat_morning": "Sabah",
+    "cat_evening": "Akşam",
+    "cat_prayer": "Namaz",
+    "cat_food": "Yemek",
+    "cat_travel": "Yolculuk",
+    "cat_protection": "Korunma",
+    "cat_forgiveness": "Tövbe",
+    "cat_general": "Genel",
+    "tapToExpand": "Transliterasyon ve çeviri için dokunun",
+    "duas": "dua"
+  },
   "qibla": {
     "title": "Kıble Pusulası",
     "subtitle": "Mekke Yönü",
