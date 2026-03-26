@@ -8,7 +8,8 @@
     "prayer": "Gebetszeiten",
     "quran": "Koran",
     "calendar": "Kalender",
-    "settings": "Einstellungen"
+    "settings": "Einstellungen",
+    "more": "Mehr"
   },
   "dashboard": {
     "greeting": "Assalamu Alaikum",
@@ -119,6 +120,39 @@
     "surahLoad": "Suren konnten nicht geladen werden.",
     "verseLoad": "Verse konnten nicht geladen werden.",
     "searchFailed": "Suche fehlgeschlagen."
+  },
+  "more": {
+    "title": "Mehr",
+    "subtitle": "Werkzeuge & Einstellungen",
+    "tools": "Werkzeuge",
+    "tasbih": "Tasbih",
+    "tasbihDesc": "Gebetszähler mit verschiedenen Dhikr-Modi",
+    "qibla": "Qibla-Kompass",
+    "qiblaDesc": "Richtung nach Mekka anzeigen",
+    "dua": "Bittgebete",
+    "duaDesc": "Duas für verschiedene Anlässe",
+    "comingSoon": "Bald verfügbar",
+    "settingsSection": "Einstellungen",
+    "settingsDesc": "Sprache, Erscheinungsbild & mehr",
+    "installApp": "App installieren",
+    "installDesc": "Füge MuslimApp zu deinem Startbildschirm hinzu",
+    "install": "Installieren"
+  },
+  "tasbih": {
+    "title": "Tasbih",
+    "subtitle": "Gebetszähler",
+    "subhanallah": "SubhanAllah",
+    "alhamdulillah": "Alhamdulillah",
+    "allahuakbar": "Allahu Akbar",
+    "lailaha": "La ilaha illallah",
+    "astaghfirullah": "Astaghfirullah",
+    "salawat": "Salawat",
+    "freeMode": "Freier Modus",
+    "rounds": "Runden",
+    "total": "Gesamt",
+    "reset": "Zurücksetzen",
+    "roundComplete": "Runde abgeschlossen",
+    "nextRound": "Nächste Runde"
   },
   "timeAgo": {
     "daysAgo": "vor {n} Tag | vor {n} Tagen",

@@ -8,7 +8,8 @@
     "prayer": "Namaz Vakitleri",
     "quran": "Kur'an",
     "calendar": "Takvim",
-    "settings": "Ayarlar"
+    "settings": "Ayarlar",
+    "more": "Daha Fazla"
   },
   "dashboard": {
     "greeting": "Selamün Aleyküm",
@@ -119,6 +120,39 @@
     "surahLoad": "Sureler yüklenemedi.",
     "verseLoad": "Ayetler yüklenemedi.",
     "searchFailed": "Arama başarısız oldu."
+  },
+  "more": {
+    "title": "Daha Fazla",
+    "subtitle": "Araçlar ve Ayarlar",
+    "tools": "Araçlar",
+    "tasbih": "Tesbih",
+    "tasbihDesc": "Farklı zikir modlarıyla sayaç",
+    "qibla": "Kıble Pusulası",
+    "qiblaDesc": "Mekke yönünü göster",
+    "dua": "Dualar",
+    "duaDesc": "Çeşitli dualar ve yakarışlar",
+    "comingSoon": "Yakında",
+    "settingsSection": "Ayarlar",
+    "settingsDesc": "Dil, görünüm ve daha fazlası",
+    "installApp": "Uygulamayı Yükle",
+    "installDesc": "MuslimApp'i ana ekranına ekle",
+    "install": "Yükle"
+  },
+  "tasbih": {
+    "title": "Tesbih",
+    "subtitle": "Zikir Sayacı",
+    "subhanallah": "Sübhanallah",
+    "alhamdulillah": "Elhamdülillah",
+    "allahuakbar": "Allahu Ekber",
+    "lailaha": "La ilahe illallah",
+    "astaghfirullah": "Estağfurullah",
+    "salawat": "Salavat",
+    "freeMode": "Serbest Mod",
+    "rounds": "Tur",
+    "total": "Toplam",
+    "reset": "Sıfırla",
+    "roundComplete": "Tur tamamlandı",
+    "nextRound": "Sonraki tur"
   },
   "timeAgo": {
     "daysAgo": "{n} gün önce",
