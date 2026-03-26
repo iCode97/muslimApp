@@ -78,7 +78,7 @@ const tools = [
       </div>
     </div>
 
-    <!-- Settings Link -->
+    <!-- Settings + About -->
     <div class="space-y-3">
       <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
         {{ t('more.settingsSection') }}
@@ -90,6 +90,18 @@ const tools = [
             <div class="flex-1 min-w-0">
               <p class="font-medium text-sm">{{ t('settings.title') }}</p>
               <p class="text-xs text-themed-muted mt-0.5">{{ t('more.settingsDesc') }}</p>
+            </div>
+            <span class="text-themed-faint">›</span>
+          </div>
+        </GlassCard>
+      </NuxtLink>
+      <NuxtLink to="/about">
+        <GlassCard>
+          <div class="flex items-center gap-4">
+            <span class="text-2xl">📋</span>
+            <div class="flex-1 min-w-0">
+              <p class="font-medium text-sm">{{ t('more.about') }}</p>
+              <p class="text-xs text-themed-muted mt-0.5">{{ t('more.aboutDesc') }}</p>
             </div>
             <span class="text-themed-faint">›</span>
           </div>
