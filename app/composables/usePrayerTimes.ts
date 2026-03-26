@@ -126,7 +126,8 @@ export function usePrayerTimes() {
       })
 
       return PRAYER_KEYS.map(key => {
-        const cleanTime = response.data.timings[key].replace(/\s*\(.*\)/, '')
+        const rawTime = response.data.timings[key] ?? '00:00'
+        const cleanTime = rawTime.replace(/\s*\(.*\)/, '')
         return {
           name: key,
           time: cleanTime,
@@ -174,7 +175,8 @@ export function usePrayerTimes() {
 
       const prayers: PrayerTime[] = PRAYER_KEYS.map(key => {
         // Aladhan sometimes returns " (EET)" suffix — strip it
-        const cleanTime = timings[key].replace(/\s*\(.*\)/, '')
+        const rawTime = timings[key] ?? '00:00'
+        const cleanTime = rawTime.replace(/\s*\(.*\)/, '')
         const timestamp = timeToTimestamp(cleanTime)
 
         return {

@@ -37,8 +37,8 @@ export function useTasbih() {
     rounds: 0,
   }))
 
-  const currentMode = computed(() =>
-    TASBIH_MODES.find(m => m.id === state.value.modeId) || TASBIH_MODES[0]
+  const currentMode = computed((): TasbihMode =>
+    TASBIH_MODES.find(m => m.id === state.value.modeId) ?? TASBIH_MODES[0]!
   )
 
   const progress = computed(() => {

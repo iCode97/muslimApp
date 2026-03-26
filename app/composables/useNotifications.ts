@@ -100,7 +100,7 @@ export function useNotifications() {
   /**
    * Schedule notifications for prayer times
    */
-  function schedulePrayerNotifications(prayers: Array<{ name: string, timestamp: number }>) {
+  function schedulePrayerNotifications(prayers: ReadonlyArray<{ readonly name: string, readonly timestamp: number }>) {
     clearScheduled()
 
     if (!settings.value.enabled || permission.value !== 'granted') return

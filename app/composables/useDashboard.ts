@@ -66,10 +66,14 @@ export function useDashboard() {
     const swap = direction === 'up' ? idx - 1 : idx + 1
     if (swap < 0 || swap >= widgets.value.length) return
 
+    const widgetA = widgets.value[idx]
+    const widgetB = widgets.value[swap]
+    if (!widgetA || !widgetB) return
+
     // Swap order values
-    const temp = widgets.value[idx].order
-    widgets.value[idx].order = widgets.value[swap].order
-    widgets.value[swap].order = temp
+    const temp = widgetA.order
+    widgetA.order = widgetB.order
+    widgetB.order = temp
 
     // Re-sort
     widgets.value = [...widgets.value].sort((a, b) => a.order - b.order)
