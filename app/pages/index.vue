@@ -8,10 +8,12 @@ const { t } = useI18n()
 const { location, loadSaved, detectGPS } = useLocation()
 const prayerTimes = usePrayerTimes()
 const dashboard = useDashboard()
+const notifications = useNotifications()
 
-// Initialize location + prayer times
+// Initialize location + prayer times + notifications
 onMounted(async () => {
   dashboard.loadConfig()
+  notifications.loadSettings()
 
   const saved = loadSaved()
   if (!saved) {
@@ -23,12 +25,21 @@ onMounted(async () => {
   if (location.value) {
     await prayerTimes.fetchTimes(location.value.latitude, location.value.longitude)
   }
+
+  // Schedule prayer notifications
+  if (prayerTimes.data.value?.prayers) {
+    notifications.schedulePrayerNotifications(prayerTimes.data.value.prayers)
+  }
 })
 
 // Re-fetch when location changes
 watch(location, async (newLoc) => {
   if (newLoc) {
     await prayerTimes.fetchTimes(newLoc.latitude, newLoc.longitude)
+    // Reschedule notifications with new times
+    if (prayerTimes.data.value?.prayers) {
+      notifications.schedulePrayerNotifications(prayerTimes.data.value.prayers)
+    }
   }
 })
 

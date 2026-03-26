@@ -2,6 +2,11 @@
 const { t, locale, setLocale, locales } = useI18n()
 const { location } = useLocation()
 const theme = useTheme()
+const notifications = useNotifications()
+
+onMounted(() => {
+  notifications.loadSettings()
+})
 
 // Available locales from config
 const availableLocales = computed(() => {
@@ -21,6 +26,8 @@ function switchLocale(code: string) {
 function switchTheme(mode: 'dark' | 'light' | 'system') {
   theme.setTheme(mode)
 }
+
+const minutesOptions = [0, 5, 10, 15, 30]
 </script>
 
 <template>
@@ -95,6 +102,79 @@ function switchTheme(mode: 'dark' | 'light' | 'system') {
         </p>
         <p v-if="location" class="text-xs text-themed-faint">
           {{ location.latitude.toFixed(4) }}°N, {{ location.longitude.toFixed(4) }}°E
+        </p>
+      </div>
+    </GlassCard>
+
+    <!-- Notifications -->
+    <GlassCard>
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
+            {{ t('notifications.title') }}
+          </h3>
+          <button
+            :class="[
+              'relative w-12 h-7 rounded-full transition-all duration-200',
+              notifications.settings.value.enabled
+                ? 'bg-[var(--color-primary)]'
+                : 'glass-subtle'
+            ]"
+            @click="notifications.toggleEnabled()"
+          >
+            <span
+              :class="[
+                'absolute top-1 w-5 h-5 rounded-full bg-white shadow transition-all duration-200',
+                notifications.settings.value.enabled ? 'left-6' : 'left-1'
+              ]"
+            />
+          </button>
+        </div>
+
+        <template v-if="notifications.settings.value.enabled">
+          <!-- Minutes before -->
+          <div class="space-y-2">
+            <p class="text-xs text-themed-muted">{{ t('notifications.minutesBefore') }}</p>
+            <div class="flex gap-2">
+              <button
+                v-for="min in minutesOptions"
+                :key="min"
+                :class="[
+                  'flex-1 py-1.5 rounded-lg text-xs font-medium transition-all',
+                  notifications.settings.value.minutesBefore === min
+                    ? 'bg-[var(--color-primary)] text-white'
+                    : 'glass-subtle text-themed-secondary'
+                ]"
+                @click="notifications.setMinutesBefore(min)"
+              >
+                {{ min === 0 ? t('notifications.atTime') : `${min} min` }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Per-prayer toggles -->
+          <div class="space-y-2">
+            <p class="text-xs text-themed-muted">{{ t('notifications.prayers') }}</p>
+            <div class="grid grid-cols-2 gap-2">
+              <button
+                v-for="prayer in notifications.PRAYER_NAMES"
+                :key="prayer"
+                :class="[
+                  'py-2 px-3 rounded-xl text-xs font-medium transition-all',
+                  notifications.settings.value.prayerAlerts[prayer]
+                    ? 'bg-[var(--color-primary)] bg-opacity-20 text-[var(--color-primary-light)] border border-[var(--color-primary)]'
+                    : 'glass-subtle text-themed-faint'
+                ]"
+                @click="notifications.togglePrayer(prayer)"
+              >
+                {{ t(`prayer.${prayer.toLowerCase()}`) }}
+              </button>
+            </div>
+          </div>
+        </template>
+
+        <p v-if="notifications.permission.value === 'denied'" class="text-xs text-[var(--color-danger)]">
+          {{ t('notifications.denied') }}
         </p>
       </div>
     </GlassCard>

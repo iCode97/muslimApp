@@ -168,6 +168,15 @@
     "roundComplete": "Runde abgeschlossen",
     "nextRound": "Nächste Runde"
   },
+  "notifications": {
+    "title": "Benachrichtigungen",
+    "minutesBefore": "Benachrichtigung vor Gebetszeit",
+    "atTime": "Zur Zeit",
+    "prayers": "Gebete",
+    "prayerIn": "In {minutes} Minuten",
+    "prayerNow": "Es ist Zeit für das Gebet",
+    "denied": "Benachrichtigungen wurden blockiert. Bitte in den Browser-Einstellungen erlauben."
+  },
   "dua": {
     "title": "Bittgebete",
     "subtitle": "Duas für verschiedene Anlässe",

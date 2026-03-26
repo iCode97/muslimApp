@@ -168,6 +168,15 @@
     "roundComplete": "Round complete",
     "nextRound": "Next round"
   },
+  "notifications": {
+    "title": "Notifications",
+    "minutesBefore": "Notify before prayer time",
+    "atTime": "At time",
+    "prayers": "Prayers",
+    "prayerIn": "In {minutes} minutes",
+    "prayerNow": "It's time for prayer",
+    "denied": "Notifications are blocked. Please allow in browser settings."
+  },
   "dua": {
     "title": "Supplications",
     "subtitle": "Duas for various occasions",

@@ -168,6 +168,15 @@
     "roundComplete": "Tur tamamlandı",
     "nextRound": "Sonraki tur"
   },
+  "notifications": {
+    "title": "Bildirimler",
+    "minutesBefore": "Namaz vaktinden önce bildir",
+    "atTime": "Vaktinde",
+    "prayers": "Namazlar",
+    "prayerIn": "{minutes} dakika içinde",
+    "prayerNow": "Namaz vakti geldi",
+    "denied": "Bildirimler engellendi. Lütfen tarayıcı ayarlarından izin verin."
+  },
   "dua": {
     "title": "Dualar",
     "subtitle": "Çeşitli vesileler için dualar",
