@@ -10,6 +10,7 @@ const tools = [
   { path: '/tasbih', icon: '📿', labelKey: 'more.tasbih', descKey: 'more.tasbihDesc' },
   { path: '/qibla', icon: '🧭', labelKey: 'more.qibla', descKey: 'more.qiblaDesc' },
   { path: '/dua', icon: '🤲', labelKey: 'more.dua', descKey: 'more.duaDesc' },
+  { path: '/hadith', icon: '📜', labelKey: 'more.hadith', descKey: 'more.hadithDesc' },
 ]
 </script>
 

@@ -21,6 +21,7 @@ const DEFAULT_WIDGETS: DashboardWidget[] = [
   { id: 'random-verse', i18nKey: 'widgets.randomVerse', icon: '✨', enabled: false, order: 4 },
   { id: 'tasbih-quick', i18nKey: 'widgets.tasbihQuick', icon: '📿', enabled: false, order: 5 },
   { id: 'hijri-date', i18nKey: 'widgets.hijriDate', icon: '☪', enabled: false, order: 6 },
+  { id: 'hadith-of-day', i18nKey: 'widgets.hadithOfDay', icon: '📜', enabled: false, order: 7 },
 ]
 
 export function useDashboard() {

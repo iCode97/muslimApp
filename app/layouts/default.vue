@@ -10,7 +10,7 @@ const navItems = [
   { path: '/more', icon: '\u{2022}\u{2022}\u{2022}', label: 'nav.more' },
 ]
 
-const moreRoutes = ['/more', '/settings', '/tasbih', '/qibla', '/dua']
+const moreRoutes = ['/more', '/settings', '/tasbih', '/qibla', '/dua', '/hadith']
 
 function isActive(path: string): boolean {
   if (path === '/') return route.path === '/'

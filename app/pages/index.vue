@@ -80,6 +80,7 @@ const widgetComponents: Record<string, string> = {
   'random-verse': 'RandomVerse',
   'tasbih-quick': 'TasbihQuick',
   'hijri-date': 'HijriDateWidget',
+  'hadith-of-day': 'HadithOfDay',
 }
 </script>
 
@@ -195,6 +196,7 @@ const widgetComponents: Record<string, string> = {
         <RandomVerse v-else-if="widget.id === 'random-verse'" />
         <TasbihQuick v-else-if="widget.id === 'tasbih-quick'" />
         <HijriDateWidget v-else-if="widget.id === 'hijri-date'" />
+        <HadithOfDay v-else-if="widget.id === 'hadith-of-day'" />
       </div>
     </template>
   </div>

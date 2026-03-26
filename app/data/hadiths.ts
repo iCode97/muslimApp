@@ -1,0 +1,566 @@
+/**
+ * Curated Hadith collection.
+ * ~50 well-known hadiths from Sahih Bukhari, Sahih Muslim, and other authentic sources.
+ * Arabic text + translations in DE/EN/TR.
+ */
+
+export interface Hadith {
+  id: number
+  category: string
+  arabic: string
+  translations: {
+    de: string
+    en: string
+    tr: string
+  }
+  source: string       // e.g. "Bukhari 1", "Muslim 2564"
+  narrator?: string    // e.g. "Abu Huraira"
+}
+
+export const HADITH_CATEGORIES = [
+  'faith', 'character', 'prayer', 'knowledge', 'community', 'daily', 'mercy', 'deeds',
+] as const
+
+export const HADITHS: Hadith[] = [
+  // === FAITH ===
+  {
+    id: 1,
+    category: 'faith',
+    arabic: 'إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى',
+    translations: {
+      de: 'Die Taten sind nur entsprechend den Absichten, und jedem Menschen steht nur das zu, was er beabsichtigt hat.',
+      en: 'Actions are judged by intentions, and every person will get what they intended.',
+      tr: 'Ameller niyetlere göredir. Herkese niyet ettiği şey vardır.',
+    },
+    source: 'Bukhari 1, Muslim 1907',
+    narrator: 'Umar ibn al-Khattab',
+  },
+  {
+    id: 2,
+    category: 'faith',
+    arabic: 'لَا يُؤْمِنُ أَحَدُكُمْ حَتَّى يُحِبَّ لِأَخِيهِ مَا يُحِبُّ لِنَفْسِهِ',
+    translations: {
+      de: 'Keiner von euch glaubt wahrhaftig, bis er für seinen Bruder wünscht, was er für sich selbst wünscht.',
+      en: 'None of you truly believes until he loves for his brother what he loves for himself.',
+      tr: 'Sizden biriniz kendisi için sevdiğini kardeşi için de sevmedikçe iman etmiş olmaz.',
+    },
+    source: 'Bukhari 13, Muslim 45',
+    narrator: 'Anas ibn Malik',
+  },
+  {
+    id: 3,
+    category: 'faith',
+    arabic: 'مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ',
+    translations: {
+      de: 'Wer an Allah und den Jüngsten Tag glaubt, der soll Gutes sagen oder schweigen.',
+      en: 'Whoever believes in Allah and the Last Day, let him speak good or remain silent.',
+      tr: 'Allah\'a ve ahiret gününe iman eden ya hayır söylesin ya da sussun.',
+    },
+    source: 'Bukhari 6018, Muslim 47',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 4,
+    category: 'faith',
+    arabic: 'الدِّينُ النَّصِيحَةُ',
+    translations: {
+      de: 'Die Religion ist aufrichtiger Rat.',
+      en: 'The religion is sincere advice.',
+      tr: 'Din nasihattir.',
+    },
+    source: 'Muslim 55',
+    narrator: 'Tamim ad-Dari',
+  },
+
+  // === CHARACTER ===
+  {
+    id: 5,
+    category: 'character',
+    arabic: 'إِنَّ مِنْ أَحَبِّكُمْ إِلَيَّ وَأَقْرَبِكُمْ مِنِّي مَجْلِسًا يَوْمَ الْقِيَامَةِ أَحَاسِنَكُمْ أَخْلَاقًا',
+    translations: {
+      de: 'Die mir Liebsten und am Jüngsten Tag am nächsten Sitzenden sind die mit dem besten Charakter.',
+      en: 'The dearest to me and closest to me on the Day of Judgment are those with the best character.',
+      tr: 'Kıyamet günü bana en sevgili ve en yakın olanınız, ahlakı en güzel olanınızdır.',
+    },
+    source: 'Tirmidhi 2018',
+    narrator: 'Jabir',
+  },
+  {
+    id: 6,
+    category: 'character',
+    arabic: 'لَا تَغْضَبْ',
+    translations: {
+      de: 'Werde nicht zornig.',
+      en: 'Do not become angry.',
+      tr: 'Kızma!',
+    },
+    source: 'Bukhari 6116',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 7,
+    category: 'character',
+    arabic: 'تَبَسُّمُكَ فِي وَجْهِ أَخِيكَ لَكَ صَدَقَةٌ',
+    translations: {
+      de: 'Dein Lächeln gegenüber deinem Bruder ist eine Spende.',
+      en: 'Your smile to your brother is a charity.',
+      tr: 'Kardeşinin yüzüne gülümsemen sadakadır.',
+    },
+    source: 'Tirmidhi 1956',
+    narrator: 'Abu Dharr',
+  },
+  {
+    id: 8,
+    category: 'character',
+    arabic: 'الْمُسْلِمُ مَنْ سَلِمَ الْمُسْلِمُونَ مِنْ لِسَانِهِ وَيَدِهِ',
+    translations: {
+      de: 'Der Muslim ist derjenige, vor dessen Zunge und Hand die anderen Muslime sicher sind.',
+      en: 'A Muslim is one from whose tongue and hand other Muslims are safe.',
+      tr: 'Müslüman, dilinden ve elinden Müslümanların güvende olduğu kimsedir.',
+    },
+    source: 'Bukhari 10, Muslim 40',
+    narrator: 'Abdullah ibn Amr',
+  },
+  {
+    id: 9,
+    category: 'character',
+    arabic: 'مَا نَقَصَتْ صَدَقَةٌ مِنْ مَالٍ وَمَا زَادَ اللَّهُ عَبْدًا بِعَفْوٍ إِلَّا عِزًّا',
+    translations: {
+      de: 'Eine Spende verringert niemals den Besitz. Allah erhöht durch Vergebung nur die Ehre eines Dieners.',
+      en: 'Charity does not decrease wealth. Allah increases honor through forgiveness.',
+      tr: 'Sadaka malı eksiltmez. Allah affeden kulun ancak şerefini artırır.',
+    },
+    source: 'Muslim 2588',
+    narrator: 'Abu Huraira',
+  },
+
+  // === PRAYER ===
+  {
+    id: 10,
+    category: 'prayer',
+    arabic: 'الصَّلَاةُ عِمَادُ الدِّينِ',
+    translations: {
+      de: 'Das Gebet ist die Säule der Religion.',
+      en: 'Prayer is the pillar of the religion.',
+      tr: 'Namaz dinin direğidir.',
+    },
+    source: 'Baihaqi',
+    narrator: 'Umar ibn al-Khattab',
+  },
+  {
+    id: 11,
+    category: 'prayer',
+    arabic: 'أَقْرَبُ مَا يَكُونُ الْعَبْدُ مِنْ رَبِّهِ وَهُوَ سَاجِدٌ فَأَكْثِرُوا الدُّعَاءَ',
+    translations: {
+      de: 'Am nächsten ist der Diener seinem Herrn, wenn er in der Niederwerfung ist. Macht also viel Bittgebet.',
+      en: 'The closest a servant is to his Lord is when he is in prostration, so increase your supplications.',
+      tr: 'Kulun Rabbine en yakın olduğu an secdedeyken olduğu andır. O halde çok dua edin.',
+    },
+    source: 'Muslim 482',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 12,
+    category: 'prayer',
+    arabic: 'مَنْ صَلَّى الْبَرْدَيْنِ دَخَلَ الْجَنَّةَ',
+    translations: {
+      de: 'Wer die beiden kühlen Gebete (Fajr und Asr) verrichtet, wird ins Paradies eintreten.',
+      en: 'Whoever prays the two cool prayers (Fajr and Asr) will enter Paradise.',
+      tr: 'İki serin vaktin (sabah ve ikindi) namazını kılan cennete girer.',
+    },
+    source: 'Bukhari 574, Muslim 635',
+    narrator: 'Abu Musa al-Aschari',
+  },
+
+  // === KNOWLEDGE ===
+  {
+    id: 13,
+    category: 'knowledge',
+    arabic: 'طَلَبُ الْعِلْمِ فَرِيضَةٌ عَلَى كُلِّ مُسْلِمٍ',
+    translations: {
+      de: 'Das Streben nach Wissen ist eine Pflicht für jeden Muslim.',
+      en: 'Seeking knowledge is an obligation upon every Muslim.',
+      tr: 'İlim öğrenmek her Müslümana farzdır.',
+    },
+    source: 'Ibn Majah 224',
+    narrator: 'Anas ibn Malik',
+  },
+  {
+    id: 14,
+    category: 'knowledge',
+    arabic: 'مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ طَرِيقًا إِلَى الْجَنَّةِ',
+    translations: {
+      de: 'Wer einen Weg beschreitet, um Wissen zu suchen, dem erleichtert Allah einen Weg zum Paradies.',
+      en: 'Whoever takes a path seeking knowledge, Allah will make easy for him a path to Paradise.',
+      tr: 'Kim ilim aramak için bir yola girerse Allah ona cennete giden yolu kolaylaştırır.',
+    },
+    source: 'Muslim 2699',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 15,
+    category: 'knowledge',
+    arabic: 'بَلِّغُوا عَنِّي وَلَوْ آيَةً',
+    translations: {
+      de: 'Übermittelt von mir, auch wenn es nur ein Vers ist.',
+      en: 'Convey from me, even if it is one verse.',
+      tr: 'Benden bir ayet bile olsa tebliğ edin.',
+    },
+    source: 'Bukhari 3461',
+    narrator: 'Abdullah ibn Amr',
+  },
+
+  // === COMMUNITY ===
+  {
+    id: 16,
+    category: 'community',
+    arabic: 'مَثَلُ الْمُؤْمِنِينَ فِي تَوَادِّهِمْ وَتَرَاحُمِهِمْ وَتَعَاطُفِهِمْ مَثَلُ الْجَسَدِ إِذَا اشْتَكَى مِنْهُ عُضْوٌ تَدَاعَى لَهُ سَائِرُ الْجَسَدِ بِالسَّهَرِ وَالْحُمَّى',
+    translations: {
+      de: 'Das Gleichnis der Gläubigen in ihrer gegenseitigen Liebe und ihrem Mitgefühl ist wie ein Körper: Wenn ein Glied leidet, reagiert der gesamte Körper mit Schlaflosigkeit und Fieber.',
+      en: 'The believers in their mutual love and compassion are like one body; when one limb suffers, the whole body responds with sleeplessness and fever.',
+      tr: 'Müminler sevgi ve merhamette bir vücut gibidir. Bir uzuv rahatsızlanınca diğer uzuvlar uykusuzluk ve ateşle ona ortak olurlar.',
+    },
+    source: 'Bukhari 6011, Muslim 2586',
+    narrator: 'Nu\'man ibn Bashir',
+  },
+  {
+    id: 17,
+    category: 'community',
+    arabic: 'الْمُؤْمِنُ لِلْمُؤْمِنِ كَالْبُنْيَانِ يَشُدُّ بَعْضُهُ بَعْضًا',
+    translations: {
+      de: 'Der Gläubige ist für den Gläubigen wie ein Bauwerk — einer stützt den anderen.',
+      en: 'A believer to another believer is like a building — each part supports the other.',
+      tr: 'Mümin müminin kardeşidir. Birbirlerini bir binanın tuğlaları gibi desteklerler.',
+    },
+    source: 'Bukhari 481, Muslim 2585',
+    narrator: 'Abu Musa al-Aschari',
+  },
+  {
+    id: 18,
+    category: 'community',
+    arabic: 'لَا يَدْخُلُ الْجَنَّةَ مَنْ لَا يَأْمَنُ جَارُهُ بَوَائِقَهُ',
+    translations: {
+      de: 'Wer ins Paradies eintreten möchte, vor dessen Übel sein Nachbar nicht sicher ist, wird es nicht betreten.',
+      en: 'He will not enter Paradise whose neighbor is not safe from his harm.',
+      tr: 'Komşusu zararından emin olmayan kişi cennete giremez.',
+    },
+    source: 'Muslim 46',
+    narrator: 'Abu Huraira',
+  },
+
+  // === DAILY LIFE ===
+  {
+    id: 19,
+    category: 'daily',
+    arabic: 'مَنْ غَشَّنَا فَلَيْسَ مِنَّا',
+    translations: {
+      de: 'Wer uns betrügt, gehört nicht zu uns.',
+      en: 'Whoever cheats us is not one of us.',
+      tr: 'Bizi aldatan bizden değildir.',
+    },
+    source: 'Muslim 101',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 20,
+    category: 'daily',
+    arabic: 'إِنَّ اللَّهَ يُحِبُّ إِذَا عَمِلَ أَحَدُكُمْ عَمَلًا أَنْ يُتْقِنَهُ',
+    translations: {
+      de: 'Allah liebt es, wenn jemand von euch eine Arbeit verrichtet, dass er sie gewissenhaft macht.',
+      en: 'Allah loves that when one of you does work, they do it with excellence.',
+      tr: 'Allah, birinizin bir iş yaptığında onu güzel yapmasını sever.',
+    },
+    source: 'Baihaqi, Tabarani',
+    narrator: 'Aischa',
+  },
+  {
+    id: 21,
+    category: 'daily',
+    arabic: 'كُلُّكُمْ رَاعٍ وَكُلُّكُمْ مَسْئُولٌ عَنْ رَعِيَّتِهِ',
+    translations: {
+      de: 'Jeder von euch ist ein Hirte, und jeder ist verantwortlich für seine Herde.',
+      en: 'Each of you is a shepherd, and each is responsible for his flock.',
+      tr: 'Hepiniz çobansınız ve hepiniz sürünüzden sorumlusunuz.',
+    },
+    source: 'Bukhari 893, Muslim 1829',
+    narrator: 'Abdullah ibn Umar',
+  },
+  {
+    id: 22,
+    category: 'daily',
+    arabic: 'خَيْرُكُمْ خَيْرُكُمْ لِأَهْلِهِ وَأَنَا خَيْرُكُمْ لِأَهْلِي',
+    translations: {
+      de: 'Der Beste unter euch ist der, der am besten zu seiner Familie ist. Und ich bin der Beste von euch zu meiner Familie.',
+      en: 'The best of you are the best to their families, and I am the best of you to my family.',
+      tr: 'En hayırlınız ailesine en hayırlı olanınızdır. Ben de aileme en hayırlı olanınızım.',
+    },
+    source: 'Tirmidhi 3895, Ibn Majah 1977',
+    narrator: 'Aischa',
+  },
+
+  // === MERCY ===
+  {
+    id: 23,
+    category: 'mercy',
+    arabic: 'الرَّاحِمُونَ يَرْحَمُهُمُ الرَّحْمَنُ ارْحَمُوا مَنْ فِي الْأَرْضِ يَرْحَمْكُمْ مَنْ فِي السَّمَاءِ',
+    translations: {
+      de: 'Die Barmherzigen — der Allerbarmer erbarmt sich ihrer. Erbarmt euch derer auf der Erde, dann erbarmt sich eurer, Der im Himmel ist.',
+      en: 'The merciful — the Most Merciful has mercy on them. Show mercy to those on earth, and the One in the heavens will show mercy to you.',
+      tr: 'Merhamet edenler — Rahman onlara merhamet eder. Yeryüzündekilere merhamet edin ki gökteki de size merhamet etsin.',
+    },
+    source: 'Abu Dawud 4941, Tirmidhi 1924',
+    narrator: 'Abdullah ibn Amr',
+  },
+  {
+    id: 24,
+    category: 'mercy',
+    arabic: 'مَنْ لَا يَرْحَمُ النَّاسَ لَا يَرْحَمُهُ اللَّهُ',
+    translations: {
+      de: 'Wer den Menschen nicht barmherzig ist, dem erbarmt sich Allah nicht.',
+      en: 'He who does not show mercy to the people, Allah will not show mercy to him.',
+      tr: 'İnsanlara merhamet etmeyene Allah da merhamet etmez.',
+    },
+    source: 'Bukhari 7376, Muslim 2319',
+    narrator: 'Jarir ibn Abdullah',
+  },
+  {
+    id: 25,
+    category: 'mercy',
+    arabic: 'لَا تُنْزَعُ الرَّحْمَةُ إِلَّا مِنْ شَقِيٍّ',
+    translations: {
+      de: 'Barmherzigkeit wird nur dem Elenden entzogen.',
+      en: 'Mercy is not removed except from a wretched person.',
+      tr: 'Merhamet ancak bedbaht olandan alınır.',
+    },
+    source: 'Abu Dawud 4942, Tirmidhi 1923',
+    narrator: 'Abu Huraira',
+  },
+
+  // === GOOD DEEDS ===
+  {
+    id: 26,
+    category: 'deeds',
+    arabic: 'أَحَبُّ الْأَعْمَالِ إِلَى اللَّهِ أَدْوَمُهَا وَإِنْ قَلَّ',
+    translations: {
+      de: 'Die beliebtesten Taten bei Allah sind die beständigsten, auch wenn sie gering sind.',
+      en: 'The most beloved deeds to Allah are the most consistent, even if small.',
+      tr: 'Allah\'a en sevimli ameller az da olsa devamlı yapılanıdır.',
+    },
+    source: 'Bukhari 6464, Muslim 783',
+    narrator: 'Aischa',
+  },
+  {
+    id: 27,
+    category: 'deeds',
+    arabic: 'اتَّقِ اللَّهَ حَيْثُمَا كُنْتَ وَأَتْبِعِ السَّيِّئَةَ الْحَسَنَةَ تَمْحُهَا وَخَالِقِ النَّاسَ بِخُلُقٍ حَسَنٍ',
+    translations: {
+      de: 'Fürchte Allah, wo auch immer du bist. Lasse einer schlechten Tat eine gute folgen, sie wird sie auslöschen. Und behandle die Menschen mit gutem Charakter.',
+      en: 'Fear Allah wherever you are, follow a bad deed with a good one to erase it, and behave well towards people.',
+      tr: 'Nerede olursan ol Allah\'tan kork. Kötülüğün arkasından iyilik yap ki onu silsin. İnsanlara güzel ahlakla davran.',
+    },
+    source: 'Tirmidhi 1987',
+    narrator: 'Abu Dharr & Muadh ibn Jabal',
+  },
+  {
+    id: 28,
+    category: 'deeds',
+    arabic: 'مَنْ صَامَ رَمَضَانَ إِيمَانًا وَاحْتِسَابًا غُفِرَ لَهُ مَا تَقَدَّمَ مِنْ ذَنْبِهِ',
+    translations: {
+      de: 'Wer den Ramadan aus Glauben und in Hoffnung auf Belohnung fastet, dem werden seine vergangenen Sünden vergeben.',
+      en: 'Whoever fasts Ramadan out of faith and hoping for reward, his past sins will be forgiven.',
+      tr: 'Kim iman ederek ve sevabını Allah\'tan bekleyerek Ramazan orucunu tutarsa geçmiş günahları bağışlanır.',
+    },
+    source: 'Bukhari 38, Muslim 760',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 29,
+    category: 'deeds',
+    arabic: 'إِنَّ اللَّهَ لَا يَنْظُرُ إِلَى صُوَرِكُمْ وَأَمْوَالِكُمْ وَلَكِنْ يَنْظُرُ إِلَى قُلُوبِكُمْ وَأَعْمَالِكُمْ',
+    translations: {
+      de: 'Allah schaut nicht auf euer Äußeres und euren Besitz, sondern auf eure Herzen und eure Taten.',
+      en: 'Allah does not look at your appearance or wealth, but at your hearts and your deeds.',
+      tr: 'Allah sizin suretlerinize ve mallarınıza bakmaz, kalplerinize ve amellerinize bakar.',
+    },
+    source: 'Muslim 2564',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 30,
+    category: 'deeds',
+    arabic: 'الطُّهُورُ شَطْرُ الْإِيمَانِ',
+    translations: {
+      de: 'Reinheit ist die Hälfte des Glaubens.',
+      en: 'Cleanliness is half of faith.',
+      tr: 'Temizlik imanın yarısıdır.',
+    },
+    source: 'Muslim 223',
+    narrator: 'Abu Malik al-Aschari',
+  },
+
+  // === More FAITH ===
+  {
+    id: 31,
+    category: 'faith',
+    arabic: 'الدُّنْيَا سِجْنُ الْمُؤْمِنِ وَجَنَّةُ الْكَافِرِ',
+    translations: {
+      de: 'Das Diesseits ist das Gefängnis des Gläubigen und das Paradies des Ungläubigen.',
+      en: 'The world is a prison for the believer and a paradise for the disbeliever.',
+      tr: 'Dünya müminin zindanı, kâfirin cennetidir.',
+    },
+    source: 'Muslim 2956',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 32,
+    category: 'faith',
+    arabic: 'يَسِّرُوا وَلَا تُعَسِّرُوا وَبَشِّرُوا وَلَا تُنَفِّرُوا',
+    translations: {
+      de: 'Macht es leicht und nicht schwer, und verkündet frohe Botschaft und schreckt nicht ab.',
+      en: 'Make things easy and not difficult, and give glad tidings and do not drive people away.',
+      tr: 'Kolaylaştırın, zorlaştırmayın. Müjdeleyin, nefret ettirmeyin.',
+    },
+    source: 'Bukhari 69, Muslim 1734',
+    narrator: 'Anas ibn Malik',
+  },
+
+  // === More CHARACTER ===
+  {
+    id: 33,
+    category: 'character',
+    arabic: 'لَا يَحِلُّ لِمُسْلِمٍ أَنْ يَهْجُرَ أَخَاهُ فَوْقَ ثَلَاثَةِ أَيَّامٍ',
+    translations: {
+      de: 'Es ist einem Muslim nicht erlaubt, seinen Bruder mehr als drei Tage zu meiden.',
+      en: 'It is not permissible for a Muslim to shun his brother for more than three days.',
+      tr: 'Bir Müslümanın kardeşini üç günden fazla terk etmesi helal değildir.',
+    },
+    source: 'Bukhari 6077, Muslim 2559',
+    narrator: 'Abu Ayyub al-Ansari',
+  },
+  {
+    id: 34,
+    category: 'character',
+    arabic: 'إِيَّاكُمْ وَالظَّنَّ فَإِنَّ الظَّنَّ أَكْذَبُ الْحَدِيثِ',
+    translations: {
+      de: 'Hütet euch vor der Vermutung, denn die Vermutung ist die lügnerischste Rede.',
+      en: 'Beware of suspicion, for suspicion is the most untruthful speech.',
+      tr: 'Zandan sakının! Çünkü zan, sözlerin en yalanıdır.',
+    },
+    source: 'Bukhari 6064, Muslim 2563',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 35,
+    category: 'character',
+    arabic: 'لَيْسَ الشَّدِيدُ بِالصُّرَعَةِ إِنَّمَا الشَّدِيدُ الَّذِي يَمْلِكُ نَفْسَهُ عِنْدَ الْغَضَبِ',
+    translations: {
+      de: 'Der Starke ist nicht der gute Ringer, sondern der, der sich im Zorn beherrscht.',
+      en: 'The strong man is not the good wrestler, but the one who controls himself when angry.',
+      tr: 'Güçlü kişi güreşte yenen değil, öfke anında kendine hâkim olan kimsedir.',
+    },
+    source: 'Bukhari 6114, Muslim 2609',
+    narrator: 'Abu Huraira',
+  },
+
+  // === More COMMUNITY ===
+  {
+    id: 36,
+    category: 'community',
+    arabic: 'خَيْرُ النَّاسِ أَنْفَعُهُمْ لِلنَّاسِ',
+    translations: {
+      de: 'Der beste Mensch ist der, der den Menschen am nützlichsten ist.',
+      en: 'The best of people are those who are most beneficial to others.',
+      tr: 'İnsanların en hayırlısı insanlara en faydalı olandır.',
+    },
+    source: 'Tabarani, Daraqutni',
+    narrator: 'Jabir',
+  },
+  {
+    id: 37,
+    category: 'community',
+    arabic: 'مَنْ كَانَ فِي حَاجَةِ أَخِيهِ كَانَ اللَّهُ فِي حَاجَتِهِ',
+    translations: {
+      de: 'Wer seinem Bruder in einer Angelegenheit hilft, dem hilft Allah in seiner Angelegenheit.',
+      en: 'Whoever helps his brother in need, Allah will help him in his need.',
+      tr: 'Kim kardeşinin ihtiyacını giderirse Allah da onun ihtiyacını giderir.',
+    },
+    source: 'Bukhari 2442, Muslim 2580',
+    narrator: 'Abdullah ibn Umar',
+  },
+
+  // === More DEEDS ===
+  {
+    id: 38,
+    category: 'deeds',
+    arabic: 'مَنْ قَرَأَ حَرْفًا مِنْ كِتَابِ اللَّهِ فَلَهُ بِهِ حَسَنَةٌ وَالْحَسَنَةُ بِعَشْرِ أَمْثَالِهَا',
+    translations: {
+      de: 'Wer einen Buchstaben aus dem Buch Allahs liest, dem wird dafür eine gute Tat angerechnet. Und die gute Tat wird zehnfach belohnt.',
+      en: 'Whoever reads a letter from the Book of Allah will receive a good deed, and each good deed is multiplied tenfold.',
+      tr: 'Kim Allah\'ın kitabından bir harf okursa ona bir hasene yazılır. Her hasene on katıyla mükâfatlandırılır.',
+    },
+    source: 'Tirmidhi 2910',
+    narrator: 'Abdullah ibn Masud',
+  },
+  {
+    id: 39,
+    category: 'deeds',
+    arabic: 'إِذَا مَاتَ الْإِنْسَانُ انْقَطَعَ عَمَلُهُ إِلَّا مِنْ ثَلَاثٍ صَدَقَةٍ جَارِيَةٍ أَوْ عِلْمٍ يُنْتَفَعُ بِهِ أَوْ وَلَدٍ صَالِحٍ يَدْعُو لَهُ',
+    translations: {
+      de: 'Wenn der Mensch stirbt, enden seine Taten, außer drei: eine fortlaufende Spende, nützliches Wissen oder ein rechtschaffenes Kind, das für ihn betet.',
+      en: 'When a person dies, their deeds end except for three: ongoing charity, beneficial knowledge, or a righteous child who prays for them.',
+      tr: 'İnsan öldüğünde ameli kesilir, ancak üç şey hariç: sadaka-i cariye, faydalı ilim ve kendisine dua eden salih evlat.',
+    },
+    source: 'Muslim 1631',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 40,
+    category: 'deeds',
+    arabic: 'الْكَلِمَةُ الطَّيِّبَةُ صَدَقَةٌ',
+    translations: {
+      de: 'Ein gutes Wort ist eine Spende.',
+      en: 'A good word is a charity.',
+      tr: 'Güzel söz sadakadır.',
+    },
+    source: 'Bukhari 2989, Muslim 1009',
+    narrator: 'Abu Huraira',
+  },
+
+  // === More MERCY / DAILY ===
+  {
+    id: 41,
+    category: 'mercy',
+    arabic: 'مَنْ نَفَّسَ عَنْ مُؤْمِنٍ كُرْبَةً مِنْ كُرَبِ الدُّنْيَا نَفَّسَ اللَّهُ عَنْهُ كُرْبَةً مِنْ كُرَبِ يَوْمِ الْقِيَامَةِ',
+    translations: {
+      de: 'Wer einem Gläubigen eine weltliche Not erleichtert, dem erleichtert Allah eine Not am Tag der Auferstehung.',
+      en: 'Whoever relieves a believer of a worldly hardship, Allah will relieve him of a hardship on the Day of Judgment.',
+      tr: 'Kim bir müminin dünya sıkıntılarından birini giderirse Allah da onun kıyamet sıkıntılarından birini giderir.',
+    },
+    source: 'Muslim 2699',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 42,
+    category: 'daily',
+    arabic: 'لَا ضَرَرَ وَلَا ضِرَارَ',
+    translations: {
+      de: 'Kein Schaden und keine Schädigung.',
+      en: 'There should be neither harm nor reciprocal harm.',
+      tr: 'Zarar vermek de zarara uğramak da yoktur.',
+    },
+    source: 'Ibn Majah 2341',
+    narrator: 'Abu Said al-Khudri',
+  },
+  {
+    id: 43,
+    category: 'daily',
+    arabic: 'مَنْ أَكَلَ طَيِّبًا وَعَمِلَ فِي سُنَّةٍ وَأَمِنَ النَّاسُ بَوَائِقَهُ دَخَلَ الْجَنَّةَ',
+    translations: {
+      de: 'Wer Erlaubtes isst, nach der Sunnah handelt und die Menschen vor seinem Übel sicher sind, der tritt ins Paradies ein.',
+      en: 'Whoever eats what is lawful, acts upon the Sunnah, and people are safe from his harm, will enter Paradise.',
+      tr: 'Helal yiyen, sünnete göre amel eden ve insanların zararından emin oldukları kişi cennete girer.',
+    },
+    source: 'Tirmidhi 2520',
+    narrator: 'Abu Said al-Khudri',
+  },
+]
