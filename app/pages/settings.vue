@@ -6,11 +6,13 @@ const { location } = useLocation()
 const theme = useTheme()
 const notifications = useNotifications()
 const prayerTimes = usePrayerTimes()
+const offlineQuran = useOfflineQuran()
 
 const showMethodPicker = ref(false)
 
 onMounted(() => {
   notifications.loadSettings()
+  offlineQuran.checkStatus()
 })
 
 // Available locales from config
@@ -180,6 +182,72 @@ const minutesOptions = [0, 5, 10, 15, 30]
 
         <p v-if="notifications.permission.value === 'denied'" class="text-xs text-[var(--color-danger)]">
           {{ t('notifications.denied') }}
+        </p>
+      </div>
+    </GlassCard>
+
+    <!-- Offline Quran -->
+    <GlassCard>
+      <div class="space-y-3">
+        <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
+          {{ t('offline.title') }}
+        </h3>
+
+        <!-- Status -->
+        <div v-if="offlineQuran.status.value.downloaded" class="space-y-2">
+          <div class="flex items-center gap-2">
+            <span class="text-[var(--color-primary-light)]">✓</span>
+            <span class="text-sm text-themed-secondary">{{ t('offline.downloaded') }}</span>
+          </div>
+          <p class="text-xs text-themed-faint">
+            {{ offlineQuran.status.value.surahsDownloaded }}/114 {{ t('quran.surahs') }}
+            · ~{{ offlineQuran.status.value.sizeEstimateMB }} MB
+          </p>
+          <button
+            class="text-xs text-[var(--color-danger)] hover:underline"
+            @click="offlineQuran.deleteAll()"
+          >
+            {{ t('offline.delete') }}
+          </button>
+        </div>
+
+        <!-- Download in progress -->
+        <div v-else-if="offlineQuran.downloading.value" class="space-y-2">
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-themed-secondary">{{ t('offline.downloading') }}</span>
+            <span class="text-themed-muted tabular-nums">{{ offlineQuran.downloadProgress.value }}/114</span>
+          </div>
+          <!-- Progress bar -->
+          <div class="w-full h-2 rounded-full glass-subtle overflow-hidden">
+            <div
+              class="h-full rounded-full bg-[var(--color-primary-light)] transition-all duration-300"
+              :style="{ width: `${(offlineQuran.downloadProgress.value / 114) * 100}%` }"
+            />
+          </div>
+          <p class="text-xs text-themed-faint">
+            {{ t('offline.downloadHint') }}
+          </p>
+        </div>
+
+        <!-- Not downloaded -->
+        <div v-else class="space-y-2">
+          <p class="text-sm text-themed-secondary">
+            {{ t('offline.notDownloaded') }}
+          </p>
+          <button
+            class="w-full py-2.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-medium transition-all hover:opacity-90"
+            @click="offlineQuran.downloadAll()"
+          >
+            📥 {{ t('offline.downloadButton') }}
+          </button>
+          <p class="text-xs text-themed-faint">
+            {{ t('offline.sizeHint') }}
+          </p>
+        </div>
+
+        <!-- Error -->
+        <p v-if="offlineQuran.downloadError.value" class="text-xs text-[var(--color-danger)]">
+          {{ offlineQuran.downloadError.value }}
         </p>
       </div>
     </GlassCard>

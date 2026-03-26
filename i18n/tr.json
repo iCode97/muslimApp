@@ -169,6 +169,16 @@
     "roundComplete": "Tur tamamlandı",
     "nextRound": "Sonraki tur"
   },
+  "offline": {
+    "title": "Kur'an Çevrimdışı",
+    "downloaded": "Kur'an indirildi — çevrimdışı kullanılabilir",
+    "notDownloaded": "İnternet olmadan okumak için tüm Kur'an'ı indirin.",
+    "downloadButton": "Kur'an'ı İndir",
+    "downloading": "İndiriliyor...",
+    "downloadHint": "Lütfen uygulamayı kapatmayın. Bu birkaç dakika sürebilir.",
+    "sizeHint": "Arapça + 3 çeviri · yaklaşık 15 MB",
+    "delete": "Çevrimdışı verileri sil"
+  },
   "notifications": {
     "title": "Bildirimler",
     "minutesBefore": "Namaz vaktinden önce bildir",

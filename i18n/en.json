@@ -169,6 +169,16 @@
     "roundComplete": "Round complete",
     "nextRound": "Next round"
   },
+  "offline": {
+    "title": "Quran Offline",
+    "downloaded": "Quran downloaded — available offline",
+    "notDownloaded": "Download the entire Quran to read it without an internet connection.",
+    "downloadButton": "Download Quran",
+    "downloading": "Downloading...",
+    "downloadHint": "Please don't close the app. This may take a few minutes.",
+    "sizeHint": "Arabic + 3 translations · approx. 15 MB",
+    "delete": "Delete offline data"
+  },
   "notifications": {
     "title": "Notifications",
     "minutesBefore": "Notify before prayer time",

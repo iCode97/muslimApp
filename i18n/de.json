@@ -169,6 +169,16 @@
     "roundComplete": "Runde abgeschlossen",
     "nextRound": "Nächste Runde"
   },
+  "offline": {
+    "title": "Koran Offline",
+    "downloaded": "Koran heruntergeladen — offline verfügbar",
+    "notDownloaded": "Lade den gesamten Koran herunter, um ihn auch ohne Internet lesen zu können.",
+    "downloadButton": "Koran herunterladen",
+    "downloading": "Wird heruntergeladen...",
+    "downloadHint": "Bitte die App nicht schließen. Dies kann einige Minuten dauern.",
+    "sizeHint": "Arabisch + 3 Übersetzungen · ca. 15 MB",
+    "delete": "Offline-Daten löschen"
+  },
   "notifications": {
     "title": "Benachrichtigungen",
     "minutesBefore": "Benachrichtigung vor Gebetszeit",

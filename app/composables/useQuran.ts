@@ -148,10 +148,27 @@ export function useQuran() {
   }
 
   // Fetch verses for a specific surah with translations
+  // Checks IndexedDB (offline) first, then localStorage cache, then API
   async function fetchVerses(surahId: number, page: number = 1, perPage: number = 50): Promise<void> {
     loading.value = true
     error.value = null
 
+    // 1. Try IndexedDB offline storage first
+    if (import.meta.client) {
+      try {
+        const offlineQuran = useOfflineQuran()
+        const offlineVerses = await offlineQuran.getSurahOffline(surahId)
+        if (offlineVerses && offlineVerses.length > 0) {
+          currentVerses.value = offlineVerses
+          loading.value = false
+          return
+        }
+      } catch {
+        // IndexedDB not available, continue to API
+      }
+    }
+
+    // 2. Try localStorage cache
     const cacheKey = `${CACHE_PREFIX}-surah-${surahId}-p${page}`
     if (import.meta.client) {
       const cached = localStorage.getItem(cacheKey)
@@ -167,6 +184,7 @@ export function useQuran() {
       }
     }
 
+    // 3. Fetch from API
     try {
       const translationIds = `${TRANSLATIONS.turkish},${TRANSLATIONS.german},${TRANSLATIONS.english}`
 
