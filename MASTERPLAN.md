@@ -1,7 +1,7 @@
 # MuslimApp — Masterplan
 
 > **Ziel:** Eine mobile-first Progressive Web App (PWA) für Muslime mit Gebetszeiten, islamischem Kalender und Koran-Reader.
-> **Erstellt:** 22. März 2026 | **Letztes Update:** 22. März 2026 | **Status:** Phase 1–3 abgeschlossen
+> **Erstellt:** 22. März 2026 | **Letztes Update:** 26. März 2026 | **Status:** Phase 1–4 abgeschlossen
 
 ---
 
@@ -53,16 +53,20 @@
 - [x] **Hijri↔Gregorian** — Automatische Datumskonvertierung via Aladhan API
 - [ ] ~~**Benachrichtigungen** — Push-Notifications für Feiertage~~ → Verschoben auf Phase 4
 
-### Phase 4 — Erweiterungen (Geplant)
-- [ ] **PWA** — Service Worker, App-Installation, echte Offline-Fähigkeit
-- [ ] **Audio-Rezitation** — Verschiedene Rezitatoren (via quran.com API, 12+ verfügbar)
-- [ ] **Mehrsprachiges UI** — Türkisch + Englisch (Grundstruktur steht)
-- [ ] **Weitere Gebetszeit-Quellen** — IGMG, Fazilet, wählbar in Einstellungen
-- [ ] **Qibla-Kompass** — Richtung nach Mekka (via Device Orientation API)
-- [ ] **Dua-Sammlung** — Bittgebete für verschiedene Anlässe
-- [ ] **Dark/Light Mode** — Aktuell nur Dark, Light Mode als Option
-- [ ] **Push-Notifications** — Gebetszeiten-Erinnerungen + Feiertags-Benachrichtigungen
-- [ ] **Koran Offline-Bundle** — Kompletter Koran als JSON für vollständige Offline-Nutzung
+### Phase 4 — Erweiterungen ✅ Abgeschlossen
+- [x] **PWA** — Service Worker, App-Installation, Offline-Cache
+- [x] **Mehrsprachiges UI** — Deutsch + Türkisch + Englisch vollständig
+- [x] **Dark/Light Mode** — Vollständiges Theme-System mit System-Erkennung
+- [x] **Konfigurierbare Berechnungsmethode** — 15 Methoden wählbar (Aladhan API)
+- [x] **Qibla-Kompass** — Richtung nach Mekka (Device Orientation API + Great Circle)
+- [x] **Dua-Sammlung** — 14 Bittgebete in 8 Kategorien (AR + Transliteration + 3 Sprachen)
+- [x] **Push-Notifications** — Gebetszeiten-Erinnerungen (pro Gebet konfigurierbar)
+- [x] **Tasbih (Gebetszähler)** — 7 Dhikr-Modi, Fortschrittsring, Haptic Feedback
+- [x] **Konfigurierbares Dashboard** — 7 Widgets, drag-reorder, ein/ausschaltbar
+- [x] **"Mehr"-Hub** — Zentrale Seite für Werkzeuge (Tasbih, Qibla, Dua) + Einstellungen
+- [x] **Zufälliger Vers Widget** — Random Quran-Vers auf dem Dashboard
+- [ ] ~~**Audio-Rezitation**~~ → Geplant für Phase 5
+- [ ] ~~**Koran Offline-Bundle**~~ → Geplant für Phase 5
 
 ---
 
