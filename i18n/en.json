@@ -121,6 +121,20 @@
     "verseLoad": "Could not load verses.",
     "searchFailed": "Search failed."
   },
+  "widgets": {
+    "prayerCountdown": "Next Prayer",
+    "prayerTimes": "All Prayer Times",
+    "holidayCountdown": "Next Holiday",
+    "readingProgress": "Quran Bookmark",
+    "randomVerse": "Random Verse",
+    "tasbihQuick": "Tasbih",
+    "hijriDate": "Islamic Date",
+    "edit": "Edit",
+    "done": "Done",
+    "configure": "Configure Dashboard",
+    "resetDefaults": "Reset",
+    "openFull": "Open"
+  },
   "more": {
     "title": "More",
     "subtitle": "Tools & Settings",

@@ -121,6 +121,20 @@
     "verseLoad": "Verse konnten nicht geladen werden.",
     "searchFailed": "Suche fehlgeschlagen."
   },
+  "widgets": {
+    "prayerCountdown": "Nächstes Gebet",
+    "prayerTimes": "Alle Gebetszeiten",
+    "holidayCountdown": "Nächster Feiertag",
+    "readingProgress": "Koran-Lesezeichen",
+    "randomVerse": "Zufälliger Vers",
+    "tasbihQuick": "Tasbih",
+    "hijriDate": "Islamisches Datum",
+    "edit": "Bearbeiten",
+    "done": "Fertig",
+    "configure": "Dashboard konfigurieren",
+    "resetDefaults": "Zurücksetzen",
+    "openFull": "Öffnen"
+  },
   "more": {
     "title": "Mehr",
     "subtitle": "Werkzeuge & Einstellungen",

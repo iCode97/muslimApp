@@ -121,6 +121,20 @@
     "verseLoad": "Ayetler yüklenemedi.",
     "searchFailed": "Arama başarısız oldu."
   },
+  "widgets": {
+    "prayerCountdown": "Sonraki Namaz",
+    "prayerTimes": "Tüm Namaz Vakitleri",
+    "holidayCountdown": "Sonraki Bayram",
+    "readingProgress": "Kur'an Yer İmi",
+    "randomVerse": "Rastgele Ayet",
+    "tasbihQuick": "Tesbih",
+    "hijriDate": "Hicri Tarih",
+    "edit": "Düzenle",
+    "done": "Tamam",
+    "configure": "Ana Ekranı Yapılandır",
+    "resetDefaults": "Sıfırla",
+    "openFull": "Aç"
+  },
   "more": {
     "title": "Daha Fazla",
     "subtitle": "Araçlar ve Ayarlar",
