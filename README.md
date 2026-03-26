@@ -1,6 +1,6 @@
 # MuslimApp
 
-Eine mobile-first Web-App für Muslime — mit Gebetszeiten, Koran-Reader und islamischem Kalender.
+Eine mobile-first Progressive Web App (PWA) für Muslime — mit Gebetszeiten, Koran-Reader, islamischem Kalender und spirituellen Werkzeugen.
 
 Gebaut mit Nuxt 4, TypeScript und einem Apple-inspirierten Liquid Glass Design.
 
@@ -12,17 +12,20 @@ Gebaut mit Nuxt 4, TypeScript und einem Apple-inspirierten Liquid Glass Design.
 - Tagesübersicht aller 6 Gebetszeiten (Fajr, Sonnenaufgang, Dhuhr, Asr, Maghrib, Isha)
 - **Live-Countdown** zum nächsten Gebet (sekundengenau)
 - Nächstes Gebet wird visuell hervorgehoben, vergangene Gebete ausgegraut
-- Standorterkennung via **GPS** oder **manuelle Stadtsuche**
+- Standorterkennung via **GPS** oder **manuelle Stadtsuche** mit Autocomplete
 - Standort wird im Browser gespeichert (localStorage)
+- **15 Berechnungsmethoden** wählbar (Diyanet, ISNA, MWL, Ägypten u.v.m.)
+- **Push-Notifications** für Gebetszeiten (pro Gebet einzeln konfigurierbar)
 
 ### Koran-Reader
 - Alle **114 Suren** mit Name (lateinisch + arabisch), Versanzahl, Offenbarungsort
 - Arabischer Text in **Uthmani-Schrift** (RTL)
-- Zwei Übersetzungen parallel: **Türkisch** (Elmalılı Hamdi Yazır) + **Deutsch** (Bubenheim & Elyas)
+- Übersetzungen parallel: **Türkisch** (Elmalılı Hamdi Yazır) + **Deutsch** (Bubenheim & Elyas)
 - Übersetzungen ein-/ausschaltbar für reines Arabisch-Lesen
-- **Volltextsuche** über den gesamten Koran
+- **Volltextsuche** über den gesamten Koran (Arabisch, Türkisch, Deutsch, Englisch)
 - **Lesezeichen** — letzter Lesestand wird gespeichert und auf dem Dashboard angezeigt
 - Navigation zur vorherigen/nächsten Sure
+- **Offline-Caching** via IndexedDB (nach erstem Laden vollständig offline verfügbar)
 
 ### Islamischer Kalender
 - **Hijri-Kalender** mit navigierbarer Monatsansicht
@@ -33,9 +36,22 @@ Gebaut mit Nuxt 4, TypeScript und einem Apple-inspirierten Liquid Glass Design.
 - Feiertage mit Typ-Badges: Feiertag, Kandil-Nacht, Gedenktag
 
 ### Dashboard
-- Flexibler Startbildschirm mit allen wichtigen Infos auf einen Blick
+- Flexibler Startbildschirm mit **7 konfigurierbaren Widgets**
 - Begrüßung mit tageszeit-abhängigem Gruß + Hijri-Datum
-- Gebetszeiten-Countdown, Feiertags-Countdown, Koran-Lesezeichen
+- Widgets: Gebetszeiten-Countdown, Feiertags-Countdown, Koran-Lesezeichen, Tasbih-Schnellzähler, Hijri-Datum, Hadith des Tages, Zufälliger Vers
+- Widgets ein-/ausschaltbar und neu sortierbar
+
+### Werkzeuge (Mehr-Hub)
+- **Tasbih (Gebetszähler)** — 7 Dhikr-Modi (Subhanallah, Alhamdulillah, Allahu Akbar u.a.), SVG-Fortschrittsring, Haptic Feedback
+- **Qibla-Kompass** — Richtung nach Mekka via Device Orientation API + Great Circle Berechnung
+- **Dua-Sammlung** — 14 Bittgebete in 8 Kategorien (Arabisch + Transliteration + 3 Sprachen)
+- **Hadith-Sammlung** — 43 kuratierte Hadiths mit Kategorien und Volltext-Suche
+
+### Einstellungen & App
+- **Dark/Light Mode** + automatische System-Erkennung
+- **3 Sprachen** — Deutsch (Standard), Türkisch, Englisch
+- **PWA** — Installierbar auf Home Screen, Service Worker, Offline-Betrieb
+- Berechnungsmethode für Gebetszeiten wählbar
 
 ---
 
@@ -49,12 +65,12 @@ Die App nutzt ausschließlich **kostenlose, öffentliche APIs** ohne API-Keys.
 |---|---|
 | **API** | [Aladhan Prayer Times API](https://aladhan.com/prayer-times-api) |
 | **Base-URL** | `https://api.aladhan.com/v1/` |
-| **Berechnungsmethode** | Method 13 — **Diyanet İşleri Başkanlığı** (Türkei) |
+| **Standard-Berechnungsmethode** | Method 13 — **Diyanet İşleri Başkanlığı** (Türkei) |
 | **Authentifizierung** | Keine (kostenlos, kein API-Key) |
-| **Genutzte Endpoints** | `/timings/{date}` (Gebetszeiten), `/gToH/{date}` (Hijri-Konvertierung), `/hijriCalendar/{month}/{year}` (Kalender), `/hToG/{date}` (Hijri→Gregorian) |
+| **Genutzte Endpoints** | `/timings/{date}`, `/gToH/{date}`, `/hijriCalendar/{month}/{year}`, `/hToG/{date}` |
 | **Caching** | Gebetszeiten werden für den aktuellen Tag im localStorage gecacht |
 
-Die Gebetszeiten basieren auf der **Diyanet-Berechnungsmethode** (Method 13), die auch von der türkischen Religionsbehörde verwendet wird. Alternativ unterstützt die Aladhan API 15+ weitere Methoden (ISNA, MWL, Ägypten etc.), die in einer zukünftigen Version wählbar sein werden.
+15 Berechnungsmethoden werden unterstützt (Diyanet, ISNA, MWL, Ägypten, Karachi u.v.m.) und können in den Einstellungen gewechselt werden.
 
 ### Koran — quran.com API v4
 
@@ -67,7 +83,7 @@ Die Gebetszeiten basieren auf der **Diyanet-Berechnungsmethode** (Method 13), di
 | **Türkische Übersetzung** | Elmalılı Hamdi Yazır (Translation ID 52) |
 | **Deutsche Übersetzung** | Bubenheim & Elyas (Translation ID 27) |
 | **Suche** | Volltextsuche via `/search` Endpoint |
-| **Caching** | Suren-Liste + geladene Verse werden im localStorage gecacht |
+| **Caching** | Suren-Liste + geladene Verse werden im localStorage und IndexedDB gecacht |
 
 ### Standort — OpenStreetMap Nominatim
 
@@ -92,16 +108,16 @@ Enthaltene Feiertage:
 
 | Was | Offline verfügbar? | Details |
 |---|---|---|
-| **App-Shell** (Layout, Navigation) | Ja | SSR-gerendert, nach erstem Laden im Browser-Cache |
-| **Gebetszeiten** | Teilweise | Heutige Zeiten werden gecacht; für neue Tage ist eine Internetverbindung nötig |
-| **Koran (Suren-Liste)** | Ja (nach erstem Laden) | Wird im localStorage gecacht |
-| **Koran (Verse)** | Ja (nach erstem Laden) | Einmal geladene Suren werden im localStorage gecacht |
+| **App-Shell** (Layout, Navigation) | Ja | Service Worker + SSR-Cache |
+| **Gebetszeiten** | Teilweise | Heutige Zeiten gecacht; für neue Tage ist Internet nötig |
+| **Koran (Suren-Liste)** | Ja | Wird im localStorage gecacht |
+| **Koran (Verse)** | Ja | Einmal geladene Suren in localStorage + IndexedDB |
+| **Koran (Offline-Bundle)** | Ja (nach Download) | Vollständiges Bundle via IndexedDB (in Einstellungen ladbar) |
 | **Kalender** | Nein | Benötigt Aladhan API für Hijri-Daten |
 | **Feiertage** | Teilweise | Hijri-Daten sind lokal, gregorianische Umrechnung benötigt API |
 | **Lesezeichen** | Ja | Komplett in localStorage |
 | **Standort** | Ja | Wird nach erster Erkennung im localStorage gespeichert |
-
-> **Hinweis:** Eine vollständige PWA mit Service Worker (für echte Offline-Nutzung und App-Installation) ist für Phase 4 geplant.
+| **Tasbih / Dua / Hadith** | Ja | Vollständig lokale Daten (statische JSON/TS-Dateien) |
 
 ---
 
@@ -114,6 +130,8 @@ Enthaltene Feiertage:
 | **UI-Framework** | [Vue.js](https://vuejs.org) | 3.5 |
 | **Styling** | [Tailwind CSS](https://tailwindcss.com) + Custom Liquid Glass CSS | 3.4 |
 | **i18n** | [@nuxtjs/i18n](https://i18n.nuxtjs.org) | 9.5 |
+| **PWA** | [@vite-pwa/nuxt](https://vite-pwa-org.netlify.app/frameworks/nuxt) | 1.1.1 |
+| **Datums-Hilfsbibliothek** | [dayjs](https://day.js.org) | 1.11 |
 | **State** | Nuxt `useState` Composables | — |
 | **Schriftarten** | Inter (UI) + Amiri (Arabisch) | Google Fonts |
 
@@ -171,33 +189,72 @@ muslimApp/
 ├── data/
 │   └── holidays.json               # Islamische Feiertage (Hijri-Daten)
 ├── i18n/
-│   └── de.json                     # Deutsche UI-Texte
+│   ├── de.json                     # Deutsche UI-Texte
+│   ├── tr.json                     # Türkische UI-Texte
+│   └── en.json                     # Englische UI-Texte
 ├── public/
-│   └── favicon.svg                 # App-Icon
+│   ├── favicon.svg                 # App-Icon
+│   ├── manifest.json               # PWA Manifest
+│   └── sw.js                       # Service Worker
 └── app/
     ├── app.vue                     # Root-Komponente
     ├── layouts/
-    │   └── default.vue             # Layout mit Bottom-Navigation
+    │   └── default.vue             # Layout mit Bottom-Navigation (5 Tabs)
     ├── pages/
-    │   ├── index.vue               # Dashboard
+    │   ├── index.vue               # Dashboard (konfigurierbare Widgets)
     │   ├── prayer.vue              # Gebetszeiten-Detail
-    │   ├── quran/
-    │   │   ├── index.vue           # Surenübersicht
-    │   │   └── [surah].vue         # Einzelne Sure lesen
     │   ├── calendar.vue            # Hijri-Kalender + Feiertage
-    │   └── settings.vue            # Einstellungen
+    │   ├── settings.vue            # Einstellungen (Theme, Sprache, Methode)
+    │   ├── more.vue                # Werkzeuge-Hub (Tasbih, Qibla, Dua, Hadith)
+    │   ├── tasbih.vue              # Gebetszähler (7 Dhikr-Modi)
+    │   ├── qibla.vue               # Qibla-Kompass
+    │   ├── dua.vue                 # Dua-Sammlung (14 Bittgebete)
+    │   ├── hadith.vue              # Hadith-Sammlung (43 Hadiths)
+    │   └── quran/
+    │       ├── index.vue           # Surenübersicht + Suche
+    │       └── [surah].vue         # Einzelne Sure lesen
     ├── components/
     │   ├── ui/                     # Liquid Glass Design System
+    │   │   ├── GlassCard.vue       #   Glassmorphism-Karte (4 Varianten)
+    │   │   ├── GlassButton.vue     #   Button
+    │   │   ├── GlassInput.vue      #   Eingabefeld mit Icon
+    │   │   └── LoadingSpinner.vue  #   Lade-Animation
     │   ├── prayer/                 # Gebetszeiten-Komponenten
+    │   │   ├── PrayerTimesCard.vue #   Liste aller 6 Gebetszeiten
+    │   │   ├── PrayerCountdown.vue #   Countdown zum nächsten Gebet
+    │   │   ├── PrayerTimeRow.vue   #   Einzelne Gebetszeit-Zeile
+    │   │   └── LocationSelector.vue#   GPS-Erkennung + Stadtsuche
     │   ├── quran/                  # Koran-Komponenten
-    │   └── calendar/               # Kalender-Komponenten
+    │   │   ├── VerseDisplay.vue    #   Einzelner Vers (AR + TR + DE)
+    │   │   └── ReadingProgress.vue #   Lesezeichen-Widget
+    │   ├── calendar/               # Kalender-Komponenten
+    │   │   ├── HijriCalendar.vue   #   Monatskalender-Grid
+    │   │   ├── HolidayCountdown.vue#   Nächster Feiertag + Countdown
+    │   │   └── HolidayList.vue     #   Alle Feiertage chronologisch
+    │   └── widgets/                # Dashboard-Widgets
+    │       ├── TasbihQuick.vue     #   Schnell-Tasbih auf Dashboard
+    │       ├── HijriDateWidget.vue #   Hijri-Datum Anzeige
+    │       ├── HadithOfDay.vue     #   Zufälliger Hadith des Tages
+    │       └── RandomVerse.vue     #   Zufälliger Koran-Vers
     ├── composables/                # Business Logic
-    │   ├── useLocation.ts          # GPS + Stadtsuche
-    │   ├── usePrayerTimes.ts       # Gebetszeiten (Aladhan API)
-    │   ├── useCountdown.ts         # Countdown-Timer
-    │   ├── useQuran.ts             # Koran-Daten (quran.com API)
-    │   ├── useBookmark.ts          # Lesezeichen (localStorage)
-    │   └── useHolidays.ts          # Feiertage + Hijri-Kalender
+    │   ├── useLocation.ts          #   GPS + Stadtsuche + Persistenz
+    │   ├── usePrayerTimes.ts       #   Gebetszeiten (Aladhan API + Caching)
+    │   ├── useCountdown.ts         #   Generischer Countdown-Timer
+    │   ├── useQuran.ts             #   Koran-Daten (quran.com API)
+    │   ├── useBookmark.ts          #   Koran-Lesezeichen (localStorage)
+    │   ├── useHolidays.ts          #   Feiertage + Hijri-Kalender
+    │   ├── useDashboard.ts         #   Widget-Konfiguration
+    │   ├── useNotifications.ts     #   Gebetszeit-Benachrichtigungen
+    │   ├── useTheme.ts             #   Dark/Light Mode + System-Erkennung
+    │   ├── usePWA.ts               #   PWA-Installation
+    │   ├── useTasbih.ts            #   Gebetszähler-State (7 Modi)
+    │   ├── useQibla.ts             #   Kompass-Berechnung (Great Circle)
+    │   └── useOfflineQuran.ts      #   IndexedDB Offline-Caching
+    ├── data/                       # Statische App-Daten
+    │   ├── hadiths.ts              #   43 kuratierte Hadiths
+    │   ├── duas.ts                 #   14 Bittgebete (8 Kategorien)
+    │   ├── prayer-methods.ts       #   15 Berechnungsmethoden
+    │   └── surah-names-de.ts       #   Deutsche Suren-Namen
     └── assets/css/
         └── main.css                # Tailwind + Liquid Glass Styles
 ```
