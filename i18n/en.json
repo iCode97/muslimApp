@@ -190,7 +190,8 @@
     "total": "Total",
     "reset": "Reset",
     "roundComplete": "Round complete",
-    "nextRound": "Next round"
+    "nextRound": "Next round",
+    "sequenceLabel": "Tasbih (3×33)"
   },
   "offline": {
     "title": "Quran Offline",
@@ -290,6 +291,6 @@
     "disclaimerSection": "Disclaimer",
     "disclaimerText": "This app is intended for spiritual support and information. All content has been compiled carefully, but without guarantee of completeness or accuracy. For religious rulings and decisions, please consult qualified Islamic scholars or your local mosque.",
     "techSection": "Technology",
-    "techStack": "Nuxt 4 · Vue 3 · TypeScript · Tailwind CSS · @vite-pwa/nuxt"
+    "techStack": "Nuxt 4 · Vue 3 · TypeScript · Tailwind CSS · {'@'}vite-pwa/nuxt"
   }
 }

@@ -190,7 +190,8 @@
     "total": "Gesamt",
     "reset": "Zurücksetzen",
     "roundComplete": "Runde abgeschlossen",
-    "nextRound": "Nächste Runde"
+    "nextRound": "Nächste Runde",
+    "sequenceLabel": "Tesbih (3×33)"
   },
   "offline": {
     "title": "Koran Offline",
@@ -290,6 +291,6 @@
     "disclaimerSection": "Hinweis",
     "disclaimerText": "Diese App dient der spirituellen Unterstützung und Information. Alle Inhalte wurden sorgfältig zusammengestellt, jedoch ohne Gewähr auf vollständige Richtigkeit oder Aktualität. Für religiöse Urteile und Entscheidungen bitte islamische Gelehrte oder die lokale Moschee konsultieren.",
     "techSection": "Technologie",
-    "techStack": "Nuxt 4 · Vue 3 · TypeScript · Tailwind CSS · @vite-pwa/nuxt"
+    "techStack": "Nuxt 4 · Vue 3 · TypeScript · Tailwind CSS · {'@'}vite-pwa/nuxt"
   }
 }
