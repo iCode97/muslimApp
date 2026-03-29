@@ -24,12 +24,13 @@ const duaSources = [
 </script>
 
 <template>
-  <div class="px-4 pt-6 pb-8 space-y-6 max-w-lg mx-auto">
+  <div class="app-container pt-6 pb-8 space-y-6">
     <header>
       <h1 class="text-2xl font-semibold">{{ t('about.title') }}</h1>
       <p class="text-sm text-themed-muted mt-1">{{ t('about.subtitle') }}</p>
     </header>
 
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- App Info -->
     <section class="space-y-2">
       <h3 class="text-xs font-medium text-themed-muted uppercase tracking-wider px-1">
@@ -226,7 +227,7 @@ const duaSources = [
     </section>
 
     <!-- Technologie -->
-    <section class="space-y-2">
+    <section class="space-y-2 md:col-span-2">
       <h3 class="text-xs font-medium text-themed-muted uppercase tracking-wider px-1">
         {{ t('about.techSection') }}
       </h3>
@@ -234,5 +235,6 @@ const duaSources = [
         <p class="text-xs text-themed-faint">{{ t('about.techStack') }}</p>
       </GlassCard>
     </section>
+    </div><!-- end grid -->
   </div>
 </template>

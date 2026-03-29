@@ -24,8 +24,8 @@ const showAllTomorrow = ref(false)
       <span class="text-xs text-themed-faint">{{ t('prayer.diyanet') }}</span>
     </div>
 
-    <div v-if="prayerTimes.loading.value" class="py-8">
-      <LoadingSpinner />
+    <div v-if="prayerTimes.loading.value" class="py-2">
+      <SkeletonLoader variant="prayer-row" :rows="6" />
     </div>
 
     <div v-else-if="prayerTimes.error.value" class="px-4 py-6 text-center">

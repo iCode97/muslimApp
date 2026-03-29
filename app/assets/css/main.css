@@ -124,6 +124,12 @@ body {
   border-top: 1px solid var(--nav-border);
 }
 
+@media (min-width: 1024px) {
+  .glass-nav {
+    border-top: none;
+  }
+}
+
 /* Liquid glow effect for active/highlighted elements */
 .glass-glow {
   position: relative;
@@ -233,6 +239,104 @@ body {
 
 .safe-top {
   padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* ============================================
+   RESPONSIVE CONTAINER SYSTEM
+   Mobile-first with adaptive widths
+   ============================================ */
+
+.app-container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .app-container {
+    max-width: 42rem; /* 672px — tablet */
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .app-container {
+    max-width: 56rem; /* 896px — desktop */
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* For pages that use the sidebar layout on desktop */
+@media (min-width: 1024px) {
+  .app-container--with-sidebar {
+    max-width: 60rem;
+  }
+}
+
+/* ============================================
+   SHARED TRANSITIONS
+   ============================================ */
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s ease;
+}
+.slide-enter-from,
+.slide-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.expand-enter-active,
+.expand-leave-active {
+  transition: all 0.25s ease;
+}
+.expand-enter-from,
+.expand-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+/* No-scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ============================================
+   SKELETON LOADING
+   ============================================ */
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.15; }
+}
+
+.skeleton {
+  background: var(--glass-bg-strong);
+  border-radius: 0.5rem;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-text {
+  height: 0.875rem;
+  border-radius: 0.25rem;
+}
+
+.skeleton-text-sm {
+  height: 0.625rem;
+  border-radius: 0.25rem;
+}
+
+.skeleton-circle {
+  border-radius: 9999px;
 }
 
 /* Scrollbar styling */

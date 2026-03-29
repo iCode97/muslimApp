@@ -5,43 +5,25 @@
  */
 
 const { t } = useI18n()
-const { location, loadSaved, detectGPS, setCity } = useLocation()
-const prayerTimes = usePrayerTimes()
+const { location, prayerTimes, hijriDisplay, init, startRefresh, stopRefresh } = usePrayerInit()
+const { setCity } = useLocation()
 
 onMounted(async () => {
-  const saved = loadSaved()
-  if (!saved) {
-    const detected = await detectGPS()
-    if (!detected) await setCity('Berlin', 'Deutschland')
+  await init()
+
+  // Fallback to Berlin if no location detected
+  if (!location.value) {
+    await setCity('Berlin', 'Deutschland')
   }
 
-  prayerTimes.loadCache()
-  if (location.value) {
-    await prayerTimes.fetchTimes(location.value.latitude, location.value.longitude)
-  }
+  startRefresh()
 })
 
-watch(location, async (newLoc) => {
-  if (newLoc) {
-    await prayerTimes.fetchTimes(newLoc.latitude, newLoc.longitude)
-  }
-})
-
-let refreshInterval: ReturnType<typeof setInterval>
-onMounted(() => {
-  refreshInterval = setInterval(() => prayerTimes.refresh(), 30000)
-})
-onUnmounted(() => clearInterval(refreshInterval))
-
-const hijriDisplay = computed(() => {
-  const h = prayerTimes.data.value?.hijriDate
-  if (!h) return ''
-  return `${h.day}. ${h.month} ${h.year} ${h.designation}`
-})
+onUnmounted(() => stopRefresh())
 </script>
 
 <template>
-  <div class="px-4 pt-6 space-y-5 max-w-lg mx-auto">
+  <div class="app-container pt-6 space-y-5">
     <header class="space-y-2">
       <h1 class="text-2xl font-semibold">
         {{ t('nav.prayer') }}

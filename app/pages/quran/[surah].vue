@@ -78,7 +78,7 @@ const revelationPlace = computed(() => {
 </script>
 
 <template>
-  <div class="px-4 pt-6 pb-8 space-y-4 max-w-lg mx-auto">
+  <div class="app-container pt-6 pb-8 space-y-4">
     <!-- Header -->
     <header class="space-y-2">
       <!-- Back link -->
@@ -134,8 +134,14 @@ const revelationPlace = computed(() => {
     </div>
 
     <!-- Loading -->
-    <div v-if="quran.loading.value" class="py-12">
-      <LoadingSpinner />
+    <div v-if="quran.loading.value" class="space-y-4">
+      <div v-for="i in 5" :key="i" class="glass p-4 space-y-3">
+        <div class="flex justify-end">
+          <div class="skeleton skeleton-text w-3/4" style="height: 1.5rem" />
+        </div>
+        <div class="skeleton skeleton-text w-full" />
+        <div class="skeleton skeleton-text w-2/3" />
+      </div>
     </div>
 
     <!-- Error -->

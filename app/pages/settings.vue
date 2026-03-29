@@ -38,13 +38,14 @@ const minutesOptions = [0, 5, 10, 15, 30]
 </script>
 
 <template>
-  <div class="px-4 pt-6 space-y-5 max-w-lg mx-auto">
+  <div class="app-container pt-6 space-y-5">
     <header>
       <h1 class="text-2xl font-semibold">
         {{ t('settings.title') }}
       </h1>
     </header>
 
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
     <!-- Theme -->
     <GlassCard>
       <div class="space-y-3">
@@ -305,7 +306,7 @@ const minutesOptions = [0, 5, 10, 15, 30]
     </GlassCard>
 
     <!-- About -->
-    <GlassCard variant="subtle">
+    <GlassCard variant="subtle" class="md:col-span-2">
       <div class="space-y-2">
         <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
           {{ t('settings.about') }}
@@ -318,17 +319,7 @@ const minutesOptions = [0, 5, 10, 15, 30]
         </p>
       </div>
     </GlassCard>
+    </div><!-- end grid -->
   </div>
 </template>
 
-<style scoped>
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.25s ease;
-}
-.slide-enter-from,
-.slide-leave-to {
-  opacity: 0;
-  transform: translateY(-8px);
-}
-</style>

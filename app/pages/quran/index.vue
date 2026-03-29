@@ -58,7 +58,7 @@ function revelationPlace(place: string): string {
 </script>
 
 <template>
-  <div class="px-4 pt-6 space-y-4 max-w-lg mx-auto">
+  <div class="app-container pt-6 space-y-4">
     <header>
       <h1 class="text-2xl font-semibold">
         {{ t('quran.title') }}
@@ -80,8 +80,8 @@ function revelationPlace(place: string): string {
     />
 
     <!-- Loading (initial surah load) -->
-    <div v-if="quran.loading.value && quran.surahs.value.length === 0" class="py-12">
-      <LoadingSpinner />
+    <div v-if="quran.loading.value && quran.surahs.value.length === 0" class="space-y-2">
+      <SkeletonLoader variant="list" :rows="8" />
     </div>
 
     <!-- Error -->
@@ -180,7 +180,7 @@ function revelationPlace(place: string): string {
       </template>
 
       <!-- NO SEARCH: show full surah list -->
-      <div v-else class="space-y-2">
+      <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-2">
         <NuxtLink
           v-for="surah in quran.surahs.value"
           :key="surah.id"

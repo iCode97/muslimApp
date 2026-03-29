@@ -40,11 +40,15 @@ const categoryIcons: Record<string, string> = {
   protection: '🛡️',
   forgiveness: '🤲',
   general: '💫',
+  healing: '🏥',
+  parents: '👨‍👩‍👧',
+  anxiety: '🕊️',
+  gratitude: '🙏',
 }
 </script>
 
 <template>
-  <div class="px-4 pt-6 space-y-5 max-w-lg mx-auto">
+  <div class="app-container pt-6 space-y-5">
     <!-- Header -->
     <header class="animate-fade-in">
       <h1 class="text-2xl font-semibold">
@@ -84,7 +88,7 @@ const categoryIcons: Record<string, string> = {
     </div>
 
     <!-- Duas list -->
-    <div class="space-y-3">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
       <div
         v-for="dua in filteredDuas"
         :key="dua.id"
@@ -141,22 +145,3 @@ const categoryIcons: Record<string, string> = {
   </div>
 </template>
 
-<style scoped>
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.expand-enter-active,
-.expand-leave-active {
-  transition: all 0.25s ease;
-}
-.expand-enter-from,
-.expand-leave-to {
-  opacity: 0;
-  transform: translateY(-4px);
-}
-</style>
