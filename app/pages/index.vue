@@ -5,8 +5,7 @@
  */
 
 const { t } = useI18n()
-const { location, loadSaved, detectGPS } = useLocation()
-const prayerTimes = usePrayerTimes()
+const { prayerTimes, hijriDisplay, init, startRefresh, stopRefresh } = usePrayerInit()
 const dashboard = useDashboard()
 const notifications = useNotifications()
 
@@ -15,50 +14,23 @@ onMounted(async () => {
   dashboard.loadConfig()
   notifications.loadSettings()
 
-  const saved = loadSaved()
-  if (!saved) {
-    await detectGPS()
-  }
-
-  prayerTimes.loadCache()
-
-  if (location.value) {
-    await prayerTimes.fetchTimes(location.value.latitude, location.value.longitude)
-  }
+  await init()
 
   // Schedule prayer notifications
   if (prayerTimes.data.value?.prayers) {
     notifications.schedulePrayerNotifications(prayerTimes.data.value.prayers)
   }
+
+  startRefresh()
 })
 
-// Re-fetch when location changes
-watch(location, async (newLoc) => {
-  if (newLoc) {
-    await prayerTimes.fetchTimes(newLoc.latitude, newLoc.longitude)
-    // Reschedule notifications with new times
-    if (prayerTimes.data.value?.prayers) {
-      notifications.schedulePrayerNotifications(prayerTimes.data.value.prayers)
-    }
+onUnmounted(() => stopRefresh())
+
+// Reschedule notifications when prayer data changes
+watch(() => prayerTimes.data.value?.prayers, (prayers) => {
+  if (prayers) {
+    notifications.schedulePrayerNotifications(prayers)
   }
-})
-
-// Refresh prayer status every 30 seconds
-let refreshInterval: ReturnType<typeof setInterval>
-onMounted(() => {
-  refreshInterval = setInterval(() => {
-    prayerTimes.refresh()
-  }, 30000)
-})
-onUnmounted(() => {
-  clearInterval(refreshInterval)
-})
-
-// Hijri date display
-const hijriDisplay = computed(() => {
-  const h = prayerTimes.data.value?.hijriDate
-  if (!h) return ''
-  return `${h.day}. ${h.month} ${h.year} ${h.designation}`
 })
 
 // Greeting based on time of day
@@ -71,21 +43,21 @@ const greeting = computed(() => {
   return t('dashboard.goodNight')
 })
 
-// Widget component mapping
-const widgetComponents: Record<string, string> = {
-  'prayer-countdown': 'PrayerCountdown',
-  'prayer-times': 'PrayerTimesCard',
-  'holiday-countdown': 'HolidayCountdown',
-  'reading-progress': 'ReadingProgress',
-  'random-verse': 'RandomVerse',
-  'tasbih-quick': 'TasbihQuick',
-  'hijri-date': 'HijriDateWidget',
-  'hadith-of-day': 'HadithOfDay',
+// Widget component mapping — resolved at runtime for dynamic <component :is="...">
+const widgetComponents: Record<string, ReturnType<typeof resolveComponent>> = {
+  'prayer-countdown': resolveComponent('PrayerCountdown'),
+  'prayer-times': resolveComponent('PrayerTimesCard'),
+  'holiday-countdown': resolveComponent('HolidayCountdown'),
+  'reading-progress': resolveComponent('ReadingProgress'),
+  'random-verse': resolveComponent('RandomVerse'),
+  'tasbih-quick': resolveComponent('TasbihQuick'),
+  'hijri-date': resolveComponent('HijriDateWidget'),
+  'hadith-of-day': resolveComponent('HadithOfDay'),
 }
 </script>
 
 <template>
-  <div class="px-4 pt-6 space-y-5 max-w-lg mx-auto">
+  <div class="app-container pt-6 space-y-5">
     <!-- Header -->
     <header class="space-y-1 animate-fade-in">
       <div class="flex items-center justify-between">
@@ -186,30 +158,20 @@ const widgetComponents: Record<string, string> = {
       </GlassCard>
     </Transition>
 
-    <!-- Dynamic Widgets -->
-    <template v-for="(widget, idx) in dashboard.enabledWidgets.value" :key="widget.id">
-      <div :class="['animate-fade-in', `stagger-${Math.min(idx + 2, 6)}`]">
-        <PrayerCountdown v-if="widget.id === 'prayer-countdown'" />
-        <PrayerTimesCard v-else-if="widget.id === 'prayer-times'" />
-        <HolidayCountdown v-else-if="widget.id === 'holiday-countdown'" />
-        <ReadingProgress v-else-if="widget.id === 'reading-progress'" />
-        <RandomVerse v-else-if="widget.id === 'random-verse'" />
-        <TasbihQuick v-else-if="widget.id === 'tasbih-quick'" />
-        <HijriDateWidget v-else-if="widget.id === 'hijri-date'" />
-        <HadithOfDay v-else-if="widget.id === 'hadith-of-day'" />
-      </div>
-    </template>
+    <!-- Dynamic Widgets — responsive grid on wider screens -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+      <template v-for="(widget, idx) in dashboard.enabledWidgets.value" :key="widget.id">
+        <div
+          :class="[
+            'animate-fade-in',
+            `stagger-${Math.min(idx + 2, 6)}`,
+            widget.id === 'prayer-times' || widget.id === 'prayer-countdown' ? 'md:col-span-2' : '',
+          ]"
+        >
+          <component :is="widgetComponents[widget.id]" />
+        </div>
+      </template>
+    </div>
   </div>
 </template>
 
-<style scoped>
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.3s ease;
-}
-.slide-enter-from,
-.slide-leave-to {
-  opacity: 0;
-  transform: translateY(-8px);
-}
-</style>

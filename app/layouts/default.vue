@@ -20,14 +20,41 @@ function isActive(path: string): boolean {
 </script>
 
 <template>
-  <div class="min-h-[100dvh] flex flex-col">
+  <div class="min-h-[100dvh] flex flex-col lg:flex-row">
+    <!-- Desktop Sidebar Navigation (lg+) -->
+    <aside class="hidden lg:flex lg:flex-col lg:w-56 lg:fixed lg:inset-y-0 lg:left-0 glass-nav lg:border-r lg:border-t-0 safe-top z-50">
+      <!-- App branding -->
+      <div class="px-5 pt-6 pb-4">
+        <h2 class="text-lg font-semibold text-[var(--color-primary-light)]">MuslimApp</h2>
+        <p class="text-[10px] text-themed-faint mt-0.5">Gebetszeiten &amp; Koran</p>
+      </div>
+
+      <!-- Nav links -->
+      <nav class="flex-1 px-3 space-y-1">
+        <NuxtLink
+          v-for="item in navItems"
+          :key="item.path"
+          :to="item.path"
+          :class="[
+            'flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200',
+            isActive(item.path)
+              ? 'glass-primary text-[var(--color-primary-light)]'
+              : 'text-themed-secondary hover:text-themed hover:bg-[var(--glass-bg-subtle)]',
+          ]"
+        >
+          <span class="text-lg leading-none w-6 text-center">{{ item.icon }}</span>
+          <span class="text-sm font-medium">{{ t(item.label) }}</span>
+        </NuxtLink>
+      </nav>
+    </aside>
+
     <!-- Main Content Area -->
-    <main class="flex-1 pb-24 safe-top">
+    <main class="flex-1 pb-24 lg:pb-6 lg:ml-56 safe-top">
       <slot />
     </main>
 
-    <!-- Bottom Navigation -->
-    <nav class="fixed bottom-0 inset-x-0 glass-nav safe-bottom z-50">
+    <!-- Mobile Bottom Navigation (below lg) -->
+    <nav class="lg:hidden fixed bottom-0 inset-x-0 glass-nav safe-bottom z-50">
       <div class="flex justify-around items-center h-16 max-w-lg mx-auto px-2">
         <NuxtLink
           v-for="item in navItems"

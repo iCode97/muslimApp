@@ -7,7 +7,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <div class="px-4 pt-6 space-y-5 max-w-lg mx-auto">
+  <div class="app-container pt-6 space-y-5">
     <header>
       <h1 class="text-2xl font-semibold">
         {{ t('calendar.title') }}

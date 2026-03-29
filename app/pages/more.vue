@@ -15,7 +15,7 @@ const tools = [
 </script>
 
 <template>
-  <div class="px-4 pt-6 space-y-5 max-w-lg mx-auto">
+  <div class="app-container pt-6 space-y-5">
     <header>
       <h1 class="text-2xl font-semibold">
         {{ t('more.title') }}
@@ -49,7 +49,7 @@ const tools = [
       <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
         {{ t('more.tools') }}
       </h3>
-      <div class="grid grid-cols-1 gap-3">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         <NuxtLink
           v-for="tool in tools"
           :key="tool.path"
@@ -111,14 +111,3 @@ const tools = [
   </div>
 </template>
 
-<style scoped>
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.3s ease;
-}
-.slide-enter-from,
-.slide-leave-to {
-  opacity: 0;
-  transform: translateY(-8px);
-}
-</style>
