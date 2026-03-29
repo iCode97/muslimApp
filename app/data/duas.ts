@@ -18,6 +18,7 @@ export interface Dua {
 
 export const DUA_CATEGORIES = [
   'morning', 'evening', 'prayer', 'food', 'travel', 'protection', 'forgiveness', 'general',
+  'healing', 'parents', 'anxiety', 'gratitude',
 ] as const
 
 export const DUAS: Dua[] = [
@@ -196,5 +197,121 @@ export const DUAS: Dua[] = [
       tr: 'Allah bize yeter, O ne güzel vekildir.',
     },
     source: 'Quran 3:173',
+  },
+
+  // ===== HEALING (Krankheit & Genesung) =====
+  {
+    id: 15,
+    category: 'healing',
+    arabic: 'اللَّهُمَّ رَبَّ النَّاسِ أَذْهِبِ الْبَأْسَ اشْفِ أَنْتَ الشَّافِي لَا شِفَاءَ إِلَّا شِفَاؤُكَ شِفَاءً لَا يُغَادِرُ سَقَمًا',
+    transliteration: 'Allahumma Rabban-nas, adhibil-ba\'s, ishfi antash-shafi, la shifa\'a illa shifa\'uka, shifa\'an la yughadiru saqama.',
+    translations: {
+      de: 'O Allah, Herr der Menschen, nimm das Leid weg und heile. Du bist der Heiler, es gibt keine Heilung ausser Deiner Heilung, eine Heilung, die keine Krankheit zurücklässt.',
+      en: 'O Allah, Lord of mankind, remove the affliction and heal. You are the Healer, there is no healing except Your healing, a healing that leaves no illness behind.',
+      tr: 'Allah\'ım, insanların Rabbi, sıkıntıyı gider, şifa ver. Şifa veren Sensin, Senin şifandan başka şifa yoktur. Öyle bir şifa ver ki hastalık bırakmasın.',
+    },
+    source: 'Bukhari, Muslim',
+  },
+  {
+    id: 16,
+    category: 'healing',
+    arabic: 'بِسْمِ اللَّهِ أَرْقِيكَ مِنْ كُلِّ شَيْءٍ يُؤْذِيكَ مِنْ شَرِّ كُلِّ نَفْسٍ أَوْ عَيْنِ حَاسِدٍ اللَّهُ يَشْفِيكَ',
+    transliteration: 'Bismillahi arqika min kulli shay\'in yu\'dhika, min sharri kulli nafsin aw \'ayni hasidin, Allahu yashfik.',
+    translations: {
+      de: 'Im Namen Allahs bespreche ich dich gegen alles, was dir schadet, gegen das Übel jeder Seele und jedes neidischen Auges. Allah heile dich.',
+      en: 'In the name of Allah I perform Ruqyah on you, from everything that harms you, from the evil of every soul or envious eye. May Allah heal you.',
+      tr: 'Allah\'ın adıyla sana okuyorum, sana zarar veren her şeyden, her nefsin ve hasetçi gözün şerrinden. Allah sana şifa versin.',
+    },
+    source: 'Muslim',
+  },
+
+  // ===== PARENTS (Eltern) =====
+  {
+    id: 17,
+    category: 'parents',
+    arabic: 'رَّبِّ ٱرْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا',
+    transliteration: 'Rabbir-hamhuma kama rabbayanee sagheera.',
+    translations: {
+      de: 'Mein Herr, erbarme Dich ihrer, wie sie mich aufzogen, als ich klein war.',
+      en: 'My Lord, have mercy upon them as they brought me up when I was small.',
+      tr: 'Rabbim, onlara merhamet et, tıpkı beni küçükken yetiştirdikleri gibi.',
+    },
+    source: 'Quran 17:24',
+  },
+  {
+    id: 18,
+    category: 'parents',
+    arabic: 'رَبِّ ٱغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ يَوْمَ يَقُومُ ٱلْحِسَابُ',
+    transliteration: 'Rabbighfir li wa li-walidayya wa lil-mu\'mineena yawma yaqumul-hisab.',
+    translations: {
+      de: 'Mein Herr, vergib mir und meinen Eltern und den Gläubigen am Tag der Abrechnung.',
+      en: 'My Lord, forgive me and my parents and the believers the Day the account is established.',
+      tr: 'Rabbim, hesap gününde beni, ana babamı ve müminleri bağışla.',
+    },
+    source: 'Quran 14:41',
+  },
+
+  // ===== ANXIETY (Angst & Sorgen) =====
+  {
+    id: 19,
+    category: 'anxiety',
+    arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ وَأَعُوذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ وَأَعُوذُ بِكَ مِنَ الْجُبْنِ وَالْبُخْلِ وَأَعُوذُ بِكَ مِنْ غَلَبَةِ الدَّيْنِ وَقَهْرِ الرِّجَالِ',
+    transliteration: 'Allahumma inni a\'udhu bika minal-hammi wal-hazan, wa a\'udhu bika minal-\'ajzi wal-kasal, wa a\'udhu bika minal-jubni wal-bukhl, wa a\'udhu bika min ghalabatid-dayni wa qahrir-rijal.',
+    translations: {
+      de: 'O Allah, ich suche Zuflucht bei Dir vor Sorge und Trauer, vor Unfähigkeit und Faulheit, vor Feigheit und Geiz, und vor der Last der Schulden und der Überwältigung durch Menschen.',
+      en: 'O Allah, I seek refuge in You from worry and grief, from incapacity and laziness, from cowardice and miserliness, and from the burden of debt and being overwhelmed by people.',
+      tr: 'Allah\'ım, sana sığınırım gamdan, kederden, acizlikten, tembellikten, korkaklıktan, cimrilikten, borç yükünden ve insanların baskısından.',
+    },
+    source: 'Bukhari',
+  },
+  {
+    id: 20,
+    category: 'anxiety',
+    arabic: 'لَا إِلَٰهَ إِلَّا أَنْتَ سُبْحَانَكَ إِنِّي كُنْتُ مِنَ الظَّالِمِينَ',
+    transliteration: 'La ilaha illa anta subhanaka inni kuntu minadh-dhalimin.',
+    translations: {
+      de: 'Es gibt keinen Gott ausser Dir, gepriesen seist Du! Ich bin wahrlich einer der Ungerechten gewesen.',
+      en: 'There is no deity except You; exalted are You. Indeed, I have been of the wrongdoers.',
+      tr: 'Senden başka ilah yoktur, Seni tenzih ederim. Gerçekten ben zalimlerden oldum.',
+    },
+    source: 'Quran 21:87',
+  },
+  {
+    id: 21,
+    category: 'anxiety',
+    arabic: 'حَسْبِيَ اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ',
+    transliteration: 'Hasbiyallahu la ilaha illa huwa, alayhi tawakkaltu wa huwa Rabbul-Arshil-Azim.',
+    translations: {
+      de: 'Allah genügt mir. Es gibt keinen Gott ausser Ihm. Auf Ihn vertraue ich, und Er ist der Herr des gewaltigen Thrones.',
+      en: 'Allah is sufficient for me. There is no deity except Him. In Him I put my trust, and He is the Lord of the Mighty Throne.',
+      tr: 'Allah bana yeter. O\'ndan başka ilah yoktur. Ben O\'na tevekkül ettim. O, büyük Arş\'ın Rabbidir.',
+    },
+    source: 'Quran 9:129',
+  },
+
+  // ===== GRATITUDE (Dankbarkeit) =====
+  {
+    id: 22,
+    category: 'gratitude',
+    arabic: 'اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ',
+    transliteration: 'Allahumma a\'inni \'ala dhikrika wa shukrika wa husni \'ibadatik.',
+    translations: {
+      de: 'O Allah, hilf mir, Deiner zu gedenken, Dir zu danken und Dich auf die beste Weise anzubeten.',
+      en: 'O Allah, help me to remember You, to thank You, and to worship You in the best way.',
+      tr: 'Allah\'ım, Seni anmam, Sana şükretmem ve Sana güzel ibadet etmem konusunda bana yardım et.',
+    },
+    source: 'Abu Dawud',
+  },
+  {
+    id: 23,
+    category: 'gratitude',
+    arabic: 'الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَكَفَانَا وَآوَانَا فَكَمْ مِمَّنْ لَا كَافِيَ لَهُ وَلَا مُؤْوِيَ',
+    transliteration: 'Alhamdu lillahil-ladhi at\'amana wa saqana wa kafana wa awana, fa kam mimman la kafiya lahu wa la mu\'wiy.',
+    translations: {
+      de: 'Alles Lob gebührt Allah, Der uns gespeist, getränkt, versorgt und uns Unterkunft gewährt hat. Denn wie viele gibt es, die keinen Versorger und keinen Unterschlupf haben.',
+      en: 'All praise is due to Allah, Who fed us, gave us drink, sufficed us and sheltered us. For how many are there who have no provider and no shelter.',
+      tr: 'Bizi yediren, içiren, bize yeten ve bizi barındıran Allah\'a hamd olsun. Nice insanlar var ki ne yeteni var ne de barındıranı.',
+    },
+    source: 'Muslim',
   },
 ]

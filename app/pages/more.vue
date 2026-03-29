@@ -11,6 +11,8 @@ const tools = [
   { path: '/qibla', icon: '🧭', labelKey: 'more.qibla', descKey: 'more.qiblaDesc' },
   { path: '/dua', icon: '🤲', labelKey: 'more.dua', descKey: 'more.duaDesc' },
   { path: '/hadith', icon: '📜', labelKey: 'more.hadith', descKey: 'more.hadithDesc' },
+  { path: '/names', icon: '✨', labelKey: 'more.names', descKey: 'more.namesDesc' },
+  { path: '/guide', icon: '📘', labelKey: 'more.guide', descKey: 'more.guideDesc' },
 ]
 </script>
 

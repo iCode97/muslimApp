@@ -40,6 +40,10 @@ const categoryIcons: Record<string, string> = {
   protection: '🛡️',
   forgiveness: '🤲',
   general: '💫',
+  healing: '🏥',
+  parents: '👨‍👩‍👧',
+  anxiety: '🕊️',
+  gratitude: '🙏',
 }
 </script>
 

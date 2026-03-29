@@ -53,6 +53,7 @@ const widgetComponents: Record<string, ReturnType<typeof resolveComponent>> = {
   'tasbih-quick': resolveComponent('TasbihQuick'),
   'hijri-date': resolveComponent('HijriDateWidget'),
   'hadith-of-day': resolveComponent('HadithOfDay'),
+  'name-of-day': resolveComponent('NameOfDay'),
 }
 </script>
 
