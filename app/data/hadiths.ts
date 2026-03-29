@@ -19,6 +19,7 @@ export interface Hadith {
 
 export const HADITH_CATEGORIES = [
   'faith', 'character', 'prayer', 'knowledge', 'community', 'daily', 'mercy', 'deeds',
+  'ramadan', 'patience', 'gratitude', 'children', 'economy', 'afterlife',
 ] as const
 
 export const HADITHS: Hadith[] = [
@@ -562,5 +563,352 @@ export const HADITHS: Hadith[] = [
     },
     source: 'Tirmidhi 2520',
     narrator: 'Abu Said al-Khudri',
+  },
+
+  // === RAMADAN ===
+  {
+    id: 44,
+    category: 'ramadan',
+    arabic: 'مَنْ صَامَ رَمَضَانَ إِيمَانًا وَاحْتِسَابًا غُفِرَ لَهُ مَا تَقَدَّمَ مِنْ ذَنْبِهِ',
+    translations: {
+      de: 'Wer den Ramadan aus Glauben und Hoffnung auf Belohnung fastet, dem werden seine vergangenen Sünden vergeben.',
+      en: 'Whoever fasts Ramadan out of faith and seeking reward, his past sins will be forgiven.',
+      tr: 'Kim inanarak ve karşılığını Allah\'tan bekleyerek Ramazan orucunu tutarsa geçmiş günahları bağışlanır.',
+    },
+    source: 'Bukhari 38, Muslim 760',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 45,
+    category: 'ramadan',
+    arabic: 'مَنْ قَامَ رَمَضَانَ إِيمَانًا وَاحْتِسَابًا غُفِرَ لَهُ مَا تَقَدَّمَ مِنْ ذَنْبِهِ',
+    translations: {
+      de: 'Wer im Ramadan aus Glauben und Hoffnung auf Belohnung betet, dem werden seine vergangenen Sünden vergeben.',
+      en: 'Whoever stands in prayer during Ramadan out of faith and seeking reward, his past sins will be forgiven.',
+      tr: 'Kim inanarak ve karşılığını Allah\'tan bekleyerek Ramazan\'da namaz kılarsa geçmiş günahları bağışlanır.',
+    },
+    source: 'Bukhari 37, Muslim 759',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 46,
+    category: 'ramadan',
+    arabic: 'إِذَا جَاءَ رَمَضَانُ فُتِحَتْ أَبْوَابُ الْجَنَّةِ وَغُلِّقَتْ أَبْوَابُ النَّارِ وَصُفِّدَتِ الشَّيَاطِينُ',
+    translations: {
+      de: 'Wenn der Ramadan kommt, werden die Tore des Paradieses geöffnet, die Tore der Hölle geschlossen und die Teufel in Ketten gelegt.',
+      en: 'When Ramadan comes, the gates of Paradise are opened, the gates of Hellfire are closed, and the devils are chained.',
+      tr: 'Ramazan geldiğinde cennet kapıları açılır, cehennem kapıları kapanır ve şeytanlar zincire vurulur.',
+    },
+    source: 'Bukhari 1899, Muslim 1079',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 47,
+    category: 'ramadan',
+    arabic: 'مَنْ فَطَّرَ صَائِمًا كَانَ لَهُ مِثْلُ أَجْرِهِ غَيْرَ أَنَّهُ لَا يَنْقُصُ مِنْ أَجْرِ الصَّائِمِ شَيْئًا',
+    translations: {
+      de: 'Wer einem Fastenden das Fasten bricht, erhält die gleiche Belohnung, ohne dass die Belohnung des Fastenden gemindert wird.',
+      en: 'Whoever provides food for a fasting person to break their fast will have a reward like theirs, without diminishing the fasting person\'s reward.',
+      tr: 'Kim bir oruçluya iftar ettirirse, oruçlunun ecrinden hiçbir şey eksilmeksizin onun ecri kadar sevap kazanır.',
+    },
+    source: 'Tirmidhi 807',
+    narrator: 'Zaid ibn Khalid al-Juhani',
+  },
+  {
+    id: 48,
+    category: 'ramadan',
+    arabic: 'الصِّيَامُ جُنَّةٌ فَلَا يَرْفُثْ وَلَا يَجْهَلْ',
+    translations: {
+      de: 'Das Fasten ist ein Schutzschild. So soll man weder unanständig reden noch unwissend handeln.',
+      en: 'Fasting is a shield. So one should not speak obscenely nor act ignorantly.',
+      tr: 'Oruç bir kalkandır. Oruçlu kişi kötü söz söylemesin ve cahilce davranmasın.',
+    },
+    source: 'Bukhari 1894, Muslim 1151',
+    narrator: 'Abu Huraira',
+  },
+
+  // === PATIENCE ===
+  {
+    id: 49,
+    category: 'patience',
+    arabic: 'عَجَبًا لِأَمْرِ الْمُؤْمِنِ إِنَّ أَمْرَهُ كُلَّهُ خَيْرٌ',
+    translations: {
+      de: 'Wunderbar ist die Angelegenheit des Gläubigen, denn all seine Angelegenheiten sind gut für ihn.',
+      en: 'How wonderful is the affair of the believer, for all his affairs are good.',
+      tr: 'Müminin durumu ne güzeldir! Onun her hali hayırdır.',
+    },
+    source: 'Muslim 2999',
+    narrator: 'Suhaib ar-Rumi',
+  },
+  {
+    id: 50,
+    category: 'patience',
+    arabic: 'إِنَّمَا الصَّبْرُ عِنْدَ الصَّدْمَةِ الأُولَى',
+    translations: {
+      de: 'Wahre Geduld zeigt sich beim ersten Schock.',
+      en: 'True patience is at the first stroke of calamity.',
+      tr: 'Gerçek sabır, musibetin ilk anındaki sabırdır.',
+    },
+    source: 'Bukhari 1283, Muslim 926',
+    narrator: 'Anas ibn Malik',
+  },
+  {
+    id: 51,
+    category: 'patience',
+    arabic: 'مَا يُصِيبُ الْمُسْلِمَ مِنْ نَصَبٍ وَلَا وَصَبٍ وَلَا هَمٍّ وَلَا حُزْنٍ وَلَا أَذًى وَلَا غَمٍّ حَتَّى الشَّوْكَةِ يُشَاكُهَا إِلَّا كَفَّرَ اللَّهُ بِهَا مِنْ خَطَايَاهُ',
+    translations: {
+      de: 'Kein Muslim wird von Müdigkeit, Krankheit, Sorge, Trauer oder Leid getroffen – nicht einmal von einem Dorn – ohne dass Allah ihm dafür seine Sünden vergibt.',
+      en: 'No Muslim is afflicted with fatigue, illness, worry, grief, or harm – not even a thorn prick – except that Allah expiates his sins thereby.',
+      tr: 'Müslümanın başına gelen yorgunluk, hastalık, üzüntü, keder, sıkıntı ve gamdan, hatta batırılan dikene varıncaya kadar, Allah bunlar sebebiyle onun günahlarını bağışlar.',
+    },
+    source: 'Bukhari 5641, Muslim 2573',
+    narrator: 'Abu Said al-Khudri',
+  },
+  {
+    id: 52,
+    category: 'patience',
+    arabic: 'وَاعْلَمْ أَنَّ النَّصْرَ مَعَ الصَّبْرِ وَأَنَّ الْفَرَجَ مَعَ الْكَرْبِ وَأَنَّ مَعَ الْعُسْرِ يُسْرًا',
+    translations: {
+      de: 'Wisse, dass der Sieg mit der Geduld kommt, die Erleichterung mit der Not und die Leichtigkeit mit der Schwierigkeit.',
+      en: 'Know that victory comes with patience, relief comes with affliction, and ease comes with hardship.',
+      tr: 'Bil ki zafer sabırla, ferahlık sıkıntıyla ve kolaylık zorlukla birliktedir.',
+    },
+    source: 'Tirmidhi 2516',
+    narrator: 'Abdullah ibn Abbas',
+  },
+  {
+    id: 53,
+    category: 'patience',
+    arabic: 'وَمَنْ يَتَصَبَّرْ يُصَبِّرْهُ اللَّهُ وَمَا أُعْطِيَ أَحَدٌ عَطَاءً خَيْرًا وَأَوْسَعَ مِنَ الصَّبْرِ',
+    translations: {
+      de: 'Wer Geduld übt, dem gibt Allah Geduld. Und niemandem wurde eine bessere und umfassendere Gabe gegeben als Geduld.',
+      en: 'Whoever exercises patience, Allah will grant him patience. No one is given a better or more generous gift than patience.',
+      tr: 'Kim sabretmeye çalışırsa Allah ona sabır verir. Hiç kimseye sabırdan daha hayırlı ve geniş bir nimet verilmemiştir.',
+    },
+    source: 'Bukhari 1469, Muslim 1053',
+    narrator: 'Abu Said al-Khudri',
+  },
+
+  // === GRATITUDE ===
+  {
+    id: 54,
+    category: 'gratitude',
+    arabic: 'مَنْ لَا يَشْكُرُ النَّاسَ لَا يَشْكُرُ اللَّهَ',
+    translations: {
+      de: 'Wer den Menschen nicht dankt, dankt Allah nicht.',
+      en: 'Whoever does not thank people does not thank Allah.',
+      tr: 'İnsanlara teşekkür etmeyen, Allah\'a şükretmez.',
+    },
+    source: 'Tirmidhi 1954',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 55,
+    category: 'gratitude',
+    arabic: 'انْظُرُوا إِلَى مَنْ أَسْفَلَ مِنْكُمْ وَلَا تَنْظُرُوا إِلَى مَنْ هُوَ فَوْقَكُمْ فَهُوَ أَجْدَرُ أَنْ لَا تَزْدَرُوا نِعْمَةَ اللَّهِ',
+    translations: {
+      de: 'Schaut auf diejenigen, die weniger haben als ihr, und nicht auf diejenigen, die mehr haben. So werdet ihr die Gunst Allahs nicht gering schätzen.',
+      en: 'Look at those below you and do not look at those above you, for that is more likely to prevent you from belittling Allah\'s blessings.',
+      tr: 'Sizden aşağıda olanlara bakın, yukarıda olanlara bakmayın. Bu, Allah\'ın nimetini küçümsememeniz için daha uygundur.',
+    },
+    source: 'Muslim 2963',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 56,
+    category: 'gratitude',
+    arabic: 'إِنَّ اللَّهَ لَيَرْضَى عَنِ الْعَبْدِ أَنْ يَأْكُلَ الأَكْلَةَ فَيَحْمَدَهُ عَلَيْهَا أَوْ يَشْرَبَ الشَّرْبَةَ فَيَحْمَدَهُ عَلَيْهَا',
+    translations: {
+      de: 'Allah ist wahrlich zufrieden mit dem Diener, der Ihm nach dem Essen dankt und Ihm nach dem Trinken dankt.',
+      en: 'Allah is truly pleased with a servant who praises Him after eating and praises Him after drinking.',
+      tr: 'Allah, yemek yiyip O\'na hamd eden ve su içip O\'na hamd eden kuldan razı olur.',
+    },
+    source: 'Muslim 2734',
+    narrator: 'Anas ibn Malik',
+  },
+  {
+    id: 57,
+    category: 'gratitude',
+    arabic: 'لَئِنْ شَكَرْتُمْ لَأَزِيدَنَّكُمْ',
+    translations: {
+      de: 'Wenn ihr dankbar seid, werde Ich euch gewiss noch mehr geben.',
+      en: 'If you are grateful, I will surely increase you.',
+      tr: 'Şükrederseniz, elbette size nimetimi artırırım.',
+    },
+    source: 'Quran 14:7',
+  },
+
+  // === CHILDREN ===
+  {
+    id: 58,
+    category: 'children',
+    arabic: 'لَيْسَ مِنَّا مَنْ لَمْ يَرْحَمْ صَغِيرَنَا وَيُوَقِّرْ كَبِيرَنَا',
+    translations: {
+      de: 'Wer unsere Kleinen nicht mit Barmherzigkeit behandelt und unsere Älteren nicht respektiert, gehört nicht zu uns.',
+      en: 'He is not one of us who does not show mercy to our young and respect to our elders.',
+      tr: 'Küçüklerimize merhamet etmeyen ve büyüklerimize saygı göstermeyen bizden değildir.',
+    },
+    source: 'Tirmidhi 1919',
+    narrator: 'Abdullah ibn Amr',
+  },
+  {
+    id: 59,
+    category: 'children',
+    arabic: 'كُلُّكُمْ رَاعٍ وَكُلُّكُمْ مَسْئُولٌ عَنْ رَعِيَّتِهِ',
+    translations: {
+      de: 'Jeder von euch ist ein Hüter, und jeder von euch wird über seine Schutzbefohlenen befragt.',
+      en: 'Each of you is a shepherd, and each of you is responsible for his flock.',
+      tr: 'Hepiniz çobansınız ve hepiniz sürünüzden sorumlusunuz.',
+    },
+    source: 'Bukhari 893, Muslim 1829',
+    narrator: 'Abdullah ibn Umar',
+  },
+  {
+    id: 60,
+    category: 'children',
+    arabic: 'مَنْ عَالَ جَارِيَتَيْنِ حَتَّى تَبْلُغَا جَاءَ يَوْمَ الْقِيَامَةِ أَنَا وَهُوَ كَهَاتَيْنِ',
+    translations: {
+      de: 'Wer zwei Töchter aufzieht, bis sie erwachsen sind, der wird am Tag des Gerichts mit mir sein wie diese zwei Finger.',
+      en: 'Whoever raises two daughters until they reach maturity, he and I will come on the Day of Judgment like these two fingers.',
+      tr: 'Kim iki kız çocuğunu yetişkinliğe kadar yetiştirirse, kıyamet gününde o ve ben şu iki parmak gibi yanyana oluruz.',
+    },
+    source: 'Muslim 2631',
+    narrator: 'Anas ibn Malik',
+  },
+  {
+    id: 61,
+    category: 'children',
+    arabic: 'أَدِّبُوا أَوْلَادَكُمْ وَأَحْسِنُوا أَدَبَهُمْ',
+    translations: {
+      de: 'Erzieht eure Kinder und lehrt sie gutes Benehmen.',
+      en: 'Discipline your children and teach them good manners.',
+      tr: 'Çocuklarınızı terbiye edin ve onlara güzel ahlak öğretin.',
+    },
+    source: 'Ibn Majah 3671',
+    narrator: 'Abdullah ibn Abbas',
+  },
+
+  // === ECONOMY ===
+  {
+    id: 62,
+    category: 'economy',
+    arabic: 'مَا أَكَلَ أَحَدٌ طَعَامًا قَطُّ خَيْرًا مِنْ أَنْ يَأْكُلَ مِنْ عَمَلِ يَدِهِ',
+    translations: {
+      de: 'Niemand hat je bessere Nahrung gegessen als die, die er mit seiner eigenen Hände Arbeit verdient hat.',
+      en: 'No one has ever eaten better food than that earned by the work of his own hands.',
+      tr: 'Hiçbir kimse kendi elinin emeğiyle kazandığından daha hayırlı bir yemek yememiştir.',
+    },
+    source: 'Bukhari 2072',
+    narrator: 'Al-Miqdam',
+  },
+  {
+    id: 63,
+    category: 'economy',
+    arabic: 'الْيَدُ الْعُلْيَا خَيْرٌ مِنَ الْيَدِ السُّفْلَى',
+    translations: {
+      de: 'Die gebende Hand ist besser als die nehmende Hand.',
+      en: 'The upper hand (the giving hand) is better than the lower hand (the receiving hand).',
+      tr: 'Veren el, alan elden hayırlıdır.',
+    },
+    source: 'Bukhari 1427, Muslim 1033',
+    narrator: 'Abdullah ibn Umar',
+  },
+  {
+    id: 64,
+    category: 'economy',
+    arabic: 'مَا نَقَصَتْ صَدَقَةٌ مِنْ مَالٍ',
+    translations: {
+      de: 'Almosen verringern den Reichtum nicht.',
+      en: 'Charity does not decrease wealth.',
+      tr: 'Sadaka malı eksiltmez.',
+    },
+    source: 'Muslim 2588',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 65,
+    category: 'economy',
+    arabic: 'التَّاجِرُ الصَّدُوقُ الأَمِينُ مَعَ النَّبِيِّينَ وَالصِّدِّيقِينَ وَالشُّهَدَاءِ',
+    translations: {
+      de: 'Der ehrliche und vertrauenswürdige Kaufmann ist mit den Propheten, den Wahrhaftigen und den Märtyrern.',
+      en: 'The honest and trustworthy merchant is with the Prophets, the truthful, and the martyrs.',
+      tr: 'Doğru ve güvenilir tüccar, peygamberler, sıddıklar ve şehitlerle beraberdir.',
+    },
+    source: 'Tirmidhi 1209',
+    narrator: 'Abu Said al-Khudri',
+  },
+  {
+    id: 66,
+    category: 'economy',
+    arabic: 'مَنْ غَشَّنَا فَلَيْسَ مِنَّا',
+    translations: {
+      de: 'Wer uns betrügt, gehört nicht zu uns.',
+      en: 'Whoever cheats us is not one of us.',
+      tr: 'Bizi aldatan bizden değildir.',
+    },
+    source: 'Muslim 101',
+    narrator: 'Abu Huraira',
+  },
+
+  // === AFTERLIFE ===
+  {
+    id: 67,
+    category: 'afterlife',
+    arabic: 'الدُّنْيَا سِجْنُ الْمُؤْمِنِ وَجَنَّةُ الْكَافِرِ',
+    translations: {
+      de: 'Die Welt ist das Gefängnis des Gläubigen und das Paradies des Ungläubigen.',
+      en: 'The world is a prison for the believer and a paradise for the disbeliever.',
+      tr: 'Dünya müminin zindanı, kâfirin cennetidir.',
+    },
+    source: 'Muslim 2956',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 68,
+    category: 'afterlife',
+    arabic: 'أَكْثِرُوا ذِكْرَ هَاذِمِ اللَّذَّاتِ يَعْنِي الْمَوْتَ',
+    translations: {
+      de: 'Gedenkt häufig des Vernichters der Freuden – des Todes.',
+      en: 'Remember often the destroyer of pleasures – death.',
+      tr: 'Lezzetleri yok edeni, yani ölümü çokça hatırlayın.',
+    },
+    source: 'Tirmidhi 2307',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 69,
+    category: 'afterlife',
+    arabic: 'كُنْ فِي الدُّنْيَا كَأَنَّكَ غَرِيبٌ أَوْ عَابِرُ سَبِيلٍ',
+    translations: {
+      de: 'Sei in dieser Welt wie ein Fremder oder ein Reisender.',
+      en: 'Be in this world as if you were a stranger or a traveler.',
+      tr: 'Dünyada bir garip veya bir yolcu gibi ol.',
+    },
+    source: 'Bukhari 6416',
+    narrator: 'Abdullah ibn Umar',
+  },
+  {
+    id: 70,
+    category: 'afterlife',
+    arabic: 'إِذَا مَاتَ الإِنْسَانُ انْقَطَعَ عَنْهُ عَمَلُهُ إِلَّا مِنْ ثَلَاثَةٍ صَدَقَةٍ جَارِيَةٍ أَوْ عِلْمٍ يُنْتَفَعُ بِهِ أَوْ وَلَدٍ صَالِحٍ يَدْعُو لَهُ',
+    translations: {
+      de: 'Wenn der Mensch stirbt, enden seine Taten, außer drei: eine fortlaufende Spende, nützliches Wissen oder ein rechtschaffenes Kind, das für ihn betet.',
+      en: 'When a person dies, his deeds end except for three: ongoing charity, beneficial knowledge, or a righteous child who prays for him.',
+      tr: 'İnsan öldüğünde ameli kesilir, ancak üç şey hariç: sadaka-i cariye, faydalı ilim veya kendisine dua eden salih evlat.',
+    },
+    source: 'Muslim 1631',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 71,
+    category: 'afterlife',
+    arabic: 'الْقَبْرُ أَوَّلُ مَنَازِلِ الآخِرَةِ',
+    translations: {
+      de: 'Das Grab ist die erste Station des Jenseits.',
+      en: 'The grave is the first stage of the Hereafter.',
+      tr: 'Kabir, ahiretin ilk durağıdır.',
+    },
+    source: 'Tirmidhi 2308',
+    narrator: 'Uthman ibn Affan',
   },
 ]

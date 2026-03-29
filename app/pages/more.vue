@@ -13,6 +13,8 @@ const tools = [
   { path: '/hadith', icon: '📜', labelKey: 'more.hadith', descKey: 'more.hadithDesc' },
   { path: '/names', icon: '✨', labelKey: 'more.names', descKey: 'more.namesDesc' },
   { path: '/guide', icon: '📘', labelKey: 'more.guide', descKey: 'more.guideDesc' },
+  { path: '/seerah', icon: '📕', labelKey: 'more.seerah', descKey: 'more.seerahDesc' },
+  { path: '/ramadan', icon: '🌙', labelKey: 'more.ramadan', descKey: 'more.ramadanDesc' },
 ]
 </script>
 

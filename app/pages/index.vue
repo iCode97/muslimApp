@@ -54,6 +54,7 @@ const widgetComponents: Record<string, ReturnType<typeof resolveComponent>> = {
   'hijri-date': resolveComponent('HijriDateWidget'),
   'hadith-of-day': resolveComponent('HadithOfDay'),
   'name-of-day': resolveComponent('NameOfDay'),
+  'seerah-teaser': resolveComponent('SeerahTeaser'),
 }
 </script>
 

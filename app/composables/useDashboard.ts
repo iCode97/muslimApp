@@ -23,6 +23,7 @@ const DEFAULT_WIDGETS: DashboardWidget[] = [
   { id: 'hijri-date', i18nKey: 'widgets.hijriDate', icon: '☪', enabled: false, order: 6 },
   { id: 'hadith-of-day', i18nKey: 'widgets.hadithOfDay', icon: '📜', enabled: false, order: 7 },
   { id: 'name-of-day', i18nKey: 'widgets.nameOfDay', icon: '✨', enabled: true, order: 8 },
+  { id: 'seerah-teaser', i18nKey: 'widgets.seerahTeaser', icon: '📕', enabled: false, order: 9 },
 ]
 
 export function useDashboard() {
