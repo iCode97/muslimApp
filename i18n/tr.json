@@ -110,7 +110,13 @@
     "loading": "Yükleniyor...",
     "error": "Bir hata oluştu",
     "retry": "Tekrar dene",
-    "unknown": "Bilinmiyor"
+    "unknown": "Bilinmiyor",
+    "reset": "Sıfırla",
+    "resetConfirm": "İlerleme gerçekten sıfırlansın mı?",
+    "progress": "İlerleme",
+    "markAsRead": "Okundu olarak işaretle",
+    "markAsUnread": "Okunmadı olarak işaretle",
+    "read": "Okundu"
   },
   "errors": {
     "locationDetect": "Konum tespit edilemedi. Lütfen manuel olarak girin.",

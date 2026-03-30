@@ -110,7 +110,13 @@
     "loading": "Loading...",
     "error": "An error occurred",
     "retry": "Try again",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "reset": "Reset",
+    "resetConfirm": "Really reset progress?",
+    "progress": "Progress",
+    "markAsRead": "Mark as read",
+    "markAsUnread": "Mark as unread",
+    "read": "Read"
   },
   "errors": {
     "locationDetect": "Could not detect location. Please enter manually.",

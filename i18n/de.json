@@ -110,7 +110,13 @@
     "loading": "Wird geladen...",
     "error": "Ein Fehler ist aufgetreten",
     "retry": "Erneut versuchen",
-    "unknown": "Unbekannt"
+    "unknown": "Unbekannt",
+    "reset": "Zurücksetzen",
+    "resetConfirm": "Fortschritt wirklich zurücksetzen?",
+    "progress": "Fortschritt",
+    "markAsRead": "Als gelesen markieren",
+    "markAsUnread": "Als ungelesen markieren",
+    "read": "Gelesen"
   },
   "errors": {
     "locationDetect": "Standort konnte nicht ermittelt werden. Bitte manuell eingeben.",
