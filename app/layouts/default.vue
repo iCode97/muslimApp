@@ -20,9 +20,9 @@ function isActive(path: string): boolean {
 </script>
 
 <template>
-  <div class="min-h-[100dvh] flex flex-col lg:flex-row">
+  <div class="min-h-[100dvh] flex flex-col md:flex-row">
     <!-- Desktop Sidebar Navigation (lg+) -->
-    <aside class="hidden lg:flex lg:flex-col lg:w-56 lg:fixed lg:inset-y-0 lg:left-0 glass-nav lg:border-r lg:border-t-0 safe-top z-50">
+    <aside class="hidden md:flex md:flex-col md:w-56 md:fixed md:inset-y-0 md:left-0 glass-nav md:border-r md:border-t-0 safe-top z-50">
       <!-- App branding -->
       <div class="px-5 pt-6 pb-4">
         <h2 class="text-lg font-semibold text-[var(--color-primary-light)]">MuslimApp</h2>
@@ -49,12 +49,12 @@ function isActive(path: string): boolean {
     </aside>
 
     <!-- Main Content Area -->
-    <main class="flex-1 pb-24 lg:pb-6 lg:ml-56 safe-top">
+    <main class="flex-1 pb-24 md:pb-6 md:ml-56 safe-top">
       <slot />
     </main>
 
     <!-- Mobile Bottom Navigation (below lg) -->
-    <nav class="lg:hidden fixed bottom-0 inset-x-0 glass-nav safe-bottom z-50">
+    <nav class="md:hidden fixed bottom-0 inset-x-0 glass-nav safe-bottom z-50">
       <div class="flex justify-around items-center h-16 max-w-lg mx-auto px-2">
         <NuxtLink
           v-for="item in navItems"
