@@ -95,92 +95,95 @@ const days = Array.from({ length: 30 }, (_, i) => i + 1)
       </div>
     </GlassCard>
 
-    <!-- Fasting Tracker -->
-    <div class="space-y-3 animate-fade-in stagger-2">
-      <div class="flex items-center justify-between">
-        <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
-          {{ t('ramadan.fastingTracker') }}
-        </h3>
-        <span class="text-xs text-[var(--color-primary-light)] font-medium tabular-nums">
-          {{ ramadan.fastedDaysCount.value }}/30 · {{ ramadan.fastingProgress.value }}%
-        </span>
-      </div>
-
-      <!-- Progress bar -->
-      <div class="w-full h-2 rounded-full glass-subtle overflow-hidden">
-        <div
-          class="h-full rounded-full bg-[var(--color-primary-light)] transition-all duration-500"
-          :style="{ width: `${ramadan.fastingProgress.value}%` }"
-        />
-      </div>
-
-      <!-- Day grid -->
-      <GlassCard>
-        <div class="grid grid-cols-6 gap-2">
-          <button
-            v-for="day in days"
-            :key="day"
-            :class="[
-              'aspect-square rounded-xl text-xs font-medium transition-all duration-200 flex items-center justify-center',
-              ramadan.isFasted(day)
-                ? 'bg-[var(--color-primary)] text-white shadow-sm'
-                : 'glass-subtle text-themed-secondary hover:text-themed',
-              ramadan.hijriDay.value === day ? 'ring-2 ring-[var(--color-primary-light)] ring-offset-1 ring-offset-[var(--glass-bg)]' : ''
-            ]"
-            @click="ramadan.toggleFastingDay(day)"
-          >
-            {{ day }}
-          </button>
-        </div>
-        <p class="text-[10px] text-themed-faint text-center mt-3">
-          {{ t('ramadan.tapToMark') }}
-        </p>
-      </GlassCard>
-    </div>
-
-    <!-- Khatam Tracker -->
-    <div class="space-y-3 animate-fade-in stagger-3">
-      <div class="flex items-center justify-between">
-        <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
-          {{ t('ramadan.khatamTracker') }}
-        </h3>
-        <span class="text-xs text-[var(--color-primary-light)] font-medium tabular-nums">
-          {{ ramadan.state.value.khatamProgress }}/30 {{ t('ramadan.juz') }} · {{ ramadan.khatamProgress.value }}%
-        </span>
-      </div>
-
-      <!-- Progress bar -->
-      <div class="w-full h-2 rounded-full glass-subtle overflow-hidden">
-        <div
-          class="h-full rounded-full bg-[var(--color-gold)] transition-all duration-500"
-          :style="{ width: `${ramadan.khatamProgress.value}%` }"
-        />
-      </div>
-
-      <GlassCard>
+    <!-- Fasting + Khatam: side-by-side on desktop -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <!-- Fasting Tracker -->
+      <div class="space-y-3 animate-fade-in stagger-2">
         <div class="flex items-center justify-between">
-          <button
-            class="w-10 h-10 rounded-xl glass-subtle text-themed-secondary hover:text-themed flex items-center justify-center text-lg font-bold transition-all"
-            :disabled="ramadan.state.value.khatamProgress <= 0"
-            @click="ramadan.decrementKhatam()"
-          >
-            −
-          </button>
-          <div class="text-center">
-            <span class="text-4xl font-bold text-[var(--color-gold)] tabular-nums">
-              {{ ramadan.state.value.khatamProgress }}
-            </span>
-            <p class="text-[10px] text-themed-faint mt-0.5">{{ t('ramadan.juzCompleted') }}</p>
-          </div>
-          <button
-            class="w-10 h-10 rounded-xl glass-subtle text-themed-secondary hover:text-themed flex items-center justify-center text-lg font-bold transition-all"
-            :disabled="ramadan.state.value.khatamProgress >= 30"
-            @click="ramadan.incrementKhatam()"
-          >
-            +
-          </button>
+          <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
+            {{ t('ramadan.fastingTracker') }}
+          </h3>
+          <span class="text-xs text-[var(--color-primary-light)] font-medium tabular-nums">
+            {{ ramadan.fastedDaysCount.value }}/30 · {{ ramadan.fastingProgress.value }}%
+          </span>
         </div>
-      </GlassCard>
+
+        <!-- Progress bar -->
+        <div class="w-full h-2 rounded-full glass-subtle overflow-hidden">
+          <div
+            class="h-full rounded-full bg-[var(--color-primary-light)] transition-all duration-500"
+            :style="{ width: `${ramadan.fastingProgress.value}%` }"
+          />
+        </div>
+
+        <!-- Day grid -->
+        <GlassCard>
+          <div class="grid grid-cols-6 gap-2">
+            <button
+              v-for="day in days"
+              :key="day"
+              :class="[
+                'aspect-square rounded-xl text-xs font-medium transition-all duration-200 flex items-center justify-center',
+                ramadan.isFasted(day)
+                  ? 'bg-[var(--color-primary)] text-white shadow-sm'
+                  : 'glass-subtle text-themed-secondary hover:text-themed',
+                ramadan.hijriDay.value === day ? 'ring-2 ring-[var(--color-primary-light)] ring-offset-1 ring-offset-[var(--glass-bg)]' : ''
+              ]"
+              @click="ramadan.toggleFastingDay(day)"
+            >
+              {{ day }}
+            </button>
+          </div>
+          <p class="text-[10px] text-themed-faint text-center mt-3">
+            {{ t('ramadan.tapToMark') }}
+          </p>
+        </GlassCard>
+      </div>
+
+      <!-- Khatam Tracker -->
+      <div class="space-y-3 animate-fade-in stagger-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
+            {{ t('ramadan.khatamTracker') }}
+          </h3>
+          <span class="text-xs text-[var(--color-primary-light)] font-medium tabular-nums">
+            {{ ramadan.state.value.khatamProgress }}/30 {{ t('ramadan.juz') }} · {{ ramadan.khatamProgress.value }}%
+          </span>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="w-full h-2 rounded-full glass-subtle overflow-hidden">
+          <div
+            class="h-full rounded-full bg-[var(--color-gold)] transition-all duration-500"
+            :style="{ width: `${ramadan.khatamProgress.value}%` }"
+          />
+        </div>
+
+        <GlassCard>
+          <div class="flex items-center justify-between">
+            <button
+              class="w-10 h-10 rounded-xl glass-subtle text-themed-secondary hover:text-themed flex items-center justify-center text-lg font-bold transition-all"
+              :disabled="ramadan.state.value.khatamProgress <= 0"
+              @click="ramadan.decrementKhatam()"
+            >
+              −
+            </button>
+            <div class="text-center">
+              <span class="text-4xl font-bold text-[var(--color-gold)] tabular-nums">
+                {{ ramadan.state.value.khatamProgress }}
+              </span>
+              <p class="text-[10px] text-themed-faint mt-0.5">{{ t('ramadan.juzCompleted') }}</p>
+            </div>
+            <button
+              class="w-10 h-10 rounded-xl glass-subtle text-themed-secondary hover:text-themed flex items-center justify-center text-lg font-bold transition-all"
+              :disabled="ramadan.state.value.khatamProgress >= 30"
+              @click="ramadan.incrementKhatam()"
+            >
+              +
+            </button>
+          </div>
+        </GlassCard>
+      </div>
     </div>
 
     <!-- Reset -->

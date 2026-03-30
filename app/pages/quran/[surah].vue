@@ -80,7 +80,7 @@ const revelationPlace = computed(() => {
 </script>
 
 <template>
-  <div class="app-container pt-6 pb-8 space-y-4">
+  <div class="app-container pt-6 pb-8 space-y-4 max-w-3xl mx-auto">
     <!-- Header -->
     <header class="space-y-2">
       <!-- Back link -->

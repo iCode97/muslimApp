@@ -20,10 +20,13 @@ const { t } = useI18n()
     <!-- Next Holiday Countdown -->
     <HolidayCountdown />
 
-    <!-- Hijri Calendar -->
-    <HijriCalendar />
+    <!-- Calendar + Holidays: side-by-side on desktop -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <!-- Hijri Calendar -->
+      <HijriCalendar />
 
-    <!-- All Holidays -->
-    <HolidayList />
+      <!-- All Holidays -->
+      <HolidayList />
+    </div>
   </div>
 </template>
