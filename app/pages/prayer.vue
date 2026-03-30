@@ -6,16 +6,9 @@
 
 const { t } = useI18n()
 const { location, prayerTimes, hijriDisplay, init, startRefresh, stopRefresh } = usePrayerInit()
-const { setCity } = useLocation()
 
 onMounted(async () => {
   await init()
-
-  // Fallback to Berlin if no location detected
-  if (!location.value) {
-    await setCity('Berlin', 'Deutschland')
-  }
-
   startRefresh()
 })
 
@@ -33,17 +26,20 @@ onUnmounted(() => stopRefresh())
       </div>
     </header>
 
-    <LocationSelector />
+    <LocationSetupCTA />
+    <LocationSelector v-if="location" />
 
-    <PrayerCountdown />
+    <template v-if="location">
+      <PrayerCountdown />
 
-    <PrayerTimesCard />
+      <PrayerTimesCard />
 
-    <GlassCard variant="subtle" padding="sm">
-      <div class="px-3 py-2 text-xs text-white/30 flex justify-between">
-        <span>{{ t('prayer.method') }}: {{ t('prayer.diyanet') }}</span>
-        <span>Method 13 (Aladhan)</span>
-      </div>
-    </GlassCard>
+      <GlassCard variant="subtle" padding="sm">
+        <div class="px-3 py-2 text-xs text-white/30 flex justify-between">
+          <span>{{ t('prayer.method') }}: {{ t('prayer.diyanet') }}</span>
+          <span>Method 13 (Aladhan)</span>
+        </div>
+      </GlassCard>
+    </template>
   </div>
 </template>

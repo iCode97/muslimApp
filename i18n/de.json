@@ -118,6 +118,12 @@
     "markAsUnread": "Als ungelesen markieren",
     "read": "Gelesen"
   },
+  "location": {
+    "setupTitle": "Standort festlegen",
+    "setupDescription": "Lege deinen Standort fest, um Gebetszeiten, Qibla-Richtung und Iftar-/Suhoor-Zeiten zu sehen.",
+    "detectGPS": "Standort automatisch erkennen",
+    "or": "oder"
+  },
   "errors": {
     "locationDetect": "Standort konnte nicht ermittelt werden. Bitte manuell eingeben.",
     "cityNotFound": "Stadt \"{city}\" nicht gefunden.",

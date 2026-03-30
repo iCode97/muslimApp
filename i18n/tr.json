@@ -118,6 +118,12 @@
     "markAsUnread": "Okunmadı olarak işaretle",
     "read": "Okundu"
   },
+  "location": {
+    "setupTitle": "Konumunuzu belirleyin",
+    "setupDescription": "Namaz vakitlerini, kıble yönünü ve iftar/sahur saatlerini görmek için konumunuzu belirleyin.",
+    "detectGPS": "Konumu otomatik algıla",
+    "or": "veya"
+  },
   "errors": {
     "locationDetect": "Konum tespit edilemedi. Lütfen manuel olarak girin.",
     "cityNotFound": "\"{city}\" şehri bulunamadı.",

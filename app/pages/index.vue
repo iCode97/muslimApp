@@ -5,7 +5,7 @@
  */
 
 const { t } = useI18n()
-const { prayerTimes, hijriDisplay, init, startRefresh, stopRefresh } = usePrayerInit()
+const { location, prayerTimes, hijriDisplay, init, startRefresh, stopRefresh } = usePrayerInit()
 const dashboard = useDashboard()
 const notifications = useNotifications()
 
@@ -93,9 +93,10 @@ const widgetComponents: Record<string, ReturnType<typeof resolveComponent>> = {
       </div>
     </header>
 
-    <!-- Location Selector -->
+    <!-- Location: prominent CTA if not set, compact selector if set -->
     <div class="animate-fade-in stagger-1">
-      <LocationSelector />
+      <LocationSetupCTA />
+      <LocationSelector v-if="location" />
     </div>
 
     <!-- Edit Mode: Widget configuration -->

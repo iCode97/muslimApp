@@ -118,6 +118,12 @@
     "markAsUnread": "Mark as unread",
     "read": "Read"
   },
+  "location": {
+    "setupTitle": "Set your location",
+    "setupDescription": "Set your location to see prayer times, Qibla direction, and Iftar/Suhoor times.",
+    "detectGPS": "Detect location automatically",
+    "or": "or"
+  },
   "errors": {
     "locationDetect": "Could not detect location. Please enter manually.",
     "cityNotFound": "City \"{city}\" not found.",
