@@ -10,32 +10,30 @@ const { t, locale } = useI18n()
 const selectedCategory = ref<string>('all')
 const expandedIds = ref<Set<number>>(new Set())
 
-// Reading progress (persisted in localStorage)
-const readChapters = ref<Set<number>>(new Set())
+// Reading progress (using universal progress system)
+const progress = useProgress('seerah', SEERAH_CHAPTERS.length)
 
 onMounted(() => {
+  // Migrate from old localStorage key if present
   if (import.meta.client) {
-    const saved = localStorage.getItem('muslimapp-seerah-read')
+    const oldKey = 'muslimapp-seerah-read'
+    const saved = localStorage.getItem(oldKey)
     if (saved) {
-      try { readChapters.value = new Set(JSON.parse(saved)) } catch { /* ignore */ }
+      try {
+        const ids: number[] = JSON.parse(saved)
+        ids.forEach(id => progress.markRead(id))
+        localStorage.removeItem(oldKey)
+      }
+      catch { /* ignore */ }
     }
   }
+  progress.load()
 })
-
-function saveProgress() {
-  if (import.meta.client) {
-    localStorage.setItem('muslimapp-seerah-read', JSON.stringify([...readChapters.value]))
-  }
-}
 
 const filteredChapters = computed(() => {
   if (selectedCategory.value === 'all') return SEERAH_CHAPTERS
   return SEERAH_CHAPTERS.filter(c => c.category === selectedCategory.value)
 })
-
-const progressPercent = computed(() =>
-  Math.round((readChapters.value.size / SEERAH_CHAPTERS.length) * 100),
-)
 
 function toggleChapter(id: number) {
   if (expandedIds.value.has(id)) {
@@ -43,11 +41,9 @@ function toggleChapter(id: number) {
   } else {
     expandedIds.value.add(id)
     // Mark as read when opened
-    readChapters.value.add(id)
-    saveProgress()
+    progress.markRead(id)
   }
   expandedIds.value = new Set(expandedIds.value)
-  readChapters.value = new Set(readChapters.value)
 }
 
 function getContent(chapter: SeerahChapter): string {
@@ -76,23 +72,15 @@ const categoryIcons: Record<string, string> = {
     </header>
 
     <!-- Reading progress -->
-    <GlassCard variant="subtle" padding="sm" class="animate-fade-in stagger-1">
-      <div class="flex items-center gap-3 px-1">
-        <div class="flex-1">
-          <div class="flex justify-between text-xs mb-1.5">
-            <span class="text-themed-muted">{{ t('seerah.progress') }}</span>
-            <span class="text-[var(--color-primary-light)] font-medium">{{ readChapters.size }}/{{ SEERAH_CHAPTERS.length }}</span>
-          </div>
-          <div class="w-full h-2 rounded-full glass-subtle overflow-hidden">
-            <div
-              class="h-full rounded-full bg-[var(--color-primary-light)] transition-all duration-500"
-              :style="{ width: `${progressPercent}%` }"
-            />
-          </div>
-        </div>
-        <span class="text-lg font-semibold text-[var(--color-primary-light)] tabular-nums">{{ progressPercent }}%</span>
-      </div>
-    </GlassCard>
+    <ProgressBar
+      :label="t('seerah.progress')"
+      :current="progress.summary.value.read"
+      :total="progress.summary.value.total"
+      :percent="progress.summary.value.percent"
+      :show-reset="true"
+      class="animate-fade-in stagger-1"
+      @reset="progress.resetAll()"
+    />
 
     <!-- Category filter -->
     <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar animate-fade-in stagger-2">
@@ -141,7 +129,7 @@ const categoryIcons: Record<string, string> = {
                 <div class="flex items-center gap-2">
                   <span class="text-xs text-[var(--color-gold)]">{{ chapter.year }}</span>
                   <span
-                    v-if="readChapters.has(chapter.id)"
+                    v-if="progress.isRead(chapter.id)"
                     class="text-[10px] text-[var(--color-primary-light)]"
                   >✓</span>
                 </div>
