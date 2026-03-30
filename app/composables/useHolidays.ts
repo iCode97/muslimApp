@@ -135,7 +135,7 @@ export function useHolidays() {
             weekday: { en: string }
           }
         }>
-      }>(`${config.public.aladhanBaseUrl}/hijriCalendar/${month}/${year}`)
+      }>(`${config.public.aladhanBaseUrl}/hToGCalendar/${month}/${year}`)
 
       const today = new Date()
       const todayStr = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`
