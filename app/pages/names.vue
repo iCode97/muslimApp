@@ -6,9 +6,12 @@
 import { ALLAH_NAMES, NAME_CATEGORIES, type AllahName } from '~/data/allah-names'
 
 const { t, locale } = useI18n()
+const progress = useProgress('names', ALLAH_NAMES.length)
 
 const searchQuery = ref('')
 const selectedCategory = ref<string>('all')
+
+onMounted(() => progress.load())
 
 const filteredNames = computed(() => {
   let result = ALLAH_NAMES
@@ -58,8 +61,19 @@ const categoryIcons: Record<string, string> = {
       </p>
     </header>
 
+    <!-- Progress -->
+    <ProgressBar
+      :label="t('common.progress')"
+      :current="progress.summary.value.read"
+      :total="progress.summary.value.total"
+      :percent="progress.summary.value.percent"
+      :show-reset="true"
+      class="animate-fade-in stagger-1"
+      @reset="progress.resetAll()"
+    />
+
     <!-- Search -->
-    <div class="animate-fade-in stagger-1">
+    <div class="animate-fade-in stagger-2">
       <GlassInput
         v-model="searchQuery"
         :placeholder="t('names.search')"
@@ -106,9 +120,18 @@ const categoryIcons: Record<string, string> = {
           <div class="space-y-2">
             <!-- Number + Category -->
             <div class="flex items-center justify-between">
-              <span class="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 text-[var(--color-primary-light)] font-semibold text-xs">
-                {{ name.id }}
-              </span>
+              <button
+                :class="[
+                  'w-8 h-8 flex items-center justify-center rounded-lg font-semibold text-xs transition-colors',
+                  progress.isRead(name.id)
+                    ? 'bg-[var(--color-primary)]/20 text-[var(--color-primary-light)]'
+                    : 'bg-white/5 text-[var(--color-primary-light)]'
+                ]"
+                @click="progress.toggleRead(name.id)"
+              >
+                <span v-if="progress.isRead(name.id)">✓</span>
+                <span v-else>{{ name.id }}</span>
+              </button>
               <span class="text-[10px] text-themed-faint glass-subtle px-2 py-0.5 rounded-full">
                 {{ categoryIcons[name.category] }} {{ t(`names.cat_${name.category}`) }}
               </span>

@@ -6,6 +6,7 @@
 import { HADITHS, HADITH_CATEGORIES, type Hadith } from '~/data/hadiths'
 
 const { t, locale } = useI18n()
+const progress = useProgress('hadith', HADITHS.length)
 
 const selectedCategory = ref<string>('all')
 const searchQuery = ref('')
@@ -36,11 +37,15 @@ const filteredHadiths = computed(() => {
 // Expanded hadiths (to show full details)
 const expandedIds = ref<Set<number>>(new Set())
 
+onMounted(() => progress.load())
+
 function toggleHadith(id: number) {
   if (expandedIds.value.has(id)) {
     expandedIds.value.delete(id)
   } else {
     expandedIds.value.add(id)
+    // Mark as read when expanded
+    progress.markRead(id)
   }
   expandedIds.value = new Set(expandedIds.value)
 }
@@ -73,8 +78,19 @@ const categoryIcons: Record<string, string> = {
       </p>
     </header>
 
+    <!-- Progress -->
+    <ProgressBar
+      :label="t('common.progress')"
+      :current="progress.summary.value.read"
+      :total="progress.summary.value.total"
+      :percent="progress.summary.value.percent"
+      :show-reset="true"
+      class="animate-fade-in stagger-1"
+      @reset="progress.resetAll()"
+    />
+
     <!-- Search -->
-    <div class="animate-fade-in stagger-1">
+    <div class="animate-fade-in stagger-2">
       <GlassInput
         v-model="searchQuery"
         :placeholder="t('hadith.search')"
@@ -122,14 +138,17 @@ const categoryIcons: Record<string, string> = {
             class="w-full text-left space-y-3"
             @click="toggleHadith(hadith.id)"
           >
-            <!-- Category + Source -->
+            <!-- Category + Source + Read status -->
             <div class="flex items-center justify-between">
               <span class="text-xs text-themed-faint glass-subtle px-2 py-0.5 rounded-full">
                 {{ categoryIcons[hadith.category] }} {{ t(`hadith.cat_${hadith.category}`) }}
               </span>
-              <span class="text-[10px] text-themed-faint">
-                {{ hadith.source }}
-              </span>
+              <div class="flex items-center gap-2">
+                <span v-if="progress.isRead(hadith.id)" class="text-[10px] text-[var(--color-primary-light)]">✓</span>
+                <span class="text-[10px] text-themed-faint">
+                  {{ hadith.source }}
+                </span>
+              </div>
             </div>
 
             <!-- Arabic text -->
