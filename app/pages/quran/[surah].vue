@@ -9,6 +9,7 @@ const { t, locale } = useI18n()
 const route = useRoute()
 const quran = useQuran()
 const { save: saveBookmark } = useBookmark()
+const progress = useProgress('quran', 114)
 
 const surahId = computed(() => Number(route.params.surah))
 
@@ -52,6 +53,7 @@ const showTranslations = computed(() => activeTranslations.value.length > 0)
 // Fetch surah list (if not already loaded) + verses
 onMounted(async () => {
   initTranslations()
+  progress.load()
   await quran.fetchSurahs()
   await quran.fetchVerses(surahId.value)
 
@@ -162,6 +164,22 @@ const revelationPlace = computed(() => {
         :active-translations="activeTranslations"
         class="animate-fade-in"
       />
+    </div>
+
+    <!-- Mark as read button -->
+    <div v-if="surah && !quran.loading.value && !quran.error.value" class="flex justify-center pt-2">
+      <button
+        :class="[
+          'flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200',
+          progress.isRead(surahId)
+            ? 'bg-[var(--color-primary)]/20 text-[var(--color-primary-light)]'
+            : 'glass-subtle text-themed-secondary hover:text-themed'
+        ]"
+        @click="progress.toggleRead(surahId)"
+      >
+        <span>{{ progress.isRead(surahId) ? '✓' : '○' }}</span>
+        {{ progress.isRead(surahId) ? t('common.read') : t('common.markAsRead') }}
+      </button>
     </div>
 
     <!-- Surah Navigation -->

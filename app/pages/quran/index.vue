@@ -7,6 +7,7 @@ import type { SearchResult } from '~/composables/useQuran'
 
 const { t, locale } = useI18n()
 const quran = useQuran()
+const progress = useProgress('quran', 114)
 
 const searchQuery = ref('')
 const verseResults = ref<SearchResult[]>([])
@@ -15,6 +16,7 @@ const hasSearchedVerses = ref(false)
 // Fetch surahs on mount and when locale changes
 onMounted(() => {
   quran.fetchSurahs()
+  progress.load()
 })
 
 watch(locale, () => {
@@ -67,6 +69,16 @@ function revelationPlace(place: string): string {
         114 {{ t('quran.surahs') }} · {{ t('quran.subtitle') }}
       </p>
     </header>
+
+    <!-- Reading Progress Bar -->
+    <ProgressBar
+      :label="t('common.progress')"
+      :current="progress.summary.value.read"
+      :total="progress.summary.value.total"
+      :percent="progress.summary.value.percent"
+      :show-reset="true"
+      @reset="progress.resetAll()"
+    />
 
     <!-- Reading Progress / Bookmark -->
     <ReadingProgress />
@@ -188,8 +200,16 @@ function revelationPlace(place: string): string {
           class="block"
         >
           <div class="glass flex items-center gap-4 px-4 py-3 hover:bg-white/10 transition-all duration-200 active:scale-[0.98]">
-            <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 text-[var(--color-primary-light)] font-semibold text-sm shrink-0">
-              {{ surah.id }}
+            <div
+              :class="[
+                'w-10 h-10 flex items-center justify-center rounded-lg font-semibold text-sm shrink-0 transition-colors',
+                progress.isRead(surah.id)
+                  ? 'bg-[var(--color-primary)]/20 text-[var(--color-primary-light)]'
+                  : 'bg-white/5 text-[var(--color-primary-light)]'
+              ]"
+            >
+              <span v-if="progress.isRead(surah.id)" class="text-base">✓</span>
+              <span v-else>{{ surah.id }}</span>
             </div>
             <div class="flex-1 min-w-0">
               <div class="flex items-center justify-between">
