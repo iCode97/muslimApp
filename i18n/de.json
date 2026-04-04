@@ -377,7 +377,10 @@
     "khatamTracker": "Khatam-Tracker",
     "juz": "Juz",
     "juzCompleted": "Juz abgeschlossen",
-    "resetAll": "Fortschritt zurücksetzen"
+    "resetAll": "Fortschritt zurücksetzen",
+    "displayMode": "Display-Modus",
+    "day": "Tag",
+    "tapToExit": "Tippen zum Beenden"
   },
   "names": {
     "title": "99 Namen Allahs",

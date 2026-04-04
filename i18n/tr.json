@@ -377,7 +377,10 @@
     "khatamTracker": "Hatim Takibi",
     "juz": "Cüz",
     "juzCompleted": "Cüz tamamlandı",
-    "resetAll": "Tüm ilerlemeyi sıfırla"
+    "resetAll": "Tüm ilerlemeyi sıfırla",
+    "displayMode": "Görüntü Modu",
+    "day": "Gün",
+    "tapToExit": "Çıkmak için dokunun"
   },
   "names": {
     "title": "Esmaül Hüsna",
