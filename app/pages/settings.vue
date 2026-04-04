@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { PRAYER_METHODS } from '~/data/prayer-methods'
+import { HADITHS } from '~/data/hadiths'
+import { ALLAH_NAMES } from '~/data/allah-names'
 
 const { t, locale, setLocale, locales } = useI18n()
 const { location } = useLocation()
@@ -10,9 +12,41 @@ const offlineQuran = useOfflineQuran()
 
 const showMethodPicker = ref(false)
 
+// Progress tracking
+const quranProgress = useProgress('quran', 114)
+const seerahProgress = useProgress('seerah', 11)
+const hadithProgress = useProgress('hadith', HADITHS.length)
+const namesProgress = useProgress('names', ALLAH_NAMES.length)
+
+const progressAreas = computed(() => [
+  { key: 'quran', label: t('nav.quran'), icon: '📖', progress: quranProgress },
+  { key: 'seerah', label: 'Seerah', icon: '📕', progress: seerahProgress },
+  { key: 'hadith', label: t('hadith.title'), icon: '📜', progress: hadithProgress },
+  { key: 'names', label: t('names.title'), icon: '✨', progress: namesProgress },
+])
+
+function resetArea(area: { progress: ReturnType<typeof useProgress> }) {
+  if (confirm(t('common.resetConfirm'))) {
+    area.progress.resetAll()
+  }
+}
+
+function resetAllProgress() {
+  if (confirm(t('common.resetConfirm'))) {
+    quranProgress.resetAll()
+    seerahProgress.resetAll()
+    hadithProgress.resetAll()
+    namesProgress.resetAll()
+  }
+}
+
 onMounted(() => {
   notifications.loadSettings()
   offlineQuran.checkStatus()
+  quranProgress.load()
+  seerahProgress.load()
+  hadithProgress.load()
+  namesProgress.load()
 })
 
 // Available locales from config
@@ -302,6 +336,53 @@ const minutesOptions = [0, 5, 10, 15, 30]
         <p class="text-xs text-themed-faint">
           {{ t('settings.methodHint') }}
         </p>
+      </div>
+    </GlassCard>
+
+    <!-- Progress Overview -->
+    <GlassCard class="md:col-span-2">
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
+            {{ t('common.progress') }}
+          </h3>
+          <button
+            class="text-xs text-themed-faint hover:text-red-400 transition-colors"
+            @click="resetAllProgress()"
+          >
+            {{ t('common.reset') }}
+          </button>
+        </div>
+
+        <div class="space-y-2">
+          <div
+            v-for="area in progressAreas"
+            :key="area.key"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-xl glass-subtle"
+          >
+            <span class="text-base">{{ area.icon }}</span>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-sm font-medium text-themed-secondary">{{ area.label }}</span>
+                <span class="text-xs text-themed-faint tabular-nums">
+                  {{ area.progress.count.value }}/{{ area.progress.summary.value.total }} · {{ area.progress.percent.value }}%
+                </span>
+              </div>
+              <div class="w-full h-1.5 rounded-full glass-subtle overflow-hidden">
+                <div
+                  class="h-full rounded-full bg-[var(--color-primary-light)] transition-all duration-500"
+                  :style="{ width: `${area.progress.percent.value}%` }"
+                />
+              </div>
+            </div>
+            <button
+              class="text-xs text-themed-faint hover:text-red-400 transition-colors px-2"
+              @click="resetArea(area)"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
       </div>
     </GlassCard>
 
