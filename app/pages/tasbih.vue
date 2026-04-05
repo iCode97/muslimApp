@@ -46,7 +46,7 @@ const sequenceSteps = computed(() =>
 </script>
 
 <template>
-  <div class="app-container pt-6 flex flex-col items-center min-h-[calc(100dvh-6rem)]">
+  <div class="app-container pt-6 flex flex-col items-center min-h-[calc(100dvh-6rem)] touch-manipulation">
     <!-- Header -->
     <header class="w-full mb-6 animate-fade-in">
       <h1 class="text-2xl font-semibold text-center">
