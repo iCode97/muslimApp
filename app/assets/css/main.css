@@ -72,6 +72,11 @@
   color-scheme: light;
 }
 
+/* Disable double-tap-to-zoom for native app feel */
+html {
+  touch-action: manipulation;
+}
+
 /* Global base styles */
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
