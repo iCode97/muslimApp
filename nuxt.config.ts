@@ -23,7 +23,7 @@ export default defineNuxtConfig({
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
         { rel: 'manifest', href: '/manifest.json' },
-        { rel: 'apple-touch-icon', href: '/favicon.svg' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/icons/icon-180.png' },
         // Preconnect to Google Fonts for faster font loading
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
