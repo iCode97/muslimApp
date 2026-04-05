@@ -9,13 +9,15 @@ export interface DashboardWidget {
   icon: string
   enabled: boolean
   order: number
+  /** Number of columns this widget spans in the bento grid (1, 2, or 3). Default: 1 */
+  colSpan?: 1 | 2 | 3
 }
 
 const STORAGE_KEY = 'muslimapp-dashboard'
 
 const DEFAULT_WIDGETS: DashboardWidget[] = [
-  { id: 'prayer-countdown', i18nKey: 'widgets.prayerCountdown', icon: '⏳', enabled: true, order: 0 },
-  { id: 'prayer-times', i18nKey: 'widgets.prayerTimes', icon: '🕌', enabled: true, order: 1 },
+  { id: 'prayer-countdown', i18nKey: 'widgets.prayerCountdown', icon: '⏳', enabled: true, order: 0, colSpan: 2 },
+  { id: 'prayer-times', i18nKey: 'widgets.prayerTimes', icon: '🕌', enabled: true, order: 1, colSpan: 3 },
   { id: 'holiday-countdown', i18nKey: 'widgets.holidayCountdown', icon: '🎉', enabled: true, order: 2 },
   { id: 'reading-progress', i18nKey: 'widgets.readingProgress', icon: '📖', enabled: true, order: 3 },
   { id: 'random-verse', i18nKey: 'widgets.randomVerse', icon: '✨', enabled: false, order: 4 },
@@ -24,7 +26,7 @@ const DEFAULT_WIDGETS: DashboardWidget[] = [
   { id: 'hadith-of-day', i18nKey: 'widgets.hadithOfDay', icon: '📜', enabled: false, order: 7 },
   { id: 'name-of-day', i18nKey: 'widgets.nameOfDay', icon: '✨', enabled: true, order: 8 },
   { id: 'seerah-teaser', i18nKey: 'widgets.seerahTeaser', icon: '📕', enabled: false, order: 9 },
-  { id: 'progress-overview', i18nKey: 'widgets.progressOverview', icon: '📊', enabled: true, order: 10 },
+  { id: 'progress-overview', i18nKey: 'widgets.progressOverview', icon: '📊', enabled: true, order: 10, colSpan: 2 },
 ]
 
 export function useDashboard() {

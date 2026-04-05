@@ -9,7 +9,20 @@
     "quran": "Koran",
     "calendar": "Kalender",
     "settings": "Einstellungen",
-    "more": "Mehr"
+    "more": "Mehr",
+    "tasbih": "Tasbih",
+    "qibla": "Qibla",
+    "dua": "Bittgebete",
+    "hadith": "Hadithe",
+    "names": "99 Namen",
+    "guide": "Anleitung",
+    "seerah": "Seerah",
+    "ramadan": "Ramadan",
+    "about": "Über",
+    "editNav": "Navigation bearbeiten",
+    "editNavDone": "Fertig",
+    "editNavReset": "Zurücksetzen",
+    "editNavHint": "Wähle bis zu 4 Einträge für deine Navigationsleiste"
   },
   "dashboard": {
     "greeting": "Assalamu Alaikum",

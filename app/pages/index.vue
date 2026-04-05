@@ -60,41 +60,40 @@ const widgetComponents: Record<string, ReturnType<typeof resolveComponent>> = {
 </script>
 
 <template>
-  <div class="app-container pt-6 space-y-5">
-    <!-- Header -->
-    <header class="space-y-1 animate-fade-in">
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="text-sm text-themed-muted">
+  <div class="app-container pt-8 lg:pt-10 space-y-6 lg:space-y-8">
+    <!-- Header — more breathing room on desktop -->
+    <header class="animate-fade-in">
+      <div class="flex items-start justify-between">
+        <div class="space-y-1.5">
+          <p class="text-sm lg:text-base text-themed-muted tracking-wide">
             {{ greeting }}
           </p>
-          <h1 class="text-2xl font-semibold">
+          <h1 class="text-3xl lg:text-4xl font-bold tracking-tight">
             {{ t('dashboard.greeting') }}
           </h1>
+          <!-- Hijri Date -->
+          <div v-if="hijriDisplay" class="flex items-center gap-2 text-sm text-[var(--color-gold)] pt-1">
+            <span>☪</span>
+            <span>{{ hijriDisplay }}</span>
+          </div>
         </div>
 
         <!-- Edit dashboard button -->
         <button
           :class="[
-            'px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200',
+            'px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 mt-1',
             dashboard.isEditing.value
               ? 'bg-[var(--color-primary)] text-white'
-              : 'glass-subtle text-themed-muted'
+              : 'glass-subtle text-themed-muted hover:text-themed-secondary'
           ]"
           @click="dashboard.isEditing.value = !dashboard.isEditing.value"
         >
           {{ dashboard.isEditing.value ? '✓ ' + t('widgets.done') : '✎ ' + t('widgets.edit') }}
         </button>
       </div>
-
-      <!-- Hijri Date (compact, always shown) -->
-      <div v-if="hijriDisplay" class="flex items-center gap-2 text-sm text-[var(--color-gold)]">
-        <span>☪</span>
-        <span>{{ hijriDisplay }}</span>
-      </div>
     </header>
 
-    <!-- Location: prominent CTA if not set, compact selector if set -->
+    <!-- Location -->
     <div class="animate-fade-in stagger-1">
       <LocationSetupCTA />
       <LocationSelector v-if="location" />
@@ -122,7 +121,6 @@ const widgetComponents: Record<string, ReturnType<typeof resolveComponent>> = {
               :key="widget.id"
               class="flex items-center gap-3 px-3 py-2 rounded-xl glass-subtle"
             >
-              <!-- Enable/disable toggle -->
               <button
                 :class="[
                   'w-6 h-6 rounded-lg flex items-center justify-center text-xs transition-all',
@@ -135,13 +133,11 @@ const widgetComponents: Record<string, ReturnType<typeof resolveComponent>> = {
                 {{ widget.enabled ? '✓' : '' }}
               </button>
 
-              <!-- Icon + Name -->
               <span class="text-base">{{ widget.icon }}</span>
               <span :class="['text-sm flex-1', widget.enabled ? 'text-themed' : 'text-themed-faint']">
                 {{ t(widget.i18nKey) }}
               </span>
 
-              <!-- Reorder buttons -->
               <div class="flex gap-1">
                 <button
                   class="w-6 h-6 rounded text-xs text-themed-faint hover:text-themed-secondary transition-colors"
@@ -162,14 +158,15 @@ const widgetComponents: Record<string, ReturnType<typeof resolveComponent>> = {
       </GlassCard>
     </Transition>
 
-    <!-- Dynamic Widgets — responsive grid on wider screens -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+    <!-- Dynamic Widgets — Bento Grid -->
+    <div class="bento-grid">
       <template v-for="(widget, idx) in dashboard.enabledWidgets.value" :key="widget.id">
         <div
           :class="[
             'animate-fade-in',
             `stagger-${Math.min(idx + 2, 6)}`,
-            widget.id === 'prayer-times' || widget.id === 'prayer-countdown' ? 'md:col-span-2' : '',
+            widget.colSpan === 3 ? 'bento-span-3' : '',
+            widget.colSpan === 2 ? 'bento-span-2' : '',
           ]"
         >
           <component :is="widgetComponents[widget.id]" />
@@ -178,4 +175,3 @@ const widgetComponents: Record<string, ReturnType<typeof resolveComponent>> = {
     </div>
   </div>
 </template>
-

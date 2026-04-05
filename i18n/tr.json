@@ -9,7 +9,20 @@
     "quran": "Kur'an",
     "calendar": "Takvim",
     "settings": "Ayarlar",
-    "more": "Daha Fazla"
+    "more": "Daha Fazla",
+    "tasbih": "Tesbih",
+    "qibla": "Kıble",
+    "dua": "Dualar",
+    "hadith": "Hadisler",
+    "names": "99 İsim",
+    "guide": "Rehber",
+    "seerah": "Siyer",
+    "ramadan": "Ramazan",
+    "about": "Hakkında",
+    "editNav": "Navigasyonu Düzenle",
+    "editNavDone": "Tamam",
+    "editNavReset": "Sıfırla",
+    "editNavHint": "Navigasyon çubuğun için en fazla 4 öğe seç"
   },
   "dashboard": {
     "greeting": "Selamün Aleyküm",
