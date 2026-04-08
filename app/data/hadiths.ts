@@ -850,7 +850,229 @@ export const HADITHS: Hadith[] = [
     narrator: 'Abu Huraira',
   },
 
-  // === AFTERLIFE ===
+  // === PRAYER (extended) ===
+  {
+    id: 72,
+    category: 'prayer',
+    arabic: 'صَلَاةُ الْجَمَاعَةِ تَفْضُلُ صَلَاةَ الْفَذِّ بِسَبْعٍ وَعِشْرِينَ دَرَجَةً',
+    translations: {
+      de: 'Das Gebet in der Gemeinschaft übertrifft das Gebet des Einzelnen um siebenundzwanzig Grade.',
+      en: 'The prayer in congregation is superior to the prayer performed individually by twenty-seven degrees.',
+      tr: 'Cemaatle kılınan namaz, tek başına kılınan namazdan yirmi yedi derece üstündür.',
+    },
+    source: 'Bukhari 645, Muslim 650',
+    narrator: 'Ibn Umar',
+  },
+  {
+    id: 73,
+    category: 'prayer',
+    arabic: 'رَكْعَتَا الْفَجْرِ خَيْرٌ مِنَ الدُّنْيَا وَمَا فِيهَا',
+    translations: {
+      de: 'Die zwei Rak\'ahs des Fajr sind besser als die Welt und alles, was sie enthält.',
+      en: 'The two rak\'ahs of Fajr are better than this world and everything in it.',
+      tr: 'Sabah namazının iki rekâtlık sünneti, dünya ve içindekilerden daha hayırlıdır.',
+    },
+    source: 'Muslim 725',
+    narrator: 'Aischa',
+  },
+  {
+    id: 74,
+    category: 'prayer',
+    arabic: 'صَلِّ صَلَاةَ مُوَدِّعٍ',
+    translations: {
+      de: 'Bete, als ob es dein Abschiedsgebet wäre.',
+      en: 'Pray as if it is your farewell prayer.',
+      tr: 'Namazı sanki veda namazıymış gibi kıl.',
+    },
+    source: 'Ibn Majah 4171',
+    narrator: 'Abu Ayyub al-Ansari',
+  },
+
+  // === KNOWLEDGE (extended) ===
+  {
+    id: 75,
+    category: 'knowledge',
+    arabic: 'خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ',
+    translations: {
+      de: 'Der Beste unter euch ist derjenige, der den Quran lernt und ihn lehrt.',
+      en: 'The best of you is the one who learns the Quran and teaches it.',
+      tr: 'Sizin en hayırlınız Kur\'an\'ı öğrenen ve öğretendir.',
+    },
+    source: 'Bukhari 5027',
+    narrator: 'Uthman ibn Affan',
+  },
+  {
+    id: 76,
+    category: 'knowledge',
+    arabic: 'مَنْ سُئِلَ عَنْ عِلْمٍ فَكَتَمَهُ أُلْجِمَ يَوْمَ الْقِيَامَةِ بِلِجَامٍ مِنْ نَارٍ',
+    translations: {
+      de: 'Wer nach Wissen gefragt wird und es verbirgt, dem wird am Jüngsten Tag ein Zaumzeug aus Feuer angelegt.',
+      en: 'Whoever is asked about knowledge and conceals it will be bridled with a bridle of fire on the Day of Judgment.',
+      tr: 'Kendisine ilim sorulup da gizleyen kimse, kıyamet gününde ateşten bir gem ile gem vurulur.',
+    },
+    source: 'Abu Dawud 3658, Tirmidhi 2649',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 77,
+    category: 'knowledge',
+    arabic: 'فَضْلُ الْعَالِمِ عَلَى الْعَابِدِ كَفَضْلِ الْقَمَرِ لَيْلَةَ الْبَدْرِ عَلَى سَائِرِ الْكَوَاكِبِ',
+    translations: {
+      de: 'Die Überlegenheit des Gelehrten über den einfachen Anbeter ist wie die Überlegenheit des Vollmonds über alle anderen Sterne.',
+      en: 'The superiority of a scholar over a worshipper is like the superiority of the full moon over all other stars.',
+      tr: 'Âlimin abide üstünlüğü, dolunayın diğer yıldızlara üstünlüğü gibidir.',
+    },
+    source: 'Abu Dawud 3641, Tirmidhi 2685',
+    narrator: 'Abu Umama al-Bahili',
+  },
+
+  // === FAITH (extended) ===
+  {
+    id: 78,
+    category: 'faith',
+    arabic: 'بُنِيَ الإِسْلَامُ عَلَى خَمْسٍ شَهَادَةِ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَأَنَّ مُحَمَّدًا رَسُولُ اللَّهِ وَإِقَامِ الصَّلَاةِ وَإِيتَاءِ الزَّكَاةِ وَالْحَجِّ وَصَوْمِ رَمَضَانَ',
+    translations: {
+      de: 'Der Islam ist auf fünf Säulen errichtet: dem Zeugnis, dass es keinen Gott außer Allah gibt und dass Muhammad Sein Gesandter ist, dem Verrichten des Gebets, dem Entrichten der Zakat, der Pilgerfahrt und dem Fasten im Ramadan.',
+      en: 'Islam is built on five pillars: bearing witness that there is no god but Allah and that Muhammad is His Messenger, establishing prayer, paying zakat, making Hajj, and fasting Ramadan.',
+      tr: 'İslam beş temel üzerine kurulmuştur: Allah\'tan başka ilah olmadığına ve Muhammed\'in O\'nun elçisi olduğuna şahitlik etmek, namazı dosdoğru kılmak, zekâtı vermek, haccetmek ve Ramazan orucunu tutmak.',
+    },
+    source: 'Bukhari 8, Muslim 16',
+    narrator: 'Ibn Umar',
+  },
+  {
+    id: 79,
+    category: 'faith',
+    arabic: 'الإِيمَانُ بِضْعٌ وَسَبْعُونَ شُعْبَةً وَالْحَيَاءُ شُعْبَةٌ مِنَ الإِيمَانِ',
+    translations: {
+      de: 'Der Glaube hat mehr als siebzig Zweige, und Schamgefühl ist einer der Zweige des Glaubens.',
+      en: 'Faith has more than seventy branches, and modesty is one of the branches of faith.',
+      tr: 'İmanın yetmişten fazla şubesi vardır ve haya da imanın bir şubesidir.',
+    },
+    source: 'Bukhari 9, Muslim 35',
+    narrator: 'Abu Huraira',
+  },
+
+  // === COMMUNITY (extended) ===
+  {
+    id: 80,
+    category: 'community',
+    arabic: 'أَفْشُوا السَّلَامَ بَيْنَكُمْ',
+    translations: {
+      de: 'Verbreitet den Salam (Friedensgruß) unter euch.',
+      en: 'Spread the greeting of peace (salam) among yourselves.',
+      tr: 'Aranızda selamı yayın.',
+    },
+    source: 'Muslim 54',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 81,
+    category: 'community',
+    arabic: 'مَنْ عَادَ مَرِيضًا أَوْ زَارَ أَخًا لَهُ فِي اللَّهِ نَادَاهُ مُنَادٍ أَنْ طِبْتَ وَطَابَ مَمْشَاكَ',
+    translations: {
+      de: 'Wer einen Kranken oder einen Bruder um Allahs willen besucht, den ruft ein Rufer: „Du bist gut und dein Weg ist gesegnet."',
+      en: 'Whoever visits a sick person or visits a brother for the sake of Allah, a caller proclaims: "You have done well, and blessed is your path."',
+      tr: 'Kim hasta olan birisini veya Allah için bir kardeşini ziyaret ederse, bir münadi ona: "Sen güzelsin ve yolun mübarek olsun" diye seslenir.',
+    },
+    source: 'Tirmidhi 2008',
+    narrator: 'Abu Huraira',
+  },
+
+  // === DAILY LIFE (extended) ===
+  {
+    id: 82,
+    category: 'daily',
+    arabic: 'سَمِّ اللَّهَ وَكُلْ بِيَمِينِكَ وَكُلْ مِمَّا يَلِيكَ',
+    translations: {
+      de: 'Nenne den Namen Allahs, iss mit deiner rechten Hand und iss von dem, was dir nahe ist.',
+      en: 'Mention the name of Allah, eat with your right hand, and eat from what is nearest to you.',
+      tr: 'Allah\'ın adını an, sağ elinle ye ve yanındakinden ye.',
+    },
+    source: 'Bukhari 5376, Muslim 2022',
+    narrator: 'Umar ibn Abi Salama',
+  },
+  {
+    id: 83,
+    category: 'daily',
+    arabic: 'إِذَا دَخَلَ الرَّجُلُ بَيْتَهُ فَذَكَرَ اللَّهَ عِنْدَ دُخُولِهِ وَعِنْدَ طَعَامِهِ قَالَ الشَّيْطَانُ لَا مَبِيتَ لَكُمْ وَلَا عَشَاءَ',
+    translations: {
+      de: 'Wenn ein Mann sein Haus betritt und beim Eintreten sowie beim Essen Allahs gedenkt, sagt der Teufel: „Hier ist kein Nachtlager und kein Abendessen für euch."',
+      en: 'When a man enters his home and mentions Allah upon entering and before his meal, Satan says: "There is no lodging and no dinner for you here."',
+      tr: 'Bir adam evine girdiğinde ve yemek yerken Allah\'ı anarsa, şeytan: "Burada sizin için gecelik ve akşam yemeği yok" der.',
+    },
+    source: 'Muslim 2018',
+    narrator: 'Jabir',
+  },
+
+  // === MERCY (extended) ===
+  {
+    id: 84,
+    category: 'mercy',
+    arabic: 'إِنَّ اللَّهَ رَفِيقٌ يُحِبُّ الرِّفْقَ وَيُعْطِي عَلَى الرِّفْقِ مَا لَا يُعْطِي عَلَى الْعُنْفِ وَمَا لَا يُعْطِي عَلَى مَا سِوَاهُ',
+    translations: {
+      de: 'Allah ist sanft und liebt Sanftheit. Er gibt für Sanftheit, was Er für Härte und für alles andere nicht gibt.',
+      en: 'Allah is gentle and loves gentleness, and He grants for gentleness what He does not grant for harshness or for anything else.',
+      tr: 'Allah yumuşaktır ve yumuşaklığı sever. Yumuşaklığa, sertliğe ve başka şeylere vermediğini verir.',
+    },
+    source: 'Muslim 2593',
+    narrator: 'Aischa',
+  },
+
+  // === GRATITUDE (extended) ===
+  {
+    id: 85,
+    category: 'gratitude',
+    arabic: 'نِعْمَتَانِ مَغْبُونٌ فِيهِمَا كَثِيرٌ مِنَ النَّاسِ الصِّحَّةُ وَالْفَرَاغُ',
+    translations: {
+      de: 'Zwei Segnungen, bei denen viele Menschen verlieren: Gesundheit und freie Zeit.',
+      en: 'Two blessings in which many people suffer loss: health and free time.',
+      tr: 'Pek çok insanın aldanmaya devam ettiği iki nimet: sağlık ve boş vakit.',
+    },
+    source: 'Bukhari 6412',
+    narrator: 'Ibn Abbas',
+  },
+  {
+    id: 86,
+    category: 'gratitude',
+    arabic: 'اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ',
+    translations: {
+      de: 'O Allah, hilf mir, Deiner zu gedenken, Dir zu danken und Dir gut zu dienen.',
+      en: 'O Allah, help me to remember You, to be grateful to You, and to worship You well.',
+      tr: 'Allah\'ım! Seni zikretmem, Sana şükretmem ve Sana güzel ibadet etmem konusunda bana yardım et.',
+    },
+    source: 'Abu Dawud 1522',
+    narrator: 'Muadh ibn Jabal',
+  },
+
+  // === CHILDREN (extended) ===
+  {
+    id: 87,
+    category: 'children',
+    arabic: 'مَنْ كَانَ لَهُ ثَلَاثُ بَنَاتٍ فَصَبَرَ عَلَيْهِنَّ وَأَطْعَمَهُنَّ وَسَقَاهُنَّ وَكَسَاهُنَّ مِنْ جِدَتِهِ كُنَّ لَهُ حِجَابًا مِنَ النَّارِ يَوْمَ الْقِيَامَةِ',
+    translations: {
+      de: 'Wer drei Töchter hat, geduldig mit ihnen ist und sie aus seinen Mitteln ernährt, tränkt und kleidet, für den werden sie am Tag der Auferstehung eine Schutzwand vor dem Feuer sein.',
+      en: 'Whoever has three daughters, is patient with them, and feeds, gives water, and clothes them from his wealth, they will be a shield for him from the Fire on the Day of Judgment.',
+      tr: 'Üç kız çocuğu olan, onlara sabreden, imkânları ölçüsünde onları yediren, içiren ve giydiren kimse için bu kızlar, kıyamet günü ateşe karşı bir perde olur.',
+    },
+    source: 'Ibn Majah 3669',
+    narrator: 'Ukba ibn Amir',
+  },
+
+  // === ECONOMY (extended) ===
+  {
+    id: 88,
+    category: 'economy',
+    arabic: 'الْحَلَالُ بَيِّنٌ وَالْحَرَامُ بَيِّنٌ وَبَيْنَهُمَا أُمُورٌ مُشْتَبِهَاتٌ لَا يَعْلَمُهُنَّ كَثِيرٌ مِنَ النَّاسِ',
+    translations: {
+      de: 'Das Erlaubte ist klar und das Verbotene ist klar. Dazwischen liegen zweifelhafte Angelegenheiten, die viele Menschen nicht kennen.',
+      en: 'The halal is clear and the haram is clear. Between them are doubtful matters that many people do not know about.',
+      tr: 'Helal açıktır, haram da açıktır. İkisi arasında ise pek çok insanın bilmediği şüpheli şeyler vardır.',
+    },
+    source: 'Bukhari 52, Muslim 1599',
+    narrator: 'Nu\'man ibn Bashir',
+  },
+
+  // === AFTERLIFE (extended) ===
   {
     id: 67,
     category: 'afterlife',
@@ -910,5 +1132,161 @@ export const HADITHS: Hadith[] = [
     },
     source: 'Tirmidhi 2308',
     narrator: 'Uthman ibn Affan',
+  },
+
+  // === AFTERLIFE (extended) ===
+  {
+    id: 89,
+    category: 'afterlife',
+    arabic: 'لَا تَزُولُ قَدَمَا عَبْدٍ يَوْمَ الْقِيَامَةِ حَتَّى يُسْأَلَ عَنْ عُمُرِهِ فِيمَا أَفْنَاهُ وَعَنْ عِلْمِهِ فِيمَ فَعَلَ وَعَنْ مَالِهِ مِنْ أَيْنَ اكْتَسَبَهُ وَفِيمَ أَنْفَقَهُ وَعَنْ جِسْمِهِ فِيمَ أَبْلَاهُ',
+    translations: {
+      de: 'Die Füße eines Dieners werden am Tag der Auferstehung nicht von der Stelle weichen, bis er befragt wird: womit er sein Leben verbracht hat; wie er sein Wissen angewendet hat; woher er sein Vermögen erworben und wofür er es ausgegeben hat; und womit er seinen Körper verbraucht hat.',
+      en: 'The feet of a servant will not move on the Day of Judgment until he is asked about his life and how he spent it, his knowledge and how he acted on it, his wealth and how he earned and spent it, and his body and how he used it.',
+      tr: 'Kıyamet gününde bir kulun ayakları, ömrünü nerede tükettiği, ilmiyle ne yaptığı, malını nereden kazanıp nereye harcadığı ve bedenini nerede eskittiği sorulmadan yerinden kımıldamaz.',
+    },
+    source: 'Tirmidhi 2417',
+    narrator: 'Abdullah ibn Masud',
+  },
+  {
+    id: 90,
+    category: 'afterlife',
+    arabic: 'مَنْ أَحَبَّ لِقَاءَ اللَّهِ أَحَبَّ اللَّهُ لِقَاءَهُ',
+    translations: {
+      de: 'Wer die Begegnung mit Allah liebt, den liebt Allah, ihn zu treffen.',
+      en: 'Whoever loves to meet Allah, Allah loves to meet him.',
+      tr: 'Kim Allah\'a kavuşmayı severse, Allah da ona kavuşmayı sever.',
+    },
+    source: 'Bukhari 6508, Muslim 2683',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 100,
+    category: 'afterlife',
+    arabic: 'لَوْ كَانَتِ الدُّنْيَا تَعْدِلُ عِنْدَ اللَّهِ جَنَاحَ بَعُوضَةٍ مَا سَقَى كَافِرًا مِنْهَا شَرْبَةَ مَاءٍ',
+    translations: {
+      de: 'Wenn die Welt bei Allah auch nur den Wert eines Moskitoflügels hätte, würde Er keinem Ungläubigen auch nur einen Schluck Wasser davon geben.',
+      en: 'If this world were worth a mosquito wing with Allah, He would not give a disbeliever so much as a sip of water from it.',
+      tr: 'Dünya Allah katında bir sivrisinek kanadı kadar değer taşısaydı, Allah kâfire ondan bir yudum su bile içirmezdi.',
+    },
+    source: 'Tirmidhi 2320',
+    narrator: 'Sahl ibn Sa\'d',
+  },
+
+  // === RAMADAN (extended) ===
+  {
+    id: 91,
+    category: 'ramadan',
+    arabic: 'كُلُّ عَمَلِ ابْنِ آدَمَ لَهُ إِلَّا الصَّوْمَ فَإِنَّهُ لِي وَأَنَا أَجْزِي بِهِ',
+    translations: {
+      de: 'Jede Tat des Menschensohns gehört ihm, außer dem Fasten – denn es gehört Mir, und Ich belohne dafür.',
+      en: 'Every deed of the son of Adam is for him, except fasting – it is for Me and I will reward for it.',
+      tr: 'Âdemoğlunun her ameli kendinedir; ancak oruç hariç. Çünkü o Benim içindir ve onun karşılığını Ben veririm.',
+    },
+    source: 'Bukhari 7492, Muslim 1151',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 92,
+    category: 'ramadan',
+    arabic: 'تَسَحَّرُوا فَإِنَّ فِي السَّحُورِ بَرَكَةً',
+    translations: {
+      de: 'Esst das Suhoor (Frühmorgenessen), denn im Suhoor liegt Segen.',
+      en: 'Eat suhoor, for in suhoor there is blessing.',
+      tr: 'Sahur yiyin, zira sahurda bereket vardır.',
+    },
+    source: 'Bukhari 1923, Muslim 1095',
+    narrator: 'Anas ibn Malik',
+  },
+
+  // === CHARACTER (extended) ===
+  {
+    id: 93,
+    category: 'character',
+    arabic: 'الْمُؤْمِنُ مِرْآةُ الْمُؤْمِنِ',
+    translations: {
+      de: 'Der Gläubige ist der Spiegel des Gläubigen.',
+      en: 'The believer is the mirror of his fellow believer.',
+      tr: 'Mümin, müminin aynasıdır.',
+    },
+    source: 'Abu Dawud 4918',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 94,
+    category: 'character',
+    arabic: 'أَكْمَلُ الْمُؤْمِنِينَ إِيمَانًا أَحْسَنُهُمْ خُلُقًا وَخِيَارُكُمْ خِيَارُكُمْ لِنِسَائِهِمْ',
+    translations: {
+      de: 'Die vollkommensten Gläubigen im Glauben sind diejenigen mit dem besten Charakter. Und die Besten von euch sind diejenigen, die am besten zu ihren Frauen sind.',
+      en: 'The most complete believers in faith are those with the best character, and the best of you are those who are best to their wives.',
+      tr: 'İmanı en mükemmel olan mümin, ahlakı en güzel olandır. En hayırlınız da eşlerine karşı en hayırlı olanınızdır.',
+    },
+    source: 'Tirmidhi 1162, Abu Dawud 4682',
+    narrator: 'Abu Huraira',
+  },
+
+  // === GOOD DEEDS (extended) ===
+  {
+    id: 95,
+    category: 'deeds',
+    arabic: 'وَإِمَاطَةُ الأَذَى عَنِ الطَّرِيقِ صَدَقَةٌ',
+    translations: {
+      de: 'Das Entfernen von Schaden von der Straße ist eine Spende.',
+      en: 'Removing harm from the road is a charity.',
+      tr: 'Yoldan eziyeti kaldırmak sadakadır.',
+    },
+    source: 'Bukhari 2989, Muslim 1009',
+    narrator: 'Abu Huraira',
+  },
+  {
+    id: 96,
+    category: 'deeds',
+    arabic: 'مَنْ بَنَى مَسْجِدًا يَبْتَغِي بِهِ وَجْهَ اللَّهِ بَنَى اللَّهُ لَهُ مِثْلَهُ فِي الْجَنَّةِ',
+    translations: {
+      de: 'Wer eine Moschee baut, um damit Allahs Angesicht zu suchen, für den baut Allah etwas Ähnliches im Paradies.',
+      en: 'Whoever builds a mosque seeking the face of Allah, Allah will build something like it for him in Paradise.',
+      tr: 'Kim Allah\'ın rızasını umarak bir mescit inşa ederse, Allah da ona cennette benzerini inşa eder.',
+    },
+    source: 'Bukhari 450, Muslim 533',
+    narrator: 'Uthman ibn Affan',
+  },
+
+  // === PATIENCE (extended) ===
+  {
+    id: 97,
+    category: 'patience',
+    arabic: 'إِنَّ عِظَمَ الْجَزَاءِ مَعَ عِظَمِ الْبَلَاءِ وَإِنَّ اللَّهَ إِذَا أَحَبَّ قَوْمًا ابْتَلَاهُمْ',
+    translations: {
+      de: 'Die Größe der Belohnung entspricht der Größe der Prüfung. Wenn Allah ein Volk liebt, prüft Er es.',
+      en: 'The greater the trial, the greater the reward. When Allah loves a people, He tests them.',
+      tr: 'Mükâfatın büyüklüğü, belanın büyüklüğüyle orantılıdır. Allah bir topluluğu sevdiğinde onları sınar.',
+    },
+    source: 'Tirmidhi 2396, Ibn Majah 4031',
+    narrator: 'Anas ibn Malik',
+  },
+  {
+    id: 98,
+    category: 'patience',
+    arabic: 'مَا يَزَالُ الْبَلَاءُ بِالْمُؤْمِنِ وَالْمُؤْمِنَةِ فِي نَفْسِهِ وَوَلَدِهِ وَمَالِهِ حَتَّى يَلْقَى اللَّهَ وَمَا عَلَيْهِ خَطِيئَةٌ',
+    translations: {
+      de: 'Prüfungen hören für den gläubigen Mann und die gläubige Frau nicht auf – in ihrer Person, ihren Kindern und ihrem Besitz –, bis sie Allah begegnen, ohne eine einzige Sünde auf sich zu haben.',
+      en: 'Trials do not cease for the believing man and woman in themselves, their children, and their wealth, until they meet Allah with no sin upon them.',
+      tr: 'Mümin erkek ve kadın üzerindeki bela; nefsi, evladı ve malı konusunda, hiçbir günahı kalmaksızın Allah\'a kavuşuncaya kadar devam eder.',
+    },
+    source: 'Tirmidhi 2399',
+    narrator: 'Abu Huraira',
+  },
+
+  // === COMMUNITY (extended) ===
+  {
+    id: 99,
+    category: 'community',
+    arabic: 'انْصُرْ أَخَاكَ ظَالِمًا أَوْ مَظْلُومًا',
+    translations: {
+      de: 'Unterstütze deinen Bruder, ob er Unrecht tut oder Unrecht erleidet.',
+      en: 'Support your brother whether he is an oppressor or the one being oppressed.',
+      tr: 'Kardeşine zalim de olsa mazlum da olsa yardım et.',
+    },
+    source: 'Bukhari 2443',
+    narrator: 'Anas ibn Malik',
   },
 ]
