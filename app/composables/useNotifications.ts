@@ -1,7 +1,13 @@
 /**
  * Prayer time notifications composable.
  * Uses the Notification API for local notifications.
- * Schedules notifications for upcoming prayers.
+ *
+ * Scheduling strategy:
+ *   1. If the browser supports Notification Triggers API (TimestampTrigger),
+ *      hand scheduling off to the Service Worker — fires reliably even when
+ *      the tab is closed.
+ *   2. Otherwise, fall back to page-scope setTimeout so notifications at
+ *      least work while the tab is open.
  */
 
 interface NotificationSettings {
@@ -72,72 +78,132 @@ export function useNotifications() {
   function togglePrayer(prayer: string) {
     settings.value.prayerAlerts[prayer] = !settings.value.prayerAlerts[prayer]
     saveSettings()
-    reschedule()
   }
 
   function setMinutesBefore(minutes: number) {
     settings.value.minutesBefore = minutes
     saveSettings()
-    reschedule()
   }
 
   /**
-   * Show a notification immediately
+   * True when the browser can schedule notifications that fire even when
+   * the page is closed (Notification Triggers API, Chromium-only as of 2025).
+   */
+  function supportsBackgroundScheduling(): boolean {
+    if (import.meta.server || !('Notification' in window)) return false
+    return 'showTrigger' in Notification.prototype
+  }
+
+  /**
+   * Post scheduled notifications to the Service Worker, which uses
+   * TimestampTrigger to fire them at the right time.
+   */
+  async function scheduleViaServiceWorker(
+    items: Array<{ tag: string, title: string, body: string, timestamp: number, prayerName: string }>,
+  ): Promise<boolean> {
+    if (import.meta.server) return false
+    if (!('serviceWorker' in navigator)) return false
+
+    try {
+      const reg = await navigator.serviceWorker.ready
+      reg.active?.postMessage({
+        type: 'SCHEDULE_PRAYER_NOTIFICATIONS',
+        items,
+      })
+      return true
+    } catch (err) {
+      console.warn('[Notifications] SW scheduling failed', err)
+      return false
+    }
+  }
+
+  /**
+   * Show a notification immediately. Prefer the SW channel so the
+   * notification persists across tab close.
    */
   function showNotification(title: string, body: string, tag?: string) {
     if (import.meta.server) return
     if (!settings.value.enabled || permission.value !== 'granted') return
 
-    new Notification(title, {
+    const options: NotificationOptions = {
       body,
       icon: '/favicon.svg',
       badge: '/favicon.svg',
       tag: tag || 'muslimapp-prayer',
       silent: !settings.value.sound,
-    })
+    }
+
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({
+        type: 'SHOW_NOTIFICATION',
+        title,
+        body,
+        tag: options.tag,
+      })
+      return
+    }
+
+    new Notification(title, options)
   }
 
   /**
-   * Schedule notifications for prayer times
+   * Schedule notifications for prayer times.
+   * Clears any previously scheduled timers/triggers first.
    */
-  function schedulePrayerNotifications(prayers: ReadonlyArray<{ readonly name: string, readonly timestamp: number }>) {
+  async function schedulePrayerNotifications(
+    prayers: ReadonlyArray<{ readonly name: string, readonly timestamp: number }>,
+  ) {
     clearScheduled()
 
     if (!settings.value.enabled || permission.value !== 'granted') return
 
     const now = Date.now()
     const leadMs = settings.value.minutesBefore * 60 * 1000
+    const horizon = 24 * 60 * 60 * 1000 // 24h
 
-    for (const prayer of prayers) {
-      if (!settings.value.prayerAlerts[prayer.name]) continue
+    const items = prayers
+      .filter(p => settings.value.prayerAlerts[p.name])
+      .map(p => {
+        const notifyAt = p.timestamp - leadMs
+        const prayerI18nKey = `prayer.${p.name.toLowerCase()}`
+        return {
+          tag: `prayer-${p.name}-${p.timestamp}`,
+          prayerName: p.name,
+          title: t(prayerI18nKey),
+          body: settings.value.minutesBefore > 0
+            ? t('notifications.prayerIn', { minutes: settings.value.minutesBefore })
+            : t('notifications.prayerNow'),
+          timestamp: notifyAt,
+        }
+      })
+      .filter(item => item.timestamp > now && item.timestamp - now < horizon)
 
-      const notifyAt = prayer.timestamp - leadMs
-      const delay = notifyAt - now
+    if (items.length === 0) return
 
-      if (delay > 0 && delay < 24 * 60 * 60 * 1000) { // Within 24h
-        const timer = setTimeout(() => {
-          const prayerI18nKey = `prayer.${prayer.name.toLowerCase()}`
-          showNotification(
-            t(prayerI18nKey),
-            settings.value.minutesBefore > 0
-              ? t('notifications.prayerIn', { minutes: settings.value.minutesBefore })
-              : t('notifications.prayerNow'),
-            `prayer-${prayer.name}`
-          )
-        }, delay)
-        scheduledTimers.value.push(timer)
-      }
+    // Try background scheduling via SW + TimestampTrigger
+    if (supportsBackgroundScheduling()) {
+      const ok = await scheduleViaServiceWorker(items)
+      if (ok) return
+    }
+
+    // Fallback: page-scope setTimeout (only works while tab is open)
+    for (const item of items) {
+      const delay = item.timestamp - now
+      const timer = setTimeout(() => {
+        showNotification(item.title, item.body, item.tag)
+      }, delay)
+      scheduledTimers.value.push(timer)
     }
   }
 
   function clearScheduled() {
     scheduledTimers.value.forEach(clearTimeout)
     scheduledTimers.value = []
-  }
 
-  function reschedule() {
-    // Will be called from the prayer times watcher
-    // Implementation depends on current prayer data
+    // Also ask the SW to drop any scheduled triggers
+    if (import.meta.client && 'serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({ type: 'CLEAR_PRAYER_NOTIFICATIONS' })
+    }
   }
 
   return {
@@ -149,6 +215,7 @@ export function useNotifications() {
     setMinutesBefore,
     schedulePrayerNotifications,
     clearScheduled,
+    supportsBackgroundScheduling,
     PRAYER_NAMES,
   }
 }

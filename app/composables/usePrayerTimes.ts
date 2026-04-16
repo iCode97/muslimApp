@@ -1,29 +1,57 @@
 /**
  * Composable for fetching and managing prayer times via Aladhan API.
  * Uses Method 13 (Diyanet) as default.
- * Handles next-day Fajr when all today's prayers have passed.
+ *
+ * Caching strategy:
+ *   - Whole month is fetched once via /calendar/{year}/{month} and cached in
+ *     localStorage. Daily timings are resolved from this cache, so opening
+ *     the app offline still works for any day in the current month.
+ *   - When the user crosses into a new month the next month is fetched.
+ *   - A legacy single-day cache is read once (for users upgrading) and then
+ *     replaced by the monthly cache.
  */
 
 interface PrayerTime {
   name: string
   time: string       // "HH:mm" format
-  timestamp: number  // Unix timestamp for today
+  timestamp: number  // Unix timestamp for the relevant day
   passed: boolean
   isNextDay?: boolean // true if this is tomorrow's prayer
+}
+
+interface HijriDate {
+  day: string
+  month: string
+  monthAr: string
+  year: string
+  designation: string
 }
 
 interface PrayerTimesData {
   prayers: PrayerTime[]
   tomorrowPrayers: PrayerTime[]  // Full tomorrow prayer list for two-section view
   nextPrayer: PrayerTime | null
-  hijriDate: {
-    day: string
-    month: string
-    monthAr: string
-    year: string
-    designation: string
-  }
+  hijriDate: HijriDate
   gregorianDate: string
+}
+
+/** Raw Aladhan timings for a single day, used inside the month cache. */
+interface DayRaw {
+  timings: Record<string, string>
+  hijri: HijriDate
+}
+
+interface MonthCache {
+  /** e.g. "2026-4" — identifies the Gregorian month this cache covers */
+  key: string
+  /** Coordinates used when fetching — invalidate if location changes */
+  latitude: number
+  longitude: number
+  /** Calculation method used when fetching */
+  method: number
+  /** Map "DD-MM-YYYY" → raw day data */
+  days: Record<string, DayRaw>
+  fetchedAt: number
 }
 
 // Prayer name mapping
@@ -37,12 +65,12 @@ const PRAYER_I18N: Record<string, string> = {
   Isha: 'prayer.isha',
 }
 
-const CACHE_KEY = 'muslimapp-prayer-times'
+const LEGACY_CACHE_KEY = 'muslimapp-prayer-times'
+const MONTH_CACHE_KEY = 'muslimapp-prayer-month'
 const METHOD_KEY = 'muslimapp-prayer-method'
 const DEFAULT_METHOD = 13
 
 export function usePrayerTimes() {
-  const config = useRuntimeConfig()
   const { t } = useI18n()
   const data = useState<PrayerTimesData | null>('prayer-times', () => null)
   const loading = ref(false)
@@ -59,8 +87,9 @@ export function usePrayerTimes() {
     method.value = methodId
     if (import.meta.client) {
       localStorage.setItem(METHOD_KEY, String(methodId))
-      // Invalidate cache when method changes
-      localStorage.removeItem(CACHE_KEY)
+      // Invalidate caches when method changes
+      localStorage.removeItem(LEGACY_CACHE_KEY)
+      localStorage.removeItem(MONTH_CACHE_KEY)
     }
   }
 
@@ -87,24 +116,72 @@ export function usePrayerTimes() {
     return d
   }
 
-  // Try to load from cache
-  function loadCache(): PrayerTimesData | null {
-    if (import.meta.server) return null
-    const cached = localStorage.getItem(CACHE_KEY)
-    if (!cached) return null
+  function monthCacheKey(date: Date): string {
+    return `${date.getFullYear()}-${date.getMonth() + 1}`
+  }
 
+  function readMonthCache(): MonthCache | null {
+    if (import.meta.server) return null
+    const raw = localStorage.getItem(MONTH_CACHE_KEY)
+    if (!raw) return null
     try {
-      const parsed = JSON.parse(cached)
-      // Only use cache if same day
-      if (parsed.gregorianDate === formatDate()) {
-        data.value = recalculatePassed(parsed)
-        return data.value
+      return JSON.parse(raw) as MonthCache
+    } catch {
+      localStorage.removeItem(MONTH_CACHE_KEY)
+      return null
+    }
+  }
+
+  function writeMonthCache(cache: MonthCache) {
+    if (import.meta.client) {
+      localStorage.setItem(MONTH_CACHE_KEY, JSON.stringify(cache))
+    }
+  }
+
+  /**
+   * Convert a raw Aladhan day into our PrayerTime[] list.
+   * @param dayDate the Gregorian date the timings apply to
+   */
+  function dayToPrayers(day: DayRaw, dayDate: Date, isNextDay = false): PrayerTime[] {
+    return PRAYER_KEYS.map(key => {
+      const rawTime = day.timings[key] ?? '00:00'
+      const cleanTime = rawTime.replace(/\s*\(.*\)/, '')
+      const timestamp = timeToTimestamp(cleanTime, dayDate)
+      return {
+        name: key,
+        time: cleanTime,
+        timestamp,
+        passed: !isNextDay && Date.now() > timestamp,
+        isNextDay,
       }
+    })
+  }
+
+  /**
+   * Build a PrayerTimesData snapshot for a specific day using month-cache data.
+   */
+  function buildFromCache(cache: MonthCache, day: Date, tomorrow: Date): PrayerTimesData | null {
+    const dayKey = formatDate(day)
+    const tomorrowKey = formatDate(tomorrow)
+    const today = cache.days[dayKey]
+    if (!today) return null
+
+    const prayers = dayToPrayers(today, day, false)
+    const tomorrowDay = cache.days[tomorrowKey]
+    const tomorrowPrayers = tomorrowDay ? dayToPrayers(tomorrowDay, tomorrow, true) : []
+
+    const allPassed = prayers.every(p => p.passed)
+    const tomorrowFajr = tomorrowPrayers.find(p => p.name === 'Fajr') || null
+    const nextPrayer = prayers.find(p => !p.passed)
+      || (allPassed && tomorrowFajr ? { ...tomorrowFajr, passed: false, isNextDay: true } : null)
+
+    return {
+      prayers,
+      tomorrowPrayers,
+      nextPrayer,
+      hijriDate: today.hijri,
+      gregorianDate: dayKey,
     }
-    catch {
-      localStorage.removeItem(CACHE_KEY)
-    }
-    return null
   }
 
   // Recalculate which prayers have passed (for countdown updates)
@@ -116,10 +193,7 @@ export function usePrayerTimes() {
       isNextDay: false,
     }))
 
-    // Find next upcoming prayer today
     let nextPrayer = prayers.find(p => !p.passed) || null
-
-    // If all today's prayers have passed, use tomorrow's Fajr
     if (!nextPrayer && prayerData.tomorrowPrayers.length > 0) {
       const tomorrowFajr = prayerData.tomorrowPrayers.find(p => p.name === 'Fajr')
       if (tomorrowFajr) {
@@ -130,47 +204,53 @@ export function usePrayerTimes() {
     return { ...prayerData, prayers, nextPrayer }
   }
 
-  // Fetch all prayer times for tomorrow
-  async function fetchTomorrowPrayers(latitude: number, longitude: number): Promise<PrayerTime[]> {
-    try {
-      const tomorrow = getTomorrow()
-      const dateStr = formatDate(tomorrow)
+  /**
+   * Attempt to populate `data` from the month cache. Returns true on hit.
+   */
+  function loadCache(): PrayerTimesData | null {
+    if (import.meta.server) return null
 
-      const response = await $fetch<{
-        data: { timings: Record<string, string> }
-      }>(`${config.public.aladhanBaseUrl}/timings/${dateStr}`, {
-        params: { latitude, longitude, method: method.value },
-      })
+    // Prefer the month cache
+    const cache = readMonthCache()
+    if (cache) {
+      const today = new Date()
+      const snapshot = buildFromCache(cache, today, getTomorrow())
+      if (snapshot) {
+        data.value = snapshot
+        return snapshot
+      }
+    }
 
-      return PRAYER_KEYS.map(key => {
-        const rawTime = response.data.timings[key] ?? '00:00'
-        const cleanTime = rawTime.replace(/\s*\(.*\)/, '')
-        return {
-          name: key,
-          time: cleanTime,
-          timestamp: timeToTimestamp(cleanTime, tomorrow),
-          passed: false,
-          isNextDay: true,
+    // Legacy single-day cache (pre-monthly release)
+    const legacy = localStorage.getItem(LEGACY_CACHE_KEY)
+    if (legacy) {
+      try {
+        const parsed = JSON.parse(legacy) as PrayerTimesData
+        if (parsed.gregorianDate === formatDate()) {
+          data.value = recalculatePassed(parsed)
+          return data.value
         }
-      })
+      } catch {
+        localStorage.removeItem(LEGACY_CACHE_KEY)
+      }
     }
-    catch (err) {
-      console.error('Tomorrow prayers fetch error:', err)
-      return []
-    }
+
+    return null
   }
 
-  // Fetch prayer times from Aladhan API
-  async function fetchTimes(latitude: number, longitude: number): Promise<void> {
-    loading.value = true
-    error.value = null
-
+  /**
+   * Fetch all timings for a given Gregorian month via Aladhan /calendar and
+   * cache them.
+   */
+  async function fetchMonth(latitude: number, longitude: number, date: Date): Promise<MonthCache | null> {
+    const year = date.getFullYear()
+    const mon = date.getMonth() + 1
     try {
-      const dateStr = formatDate()
       const response = await $fetch<{
-        data: {
+        data: Array<{
           timings: Record<string, string>
           date: {
+            gregorian: { date: string }
             hijri: {
               day: string
               month: { en: string, ar: string, number: number }
@@ -178,60 +258,103 @@ export function usePrayerTimes() {
               designation: { abbreviated: string }
             }
           }
-        }
-      }>(`${config.public.aladhanBaseUrl}/timings/${dateStr}`, {
-        params: {
-          latitude,
-          longitude,
-          method: method.value,
-        },
+        }>
+      }>(`/api/aladhan/calendar/${year}/${mon}`, {
+        params: { latitude, longitude, method: method.value },
       })
 
-      const timings = response.data.timings
-      const hijri = response.data.date.hijri
-
-      const prayers: PrayerTime[] = PRAYER_KEYS.map(key => {
-        // Aladhan sometimes returns " (EET)" suffix — strip it
-        const rawTime = timings[key] ?? '00:00'
-        const cleanTime = rawTime.replace(/\s*\(.*\)/, '')
-        const timestamp = timeToTimestamp(cleanTime)
-
-        return {
-          name: key,
-          time: cleanTime,
-          timestamp,
-          passed: Date.now() > timestamp,
+      const days: Record<string, DayRaw> = {}
+      for (const entry of response.data) {
+        const dateStr = entry.date.gregorian.date // "DD-MM-YYYY"
+        const h = entry.date.hijri
+        days[dateStr] = {
+          timings: entry.timings,
+          hijri: {
+            day: h.day,
+            month: h.month.en,
+            monthAr: h.month.ar,
+            year: h.year,
+            designation: h.designation.abbreviated,
+          },
         }
-      })
-
-      // Always fetch tomorrow's prayers for the two-section view
-      const tomorrowPrayers = await fetchTomorrowPrayers(latitude, longitude)
-
-      const allPassed = prayers.every(p => p.passed)
-      const tomorrowFajr = tomorrowPrayers.find(p => p.name === 'Fajr') || null
-      const nextPrayer = prayers.find(p => !p.passed)
-        || (allPassed && tomorrowFajr ? { ...tomorrowFajr, passed: false, isNextDay: true } : null)
-
-      const prayerData: PrayerTimesData = {
-        prayers,
-        tomorrowPrayers,
-        nextPrayer,
-        hijriDate: {
-          day: hijri.day,
-          month: hijri.month.en,
-          monthAr: hijri.month.ar,
-          year: hijri.year,
-          designation: hijri.designation.abbreviated,
-        },
-        gregorianDate: dateStr,
       }
 
-      data.value = prayerData
-
-      // Cache for today
-      if (import.meta.client) {
-        localStorage.setItem(CACHE_KEY, JSON.stringify(prayerData))
+      const cache: MonthCache = {
+        key: monthCacheKey(date),
+        latitude,
+        longitude,
+        method: method.value,
+        days,
+        fetchedAt: Date.now(),
       }
+      writeMonthCache(cache)
+      return cache
+    } catch (err) {
+      console.error('Month calendar fetch error:', err)
+      return null
+    }
+  }
+
+  /**
+   * Load today's + tomorrow's prayer times. Prefers the month cache, fetches
+   * the calendar if the cache is stale, missing, or doesn't cover both days.
+   */
+  async function fetchTimes(latitude: number, longitude: number): Promise<void> {
+    loading.value = true
+    error.value = null
+
+    try {
+      const today = new Date()
+      const tomorrow = getTomorrow()
+      const todayMonthKey = monthCacheKey(today)
+      const tomorrowMonthKey = monthCacheKey(tomorrow)
+
+      let cache = readMonthCache()
+      const cacheValid = (c: MonthCache | null): c is MonthCache =>
+        !!c
+        && c.method === method.value
+        && Math.abs(c.latitude - latitude) < 0.01
+        && Math.abs(c.longitude - longitude) < 0.01
+
+      // Need today's month
+      if (!cacheValid(cache) || cache.key !== todayMonthKey) {
+        cache = await fetchMonth(latitude, longitude, today)
+      }
+
+      if (!cache) {
+        throw new Error('no prayer data available')
+      }
+
+      let snapshot = buildFromCache(cache, today, tomorrow)
+
+      // If tomorrow rolls into the next month, fetch it and merge.
+      if (!snapshot || todayMonthKey !== tomorrowMonthKey) {
+        const nextCache = await fetchMonth(latitude, longitude, tomorrow)
+        if (nextCache) {
+          // Build snapshot using today's month + tomorrow's month merged on the fly
+          const today_raw = cache.days[formatDate(today)]
+          const tomorrow_raw = nextCache.days[formatDate(tomorrow)]
+          if (today_raw) {
+            const prayers = dayToPrayers(today_raw, today, false)
+            const tomorrowPrayers = tomorrow_raw ? dayToPrayers(tomorrow_raw, tomorrow, true) : []
+            const allPassed = prayers.every(p => p.passed)
+            const tomorrowFajr = tomorrowPrayers.find(p => p.name === 'Fajr') || null
+            const nextPrayer = prayers.find(p => !p.passed)
+              || (allPassed && tomorrowFajr ? { ...tomorrowFajr, passed: false, isNextDay: true } : null)
+
+            snapshot = {
+              prayers,
+              tomorrowPrayers,
+              nextPrayer,
+              hijriDate: today_raw.hijri,
+              gregorianDate: formatDate(today),
+            }
+          }
+        }
+      }
+
+      if (!snapshot) throw new Error('failed to build prayer snapshot')
+      data.value = snapshot
     }
     catch (err) {
       error.value = t('errors.prayerLoad')
@@ -254,6 +377,7 @@ export function usePrayerTimes() {
     error: readonly(error),
     method: readonly(method),
     fetchTimes,
+    fetchMonth,
     loadCache,
     refresh,
     setMethod,

@@ -91,6 +91,24 @@ export function useDashboard() {
     saveConfig()
   }
 
+  /** Move widget `fromId` to the position of widget `toId` (drag-and-drop). */
+  function reorderById(fromId: string, toId: string) {
+    if (fromId === toId) return
+    const list = [...widgets.value].sort((a, b) => a.order - b.order)
+    const fromIdx = list.findIndex(w => w.id === fromId)
+    const toIdx = list.findIndex(w => w.id === toId)
+    if (fromIdx < 0 || toIdx < 0) return
+
+    const [moved] = list.splice(fromIdx, 1)
+    if (!moved) return
+    list.splice(toIdx, 0, moved)
+
+    // Renumber order to match the new sequence
+    list.forEach((w, i) => { w.order = i })
+    widgets.value = list
+    saveConfig()
+  }
+
   const enabledWidgets = computed(() =>
     widgets.value.filter(w => w.enabled).sort((a, b) => a.order - b.order)
   )
@@ -102,6 +120,7 @@ export function useDashboard() {
     loadConfig,
     toggleWidget,
     moveWidget,
+    reorderById,
     resetToDefaults,
   }
 }

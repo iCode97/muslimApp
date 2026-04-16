@@ -6,8 +6,13 @@
 import { DUAS, DUA_CATEGORIES, type Dua } from '~/data/duas'
 
 const { t, locale } = useI18n()
+const route = useRoute()
 
-const selectedCategory = ref<string>('all')
+const initialCat = typeof route.query.cat === 'string' && (DUA_CATEGORIES as readonly string[]).includes(route.query.cat)
+  ? route.query.cat
+  : 'all'
+
+const selectedCategory = ref<string>(initialCat)
 
 const filteredDuas = computed(() => {
   if (selectedCategory.value === 'all') return DUAS
@@ -34,6 +39,7 @@ function getTranslation(dua: Dua): string {
 const categoryIcons: Record<string, string> = {
   morning: '🌅',
   evening: '🌙',
+  sleep: '🛏️',
   prayer: '🕌',
   food: '🍽️',
   travel: '✈️',

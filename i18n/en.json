@@ -22,7 +22,8 @@
     "editNav": "Edit Navigation",
     "editNavDone": "Done",
     "editNavReset": "Reset",
-    "editNavHint": "Choose up to 4 items for your navigation bar"
+    "editNavHint": "Choose up to 4 items for your navigation bar",
+    "editNavOrder": "Order (drag to rearrange)"
   },
   "dashboard": {
     "greeting": "Assalamu Alaikum",
@@ -117,7 +118,9 @@
     "methodHint": "The calculation method affects Fajr and Isha times",
     "moreLangsLater": "More languages in a future version",
     "version": "Version",
-    "apiInfo": "Prayer times via Aladhan API • Quran via quran.com API"
+    "apiInfo": "Prayer times via Aladhan API • Quran via quran.com API",
+    "haptics": "Haptic feedback",
+    "hapticsHint": "Subtle vibrations on taps and counters"
   },
   "common": {
     "loading": "Loading...",
@@ -254,12 +257,52 @@
     "prayerNow": "It's time for prayer",
     "denied": "Notifications are blocked. Please allow in browser settings."
   },
+  "dhikrReminder": {
+    "title": "Dhikr Reminders",
+    "subtitle": "Gentle nudges for morning & evening adhkar",
+    "morning": "Morning Adhkar",
+    "evening": "Evening Adhkar",
+    "morningTitle": "Morning Adhkar",
+    "morningBody": "Begin your day with the morning supplications.",
+    "eveningTitle": "Evening Adhkar",
+    "eveningBody": "Close your day with the evening supplications.",
+    "foregroundOnly": "Note: your browser doesn't support background scheduling. Reminders only fire while the tab is open."
+  },
+  "onboarding": {
+    "skip": "Skip",
+    "back": "Back",
+    "next": "Next",
+    "finish": "Let's go",
+    "welcomeTitle": "Welcome to MuslimApp",
+    "welcomeBody": "Your Islamic companion — prayer times, Quran and more. Let's set up the app in just a few steps.",
+    "featurePrayer": "Prayer times & notifications",
+    "featureQuran": "Quran with offline mode",
+    "featureQibla": "Qibla compass & Hijri calendar",
+    "featureTools": "Tasbih, Duas, Hadiths & more",
+    "locationTitle": "Set your location",
+    "locationBody": "We need your location for accurate prayer times and the Qibla direction. It stays on your device only.",
+    "methodTitle": "Calculation method",
+    "methodBody": "Pick the method used in your region. You can change it any time in settings.",
+    "notificationsTitle": "Prayer reminders",
+    "notificationsBody": "Get a notification shortly before each prayer. You can adjust the lead time later.",
+    "enableNotifications": "Enable notifications",
+    "notificationsEnabled": "Notifications are active",
+    "backgroundSupported": "✓ Works even when the app is closed.",
+    "backgroundLimited": "Note: On your device, notifications only fire while the app is open.",
+    "navTitle": "Your navigation bar",
+    "navBody": "Pick up to four sections to keep within reach on mobile. You can change this later.",
+    "navSelected": "selected",
+    "doneTitle": "All set",
+    "doneBody": "May the app be a faithful companion. Barakallahu fik.",
+    "reopen": "Re-open setup"
+  },
   "dua": {
     "title": "Supplications",
     "subtitle": "Duas for various occasions",
     "all": "All",
     "cat_morning": "Morning",
     "cat_evening": "Evening",
+    "cat_sleep": "Sleep",
     "cat_prayer": "Prayer",
     "cat_food": "Food",
     "cat_travel": "Travel",
@@ -282,7 +325,12 @@
     "goToDashboard": "Go to Dashboard",
     "activateCompass": "Activate Compass",
     "compassActive": "Compass active — point device towards Qibla",
-    "noCompass": "No compass available. Direction is shown statically."
+    "noCompass": "No compass available. Direction is shown statically.",
+    "calibrationTitle": "Calibrate the compass",
+    "calibrationHint": "Hold your device flat and move it in a figure-8 motion to calibrate the compass. Keep away from metal & magnets.",
+    "dismiss": "Dismiss",
+    "accuracy": "Alignment",
+    "aligned": "Facing Qibla"
   },
   "timeAgo": {
     "daysAgo": "{n} day ago | {n} days ago",
@@ -375,7 +423,10 @@
     "ch8_title": "The Battle of the Trench",
     "ch9_title": "The Conquest of Mecca",
     "ch10_title": "The Farewell Sermon",
-    "ch11_title": "The Passing of the Prophet ﷺ"
+    "ch11_title": "The Passing of the Prophet ﷺ",
+    "viewList": "List",
+    "viewTimeline": "Timeline",
+    "readBadge": "Read"
   },
   "ramadan": {
     "title": "Ramadan",

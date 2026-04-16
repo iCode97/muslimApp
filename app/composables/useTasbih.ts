@@ -39,6 +39,8 @@ const TASBIH_MODES: TasbihMode[] = [
 ]
 
 export function useTasbih() {
+  const haptics = useHaptics()
+
   const state = useState<TasbihState>('tasbih-state', () => ({
     modeId: 'subhanallah',
     count: 0,
@@ -115,8 +117,10 @@ export function useTasbih() {
     state.value.totalCount++
 
     // In sequence mode: auto-advance after reaching 33
+    let stepCompleted = false
     if (isSequenceMode.value && state.value.count >= 33) {
       const step = sequenceStep.value
+      stepCompleted = true
       if (step < 2) {
         // Advance to next dhikr in sequence after a brief moment
         setTimeout(() => {
@@ -132,14 +136,17 @@ export function useTasbih() {
       const target = currentMode.value.target
       if (target > 0 && state.value.count >= target) {
         state.value.rounds++
+        stepCompleted = true
       }
     }
 
     saveState()
 
-    // Haptic feedback if available
-    if (import.meta.client && navigator.vibrate) {
-      navigator.vibrate(15)
+    // Haptic feedback — heavier pulse when a step completes.
+    if (stepCompleted) {
+      haptics.success()
+    } else {
+      haptics.medium()
     }
   }
 

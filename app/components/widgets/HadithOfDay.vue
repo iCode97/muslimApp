@@ -24,7 +24,7 @@ const translation = computed(() => {
 </script>
 
 <template>
-  <GlassCard>
+  <GlassCard interactive>
     <div class="space-y-3">
       <div class="flex items-center justify-between">
         <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">

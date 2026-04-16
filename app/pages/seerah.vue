@@ -2,13 +2,16 @@
 /**
  * Seerah — Life of the Prophet Muhammad ﷺ
  * Chronological chapters with reading progress.
+ * Supports two view modes: list (expandable cards) and timeline (chronological rail).
  */
 import { SEERAH_CHAPTERS, SEERAH_CATEGORIES, type SeerahChapter } from '~/data/seerah'
 
 const { t, locale } = useI18n()
+const haptics = useHaptics()
 
 const selectedCategory = ref<string>('all')
 const expandedIds = ref<Set<number>>(new Set())
+const viewMode = ref<'list' | 'timeline'>('list')
 
 // Reading progress (using universal progress system)
 const progress = useProgress('seerah', SEERAH_CHAPTERS.length)
@@ -26,8 +29,17 @@ onMounted(() => {
       }
       catch { /* ignore */ }
     }
+    // Remember view mode preference
+    const savedView = localStorage.getItem('muslimapp-seerah-view')
+    if (savedView === 'list' || savedView === 'timeline') {
+      viewMode.value = savedView
+    }
   }
   progress.load()
+})
+
+watch(viewMode, (v) => {
+  if (import.meta.client) localStorage.setItem('muslimapp-seerah-view', v)
 })
 
 const filteredChapters = computed(() => {
@@ -36,6 +48,7 @@ const filteredChapters = computed(() => {
 })
 
 function toggleChapter(id: number) {
+  haptics.tap()
   if (expandedIds.value.has(id)) {
     expandedIds.value.delete(id)
   } else {
@@ -44,6 +57,18 @@ function toggleChapter(id: number) {
     progress.markRead(id)
   }
   expandedIds.value = new Set(expandedIds.value)
+}
+
+function setViewMode(mode: 'list' | 'timeline') {
+  if (viewMode.value === mode) return
+  haptics.light()
+  viewMode.value = mode
+}
+
+function setCategory(cat: string) {
+  if (selectedCategory.value === cat) return
+  haptics.light()
+  selectedCategory.value = cat
 }
 
 function getContent(chapter: SeerahChapter): string {
@@ -82,6 +107,32 @@ const categoryIcons: Record<string, string> = {
       @reset="progress.resetAll()"
     />
 
+    <!-- View mode toggle -->
+    <div class="flex items-center justify-between gap-3 animate-fade-in stagger-2">
+      <div class="flex gap-1 glass-subtle rounded-full p-1">
+        <button
+          :class="[
+            'px-3 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-1.5',
+            viewMode === 'list' ? 'bg-[var(--color-primary)] text-white' : 'text-themed-secondary'
+          ]"
+          @click="setViewMode('list')"
+        >
+          <AppIcon name="more" :size="14" />
+          {{ t('seerah.viewList') }}
+        </button>
+        <button
+          :class="[
+            'px-3 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-1.5',
+            viewMode === 'timeline' ? 'bg-[var(--color-primary)] text-white' : 'text-themed-secondary'
+          ]"
+          @click="setViewMode('timeline')"
+        >
+          <AppIcon name="calendar" :size="14" />
+          {{ t('seerah.viewTimeline') }}
+        </button>
+      </div>
+    </div>
+
     <!-- Category filter -->
     <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar animate-fade-in stagger-2">
       <button
@@ -91,7 +142,7 @@ const categoryIcons: Record<string, string> = {
             ? 'bg-[var(--color-primary)] text-white'
             : 'glass-subtle text-themed-secondary'
         ]"
-        @click="selectedCategory = 'all'"
+        @click="setCategory('all')"
       >
         {{ t('seerah.all') }}
       </button>
@@ -104,14 +155,14 @@ const categoryIcons: Record<string, string> = {
             ? 'bg-[var(--color-primary)] text-white'
             : 'glass-subtle text-themed-secondary'
         ]"
-        @click="selectedCategory = cat"
+        @click="setCategory(cat)"
       >
         {{ categoryIcons[cat] }} {{ t(`seerah.cat_${cat}`) }}
       </button>
     </div>
 
-    <!-- Chapters -->
-    <div class="space-y-3">
+    <!-- List view -->
+    <div v-if="viewMode === 'list'" class="space-y-3">
       <div
         v-for="chapter in filteredChapters"
         :key="chapter.id"
@@ -163,6 +214,74 @@ const categoryIcons: Record<string, string> = {
             </Transition>
           </button>
         </GlassCard>
+      </div>
+    </div>
+
+    <!-- Timeline view -->
+    <div v-else class="relative pl-6 sm:pl-10">
+      <!-- Vertical rail -->
+      <div class="absolute left-[11px] sm:left-[19px] top-2 bottom-2 w-px bg-gradient-to-b from-[var(--color-primary)] via-[var(--color-gold)] to-[var(--color-primary)] opacity-40" />
+
+      <div class="space-y-5">
+        <div
+          v-for="chapter in filteredChapters"
+          :key="chapter.id"
+          class="relative animate-fade-in"
+        >
+          <!-- Dot marker -->
+          <div
+            :class="[
+              'absolute -left-6 sm:-left-10 top-1 flex items-center justify-center',
+              'w-6 h-6 sm:w-10 sm:h-10 rounded-full transition-all',
+              progress.isRead(chapter.id)
+                ? 'bg-[var(--color-primary)] ring-2 ring-[var(--color-primary-light)]/40'
+                : 'glass-strong'
+            ]"
+          >
+            <span class="text-xs sm:text-base">{{ chapter.icon }}</span>
+          </div>
+
+          <GlassCard>
+            <button
+              class="w-full text-left space-y-2"
+              @click="toggleChapter(chapter.id)"
+            >
+              <div class="flex items-baseline justify-between gap-2">
+                <span class="text-[11px] font-semibold text-[var(--color-gold)] tracking-wide uppercase">
+                  {{ chapter.year }}
+                </span>
+                <span
+                  v-if="progress.isRead(chapter.id)"
+                  class="text-[10px] text-[var(--color-primary-light)]"
+                >✓ {{ t('seerah.readBadge') }}</span>
+              </div>
+              <p class="font-medium text-sm text-themed">
+                {{ t(chapter.titleKey) }}
+              </p>
+              <span class="inline-block text-[10px] text-themed-faint glass-subtle px-2 py-0.5 rounded-full">
+                {{ categoryIcons[chapter.category] }} {{ t(`seerah.cat_${chapter.category}`) }}
+              </span>
+
+              <!-- Expanded content in timeline -->
+              <Transition name="expand">
+                <div
+                  v-if="expandedIds.has(chapter.id)"
+                  class="space-y-3 pt-3 border-t border-[var(--glass-border)]"
+                >
+                  <p class="text-sm text-themed-secondary leading-relaxed whitespace-pre-line">
+                    {{ getContent(chapter) }}
+                  </p>
+                  <p
+                    v-if="chapter.quranReference"
+                    class="text-xs text-[var(--color-gold)] flex items-center gap-1.5"
+                  >
+                    📖 {{ t('seerah.quranRef') }}: {{ chapter.quranReference }}
+                  </p>
+                </div>
+              </Transition>
+            </button>
+          </GlassCard>
+        </div>
       </div>
     </div>
 

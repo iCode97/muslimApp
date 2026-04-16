@@ -48,7 +48,6 @@ export interface HijriMonthInfo {
 }
 
 export function useHolidays() {
-  const config = useRuntimeConfig()
   const { t, locale } = useI18n()
 
   const holidays = useState<Holiday[]>('holidays', () => [])
@@ -97,7 +96,7 @@ export function useHolidays() {
             year: string
           }
         }
-      }>(`${config.public.aladhanBaseUrl}/gToH/${dd}-${mm}-${yyyy}`)
+      }>(`/api/aladhan/gToH/${dd}-${mm}-${yyyy}`)
 
       const hijri = response.data.hijri
       const month = hijri.month.number
@@ -135,7 +134,7 @@ export function useHolidays() {
             weekday: { en: string }
           }
         }>
-      }>(`${config.public.aladhanBaseUrl}/hToGCalendar/${month}/${year}`)
+      }>(`/api/aladhan/hToGCalendar/${month}/${year}`)
 
       const today = new Date()
       const todayStr = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`
@@ -217,7 +216,7 @@ export function useHolidays() {
                 year: string
               }
             }
-          }>(`${config.public.aladhanBaseUrl}/hToG/${dd}-${mm}-${targetYear}`)
+          }>(`/api/aladhan/hToG/${dd}-${mm}-${targetYear}`)
 
           const g = response.data.gregorian
           const gDate = new Date(

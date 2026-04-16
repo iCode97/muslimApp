@@ -1,8 +1,26 @@
 <script setup lang="ts">
 const { t } = useI18n()
 const nav = useNavigation()
+const onboarding = useOnboarding()
+const haptics = useHaptics()
 
-onMounted(() => nav.loadMobileNav())
+onMounted(() => {
+  nav.loadMobileNav()
+  onboarding.checkFirstRun()
+})
+
+// Drag-and-drop reordering of the mobile nav items
+const navDnd = useDragReorder({
+  getId: (id: string) => id,
+  onReorder: (fromId, toId) => nav.reorderMobileNav(fromId, toId),
+})
+
+// Items currently selected for the mobile nav, in display order
+const selectedMobileItems = computed(() =>
+  nav.mobileNavIds.value
+    .map(id => nav.mobileChoosableItems.value.find(i => i.id === id))
+    .filter((i): i is NonNullable<typeof i> => !!i)
+)
 </script>
 
 <template>
@@ -30,8 +48,9 @@ onMounted(() => nav.loadMobileNav())
               ? 'glass-primary text-[var(--color-primary-light)]'
               : 'text-themed-secondary hover:text-themed hover:bg-[var(--glass-bg-subtle)]',
           ]"
+          @click="haptics.tap()"
         >
-          <span class="text-lg leading-none w-6 text-center flex-shrink-0">{{ item.icon }}</span>
+          <AppIcon :name="item.icon" :size="20" class="flex-shrink-0" />
           <span class="text-sm font-medium sidebar-label">{{ t(item.label) }}</span>
         </NuxtLink>
 
@@ -49,8 +68,9 @@ onMounted(() => nav.loadMobileNav())
               ? 'glass-primary text-[var(--color-primary-light)]'
               : 'text-themed-secondary hover:text-themed hover:bg-[var(--glass-bg-subtle)]',
           ]"
+          @click="haptics.tap()"
         >
-          <span class="text-base leading-none w-6 text-center flex-shrink-0">{{ item.icon }}</span>
+          <AppIcon :name="item.icon" :size="18" class="flex-shrink-0" />
           <span class="text-sm sidebar-label">{{ t(item.label) }}</span>
         </NuxtLink>
       </nav>
@@ -68,8 +88,9 @@ onMounted(() => nav.loadMobileNav())
               ? 'glass-primary text-[var(--color-primary-light)]'
               : 'text-themed-faint hover:text-themed-secondary hover:bg-[var(--glass-bg-subtle)]',
           ]"
+          @click="haptics.tap()"
         >
-          <span class="text-base leading-none w-6 text-center flex-shrink-0">{{ item.icon }}</span>
+          <AppIcon :name="item.icon" :size="18" class="flex-shrink-0" />
           <span class="text-sm sidebar-label">{{ t(item.label) }}</span>
         </NuxtLink>
       </div>
@@ -100,8 +121,8 @@ onMounted(() => nav.loadMobileNav())
       <!-- Nav editor panel (slides up above pill) -->
       <Transition name="slide">
         <div v-if="nav.isEditingMobileNav.value" class="liquid-nav-editor mb-2">
-          <div class="glass-strong rounded-2xl p-3 max-w-[22rem] mx-auto">
-            <div class="flex items-center justify-between mb-2">
+          <div class="glass-strong rounded-2xl p-3 max-w-[22rem] mx-auto space-y-3">
+            <div class="flex items-center justify-between">
               <p class="text-[11px] text-themed-muted">{{ t('nav.editNavHint') }}</p>
               <button
                 class="text-[10px] text-themed-faint hover:text-themed-secondary"
@@ -110,6 +131,36 @@ onMounted(() => nav.loadMobileNav())
                 {{ t('nav.editNavReset') }}
               </button>
             </div>
+
+            <!-- Selected items in order — drag to reorder -->
+            <div v-if="selectedMobileItems.length > 0" class="space-y-1">
+              <p class="text-[10px] text-themed-faint uppercase tracking-wider">
+                {{ t('nav.editNavOrder') }}
+              </p>
+              <div class="flex flex-wrap gap-1.5">
+                <div
+                  v-for="item in selectedMobileItems"
+                  :key="item.id"
+                  :draggable="true"
+                  :class="[
+                    'flex items-center gap-1.5 px-2 py-1.5 rounded-lg glass-primary text-[10px] text-[var(--color-primary-light)] transition-all cursor-grab active:cursor-grabbing',
+                    navDnd.dragOverId.value === item.id ? 'ring-2 ring-[var(--color-primary-light)] scale-[1.03]' : '',
+                    navDnd.draggingId.value === item.id ? 'opacity-50' : '',
+                  ]"
+                  @dragstart="navDnd.handlers(item.id).dragstart($event)"
+                  @dragover="navDnd.handlers(item.id).dragover($event)"
+                  @dragleave="navDnd.handlers(item.id).dragleave()"
+                  @drop="navDnd.handlers(item.id).drop($event)"
+                  @dragend="navDnd.handlers(item.id).dragend()"
+                >
+                  <span class="text-themed-faint">⋮⋮</span>
+                  <AppIcon :name="item.icon" :size="14" />
+                  <span class="leading-tight">{{ t(item.label) }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Choosable grid -->
             <div class="grid grid-cols-4 gap-1.5">
               <button
                 v-for="item in nav.mobileChoosableItems.value"
@@ -123,9 +174,9 @@ onMounted(() => nav.loadMobileNav())
                     ? 'opacity-40 pointer-events-none'
                     : '',
                 ]"
-                @click="nav.toggleMobileNavItem(item.id)"
+                @click="haptics.light(); nav.toggleMobileNavItem(item.id)"
               >
-                <span class="text-base">{{ item.icon }}</span>
+                <AppIcon :name="item.icon" :size="18" />
                 <span class="leading-tight">{{ t(item.label) }}</span>
               </button>
             </div>
@@ -146,14 +197,15 @@ onMounted(() => nav.loadMobileNav())
                 ? 'liquid-nav-item--active text-[var(--color-primary-light)]'
                 : 'text-[var(--nav-inactive)]',
             ]"
+            @click="haptics.tap()"
           >
-            <span class="text-xl leading-none">{{ item.icon }}</span>
+            <AppIcon :name="item.icon" :size="22" />
             <span class="text-[10px] font-medium leading-tight">
               {{ t(item.label) }}
             </span>
           </NuxtLink>
 
-          <!-- Edit nav button (small gear icon) -->
+          <!-- Edit nav button (small ••• icon) -->
           <button
             :class="[
               'liquid-nav-item',
@@ -161,12 +213,15 @@ onMounted(() => nav.loadMobileNav())
                 ? 'text-[var(--color-primary-light)]'
                 : 'text-[var(--nav-inactive)]',
             ]"
-            @click="nav.isEditingMobileNav.value = !nav.isEditingMobileNav.value"
+            @click="haptics.light(); nav.isEditingMobileNav.value = !nav.isEditingMobileNav.value"
           >
-            <span class="text-sm leading-none">•••</span>
+            <AppIcon name="more" :size="20" />
           </button>
         </div>
       </nav>
     </div>
+
+    <!-- First-run Onboarding Wizard -->
+    <OnboardingWizard />
   </div>
 </template>

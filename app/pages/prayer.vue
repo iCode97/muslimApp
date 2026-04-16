@@ -34,12 +34,7 @@ onUnmounted(() => stopRefresh())
 
       <PrayerTimesCard />
 
-      <GlassCard variant="subtle" padding="sm">
-        <div class="px-3 py-2 text-xs text-white/30 flex justify-between">
-          <span>{{ t('prayer.method') }}: {{ t('prayer.diyanet') }}</span>
-          <span>Method 13 (Aladhan)</span>
-        </div>
-      </GlassCard>
+      <MethodSelector />
     </template>
   </div>
 </template>
