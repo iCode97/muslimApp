@@ -22,7 +22,8 @@
     "editNav": "Navigasyonu Düzenle",
     "editNavDone": "Tamam",
     "editNavReset": "Sıfırla",
-    "editNavHint": "Navigasyon çubuğun için en fazla 4 öğe seç"
+    "editNavHint": "Navigasyon çubuğun için en fazla 4 öğe seç",
+    "editNavOrder": "Sıralama (sürükleyerek değiştir)"
   },
   "dashboard": {
     "greeting": "Selamün Aleyküm",
@@ -117,7 +118,9 @@
     "methodHint": "Hesaplama yöntemi İmsak ve Yatsı vakitlerini etkiler",
     "moreLangsLater": "Daha fazla dil ileride eklenecek",
     "version": "Sürüm",
-    "apiInfo": "Namaz vakitleri: Aladhan API • Kur'an: quran.com API"
+    "apiInfo": "Namaz vakitleri: Aladhan API • Kur'an: quran.com API",
+    "haptics": "Dokunsal geri bildirim",
+    "hapticsHint": "Dokunuşlarda ve sayaçlarda hafif titreşim"
   },
   "common": {
     "loading": "Yükleniyor...",
@@ -254,12 +257,52 @@
     "prayerNow": "Namaz vakti geldi",
     "denied": "Bildirimler engellendi. Lütfen tarayıcı ayarlarından izin verin."
   },
+  "dhikrReminder": {
+    "title": "Zikir Hatırlatıcıları",
+    "subtitle": "Sabah ve akşam zikirleri için nazik hatırlatma",
+    "morning": "Sabah Zikri",
+    "evening": "Akşam Zikri",
+    "morningTitle": "Sabah Zikri",
+    "morningBody": "Güne sabah duaları ile başla.",
+    "eveningTitle": "Akşam Zikri",
+    "eveningBody": "Güne akşam duaları ile son ver.",
+    "foregroundOnly": "Not: Tarayıcınız arka plan planlamayı desteklemiyor. Hatırlatıcılar yalnızca sekme açıkken çalışır."
+  },
+  "onboarding": {
+    "skip": "Atla",
+    "back": "Geri",
+    "next": "İleri",
+    "finish": "Başlayalım",
+    "welcomeTitle": "MuslimApp'a hoş geldiniz",
+    "welcomeBody": "İslami yardımcınız — namaz vakitleri, Kur'an ve daha fazlası. Haydi uygulamayı birkaç adımda hazırlayalım.",
+    "featurePrayer": "Namaz vakitleri ve bildirimler",
+    "featureQuran": "Çevrimdışı Kur'an",
+    "featureQibla": "Kıble pusulası ve Hicri takvim",
+    "featureTools": "Tesbih, dualar, hadisler ve daha fazlası",
+    "locationTitle": "Konumunuzu belirleyin",
+    "locationBody": "Doğru namaz vakitleri ve kıble yönü için konumunuza ihtiyacımız var. Konumunuz yalnızca cihazınızda kalır.",
+    "methodTitle": "Hesaplama yöntemi",
+    "methodBody": "Bölgenizde yaygın olan yöntemi seçin. Ayarlardan istediğiniz zaman değiştirebilirsiniz.",
+    "notificationsTitle": "Namaz hatırlatmaları",
+    "notificationsBody": "Her namaz vaktinden kısa süre önce bildirim alın. Süreyi sonra ayarlayabilirsiniz.",
+    "enableNotifications": "Bildirimleri etkinleştir",
+    "notificationsEnabled": "Bildirimler aktif",
+    "backgroundSupported": "✓ Uygulama kapalıyken bile çalışır.",
+    "backgroundLimited": "Not: Cihazınızda bildirimler yalnızca uygulama açıkken çalışır.",
+    "navTitle": "Menü çubuğunuz",
+    "navBody": "Mobilde hızlı erişilsin istediğiniz en fazla dört bölümü seçin. Daha sonra değiştirebilirsiniz.",
+    "navSelected": "seçildi",
+    "doneTitle": "Her şey hazır",
+    "doneBody": "Uygulamanın size sadık bir yoldaş olmasını dileriz. Bârekellâhu fîk.",
+    "reopen": "Kurulumu yeniden aç"
+  },
   "dua": {
     "title": "Dualar",
     "subtitle": "Çeşitli vesileler için dualar",
     "all": "Tümü",
     "cat_morning": "Sabah",
     "cat_evening": "Akşam",
+    "cat_sleep": "Uyku",
     "cat_prayer": "Namaz",
     "cat_food": "Yemek",
     "cat_travel": "Yolculuk",
@@ -282,7 +325,12 @@
     "goToDashboard": "Ana Sayfaya Git",
     "activateCompass": "Pusulayı Etkinleştir",
     "compassActive": "Pusula aktif — cihazı Kıble yönüne çevirin",
-    "noCompass": "Pusula kullanılamıyor. Yön sabit olarak gösteriliyor."
+    "noCompass": "Pusula kullanılamıyor. Yön sabit olarak gösteriliyor.",
+    "calibrationTitle": "Pusulayı kalibre edin",
+    "calibrationHint": "Cihazı düz tutun ve pusulayı kalibre etmek için sekiz (8) şeklinde hareket ettirin. Metal ve mıknatıslardan uzak tutun.",
+    "dismiss": "Kapat",
+    "accuracy": "Hizalama",
+    "aligned": "Kıble Hizalandı"
   },
   "timeAgo": {
     "daysAgo": "{n} gün önce",
@@ -375,7 +423,10 @@
     "ch8_title": "Hendek Savaşı",
     "ch9_title": "Mekke'nin Fethi",
     "ch10_title": "Veda Hutbesi",
-    "ch11_title": "Peygamber Efendimizin ﷺ Vefatı"
+    "ch11_title": "Peygamber Efendimizin ﷺ Vefatı",
+    "viewList": "Liste",
+    "viewTimeline": "Zaman Çizelgesi",
+    "readBadge": "Okundu"
   },
   "ramadan": {
     "title": "Ramazan",

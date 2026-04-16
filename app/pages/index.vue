@@ -9,6 +9,12 @@ const { location, prayerTimes, hijriDisplay, init, startRefresh, stopRefresh } =
 const dashboard = useDashboard()
 const notifications = useNotifications()
 
+// Drag-and-drop reordering for the dashboard editor
+const dashboardDnd = useDragReorder({
+  getId: (w: { id: string }) => w.id,
+  onReorder: (fromId, toId) => dashboard.reorderById(fromId, toId),
+})
+
 // Initialize location + prayer times + notifications
 onMounted(async () => {
   dashboard.loadConfig()
@@ -119,8 +125,20 @@ const widgetComponents: Record<string, ReturnType<typeof resolveComponent>> = {
             <div
               v-for="widget in dashboard.widgets.value"
               :key="widget.id"
-              class="flex items-center gap-3 px-3 py-2 rounded-xl glass-subtle"
+              :draggable="true"
+              :class="[
+                'flex items-center gap-3 px-3 py-2 rounded-xl glass-subtle transition-all cursor-grab active:cursor-grabbing',
+                dashboardDnd.dragOverId.value === widget.id ? 'ring-2 ring-[var(--color-primary-light)] scale-[1.01]' : '',
+                dashboardDnd.draggingId.value === widget.id ? 'opacity-50' : '',
+              ]"
+              @dragstart="dashboardDnd.handlers(widget.id).dragstart($event)"
+              @dragover="dashboardDnd.handlers(widget.id).dragover($event)"
+              @dragleave="dashboardDnd.handlers(widget.id).dragleave()"
+              @drop="dashboardDnd.handlers(widget.id).drop($event)"
+              @dragend="dashboardDnd.handlers(widget.id).dragend()"
             >
+              <span class="text-themed-faint text-sm select-none" aria-hidden="true">⋮⋮</span>
+
               <button
                 :class="[
                   'w-6 h-6 rounded-lg flex items-center justify-center text-xs transition-all',
@@ -138,6 +156,7 @@ const widgetComponents: Record<string, ReturnType<typeof resolveComponent>> = {
                 {{ t(widget.i18nKey) }}
               </span>
 
+              <!-- Fallback arrows for non-DnD (touch) users -->
               <div class="flex gap-1">
                 <button
                   class="w-6 h-6 rounded text-xs text-themed-faint hover:text-themed-secondary transition-colors"

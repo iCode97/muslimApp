@@ -17,7 +17,7 @@ export interface Dua {
 }
 
 export const DUA_CATEGORIES = [
-  'morning', 'evening', 'prayer', 'food', 'travel', 'protection', 'forgiveness', 'general',
+  'morning', 'evening', 'sleep', 'prayer', 'food', 'travel', 'protection', 'forgiveness', 'general',
   'healing', 'parents', 'anxiety', 'gratitude',
 ] as const
 
@@ -197,6 +197,44 @@ export const DUAS: Dua[] = [
       tr: 'Allah bize yeter, O ne güzel vekildir.',
     },
     source: 'Quran 3:173',
+  },
+
+  // ===== SLEEP (Schlafen) =====
+  {
+    id: 24,
+    category: 'sleep',
+    arabic: 'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا',
+    transliteration: 'Bismika Allahumma amutu wa ahya.',
+    translations: {
+      de: 'In Deinem Namen, o Allah, sterbe ich und lebe ich.',
+      en: 'In Your name, O Allah, I die and I live.',
+      tr: 'Allah\'ım, Senin adınla ölür ve Senin adınla dirilirim.',
+    },
+    source: 'Bukhari',
+  },
+  {
+    id: 25,
+    category: 'sleep',
+    arabic: 'اللَّهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ',
+    transliteration: 'Allahumma qini \'adhabaka yawma tab\'athu \'ibadak.',
+    translations: {
+      de: 'O Allah, bewahre mich vor Deiner Strafe am Tag, an dem Du Deine Diener auferweckst.',
+      en: 'O Allah, protect me from Your punishment on the Day You resurrect Your servants.',
+      tr: 'Allah\'ım, kullarını dirilteceğin gün beni azabından koru.',
+    },
+    source: 'Abu Dawud, Tirmidhi',
+  },
+  {
+    id: 26,
+    category: 'sleep',
+    arabic: 'اللَّهُمَّ بِاسْمِكَ أَحْيَا وَأَمُوتُ',
+    transliteration: 'Allahumma bismika ahya wa amut.',
+    translations: {
+      de: 'O Allah, mit Deinem Namen lebe ich und sterbe ich. (Beim Aufwachen: Alles Lob gebührt Allah, Der uns belebte, nachdem Er uns hatte sterben lassen, und zu Ihm ist die Auferstehung.)',
+      en: 'O Allah, in Your name I live and I die. (Upon waking: All praise is for Allah who gave us life after causing us to die, and to Him is the resurrection.)',
+      tr: 'Allah\'ım, Senin adınla yaşar ve ölürüm. (Uyanınca: Bizi öldürdükten sonra dirilten Allah\'a hamdolsun, dönüş O\'nadır.)',
+    },
+    source: 'Bukhari',
   },
 
   // ===== HEALING (Krankheit & Genesung) =====

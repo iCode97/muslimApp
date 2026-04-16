@@ -3,6 +3,12 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
 
+  experimental: {
+    // Smooth cross-fade between routes via the View Transitions API.
+    // Falls back gracefully on browsers without support.
+    viewTransition: true,
+  },
+
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxtjs/i18n',
@@ -62,8 +68,10 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    // Server-only: upstream URL for the Aladhan proxy routes in /server/api/aladhan/**.
+    // Override via NUXT_ALADHAN_BASE_URL in production if needed.
+    aladhanBaseUrl: 'https://api.aladhan.com/v1',
     public: {
-      aladhanBaseUrl: 'https://api.aladhan.com/v1',
       quranBaseUrl: 'https://api.quran.com/api/v4',
     },
   },

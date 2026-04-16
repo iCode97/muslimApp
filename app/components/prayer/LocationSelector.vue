@@ -1,9 +1,15 @@
 <script setup lang="ts">
+/**
+ * Location display row + bottom-sheet editor.
+ * Tapping the row (or its GPS button) opens a sheet containing the full
+ * search / GPS flow, replacing the legacy inline dropdown.
+ */
 const { t } = useI18n()
 const { location, suggestions, loading, searchLoading, error, detectGPS, searchLocations, selectSuggestion, clearSuggestions, loadSaved } = useLocation()
+const haptics = useHaptics()
 
+const open = ref(false)
 const searchQuery = ref('')
-const showSearch = ref(false)
 
 let searchTimeout: ReturnType<typeof setTimeout>
 
@@ -11,11 +17,19 @@ onMounted(() => {
   loadSaved()
 })
 
+function openSheet() {
+  haptics.light()
+  open.value = true
+}
+
 async function handleDetectGPS() {
   clearSuggestions()
   await detectGPS()
-  showSearch.value = false
-  searchQuery.value = ''
+  if (location.value) {
+    haptics.success()
+    open.value = false
+    searchQuery.value = ''
+  }
 }
 
 function onSearchInput() {
@@ -23,8 +37,7 @@ function onSearchInput() {
   searchTimeout = setTimeout(async () => {
     if (searchQuery.value.trim().length >= 2) {
       await searchLocations(searchQuery.value)
-    }
-    else {
+    } else {
       clearSuggestions()
     }
   }, 300)
@@ -32,13 +45,8 @@ function onSearchInput() {
 
 function handleSelect(suggestion: typeof suggestions.value[0]) {
   selectSuggestion(suggestion)
-  showSearch.value = false
-  searchQuery.value = ''
-  clearSuggestions()
-}
-
-function closeSearch() {
-  showSearch.value = false
+  haptics.success()
+  open.value = false
   searchQuery.value = ''
   clearSuggestions()
 }
@@ -51,20 +59,18 @@ const locationDisplay = computed(() => {
 
 <template>
   <div>
-    <!-- Location display row -->
+    <!-- Display row -->
     <div class="flex items-center gap-2">
-      <!-- Location toggle -->
       <button
         class="flex items-center gap-1.5 text-sm text-themed-muted hover:text-themed-secondary transition-colors min-w-0 flex-1"
-        @click="showSearch = !showSearch"
+        @click="openSheet"
       >
-        <span class="text-base shrink-0">📍</span>
+        <AppIcon name="location" :size="16" class="shrink-0" />
         <span v-if="location" class="truncate">{{ locationDisplay }}</span>
         <span v-else class="italic truncate">{{ t('prayer.searchCity') }}</span>
-        <span class="text-themed-faint text-xs shrink-0">{{ showSearch ? '▲' : '▼' }}</span>
+        <AppIcon name="chevronDown" :size="14" class="shrink-0 text-themed-faint" />
       </button>
 
-      <!-- GPS icon button — always visible -->
       <button
         class="shrink-0 w-8 h-8 flex items-center justify-center rounded-lg glass-subtle hover:bg-[var(--color-primary)]/10 transition-colors text-themed-muted hover:text-[var(--color-primary-light)]"
         :title="t('prayer.detectLocation')"
@@ -72,18 +78,30 @@ const locationDisplay = computed(() => {
         @click="handleDetectGPS"
       >
         <span v-if="loading" class="animate-spin text-sm">⟳</span>
-        <span v-else class="text-sm">🎯</span>
+        <AppIcon v-else name="target" :size="16" />
       </button>
     </div>
 
-    <!-- Search panel -->
-    <Transition
-      enter-active-class="transition-all duration-300 ease-out"
-      leave-active-class="transition-all duration-200 ease-in"
-      enter-from-class="opacity-0 -translate-y-2 scale-95"
-      leave-to-class="opacity-0 -translate-y-2 scale-95"
-    >
-      <div v-if="showSearch" class="mt-2">
+    <!-- Editor sheet -->
+    <BottomSheet v-model:open="open" :title="t('location.setupTitle')">
+      <div class="space-y-3 pb-2">
+        <!-- GPS button -->
+        <button
+          class="w-full px-4 py-3 rounded-xl bg-[var(--color-primary)] text-white font-medium text-sm transition-all duration-200 hover:opacity-90 active:scale-[0.98] flex items-center justify-center gap-2"
+          :disabled="loading"
+          @click="handleDetectGPS"
+        >
+          <span v-if="loading" class="animate-spin">⟳</span>
+          <AppIcon v-else name="target" :size="18" />
+          {{ loading ? t('common.loading') : t('location.detectGPS') }}
+        </button>
+
+        <div class="flex items-center gap-3">
+          <div class="flex-1 h-px bg-[var(--glass-border)]" />
+          <span class="text-xs text-themed-faint">{{ t('location.or') }}</span>
+          <div class="flex-1 h-px bg-[var(--glass-border)]" />
+        </div>
+
         <div class="relative">
           <GlassInput
             v-model="searchQuery"
@@ -91,43 +109,28 @@ const locationDisplay = computed(() => {
             icon="🔍"
             @update:model-value="onSearchInput"
           />
-
-          <!-- Search loading -->
-          <div
-            v-if="searchLoading"
-            class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"
-          >
+          <div v-if="searchLoading" class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
             <span class="animate-spin inline-block text-themed-muted text-sm">⟳</span>
           </div>
-
-          <!-- Suggestions dropdown -->
-          <Transition
-            enter-active-class="transition-all duration-200 ease-out"
-            leave-active-class="transition-all duration-150 ease-in"
-            enter-from-class="opacity-0 -translate-y-1"
-            leave-to-class="opacity-0 -translate-y-1"
-          >
-            <div
-              v-if="suggestions.length > 0"
-              class="absolute left-0 right-0 top-full mt-1 glass-strong rounded-xl overflow-hidden z-50 shadow-lg"
-            >
-              <button
-                v-for="(suggestion, index) in suggestions"
-                :key="index"
-                class="w-full text-left px-4 py-3 text-sm hover:bg-[var(--color-primary)]/10 transition-colors border-b border-[var(--glass-border)] last:border-b-0 flex items-center gap-2"
-                @click="handleSelect(suggestion)"
-              >
-                <span class="text-base shrink-0">📍</span>
-                <span class="text-themed-secondary truncate">{{ suggestion.displayName }}</span>
-              </button>
-            </div>
-          </Transition>
         </div>
 
-        <p v-if="error" class="mt-1.5 text-xs text-[var(--color-danger)]">
+        <!-- Suggestions list -->
+        <div v-if="suggestions.length > 0" class="space-y-1 max-h-60 overflow-y-auto">
+          <button
+            v-for="(suggestion, index) in suggestions"
+            :key="index"
+            class="w-full text-left px-3 py-2.5 rounded-lg glass-subtle hover:bg-[var(--color-primary)]/10 transition-colors flex items-center gap-2"
+            @click="handleSelect(suggestion)"
+          >
+            <AppIcon name="location" :size="14" class="shrink-0 text-themed-muted" />
+            <span class="text-themed-secondary text-sm truncate">{{ suggestion.displayName }}</span>
+          </button>
+        </div>
+
+        <p v-if="error" class="text-xs text-[var(--color-danger)]">
           {{ error }}
         </p>
       </div>
-    </Transition>
+    </BottomSheet>
   </div>
 </template>

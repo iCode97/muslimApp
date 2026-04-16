@@ -25,7 +25,7 @@ const clockSuffix = computed(() => {
 </script>
 
 <template>
-  <GlassCard variant="primary" :glow="!countdown.isExpired" padding="lg">
+  <GlassCard variant="primary" :glow="!countdown.isExpired" padding="lg" interactive>
     <div class="text-center">
       <p class="text-sm text-themed-muted mb-1">
         {{ t('dashboard.nextPrayer') }}

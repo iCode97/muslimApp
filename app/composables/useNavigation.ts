@@ -8,28 +8,29 @@
 export interface NavItem {
   id: string
   path: string
+  /** AppIcon name — resolved to inline SVG in the layout. */
   icon: string
   label: string
   /** Items grouped under /more routes for active detection */
   childRoutes?: string[]
 }
 
-/** All available navigation items */
+/** All available navigation items. `icon` values map to AppIcon names. */
 export const ALL_NAV_ITEMS: NavItem[] = [
-  { id: 'dashboard', path: '/', icon: '🏠', label: 'nav.dashboard' },
-  { id: 'prayer', path: '/prayer', icon: '🕌', label: 'nav.prayer' },
-  { id: 'quran', path: '/quran', icon: '📖', label: 'nav.quran' },
-  { id: 'calendar', path: '/calendar', icon: '📅', label: 'nav.calendar' },
-  { id: 'tasbih', path: '/tasbih', icon: '📿', label: 'nav.tasbih' },
-  { id: 'qibla', path: '/qibla', icon: '🧭', label: 'nav.qibla' },
-  { id: 'dua', path: '/dua', icon: '🤲', label: 'nav.dua' },
-  { id: 'hadith', path: '/hadith', icon: '📜', label: 'nav.hadith' },
-  { id: 'names', path: '/names', icon: '✨', label: 'nav.names' },
-  { id: 'guide', path: '/guide', icon: '📘', label: 'nav.guide' },
-  { id: 'seerah', path: '/seerah', icon: '📕', label: 'nav.seerah' },
-  { id: 'ramadan', path: '/ramadan', icon: '🌙', label: 'nav.ramadan' },
-  { id: 'settings', path: '/settings', icon: '⚙️', label: 'nav.settings' },
-  { id: 'about', path: '/about', icon: '📋', label: 'nav.about' },
+  { id: 'dashboard', path: '/', icon: 'dashboard', label: 'nav.dashboard' },
+  { id: 'prayer', path: '/prayer', icon: 'prayer', label: 'nav.prayer' },
+  { id: 'quran', path: '/quran', icon: 'quran', label: 'nav.quran' },
+  { id: 'calendar', path: '/calendar', icon: 'calendar', label: 'nav.calendar' },
+  { id: 'tasbih', path: '/tasbih', icon: 'tasbih', label: 'nav.tasbih' },
+  { id: 'qibla', path: '/qibla', icon: 'qibla', label: 'nav.qibla' },
+  { id: 'dua', path: '/dua', icon: 'dua', label: 'nav.dua' },
+  { id: 'hadith', path: '/hadith', icon: 'hadith', label: 'nav.hadith' },
+  { id: 'names', path: '/names', icon: 'names', label: 'nav.names' },
+  { id: 'guide', path: '/guide', icon: 'guide', label: 'nav.guide' },
+  { id: 'seerah', path: '/seerah', icon: 'seerah', label: 'nav.seerah' },
+  { id: 'ramadan', path: '/ramadan', icon: 'ramadan', label: 'nav.ramadan' },
+  { id: 'settings', path: '/settings', icon: 'settings', label: 'nav.settings' },
+  { id: 'about', path: '/about', icon: 'about', label: 'nav.about' },
 ]
 
 /** Desktop sidebar groups */
@@ -121,6 +122,20 @@ export function useNavigation() {
     saveMobileNav()
   }
 
+  /** Reorder mobile nav entries via drag-and-drop. */
+  function reorderMobileNav(fromId: string, toId: string) {
+    if (fromId === toId) return
+    const list = [...mobileNavIds.value]
+    const fromIdx = list.indexOf(fromId)
+    const toIdx = list.indexOf(toId)
+    if (fromIdx < 0 || toIdx < 0) return
+    const [moved] = list.splice(fromIdx, 1)
+    if (!moved) return
+    list.splice(toIdx, 0, moved)
+    mobileNavIds.value = list
+    saveMobileNav()
+  }
+
   /** The actual mobile nav items: dashboard pinned first + user selection */
   const mobileNavItems = computed<NavItem[]>(() => {
     const dashboard = ALL_NAV_ITEMS.find(i => i.id === 'dashboard')!
@@ -157,6 +172,7 @@ export function useNavigation() {
     loadMobileNav,
     toggleMobileNavItem,
     moveMobileNavItem,
+    reorderMobileNav,
     resetMobileNav,
     // Shared
     isActive,

@@ -22,7 +22,8 @@
     "editNav": "Navigation bearbeiten",
     "editNavDone": "Fertig",
     "editNavReset": "Zurücksetzen",
-    "editNavHint": "Wähle bis zu 4 Einträge für deine Navigationsleiste"
+    "editNavHint": "Wähle bis zu 4 Einträge für deine Navigationsleiste",
+    "editNavOrder": "Reihenfolge (ziehen zum Umordnen)"
   },
   "dashboard": {
     "greeting": "Assalamu Alaikum",
@@ -117,7 +118,9 @@
     "methodHint": "Die Berechnungsmethode beeinflusst die Fajr- und Isha-Zeiten",
     "moreLangsLater": "Weitere Sprachen in einer zukünftigen Version",
     "version": "Version",
-    "apiInfo": "Gebetszeiten via Aladhan API • Koran via quran.com API"
+    "apiInfo": "Gebetszeiten via Aladhan API • Koran via quran.com API",
+    "haptics": "Haptisches Feedback",
+    "hapticsHint": "Leichte Vibrationen bei Taps und Zählern"
   },
   "common": {
     "loading": "Wird geladen...",
@@ -254,12 +257,52 @@
     "prayerNow": "Es ist Zeit für das Gebet",
     "denied": "Benachrichtigungen wurden blockiert. Bitte in den Browser-Einstellungen erlauben."
   },
+  "dhikrReminder": {
+    "title": "Dhikr-Erinnerungen",
+    "subtitle": "Sanfte Erinnerung für Morgen- und Abend-Adhkar",
+    "morning": "Morgen-Adhkar",
+    "evening": "Abend-Adhkar",
+    "morningTitle": "Morgen-Adhkar",
+    "morningBody": "Beginne deinen Tag mit den Morgen-Bittgebeten.",
+    "eveningTitle": "Abend-Adhkar",
+    "eveningBody": "Beschliesse deinen Tag mit den Abend-Bittgebeten.",
+    "foregroundOnly": "Hinweis: Dein Browser unterstützt keine Hintergrund-Planung. Erinnerungen funktionieren nur, solange der Tab geöffnet ist."
+  },
+  "onboarding": {
+    "skip": "Überspringen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "finish": "Los geht's",
+    "welcomeTitle": "Willkommen bei MuslimApp",
+    "welcomeBody": "Dein islamischer Begleiter — Gebetszeiten, Koran und mehr. Lass uns die App in wenigen Schritten einrichten.",
+    "featurePrayer": "Gebetszeiten & Benachrichtigungen",
+    "featureQuran": "Koran mit Offline-Modus",
+    "featureQibla": "Qibla-Kompass & Hijri-Kalender",
+    "featureTools": "Tasbih, Duas, Hadithe & mehr",
+    "locationTitle": "Standort festlegen",
+    "locationBody": "Wir brauchen deinen Standort für akkurate Gebetszeiten und die Qibla-Richtung. Dein Standort bleibt nur auf deinem Gerät.",
+    "methodTitle": "Berechnungsmethode",
+    "methodBody": "Wähle die Methode, die in deiner Region üblich ist. Du kannst sie später jederzeit in den Einstellungen ändern.",
+    "notificationsTitle": "Gebetserinnerungen",
+    "notificationsBody": "Erhalte kurz vor jedem Gebet eine Benachrichtigung. Du kannst die Vorlaufzeit später anpassen.",
+    "enableNotifications": "Benachrichtigungen aktivieren",
+    "notificationsEnabled": "Benachrichtigungen sind aktiv",
+    "backgroundSupported": "✓ Funktioniert auch, wenn die App geschlossen ist.",
+    "backgroundLimited": "Hinweis: Auf deinem Gerät funktionieren Benachrichtigungen nur, solange die App geöffnet ist.",
+    "navTitle": "Deine Navigationsleiste",
+    "navBody": "Wähle bis zu vier Bereiche, die auf dem Handy immer erreichbar sein sollen. Du kannst das später ändern.",
+    "navSelected": "ausgewählt",
+    "doneTitle": "Alles bereit",
+    "doneBody": "Möge dir die App ein treuer Begleiter sein. Barakallahu fik.",
+    "reopen": "Einrichtung erneut öffnen"
+  },
   "dua": {
     "title": "Bittgebete",
     "subtitle": "Duas für verschiedene Anlässe",
     "all": "Alle",
     "cat_morning": "Morgen",
     "cat_evening": "Abend",
+    "cat_sleep": "Schlafen",
     "cat_prayer": "Gebet",
     "cat_food": "Essen",
     "cat_travel": "Reise",
@@ -282,7 +325,12 @@
     "goToDashboard": "Zum Dashboard",
     "activateCompass": "Kompass aktivieren",
     "compassActive": "Kompass aktiv — Gerät in Richtung Qibla ausrichten",
-    "noCompass": "Kein Kompass verfügbar. Die Richtung wird statisch angezeigt."
+    "noCompass": "Kein Kompass verfügbar. Die Richtung wird statisch angezeigt.",
+    "calibrationTitle": "Kompass kalibrieren",
+    "calibrationHint": "Halte das Gerät flach und bewege es in einer Achter-Bewegung, um den Kompass zu kalibrieren. Halte dich fern von Metall & Magneten.",
+    "dismiss": "Ausblenden",
+    "accuracy": "Ausrichtung",
+    "aligned": "Qibla ausgerichtet"
   },
   "timeAgo": {
     "daysAgo": "vor {n} Tag | vor {n} Tagen",
@@ -375,7 +423,10 @@
     "ch8_title": "Die Grabenschlacht",
     "ch9_title": "Die Eroberung von Mekka",
     "ch10_title": "Die Abschiedspredigt",
-    "ch11_title": "Das Ableben des Propheten ﷺ"
+    "ch11_title": "Das Ableben des Propheten ﷺ",
+    "viewList": "Liste",
+    "viewTimeline": "Zeitleiste",
+    "readBadge": "Gelesen"
   },
   "ramadan": {
     "title": "Ramadan",

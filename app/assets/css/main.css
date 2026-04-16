@@ -163,6 +163,61 @@ body {
   );
 }
 
+/* Pointer-reactive specular highlight + tilt for GlassCards opted-in via
+   the `interactive` prop. All values live in CSS custom properties that the
+   component updates on pointermove. */
+.glass-interactive {
+  --pointer-x: 50%;
+  --pointer-y: 50%;
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  position: relative;
+  transform: perspective(1000px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transform-style: preserve-3d;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease;
+  will-change: transform;
+}
+
+.glass-interactive::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    360px circle at var(--pointer-x) var(--pointer-y),
+    rgba(255, 255, 255, 0.14) 0%,
+    rgba(255, 255, 255, 0.04) 25%,
+    transparent 55%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  mix-blend-mode: screen;
+}
+
+.glass-interactive[data-hover="1"]::after {
+  opacity: 1;
+}
+
+[data-theme="light"] .glass-interactive::after {
+  background: radial-gradient(
+    360px circle at var(--pointer-x) var(--pointer-y),
+    rgba(255, 255, 255, 0.6) 0%,
+    rgba(255, 255, 255, 0.15) 25%,
+    transparent 55%
+  );
+  mix-blend-mode: normal;
+}
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .glass-interactive {
+    transform: none;
+  }
+  .glass-interactive::after {
+    display: none;
+  }
+}
+
 /* Primary glow for active prayer time, etc. */
 .glass-primary {
   background: linear-gradient(
@@ -532,4 +587,130 @@ body::before {
 [data-theme="light"] .liquid-nav-item--active {
   --liquid-active-bg: rgba(0, 0, 0, 0.06);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* ============================================
+   VIEW TRANSITIONS API
+   Cross-fade + subtle rise on route change
+   ============================================ */
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.28s;
+    animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  ::view-transition-old(root) {
+    animation-name: vt-fade-out;
+  }
+  ::view-transition-new(root) {
+    animation-name: vt-fade-in;
+  }
+
+  @keyframes vt-fade-out {
+    to { opacity: 0; transform: translateY(-4px); }
+  }
+  @keyframes vt-fade-in {
+    from { opacity: 0; transform: translateY(6px); }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
+/* ============================================
+   BOTTOM SHEET
+   Native-style slide-up dialog
+   ============================================ */
+
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 80;
+}
+
+[data-theme="light"] .sheet-backdrop {
+  background: rgba(20, 20, 30, 0.35);
+}
+
+.sheet-container {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 81;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.sheet-panel {
+  pointer-events: auto;
+  width: 100%;
+  max-width: 32rem;
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.6);
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.6);
+  border-top: 1px solid var(--glass-border-strong);
+  border-left: 1px solid var(--glass-border-strong);
+  border-right: 1px solid var(--glass-border-strong);
+  border-radius: 1.5rem 1.5rem 0 0;
+  padding: 0.5rem 1rem calc(1.25rem + env(safe-area-inset-bottom, 0px));
+  max-height: 85dvh;
+  overflow-y: auto;
+  box-shadow: 0 -24px 48px -12px rgba(0, 0, 0, 0.4);
+  touch-action: pan-y;
+}
+
+.sheet-handle {
+  width: 2.5rem;
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--color-text-muted);
+  opacity: 0.4;
+  margin: 0.5rem auto 0.75rem;
+}
+
+/* Sheet transition */
+.sheet-enter-active,
+.sheet-leave-active {
+  transition: opacity 0.25s ease;
+}
+.sheet-enter-active .sheet-panel,
+.sheet-leave-active .sheet-panel {
+  transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.sheet-enter-from,
+.sheet-leave-to {
+  opacity: 0;
+}
+.sheet-enter-from .sheet-panel,
+.sheet-leave-to .sheet-panel {
+  transform: translateY(100%);
+}
+
+@media (min-width: 768px) {
+  .sheet-container {
+    align-items: center;
+    top: 0;
+  }
+  .sheet-panel {
+    margin: auto;
+    max-width: 28rem;
+    border-radius: 1.5rem;
+    border: 1px solid var(--glass-border-strong);
+    max-height: min(80dvh, 40rem);
+  }
+  .sheet-enter-from .sheet-panel,
+  .sheet-leave-to .sheet-panel {
+    transform: translateY(16px) scale(0.98);
+  }
 }

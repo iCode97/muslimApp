@@ -16,7 +16,7 @@ const showAllTomorrow = ref(false)
 </script>
 
 <template>
-  <GlassCard variant="default" padding="sm">
+  <GlassCard variant="default" padding="sm" interactive>
     <div class="flex items-center justify-between px-4 pt-2 pb-1">
       <h2 class="text-sm font-semibold text-themed-muted uppercase tracking-wider">
         {{ t('dashboard.allPrayers') }}

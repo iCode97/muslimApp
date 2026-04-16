@@ -23,7 +23,7 @@ const preview = computed(() => {
 
 <template>
   <NuxtLink to="/seerah">
-    <GlassCard>
+    <GlassCard interactive>
       <div class="space-y-2">
         <div class="flex items-center justify-between">
           <h3 class="text-xs font-semibold text-themed-muted uppercase tracking-wider">

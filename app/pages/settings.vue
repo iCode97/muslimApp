@@ -7,8 +7,11 @@ const { t, locale, setLocale, locales } = useI18n()
 const { location } = useLocation()
 const theme = useTheme()
 const notifications = useNotifications()
+const dhikrReminders = useDhikrReminders()
 const prayerTimes = usePrayerTimes()
 const offlineQuran = useOfflineQuran()
+const onboarding = useOnboarding()
+const haptics = useHaptics()
 
 const showMethodPicker = ref(false)
 
@@ -42,6 +45,7 @@ function resetAllProgress() {
 
 onMounted(() => {
   notifications.loadSettings()
+  dhikrReminders.loadSettings()
   offlineQuran.checkStatus()
   quranProgress.load()
   seerahProgress.load()
@@ -221,6 +225,147 @@ const minutesOptions = [0, 5, 10, 15, 30]
       </div>
     </GlassCard>
 
+    <!-- Dhikr Reminders -->
+    <GlassCard>
+      <div class="space-y-3">
+        <div class="flex items-center justify-between gap-3">
+          <div class="min-w-0">
+            <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
+              {{ t('dhikrReminder.title') }}
+            </h3>
+            <p class="text-xs text-themed-faint mt-0.5">
+              {{ t('dhikrReminder.subtitle') }}
+            </p>
+          </div>
+          <button
+            :class="[
+              'relative w-12 h-7 rounded-full transition-all duration-200 shrink-0',
+              dhikrReminders.settings.value.enabled
+                ? 'bg-[var(--color-primary)]'
+                : 'glass-subtle'
+            ]"
+            :aria-label="t('dhikrReminder.title')"
+            @click="dhikrReminders.toggleEnabled()"
+          >
+            <span
+              :class="[
+                'absolute top-1 w-5 h-5 rounded-full bg-white shadow transition-all duration-200',
+                dhikrReminders.settings.value.enabled ? 'left-6' : 'left-1'
+              ]"
+            />
+          </button>
+        </div>
+
+        <template v-if="dhikrReminders.settings.value.enabled">
+          <!-- Morning slot -->
+          <div class="flex items-center justify-between gap-3 glass-subtle rounded-xl px-3 py-2">
+            <button
+              class="flex items-center gap-2 flex-1 min-w-0 text-left"
+              @click="dhikrReminders.toggleSlot('morning')"
+            >
+              <span class="text-lg">🌅</span>
+              <div class="min-w-0">
+                <p class="text-sm font-medium text-themed">{{ t('dhikrReminder.morning') }}</p>
+                <p class="text-[11px] text-themed-faint">{{ dhikrReminders.formatTime(dhikrReminders.settings.value.morning) }}</p>
+              </div>
+            </button>
+            <input
+              type="time"
+              :value="dhikrReminders.formatTime(dhikrReminders.settings.value.morning)"
+              class="glass-subtle text-themed text-xs px-2 py-1 rounded-md tabular-nums"
+              @change="(e) => {
+                const [h, m] = (e.target as HTMLInputElement).value.split(':').map(Number)
+                if (!isNaN(h) && !isNaN(m)) dhikrReminders.setSlotTime('morning', h, m)
+              }"
+            >
+            <button
+              :class="[
+                'relative w-10 h-6 rounded-full transition-all shrink-0',
+                dhikrReminders.settings.value.morning.enabled ? 'bg-[var(--color-primary)]' : 'bg-[var(--glass-border)]'
+              ]"
+              @click="dhikrReminders.toggleSlot('morning')"
+            >
+              <span
+                :class="[
+                  'absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all',
+                  dhikrReminders.settings.value.morning.enabled ? 'left-[18px]' : 'left-0.5'
+                ]"
+              />
+            </button>
+          </div>
+
+          <!-- Evening slot -->
+          <div class="flex items-center justify-between gap-3 glass-subtle rounded-xl px-3 py-2">
+            <button
+              class="flex items-center gap-2 flex-1 min-w-0 text-left"
+              @click="dhikrReminders.toggleSlot('evening')"
+            >
+              <span class="text-lg">🌙</span>
+              <div class="min-w-0">
+                <p class="text-sm font-medium text-themed">{{ t('dhikrReminder.evening') }}</p>
+                <p class="text-[11px] text-themed-faint">{{ dhikrReminders.formatTime(dhikrReminders.settings.value.evening) }}</p>
+              </div>
+            </button>
+            <input
+              type="time"
+              :value="dhikrReminders.formatTime(dhikrReminders.settings.value.evening)"
+              class="glass-subtle text-themed text-xs px-2 py-1 rounded-md tabular-nums"
+              @change="(e) => {
+                const [h, m] = (e.target as HTMLInputElement).value.split(':').map(Number)
+                if (!isNaN(h) && !isNaN(m)) dhikrReminders.setSlotTime('evening', h, m)
+              }"
+            >
+            <button
+              :class="[
+                'relative w-10 h-6 rounded-full transition-all shrink-0',
+                dhikrReminders.settings.value.evening.enabled ? 'bg-[var(--color-primary)]' : 'bg-[var(--glass-border)]'
+              ]"
+              @click="dhikrReminders.toggleSlot('evening')"
+            >
+              <span
+                :class="[
+                  'absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all',
+                  dhikrReminders.settings.value.evening.enabled ? 'left-[18px]' : 'left-0.5'
+                ]"
+              />
+            </button>
+          </div>
+
+          <p v-if="!dhikrReminders.supportsBackground()" class="text-[11px] text-themed-faint">
+            {{ t('dhikrReminder.foregroundOnly') }}
+          </p>
+        </template>
+      </div>
+    </GlassCard>
+
+    <!-- Haptics -->
+    <GlassCard v-if="haptics.isSupported.value">
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
+              {{ t('settings.haptics') }}
+            </h3>
+            <p class="text-xs text-themed-faint mt-1">{{ t('settings.hapticsHint') }}</p>
+          </div>
+          <button
+            :class="[
+              'relative w-12 h-7 rounded-full transition-all duration-200',
+              haptics.enabled.value ? 'bg-[var(--color-primary)]' : 'glass-subtle',
+            ]"
+            @click="haptics.setEnabled(!haptics.enabled.value); haptics.medium()"
+          >
+            <span
+              :class="[
+                'absolute top-1 w-5 h-5 rounded-full bg-white shadow transition-all duration-200',
+                haptics.enabled.value ? 'left-6' : 'left-1',
+              ]"
+            />
+          </button>
+        </div>
+      </div>
+    </GlassCard>
+
     <!-- Offline Quran -->
     <GlassCard>
       <div class="space-y-3">
@@ -388,7 +533,7 @@ const minutesOptions = [0, 5, 10, 15, 30]
 
     <!-- About -->
     <GlassCard variant="subtle" class="md:col-span-2">
-      <div class="space-y-2">
+      <div class="space-y-3">
         <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
           {{ t('settings.about') }}
         </h3>
@@ -398,6 +543,12 @@ const minutesOptions = [0, 5, 10, 15, 30]
         <p class="text-themed-faint text-xs">
           {{ t('settings.apiInfo') }}
         </p>
+        <button
+          class="text-xs text-themed-secondary hover:text-themed underline-offset-2 hover:underline transition-colors"
+          @click="onboarding.openManually()"
+        >
+          ☪ {{ t('onboarding.reopen') }}
+        </button>
       </div>
     </GlassCard>
     </div><!-- end grid -->
