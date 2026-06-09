@@ -19,7 +19,9 @@ export interface NavItem {
 export const ALL_NAV_ITEMS: NavItem[] = [
   { id: 'dashboard', path: '/', icon: 'dashboard', label: 'nav.dashboard' },
   { id: 'prayer', path: '/prayer', icon: 'prayer', label: 'nav.prayer' },
+  { id: 'tracker', path: '/tracker', icon: 'tracker', label: 'nav.tracker' },
   { id: 'quran', path: '/quran', icon: 'quran', label: 'nav.quran' },
+  { id: 'favorites', path: '/favorites', icon: 'heart', label: 'nav.favorites' },
   { id: 'calendar', path: '/calendar', icon: 'calendar', label: 'nav.calendar' },
   { id: 'tasbih', path: '/tasbih', icon: 'tasbih', label: 'nav.tasbih' },
   { id: 'qibla', path: '/qibla', icon: 'qibla', label: 'nav.qibla' },
@@ -29,17 +31,18 @@ export const ALL_NAV_ITEMS: NavItem[] = [
   { id: 'guide', path: '/guide', icon: 'guide', label: 'nav.guide' },
   { id: 'seerah', path: '/seerah', icon: 'seerah', label: 'nav.seerah' },
   { id: 'ramadan', path: '/ramadan', icon: 'ramadan', label: 'nav.ramadan' },
+  { id: 'zakat', path: '/zakat', icon: 'zakat', label: 'nav.zakat' },
   { id: 'settings', path: '/settings', icon: 'settings', label: 'nav.settings' },
   { id: 'about', path: '/about', icon: 'about', label: 'nav.about' },
 ]
 
 /** Desktop sidebar groups */
 export const DESKTOP_PRIMARY_ITEMS = ALL_NAV_ITEMS.filter(i =>
-  ['dashboard', 'prayer', 'quran', 'calendar'].includes(i.id)
+  ['dashboard', 'prayer', 'tracker', 'quran', 'calendar'].includes(i.id)
 )
 
 export const DESKTOP_TOOLS_ITEMS = ALL_NAV_ITEMS.filter(i =>
-  ['tasbih', 'qibla', 'dua', 'hadith', 'names', 'guide', 'seerah', 'ramadan'].includes(i.id)
+  ['tasbih', 'qibla', 'dua', 'hadith', 'names', 'guide', 'seerah', 'ramadan', 'zakat', 'favorites'].includes(i.id)
 )
 
 export const DESKTOP_FOOTER_ITEMS = ALL_NAV_ITEMS.filter(i =>
@@ -48,8 +51,8 @@ export const DESKTOP_FOOTER_ITEMS = ALL_NAV_ITEMS.filter(i =>
 
 /** Mobile: items the user can choose from (excludes dashboard which is pinned) */
 const MOBILE_CHOOSABLE_IDS = [
-  'prayer', 'quran', 'calendar', 'tasbih', 'qibla',
-  'dua', 'hadith', 'names', 'guide', 'seerah', 'ramadan', 'settings',
+  'prayer', 'tracker', 'quran', 'favorites', 'calendar', 'tasbih', 'qibla',
+  'dua', 'hadith', 'names', 'guide', 'seerah', 'ramadan', 'zakat', 'settings',
 ]
 
 /** Default mobile nav bar (dashboard + 4 others) */

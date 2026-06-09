@@ -23,7 +23,10 @@
     "editNavDone": "Done",
     "editNavReset": "Reset",
     "editNavHint": "Choose up to 4 items for your navigation bar",
-    "editNavOrder": "Order (drag to rearrange)"
+    "editNavOrder": "Order (drag to rearrange)",
+    "tracker": "Tracker",
+    "zakat": "Zakat",
+    "favorites": "Favorites"
   },
   "dashboard": {
     "greeting": "Assalamu Alaikum",
@@ -101,7 +104,11 @@
     "bismillah": "In the name of Allah, the Most Gracious, the Most Merciful",
     "searchButton": "Search",
     "minChars": "Enter at least 3 characters to search verses",
-    "tapArabic": "Tap the Arabic text to show translation"
+    "tapArabic": "Tap the Arabic text to show translation",
+    "listen": "Listen to surah",
+    "pause": "Pause",
+    "reciter": "Reciter",
+    "audioError": "Audio could not be loaded"
   },
   "settings": {
     "title": "Settings",
@@ -120,7 +127,14 @@
     "version": "Version",
     "apiInfo": "Prayer times via Aladhan API • Quran via quran.com API",
     "haptics": "Haptic feedback",
-    "hapticsHint": "Subtle vibrations on taps and counters"
+    "hapticsHint": "Subtle vibrations on taps and counters",
+    "dataTitle": "Data Backup",
+    "dataHint": "Back up all app data (progress, tracker, favorites, settings) as a file or restore it on a new device.",
+    "exportData": "Export Data",
+    "importData": "Import Data",
+    "importConfirm": "Import backup? Existing data will be overwritten.",
+    "importSuccess": "Backup restored — reloading app…",
+    "importError": "Invalid backup file"
   },
   "common": {
     "loading": "Loading...",
@@ -190,7 +204,8 @@
     "done": "Done",
     "configure": "Configure Dashboard",
     "resetDefaults": "Reset",
-    "openFull": "Open"
+    "openFull": "Open",
+    "prayerTracker": "Prayer Tracker"
   },
   "more": {
     "title": "More",
@@ -219,7 +234,13 @@
     "installDesc": "Add MuslimApp to your home screen",
     "install": "Install",
     "about": "About & Sources",
-    "aboutDesc": "Data sources, APIs & transparency"
+    "aboutDesc": "Data sources, APIs & transparency",
+    "tracker": "Prayer Tracker",
+    "trackerDesc": "Check off daily prayers, streaks & stats",
+    "zakat": "Zakat Calculator",
+    "zakatDesc": "Calculate zakat on your wealth (2.5%)",
+    "favorites": "Verse Favorites",
+    "favoritesDesc": "Your saved Quran verses"
   },
   "tasbih": {
     "title": "Tasbih",
@@ -461,5 +482,50 @@
     "cat_justice": "Justice",
     "cat_protection": "Protection",
     "cat_uniqueness": "Uniqueness"
+  },
+  "tracker": {
+    "title": "Prayer Tracker",
+    "subtitle": "Keep track of your daily prayers",
+    "today": "Today",
+    "week": "Last 7 Days",
+    "streak": "Day Streak",
+    "streakDays": "day streak",
+    "last7": "7 Days",
+    "last30": "30 Days",
+    "done": "Prayed",
+    "qada": "Qada",
+    "open": "Open",
+    "tapHint": "Tap to cycle: Open → Prayed → Made up (Qada)"
+  },
+  "zakat": {
+    "title": "Zakat Calculator",
+    "subtitle": "Calculate your zakat (2.5% of wealth)",
+    "zakatDue": "Zakat Due",
+    "due": "Your wealth is above the nisab — zakat is due",
+    "notDue": "Your wealth is below the nisab — no zakat due",
+    "enterPrices": "Enter the current precious metal prices first",
+    "nisabBasis": "Nisab Basis",
+    "gold": "Gold",
+    "silver": "Silver",
+    "nisab": "Nisab Threshold",
+    "prices": "Current Prices per Gram",
+    "goldPrice": "Gold Price",
+    "silverPrice": "Silver Price",
+    "assets": "Assets & Debts",
+    "cash": "Cash & Accounts",
+    "goldGrams": "Gold (grams)",
+    "silverGrams": "Silver (grams)",
+    "otherAssets": "Other Investments",
+    "debts": "Debts (deducted)",
+    "total": "Total Assets",
+    "netWealth": "Zakatable Wealth",
+    "disclaimer": "This calculator is for guidance only. Consult a scholar or your mosque for binding rulings. Wealth must also have been held for one lunar year (hawl)."
+  },
+  "favorites": {
+    "title": "Favorites",
+    "subtitle": "Your saved Quran verses",
+    "empty": "No favorites saved yet",
+    "emptyHint": "Tap the heart next to a verse in the Quran reader",
+    "remove": "Remove"
   }
 }

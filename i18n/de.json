@@ -23,7 +23,10 @@
     "editNavDone": "Fertig",
     "editNavReset": "Zurücksetzen",
     "editNavHint": "Wähle bis zu 4 Einträge für deine Navigationsleiste",
-    "editNavOrder": "Reihenfolge (ziehen zum Umordnen)"
+    "editNavOrder": "Reihenfolge (ziehen zum Umordnen)",
+    "tracker": "Tracker",
+    "zakat": "Zakat",
+    "favorites": "Favoriten"
   },
   "dashboard": {
     "greeting": "Assalamu Alaikum",
@@ -101,7 +104,11 @@
     "bismillah": "Im Namen Allahs, des Allerbarmers, des Barmherzigen",
     "searchButton": "Suche",
     "minChars": "Mindestens 3 Zeichen für die Verssuche",
-    "tapArabic": "Tippe auf den arabischen Text, um die Übersetzung einzublenden"
+    "tapArabic": "Tippe auf den arabischen Text, um die Übersetzung einzublenden",
+    "listen": "Sure anhören",
+    "pause": "Pause",
+    "reciter": "Rezitator",
+    "audioError": "Audio konnte nicht geladen werden"
   },
   "settings": {
     "title": "Einstellungen",
@@ -120,7 +127,14 @@
     "version": "Version",
     "apiInfo": "Gebetszeiten via Aladhan API • Koran via quran.com API",
     "haptics": "Haptisches Feedback",
-    "hapticsHint": "Leichte Vibrationen bei Taps und Zählern"
+    "hapticsHint": "Leichte Vibrationen bei Taps und Zählern",
+    "dataTitle": "Datensicherung",
+    "dataHint": "Sichere alle App-Daten (Fortschritt, Tracker, Favoriten, Einstellungen) als Datei oder stelle sie auf einem neuen Gerät wieder her.",
+    "exportData": "Daten exportieren",
+    "importData": "Daten importieren",
+    "importConfirm": "Backup importieren? Vorhandene Daten werden überschrieben.",
+    "importSuccess": "Backup wiederhergestellt — App wird neu geladen…",
+    "importError": "Ungültige Backup-Datei"
   },
   "common": {
     "loading": "Wird geladen...",
@@ -190,7 +204,8 @@
     "done": "Fertig",
     "configure": "Dashboard konfigurieren",
     "resetDefaults": "Zurücksetzen",
-    "openFull": "Öffnen"
+    "openFull": "Öffnen",
+    "prayerTracker": "Gebets-Tracker"
   },
   "more": {
     "title": "Mehr",
@@ -219,7 +234,13 @@
     "installDesc": "Füge MuslimApp zu deinem Startbildschirm hinzu",
     "install": "Installieren",
     "about": "Über & Quellen",
-    "aboutDesc": "Datenquellen, APIs & Transparenz"
+    "aboutDesc": "Datenquellen, APIs & Transparenz",
+    "tracker": "Gebets-Tracker",
+    "trackerDesc": "Tägliche Gebete abhaken, Serien & Statistik",
+    "zakat": "Zakat-Rechner",
+    "zakatDesc": "Zakat auf dein Vermögen berechnen (2,5 %)",
+    "favorites": "Vers-Favoriten",
+    "favoritesDesc": "Deine gespeicherten Koranverse"
   },
   "tasbih": {
     "title": "Tasbih",
@@ -461,5 +482,50 @@
     "cat_justice": "Gerechtigkeit",
     "cat_protection": "Schutz",
     "cat_uniqueness": "Einzigartigkeit"
+  },
+  "tracker": {
+    "title": "Gebets-Tracker",
+    "subtitle": "Halte deine täglichen Gebete fest",
+    "today": "Heute",
+    "week": "Letzte 7 Tage",
+    "streak": "Tage-Serie",
+    "streakDays": "Tage Serie",
+    "last7": "7 Tage",
+    "last30": "30 Tage",
+    "done": "Verrichtet",
+    "qada": "Qada",
+    "open": "Offen",
+    "tapHint": "Tippen zum Wechseln: Offen → Verrichtet → Nachgeholt (Qada)"
+  },
+  "zakat": {
+    "title": "Zakat-Rechner",
+    "subtitle": "Berechne deine Zakat (2,5 % des Vermögens)",
+    "zakatDue": "Zu zahlende Zakat",
+    "due": "Dein Vermögen liegt über dem Nisab — Zakat ist fällig",
+    "notDue": "Dein Vermögen liegt unter dem Nisab — keine Zakat fällig",
+    "enterPrices": "Gib zuerst die aktuellen Edelmetallpreise ein",
+    "nisabBasis": "Nisab-Basis",
+    "gold": "Gold",
+    "silver": "Silber",
+    "nisab": "Nisab-Schwelle",
+    "prices": "Aktuelle Preise pro Gramm",
+    "goldPrice": "Goldpreis",
+    "silverPrice": "Silberpreis",
+    "assets": "Vermögen & Schulden",
+    "cash": "Bargeld & Konten",
+    "goldGrams": "Gold (Gramm)",
+    "silverGrams": "Silber (Gramm)",
+    "otherAssets": "Sonstige Anlagen",
+    "debts": "Schulden (Abzug)",
+    "total": "Gesamtvermögen",
+    "netWealth": "Zakatpflichtiges Vermögen",
+    "disclaimer": "Dieser Rechner dient nur als Orientierung. Für verbindliche Auskünfte wende dich an einen Gelehrten oder deine Moschee. Voraussetzung ist zudem, dass das Vermögen ein Mondjahr (Hawl) lang gehalten wurde."
+  },
+  "favorites": {
+    "title": "Favoriten",
+    "subtitle": "Deine gespeicherten Koranverse",
+    "empty": "Noch keine Favoriten gespeichert",
+    "emptyHint": "Tippe im Koran-Reader auf das Herz neben einem Vers",
+    "remove": "Entfernen"
   }
 }

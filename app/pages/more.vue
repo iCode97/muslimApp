@@ -7,6 +7,9 @@ const { t } = useI18n()
 const pwa = usePWA()
 
 const tools = [
+  { path: '/tracker', icon: '✅', labelKey: 'more.tracker', descKey: 'more.trackerDesc' },
+  { path: '/zakat', icon: '💰', labelKey: 'more.zakat', descKey: 'more.zakatDesc' },
+  { path: '/favorites', icon: '❤️', labelKey: 'more.favorites', descKey: 'more.favoritesDesc' },
   { path: '/tasbih', icon: '📿', labelKey: 'more.tasbih', descKey: 'more.tasbihDesc' },
   { path: '/qibla', icon: '🧭', labelKey: 'more.qibla', descKey: 'more.qiblaDesc' },
   { path: '/dua', icon: '🤲', labelKey: 'more.dua', descKey: 'more.duaDesc' },

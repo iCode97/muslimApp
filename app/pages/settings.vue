@@ -12,8 +12,19 @@ const prayerTimes = usePrayerTimes()
 const offlineQuran = useOfflineQuran()
 const onboarding = useOnboarding()
 const haptics = useHaptics()
+const backup = useBackup()
 
 const showMethodPicker = ref(false)
+const importInput = ref<HTMLInputElement | null>(null)
+
+function onImportFile(event: Event) {
+  const file = (event.target as HTMLInputElement).files?.[0]
+  if (file && confirm(t('settings.importConfirm'))) {
+    backup.importData(file)
+  }
+  // Allow re-selecting the same file later
+  ;(event.target as HTMLInputElement).value = ''
+}
 
 // Progress tracking
 const quranProgress = useProgress('quran', 114)
@@ -531,6 +542,46 @@ const minutesOptions = [0, 5, 10, 15, 30]
       </div>
     </GlassCard>
 
+    <!-- Backup & Restore -->
+    <GlassCard class="md:col-span-2">
+      <div class="space-y-3">
+        <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
+          {{ t('settings.dataTitle') }}
+        </h3>
+        <p class="text-xs text-themed-faint">
+          {{ t('settings.dataHint') }}
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <button
+            class="py-2.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-medium transition-all hover:opacity-90"
+            @click="backup.exportData()"
+          >
+            📤 {{ t('settings.exportData') }}
+          </button>
+          <button
+            class="py-2.5 rounded-xl glass-subtle text-themed-secondary text-sm font-medium transition-all hover:text-themed"
+            :disabled="backup.importing.value"
+            @click="importInput?.click()"
+          >
+            📥 {{ t('settings.importData') }}
+          </button>
+          <input
+            ref="importInput"
+            type="file"
+            accept="application/json,.json"
+            class="hidden"
+            @change="onImportFile"
+          >
+        </div>
+        <p v-if="backup.importSuccess.value" class="text-xs text-[var(--color-primary-light)]">
+          ✓ {{ t('settings.importSuccess') }}
+        </p>
+        <p v-if="backup.importError.value" class="text-xs text-[var(--color-danger)]">
+          {{ t('settings.importError') }}
+        </p>
+      </div>
+    </GlassCard>
+
     <!-- About -->
     <GlassCard variant="subtle" class="md:col-span-2">
       <div class="space-y-3">
@@ -538,7 +589,7 @@ const minutesOptions = [0, 5, 10, 15, 30]
           {{ t('settings.about') }}
         </h3>
         <p class="text-themed-muted text-sm">
-          MuslimApp v0.5.0 — Phase 4+
+          MuslimApp v2.0.0
         </p>
         <p class="text-themed-faint text-xs">
           {{ t('settings.apiInfo') }}

@@ -23,7 +23,10 @@
     "editNavDone": "Tamam",
     "editNavReset": "Sıfırla",
     "editNavHint": "Navigasyon çubuğun için en fazla 4 öğe seç",
-    "editNavOrder": "Sıralama (sürükleyerek değiştir)"
+    "editNavOrder": "Sıralama (sürükleyerek değiştir)",
+    "tracker": "Takip",
+    "zakat": "Zekat",
+    "favorites": "Favoriler"
   },
   "dashboard": {
     "greeting": "Selamün Aleyküm",
@@ -101,7 +104,11 @@
     "bismillah": "Rahman ve Rahim olan Allah'ın adıyla",
     "searchButton": "Arama",
     "minChars": "Ayet aramak için en az 3 karakter girin",
-    "tapArabic": "Çeviriyi görmek için Arapça metne dokunun"
+    "tapArabic": "Çeviriyi görmek için Arapça metne dokunun",
+    "listen": "Sureyi dinle",
+    "pause": "Duraklat",
+    "reciter": "Kari",
+    "audioError": "Ses yüklenemedi"
   },
   "settings": {
     "title": "Ayarlar",
@@ -120,7 +127,14 @@
     "version": "Sürüm",
     "apiInfo": "Namaz vakitleri: Aladhan API • Kur'an: quran.com API",
     "haptics": "Dokunsal geri bildirim",
-    "hapticsHint": "Dokunuşlarda ve sayaçlarda hafif titreşim"
+    "hapticsHint": "Dokunuşlarda ve sayaçlarda hafif titreşim",
+    "dataTitle": "Veri Yedekleme",
+    "dataHint": "Tüm uygulama verilerini (ilerleme, takip, favoriler, ayarlar) dosya olarak yedekle veya yeni cihazda geri yükle.",
+    "exportData": "Verileri Dışa Aktar",
+    "importData": "Verileri İçe Aktar",
+    "importConfirm": "Yedek içe aktarılsın mı? Mevcut veriler üzerine yazılır.",
+    "importSuccess": "Yedek geri yüklendi — uygulama yeniden yükleniyor…",
+    "importError": "Geçersiz yedek dosyası"
   },
   "common": {
     "loading": "Yükleniyor...",
@@ -190,7 +204,8 @@
     "done": "Tamam",
     "configure": "Ana Ekranı Yapılandır",
     "resetDefaults": "Sıfırla",
-    "openFull": "Aç"
+    "openFull": "Aç",
+    "prayerTracker": "Namaz Takibi"
   },
   "more": {
     "title": "Daha Fazla",
@@ -219,7 +234,13 @@
     "installDesc": "MuslimApp'i ana ekranına ekle",
     "install": "Yükle",
     "about": "Hakkında & Kaynaklar",
-    "aboutDesc": "Veri kaynakları, API'ler ve şeffaflık"
+    "aboutDesc": "Veri kaynakları, API'ler ve şeffaflık",
+    "tracker": "Namaz Takibi",
+    "trackerDesc": "Günlük namazları işaretle, seri ve istatistik",
+    "zakat": "Zekat Hesaplayıcı",
+    "zakatDesc": "Malının zekatını hesapla (%2,5)",
+    "favorites": "Ayet Favorileri",
+    "favoritesDesc": "Kaydettiğin Kuran ayetleri"
   },
   "tasbih": {
     "title": "Tesbih",
@@ -461,5 +482,50 @@
     "cat_justice": "Adalet",
     "cat_protection": "Koruma",
     "cat_uniqueness": "Teklik"
+  },
+  "tracker": {
+    "title": "Namaz Takibi",
+    "subtitle": "Günlük namazlarını kaydet",
+    "today": "Bugün",
+    "week": "Son 7 Gün",
+    "streak": "Gün Serisi",
+    "streakDays": "gün seri",
+    "last7": "7 Gün",
+    "last30": "30 Gün",
+    "done": "Kılındı",
+    "qada": "Kaza",
+    "open": "Açık",
+    "tapHint": "Değiştirmek için dokun: Açık → Kılındı → Kaza"
+  },
+  "zakat": {
+    "title": "Zekat Hesaplayıcı",
+    "subtitle": "Zekatını hesapla (malın %2,5'i)",
+    "zakatDue": "Ödenecek Zekat",
+    "due": "Malın nisabın üzerinde — zekat farz",
+    "notDue": "Malın nisabın altında — zekat gerekmez",
+    "enterPrices": "Önce güncel altın/gümüş fiyatlarını gir",
+    "nisabBasis": "Nisab Esası",
+    "gold": "Altın",
+    "silver": "Gümüş",
+    "nisab": "Nisab Eşiği",
+    "prices": "Gram Başına Güncel Fiyatlar",
+    "goldPrice": "Altın Fiyatı",
+    "silverPrice": "Gümüş Fiyatı",
+    "assets": "Mal Varlığı ve Borçlar",
+    "cash": "Nakit ve Hesaplar",
+    "goldGrams": "Altın (gram)",
+    "silverGrams": "Gümüş (gram)",
+    "otherAssets": "Diğer Yatırımlar",
+    "debts": "Borçlar (düşülür)",
+    "total": "Toplam Varlık",
+    "netWealth": "Zekata Tabi Mal",
+    "disclaimer": "Bu hesaplayıcı yalnızca yol göstericidir. Kesin bilgi için bir alime veya camine danış. Ayrıca malın bir kameri yıl (havl) boyunca elde tutulmuş olması gerekir."
+  },
+  "favorites": {
+    "title": "Favoriler",
+    "subtitle": "Kaydettiğin Kuran ayetleri",
+    "empty": "Henüz favori kaydedilmedi",
+    "emptyHint": "Kuran okuyucuda ayetin yanındaki kalbe dokun",
+    "remove": "Kaldır"
   }
 }

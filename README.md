@@ -1,8 +1,20 @@
-# MuslimApp
+# MuslimApp 2.0
 
-Eine mobile-first Progressive Web App (PWA) für Muslime — mit Gebetszeiten, Koran-Reader, islamischem Kalender und spirituellen Werkzeugen.
+Eine mobile-first Progressive Web App (PWA) für Muslime — mit Gebetszeiten, Koran-Reader (inkl. Audio-Rezitation), islamischem Kalender, Gebets-Tracker, Zakat-Rechner und spirituellen Werkzeugen.
 
 Gebaut mit Nuxt 4, TypeScript und einem Apple-inspirierten Liquid Glass Design.
+
+> Der vollständige Plan für Version 2.0 ist in [`V2-PLAN.md`](./V2-PLAN.md) dokumentiert.
+
+---
+
+## Neu in Version 2.0
+
+- **Gebets-Tracker** — die 5 täglichen Gebete abhaken (verrichtet / Qada), Serien-Zähler, Wochenübersicht, 7/30-Tage-Statistik + Dashboard-Widget
+- **Zakat-Rechner** — Nisab-Basis Gold (85 g) oder Silber (595 g), Vermögen minus Schulden, 2,5 % — komplett offline
+- **Koran Audio-Rezitation** — Audio-Player im Suren-Reader mit 5 wählbaren Rezitatoren (quran.com API, kein API-Key)
+- **Vers-Favoriten** — Verse per Herz speichern, eigene Favoriten-Seite (offline verfügbar)
+- **Datensicherung** — alle App-Daten als JSON exportieren/importieren (Gerätewechsel ohne Datenverlust)
 
 ---
 

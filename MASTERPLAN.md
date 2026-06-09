@@ -1,7 +1,7 @@
 # MuslimApp — Masterplan
 
 > **Ziel:** Eine mobile-first Progressive Web App (PWA) für Muslime mit Gebetszeiten, islamischem Kalender, Koran-Reader und spirituellen Werkzeugen.
-> **Erstellt:** 22. März 2026 | **Letztes Update:** 26. März 2026 | **Status:** Phase 1–4 vollständig abgeschlossen
+> **Erstellt:** 22. März 2026 | **Letztes Update:** 9. Juni 2026 | **Status:** Phase 1–4 abgeschlossen · **Version 2.0 umgesetzt** (siehe [V2-PLAN.md](./V2-PLAN.md))
 
 ---
 
@@ -399,14 +399,26 @@ Noch nicht konfiguriert. Erfordert `nitro.preset: 'cloudflare-pages'` in nuxt.co
 
 ---
 
-## 10. Phase 5 — Offene Punkte
+## 10. Version 2.0 — Umgesetzt ✅
+
+Vollständig dokumentiert in [V2-PLAN.md](./V2-PLAN.md).
+
+| Feature | Status | Notizen |
+|---|---|---|
+| Audio-Rezitation | ✅ | Audio-Player im Suren-Reader, 5 Rezitatoren (quran.com `/chapter_recitations`) |
+| Gebets-Tracker | ✅ | 5 Gebete/Tag abhaken (verrichtet/Qada), Streak, 7/30-Tage-Statistik, Dashboard-Widget |
+| Zakat-Rechner | ✅ | Nisab Gold/Silber wählbar, 2,5 %, komplett offline |
+| Vers-Favoriten | ✅ | Herz-Button im Reader + `/favorites`-Seite (localStorage) |
+| Datensicherung | ✅ | JSON-Export/-Import aller App-Daten in den Einstellungen |
+
+## 11. Offene Punkte (V2.x Backlog)
 
 | Feature | Priorität | Aufwand | Notizen |
 |---|---|---|---|
-| Audio-Rezitation | Hoch | Mittel | quran.com API hat 12+ Rezitatoren; Audio-Player + Rezitator-Auswahl |
+| Vers-für-Vers-Audio + Hervorhebung | Mittel | Mittel | quran.com `/recitations/{id}/by_chapter` liefert Segment-Timings |
+| Tafsir-Anzeige | Mittel | Mittel | quran.com `/tafsirs` Endpoint |
+| Khatm-Planer | Mittel | Gering | Leseplan zum Koran-Abschluss in X Tagen |
 | Cloudflare Pages Deployment | Mittel | Gering | `nitro.preset: 'cloudflare-pages'` in nuxt.config.ts; CI/CD Pipeline |
-| Vollständige Koran-Offline-Optimierung | Mittel | Mittel | Komprimiertes Bundle, automatischer Download, Fortschrittsanzeige |
-| Erweiterte Hadith-Sammlung | Niedrig | Mittel | Mehr Hadiths, weitere Kategorien, sunnah.com API |
-| Erweiterte Dua-Sammlung | Niedrig | Gering | Mehr Bittgebete, Audio-Aussprache |
-| User-Accounts / Cloud-Sync | Niedrig | Hoch | Erfordert Backend-Infrastruktur (Lesezeichen, Einstellungen) |
+| Erweiterte Hadith-/Dua-Sammlung | Niedrig | Mittel | Mehr Inhalte, sunnah.com API |
+| User-Accounts / Cloud-Sync | Niedrig | Hoch | Erfordert Backend; JSON-Export/-Import überbrückt das |
 | Diyanet-Integration | Niedrig | Hoch | Instabile Quelle; Aladhan reicht für Gebetszeiten aus |

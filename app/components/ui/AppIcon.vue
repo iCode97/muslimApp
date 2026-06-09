@@ -78,6 +78,16 @@ const ICONS: Record<string, string> = {
     '<circle cx="12" cy="12" r="4" /><path d="M12 2 V4 M12 20 V22 M4.93 4.93 L6.34 6.34 M17.66 17.66 L19.07 19.07 M2 12 H4 M20 12 H22 M4.93 19.07 L6.34 17.66 M17.66 6.34 L19.07 4.93" />',
   more:
     '<circle cx="6" cy="12" r="1.5" fill="currentColor" stroke="none" /><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none" /><circle cx="18" cy="12" r="1.5" fill="currentColor" stroke="none" />',
+  tracker:
+    '<rect x="4" y="3.5" width="16" height="17" rx="2" /><path d="M7.5 8.5 L9.5 10.5 L12.5 7.5" /><path d="M7.5 15 L9.5 17 L12.5 14" /><path d="M15 9 H16.5 M15 15.5 H16.5" />',
+  zakat:
+    '<ellipse cx="12" cy="6" rx="7" ry="2.5" /><path d="M5 6 V12 C5 13.4 8.1 14.5 12 14.5 C15.9 14.5 19 13.4 19 12 V6" /><path d="M5 12 V18 C5 19.4 8.1 20.5 12 20.5 C15.9 20.5 19 19.4 19 18 V12" />',
+  heart:
+    '<path d="M12 20 C7 16 4 13 4 9.5 A4.3 4.3 0 0 1 12 7 A4.3 4.3 0 0 1 20 9.5 C20 13 17 16 12 20 Z" />',
+  play:
+    '<path d="M8.5 5.5 L18 12 L8.5 18.5 Z" fill="currentColor" stroke="none" />',
+  pause:
+    '<path d="M8.5 5.5 V18.5 M15.5 5.5 V18.5" stroke-width="2.5" />',
 }
 
 const svg = computed(() => ICONS[props.name] ?? '')

@@ -27,6 +27,7 @@ const DEFAULT_WIDGETS: DashboardWidget[] = [
   { id: 'name-of-day', i18nKey: 'widgets.nameOfDay', icon: '✨', enabled: true, order: 8 },
   { id: 'seerah-teaser', i18nKey: 'widgets.seerahTeaser', icon: '📕', enabled: false, order: 9 },
   { id: 'progress-overview', i18nKey: 'widgets.progressOverview', icon: '📊', enabled: true, order: 10, colSpan: 2 },
+  { id: 'prayer-tracker', i18nKey: 'widgets.prayerTracker', icon: '✅', enabled: true, order: 11, colSpan: 2 },
 ]
 
 export function useDashboard() {

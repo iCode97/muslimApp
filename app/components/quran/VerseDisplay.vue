@@ -14,6 +14,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const { save } = useBookmark()
+const favorites = useFavorites()
 
 // Per-verse override: when user taps Arabic text, show translations for this verse only
 const verseOverride = ref(false)
@@ -71,13 +72,25 @@ watch(() => props.activeTranslations, () => {
   <div
     class="glass-subtle px-4 py-4 space-y-3 transition-all duration-200"
   >
-    <!-- Verse number badge + bookmark -->
+    <!-- Verse number badge + bookmark + favorite -->
     <div class="flex items-start justify-between">
       <button
         class="w-8 h-8 flex items-center justify-center rounded-full bg-[var(--color-primary)]/20 text-[var(--color-primary-light)] text-xs font-semibold shrink-0 hover:bg-[var(--color-primary)]/30 transition-colors"
         @click="handleBookmark"
       >
         {{ verse.verseNumber }}
+      </button>
+      <button
+        :class="[
+          'w-8 h-8 flex items-center justify-center rounded-full transition-colors',
+          favorites.isFavorite(verse.verseKey)
+            ? 'text-red-400'
+            : 'text-themed-faint hover:text-red-400',
+        ]"
+        :aria-label="t('favorites.title')"
+        @click="favorites.toggle(verse, surahId)"
+      >
+        <AppIcon name="heart" :size="18" />
       </button>
     </div>
 

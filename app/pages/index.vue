@@ -62,6 +62,7 @@ const widgetComponents: Record<string, ReturnType<typeof resolveComponent>> = {
   'name-of-day': resolveComponent('NameOfDay'),
   'seerah-teaser': resolveComponent('SeerahTeaser'),
   'progress-overview': resolveComponent('ProgressOverview'),
+  'prayer-tracker': resolveComponent('PrayerTrackerWidget'),
 }
 </script>
 

@@ -10,6 +10,7 @@ const route = useRoute()
 const quran = useQuran()
 const { save: saveBookmark } = useBookmark()
 const progress = useProgress('quran', 114)
+const favorites = useFavorites()
 
 const surahId = computed(() => Number(route.params.surah))
 
@@ -54,6 +55,7 @@ const showTranslations = computed(() => activeTranslations.value.length > 0)
 onMounted(async () => {
   initTranslations()
   progress.load()
+  favorites.load()
   await quran.fetchSurahs()
   await quran.fetchVerses(surahId.value)
 
@@ -103,6 +105,9 @@ const revelationPlace = computed(() => {
         </p>
       </div>
     </header>
+
+    <!-- Audio recitation -->
+    <QuranAudioPlayer :surah-id="surahId" />
 
     <!-- Translation controls -->
     <div class="flex items-center justify-center gap-2 flex-wrap">
