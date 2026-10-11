@@ -2,14 +2,13 @@
 /**
  * Prayer calculation method picker.
  * Shows the active method inline; tapping it opens a BottomSheet with the
- * full Aladhan method list. Changing the method clears the cached timings
- * via usePrayerTimes.setMethod(), so the next fetchTimes() call repopulates.
+ * full Aladhan method list. Changing the method changes the prayer cache key,
+ * so the global prayer sync (app-init plugin) refetches automatically.
  */
 import { PRAYER_METHODS } from '~/data/prayer-methods'
 
 const { t } = useI18n()
 const prayerTimes = usePrayerTimes()
-const { location } = useLocation()
 const haptics = useHaptics()
 
 const open = ref(false)
@@ -18,19 +17,12 @@ const activeMethod = computed(() =>
   PRAYER_METHODS.find(m => m.id === prayerTimes.method.value) ?? PRAYER_METHODS[0],
 )
 
-async function choose(id: number) {
-  if (id === prayerTimes.method.value) {
-    open.value = false
-    return
+function choose(id: number) {
+  if (id !== prayerTimes.method.value) {
+    prayerTimes.setMethod(id)
+    haptics.success()
   }
-  prayerTimes.setMethod(id)
-  haptics.success()
   open.value = false
-  // Re-fetch with the new method if location is known; setMethod already
-  // invalidated the cache so this will hit the network.
-  if (location.value) {
-    await prayerTimes.fetchTimes(location.value.latitude, location.value.longitude)
-  }
 }
 </script>
 

@@ -4,7 +4,7 @@
  * hosts the full GPS + search flow, keeping the inline surface minimal.
  */
 const { t } = useI18n()
-const { location, loading, error, detectGPS, searchLocations, selectSuggestion, suggestions, clearSuggestions, searchLoading } = useLocation()
+const { location, ready, loading, error, detectGPS, searchLocations, selectSuggestion, suggestions, clearSuggestions, searchLoading } = useLocation()
 const haptics = useHaptics()
 
 const open = ref(false)
@@ -46,7 +46,7 @@ function openSheet() {
 </script>
 
 <template>
-  <GlassCard v-if="!location" variant="primary" interactive class="text-center space-y-4">
+  <GlassCard v-if="ready && !location" variant="primary" interactive class="text-center space-y-4">
     <div class="space-y-2">
       <div class="flex justify-center">
         <AppIcon name="location" :size="32" class="text-[var(--color-primary-light)]" />

@@ -5,7 +5,8 @@
  */
 
 const { t } = useI18n()
-const { location, prayerTimes, hijriDisplay, init, startRefresh, stopRefresh } = usePrayerInit()
+// Location + prayer times are loaded/refreshed globally (plugins/app-init.client.ts)
+const { location, prayerTimes, hijriDisplay } = usePrayerInit()
 const dashboard = useDashboard()
 const notifications = useNotifications()
 
@@ -15,28 +16,21 @@ const dashboardDnd = useDragReorder({
   onReorder: (fromId, toId) => dashboard.reorderById(fromId, toId),
 })
 
-// Initialize location + prayer times + notifications
-onMounted(async () => {
+// Schedule prayer notifications whenever the actual prayer times change
+// (not on every passed/next-prayer recomputation).
+const prayerScheduleKey = computed(() => {
+  const prayers = prayerTimes.data.value?.prayers
+  return prayers ? prayers.map(p => `${p.name}@${p.timestamp}`).join('|') : null
+})
+
+onMounted(() => {
   dashboard.loadConfig()
   notifications.loadSettings()
 
-  await init()
-
-  // Schedule prayer notifications
-  if (prayerTimes.data.value?.prayers) {
-    notifications.schedulePrayerNotifications(prayerTimes.data.value.prayers)
-  }
-
-  startRefresh()
-})
-
-onUnmounted(() => stopRefresh())
-
-// Reschedule notifications when prayer data changes
-watch(() => prayerTimes.data.value?.prayers, (prayers) => {
-  if (prayers) {
-    notifications.schedulePrayerNotifications(prayers)
-  }
+  watch(prayerScheduleKey, (key) => {
+    const prayers = prayerTimes.data.value?.prayers
+    if (key && prayers) notifications.schedulePrayerNotifications(prayers)
+  }, { immediate: true })
 })
 
 // Greeting based on time of day

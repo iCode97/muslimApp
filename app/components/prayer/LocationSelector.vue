@@ -5,17 +5,13 @@
  * search / GPS flow, replacing the legacy inline dropdown.
  */
 const { t } = useI18n()
-const { location, suggestions, loading, searchLoading, error, detectGPS, searchLocations, selectSuggestion, clearSuggestions, loadSaved } = useLocation()
+const { location, suggestions, loading, searchLoading, error, detectGPS, searchLocations, selectSuggestion, clearSuggestions } = useLocation()
 const haptics = useHaptics()
 
 const open = ref(false)
 const searchQuery = ref('')
 
 let searchTimeout: ReturnType<typeof setTimeout>
-
-onMounted(() => {
-  loadSaved()
-})
 
 function openSheet() {
   haptics.light()

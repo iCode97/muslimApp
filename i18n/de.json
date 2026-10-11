@@ -134,7 +134,24 @@
     "importData": "Daten importieren",
     "importConfirm": "Backup importieren? Vorhandene Daten werden überschrieben.",
     "importSuccess": "Backup wiederhergestellt — App wird neu geladen…",
-    "importError": "Ungültige Backup-Datei"
+    "importError": "Ungültige Backup-Datei",
+    "timezone": "Zeitzone",
+    "advanced": "Erweitert",
+    "asrMethod": "Asr-Berechnung",
+    "asrStandard": "Standard",
+    "asrStandardHint": "Schafiʿī, Mālikī, Hanbalī (auch Diyanet)",
+    "asrHanafi": "Hanafī",
+    "asrHanafiHint": "Doppelte Schattenlänge – Asr beginnt später",
+    "highLatitude": "Hohe Breitengrade",
+    "highLatitudeHint": "Regel für Fajr & Isha, wenn es im Sommer nachts nicht ganz dunkel wird (z. B. Nord- und Mitteleuropa). Automatisch: winkelbasiert ab 48° Breite.",
+    "latAuto": "Automatisch",
+    "latAngle": "Winkelbasiert",
+    "latMiddle": "Mitte der Nacht",
+    "latSeventh": "Ein Siebtel der Nacht",
+    "latNone": "Keine",
+    "adjustments": "Minuten-Korrektur",
+    "adjustmentsHint": "Feinjustierung pro Gebet in Minuten, z. B. um die Zeiten an den Kalender deiner Moschee anzupassen.",
+    "resetAdjustments": "Zurücksetzen"
   },
   "common": {
     "loading": "Wird geladen...",
@@ -465,7 +482,16 @@
     "resetAll": "Fortschritt zurücksetzen",
     "displayMode": "Display-Modus",
     "day": "Tag",
-    "tapToExit": "Tippen zum Beenden"
+    "tapToExit": "Tippen zum Beenden",
+    "nextRamadan": "Ramadan {year}",
+    "daysLeft": "Noch {n} Tag | Noch {n} Tage",
+    "startsToday": "Beginnt heute",
+    "expectedStart": "Voraussichtlicher Beginn: {date}",
+    "trackerStartsHint": "Fasten- und Khatam-Tracker starten mit Beginn des Ramadan.",
+    "showPastYear": "Tracker von Ramadan {year} ansehen",
+    "hidePastYear": "Vorjahres-Tracker ausblenden",
+    "yearLabel": "Ramadan {year}",
+    "readOnlyHint": "Nur Ansicht"
   },
   "names": {
     "title": "99 Namen Allahs",
