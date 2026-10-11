@@ -12,7 +12,7 @@ onMounted(() => favorites.load())
 // Preferred translation resource ID per app locale
 const LOCALE_TRANSLATION: Record<string, number> = { tr: 52, de: 27, en: 20 }
 
-function translationFor(fav: { translations: { id: number, text: string }[] }): string {
+function translationFor(fav: { readonly translations: readonly { readonly id: number, readonly text: string }[] }): string {
   const preferred = LOCALE_TRANSLATION[locale.value] ?? 20
   return fav.translations.find(tr => tr.id === preferred)?.text
     ?? fav.translations[0]?.text

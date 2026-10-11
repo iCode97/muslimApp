@@ -21,6 +21,8 @@ const offlineQuran = useOfflineQuran()
 const onboarding = useOnboarding()
 const haptics = useHaptics()
 const backup = useBackup()
+const confirm = useConfirm()
+const knowledge = useKnowledgeLevel()
 
 const showMethodPicker = ref(false)
 const showAdvanced = ref(false)
@@ -61,13 +63,14 @@ function onDhikrTimeChange(slot: 'morning' | 'evening', event: Event) {
   }
 }
 
-function onImportFile(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0]
-  if (file && confirm(t('settings.importConfirm'))) {
+async function onImportFile(event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  // Allow re-selecting the same file later
+  input.value = ''
+  if (file && await confirm({ message: t('settings.importConfirm') })) {
     backup.importData(file)
   }
-  // Allow re-selecting the same file later
-  ;(event.target as HTMLInputElement).value = ''
 }
 
 // Progress tracking
@@ -83,14 +86,14 @@ const progressAreas = computed(() => [
   { key: 'names', label: t('names.title'), icon: '✨', progress: namesProgress },
 ])
 
-function resetArea(area: { progress: ReturnType<typeof useProgress> }) {
-  if (confirm(t('common.resetConfirm'))) {
+async function resetArea(area: { progress: ReturnType<typeof useProgress> }) {
+  if (await confirm({ message: t('common.resetConfirm'), danger: true })) {
     area.progress.resetAll()
   }
 }
 
-function resetAllProgress() {
-  if (confirm(t('common.resetConfirm'))) {
+async function resetAllProgress() {
+  if (await confirm({ message: t('common.resetConfirm'), danger: true })) {
     quranProgress.resetAll()
     seerahProgress.resetAll()
     hadithProgress.resetAll()
@@ -99,6 +102,7 @@ function resetAllProgress() {
 }
 
 onMounted(() => {
+  knowledge.load()
   notifications.loadSettings()
   dhikrReminders.loadSettings()
   offlineQuran.checkStatus()
@@ -189,6 +193,35 @@ const minutesOptions = [0, 5, 10, 15, 30]
       </div>
     </GlassCard>
 
+    <!-- Knowledge level -->
+    <GlassCard>
+      <div class="space-y-3">
+        <div>
+          <h3 id="knowledge-level-heading" class="text-sm font-medium text-themed-muted uppercase tracking-wider">
+            {{ t('learn.levelHeading') }}
+          </h3>
+        </div>
+        <div class="flex gap-2" role="radiogroup" aria-labelledby="knowledge-level-heading">
+          <button
+            v-for="lvl in knowledge.levels"
+            :key="lvl.id"
+            role="radio"
+            :aria-checked="knowledge.level.value === lvl.id"
+            :class="[
+              'flex-1 py-2 px-2 rounded-xl text-sm font-medium transition-all duration-200',
+              knowledge.level.value === lvl.id
+                ? 'bg-[var(--color-primary)] text-white'
+                : 'glass-subtle text-themed-secondary hover:text-themed',
+            ]"
+            @click="knowledge.setLevel(lvl.id)"
+          >
+            <span aria-hidden="true">{{ lvl.emoji }}</span>
+            {{ t(`knowledge.${lvl.id}`) }}
+          </button>
+        </div>
+      </div>
+    </GlassCard>
+
     <!-- Location -->
     <GlassCard>
       <div class="space-y-2">
@@ -222,22 +255,11 @@ const minutesOptions = [0, 5, 10, 15, 30]
           <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
             {{ t('notifications.title') }}
           </h3>
-          <button
-            :class="[
-              'relative w-12 h-7 rounded-full transition-all duration-200',
-              notifications.settings.value.enabled
-                ? 'bg-[var(--color-primary)]'
-                : 'glass-subtle'
-            ]"
-            @click="notifications.toggleEnabled()"
-          >
-            <span
-              :class="[
-                'absolute top-1 w-5 h-5 rounded-full bg-white shadow transition-all duration-200',
-                notifications.settings.value.enabled ? 'left-6' : 'left-1'
-              ]"
+          <ToggleSwitch
+            :model-value="notifications.settings.value.enabled"
+            :aria-label="t('notifications.title')"
+            @update:model-value="notifications.toggleEnabled()"
             />
-          </button>
         </div>
 
         <template v-if="notifications.settings.value.enabled">
@@ -300,23 +322,11 @@ const minutesOptions = [0, 5, 10, 15, 30]
               {{ t('dhikrReminder.subtitle') }}
             </p>
           </div>
-          <button
-            :class="[
-              'relative w-12 h-7 rounded-full transition-all duration-200 shrink-0',
-              dhikrReminders.settings.value.enabled
-                ? 'bg-[var(--color-primary)]'
-                : 'glass-subtle'
-            ]"
+          <ToggleSwitch
+            :model-value="dhikrReminders.settings.value.enabled"
             :aria-label="t('dhikrReminder.title')"
-            @click="dhikrReminders.toggleEnabled()"
-          >
-            <span
-              :class="[
-                'absolute top-1 w-5 h-5 rounded-full bg-white shadow transition-all duration-200',
-                dhikrReminders.settings.value.enabled ? 'left-6' : 'left-1'
-              ]"
+            @update:model-value="dhikrReminders.toggleEnabled()"
             />
-          </button>
         </div>
 
         <template v-if="dhikrReminders.settings.value.enabled">
@@ -338,20 +348,12 @@ const minutesOptions = [0, 5, 10, 15, 30]
               class="glass-subtle text-themed text-xs px-2 py-1 rounded-md tabular-nums"
               @change="onDhikrTimeChange('morning', $event)"
             >
-            <button
-              :class="[
-                'relative w-10 h-6 rounded-full transition-all shrink-0',
-                dhikrReminders.settings.value.morning.enabled ? 'bg-[var(--color-primary)]' : 'bg-[var(--glass-border)]'
-              ]"
-              @click="dhikrReminders.toggleSlot('morning')"
-            >
-              <span
-                :class="[
-                  'absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all',
-                  dhikrReminders.settings.value.morning.enabled ? 'left-[18px]' : 'left-0.5'
-                ]"
+            <ToggleSwitch
+              size="sm"
+              :model-value="dhikrReminders.settings.value.morning.enabled"
+              :aria-label="t('dhikrReminder.morning')"
+              @update:model-value="dhikrReminders.toggleSlot('morning')"
               />
-            </button>
           </div>
 
           <!-- Evening slot -->
@@ -372,20 +374,12 @@ const minutesOptions = [0, 5, 10, 15, 30]
               class="glass-subtle text-themed text-xs px-2 py-1 rounded-md tabular-nums"
               @change="onDhikrTimeChange('evening', $event)"
             >
-            <button
-              :class="[
-                'relative w-10 h-6 rounded-full transition-all shrink-0',
-                dhikrReminders.settings.value.evening.enabled ? 'bg-[var(--color-primary)]' : 'bg-[var(--glass-border)]'
-              ]"
-              @click="dhikrReminders.toggleSlot('evening')"
-            >
-              <span
-                :class="[
-                  'absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all',
-                  dhikrReminders.settings.value.evening.enabled ? 'left-[18px]' : 'left-0.5'
-                ]"
+            <ToggleSwitch
+              size="sm"
+              :model-value="dhikrReminders.settings.value.evening.enabled"
+              :aria-label="t('dhikrReminder.evening')"
+              @update:model-value="dhikrReminders.toggleSlot('evening')"
               />
-            </button>
           </div>
 
           <p v-if="!dhikrReminders.supportsBackground()" class="text-[11px] text-themed-faint">
@@ -396,6 +390,7 @@ const minutesOptions = [0, 5, 10, 15, 30]
     </GlassCard>
 
     <!-- Haptics -->
+    <ClientOnly>
     <GlassCard v-if="haptics.isSupported.value">
       <div class="space-y-2">
         <div class="flex items-center justify-between">
@@ -405,23 +400,15 @@ const minutesOptions = [0, 5, 10, 15, 30]
             </h3>
             <p class="text-xs text-themed-faint mt-1">{{ t('settings.hapticsHint') }}</p>
           </div>
-          <button
-            :class="[
-              'relative w-12 h-7 rounded-full transition-all duration-200',
-              haptics.enabled.value ? 'bg-[var(--color-primary)]' : 'glass-subtle',
-            ]"
-            @click="haptics.setEnabled(!haptics.enabled.value); haptics.medium()"
-          >
-            <span
-              :class="[
-                'absolute top-1 w-5 h-5 rounded-full bg-white shadow transition-all duration-200',
-                haptics.enabled.value ? 'left-6' : 'left-1',
-              ]"
+          <ToggleSwitch
+            :model-value="haptics.enabled.value"
+            :aria-label="t('settings.haptics')"
+            @update:model-value="(v: boolean) => { haptics.setEnabled(v); haptics.medium() }"
             />
-          </button>
         </div>
       </div>
     </GlassCard>
+    </ClientOnly>
 
     <!-- Offline Quran -->
     <GlassCard>

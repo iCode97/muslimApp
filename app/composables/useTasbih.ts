@@ -124,7 +124,7 @@ export function useTasbih() {
       if (step < 2) {
         // Advance to next dhikr in sequence after a brief moment
         setTimeout(() => {
-          state.value.modeId = SEQUENCE_IDS[step + 1]
+          state.value.modeId = SEQUENCE_IDS[step + 1]!
           state.value.count = 0
           saveState()
         }, 600)

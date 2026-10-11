@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ZakatInputs } from '~/composables/useZakat'
 /**
  * Zakat Calculator — fully offline.
  * Assets (cash, gold, silver, other) minus debts, compared against the
@@ -12,10 +13,13 @@ const zakat = useZakat()
 
 onMounted(() => zakat.load())
 
-function onInput(field: keyof typeof zakat.inputs.value, event: Event) {
+/** Keys of ZakatInputs whose values are numbers (everything except basis/currency). */
+type NumericField = { [K in keyof ZakatInputs]: ZakatInputs[K] extends number ? K : never }[keyof ZakatInputs]
+
+function onInput(field: NumericField, event: Event) {
   const raw = (event.target as HTMLInputElement).value
   const num = Number.parseFloat(raw)
-  ;(zakat.inputs.value as Record<string, unknown>)[field] = Number.isFinite(num) && num >= 0 ? num : 0
+  zakat.inputs.value[field] = Number.isFinite(num) && num >= 0 ? num : 0
   zakat.save()
 }
 

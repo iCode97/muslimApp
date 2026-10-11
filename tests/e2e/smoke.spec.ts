@@ -31,7 +31,6 @@ test.beforeEach(async ({ page, context, baseURL }) => {
 
 // Routes with a known, not-yet-fixed defect: reported to the owning agent, tracked as fixme.
 const KNOWN_ISSUES: Record<string, string> = {
-  '/settings': 'Vue hydration mismatch logged as console.error (settings.vue)',
 }
 
 test.describe('route smoke tests (mobile)', () => {
