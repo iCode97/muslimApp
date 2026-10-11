@@ -4,7 +4,7 @@
     "tagline": "İslami yardımcınız"
   },
   "nav": {
-    "dashboard": "Ana Sayfa",
+    "dashboard": "Bugün",
     "prayer": "Namaz Vakitleri",
     "quran": "Kur'an",
     "calendar": "Takvim",
@@ -19,14 +19,17 @@
     "seerah": "Siyer",
     "ramadan": "Ramazan",
     "about": "Hakkında",
-    "editNav": "Navigasyonu Düzenle",
-    "editNavDone": "Tamam",
-    "editNavReset": "Sıfırla",
-    "editNavHint": "Navigasyon çubuğun için en fazla 4 öğe seç",
-    "editNavOrder": "Sıralama (sürükleyerek değiştir)",
     "tracker": "Takip",
     "zakat": "Zekat",
-    "favorites": "Favoriler"
+    "favorites": "Ayet Favorileri",
+    "learn": "Öğren",
+    "tabToday": "Bugün",
+    "tabPrayer": "Namaz",
+    "tabQuran": "Kur'an",
+    "tabLearn": "Öğren",
+    "tabMore": "Diğer",
+    "mainLabel": "Ana gezinme",
+    "footerLabel": "Uygulama gezinmesi"
   },
   "dashboard": {
     "greeting": "Selamün Aleyküm",
@@ -227,8 +230,6 @@
     "seerahDesc": "Peygamber Efendimizin ﷺ Hayatı",
     "ramadan": "Ramazan Modu",
     "ramadanDesc": "Oruç takibi, İftar/Sahur saatleri & Hatim",
-    "comingSoon": "Yakında",
-    "settingsSection": "Ayarlar",
     "settingsDesc": "Dil, görünüm ve daha fazlası",
     "installApp": "Uygulamayı Yükle",
     "installDesc": "MuslimApp'i ana ekranına ekle",
@@ -240,7 +241,19 @@
     "zakat": "Zekat Hesaplayıcı",
     "zakatDesc": "Malının zekatını hesapla (%2,5)",
     "favorites": "Ayet Favorileri",
-    "favoritesDesc": "Kaydettiğin Kuran ayetleri"
+    "favoritesDesc": "Kaydettiğin Kuran ayetleri",
+    "calendar": "Takvim",
+    "calendarDesc": "Hicri takvim ve dini günler",
+    "favoritesTitle": "Favoriler",
+    "favoritesEdit": "Düzenle",
+    "favoritesDone": "Bitti",
+    "favoritesEmpty": "Bir aracı buraya sabitlemek için yıldıza dokun (en fazla {max}).",
+    "favoritesFull": "En fazla {max} favori sabitleyebilirsin.",
+    "moveUp": "{name} yukarı taşı",
+    "moveDown": "{name} aşağı taşı",
+    "addFavorite": "{name} favorilere ekle",
+    "removeFavorite": "{name} favorilerden kaldır",
+    "appSection": "Uygulama"
   },
   "tasbih": {
     "title": "Tesbih",
@@ -310,12 +323,53 @@
     "notificationsEnabled": "Bildirimler aktif",
     "backgroundSupported": "✓ Uygulama kapalıyken bile çalışır.",
     "backgroundLimited": "Not: Cihazınızda bildirimler yalnızca uygulama açıkken çalışır.",
-    "navTitle": "Menü çubuğunuz",
-    "navBody": "Mobilde hızlı erişilsin istediğiniz en fazla dört bölümü seçin. Daha sonra değiştirebilirsiniz.",
-    "navSelected": "seçildi",
     "doneTitle": "Her şey hazır",
     "doneBody": "Uygulamanın size sadık bir yoldaş olmasını dileriz. Bârekellâhu fîk.",
-    "reopen": "Kurulumu yeniden aç"
+    "reopen": "Kurulumu yeniden aç",
+    "levelTitle": "Bilgi düzeyin",
+    "levelBody": "Şu an nerede olduğunu seç. Sana uygun öğrenme içeriklerini öne çıkaralım.",
+    "dialogLabel": "Kurulum",
+    "citySuggestions": "Şehir önerileri"
+  },
+  "knowledge": {
+    "discover": "Keşfet",
+    "discoverDesc": "İslam'a yeniyim veya temel bilgileri öğrenmek istiyorum.",
+    "practice": "Uygula",
+    "practiceDesc": "Zaten ibadet ediyorum ve günlük hayatımı derinleştirmek istiyorum.",
+    "deepen": "Derinleş",
+    "deepenDesc": "Temelleri biliyorum ve bilgimi genişletmek istiyorum.",
+    "changeHint": "Bunu istediğin zaman “Öğren” bölümünden değiştirebilirsin."
+  },
+  "learn": {
+    "title": "Öğren",
+    "subtitle": "Yolculuğunun her adımı için bilgi",
+    "levelHeading": "Bilgi düzeyin",
+    "levelHint": "Uygun içerikleri öne çıkarmak için düzeyini seç.",
+    "yourLevel": "Düzeyin",
+    "comingSoon": "Yakında",
+    "quranDesc": "Oku, dinle ve anla",
+    "upcoming": {
+      "basics": "İslam'ın Temelleri",
+      "basicsDesc": "Beş şart ve önemli kavramlar sade bir dille",
+      "newMuslim": "İslam'a Yeni Başlayanlar",
+      "newMuslimDesc": "Yeni Müslümanlar ve meraklılar için yumuşak bir başlangıç",
+      "fiqh": "Günlük Hayatın Fıkhı",
+      "fiqhDesc": "İş, yeme-içme, seyahat ve daha fazlası için hükümler",
+      "aqida": "Akaid",
+      "aqidaDesc": "İnanç esaslarını ayrıntılı anla",
+      "glossary": "Sözlük",
+      "glossaryDesc": "Önemli İslami kavramlar A'dan Z'ye",
+      "faq": "SSS",
+      "faqDesc": "Sık sorulan sorulara cevaplar"
+    }
+  },
+  "error": {
+    "notFoundTitle": "Sayfa bulunamadı",
+    "notFoundBody": "Bu sayfa mevcut değil veya taşınmış.",
+    "genericTitle": "Bir şeyler ters gitti",
+    "genericBody": "Beklenmeyen bir hata oluştu. Lütfen tekrar dene.",
+    "backHome": "Ana sayfaya dön",
+    "retry": "Tekrar dene"
   },
   "dua": {
     "title": "Dualar",

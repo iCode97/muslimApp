@@ -84,6 +84,14 @@ const ICONS: Record<string, string> = {
     '<ellipse cx="12" cy="6" rx="7" ry="2.5" /><path d="M5 6 V12 C5 13.4 8.1 14.5 12 14.5 C15.9 14.5 19 13.4 19 12 V6" /><path d="M5 12 V18 C5 19.4 8.1 20.5 12 20.5 C15.9 20.5 19 19.4 19 18 V12" />',
   heart:
     '<path d="M12 20 C7 16 4 13 4 9.5 A4.3 4.3 0 0 1 12 7 A4.3 4.3 0 0 1 20 9.5 C20 13 17 16 12 20 Z" />',
+  learn:
+    '<path d="M2 9 L12 4 L22 9 L12 14 Z" /><path d="M6 11.5 V16 C6 17.5 9 19 12 19 C15 19 18 17.5 18 16 V11.5" /><path d="M22 9 V14" />',
+  star:
+    '<path d="M12 3.5 L14.6 9 L20.5 9.7 L16.2 13.8 L17.3 19.7 L12 16.8 L6.7 19.7 L7.8 13.8 L3.5 9.7 L9.4 9 Z" />',
+  starFilled:
+    '<path d="M12 3.5 L14.6 9 L20.5 9.7 L16.2 13.8 L17.3 19.7 L12 16.8 L6.7 19.7 L7.8 13.8 L3.5 9.7 L9.4 9 Z" fill="currentColor" />',
+  chevronRight:
+    '<path d="M9 6 L15 12 L9 18" />',
   play:
     '<path d="M8.5 5.5 L18 12 L8.5 18.5 Z" fill="currentColor" stroke="none" />',
   pause:

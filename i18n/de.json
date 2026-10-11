@@ -4,7 +4,7 @@
     "tagline": "Dein islamischer Begleiter"
   },
   "nav": {
-    "dashboard": "Start",
+    "dashboard": "Heute",
     "prayer": "Gebetszeiten",
     "quran": "Koran",
     "calendar": "Kalender",
@@ -19,14 +19,17 @@
     "seerah": "Seerah",
     "ramadan": "Ramadan",
     "about": "Über",
-    "editNav": "Navigation bearbeiten",
-    "editNavDone": "Fertig",
-    "editNavReset": "Zurücksetzen",
-    "editNavHint": "Wähle bis zu 4 Einträge für deine Navigationsleiste",
-    "editNavOrder": "Reihenfolge (ziehen zum Umordnen)",
     "tracker": "Tracker",
     "zakat": "Zakat",
-    "favorites": "Favoriten"
+    "favorites": "Vers-Favoriten",
+    "learn": "Lernen",
+    "tabToday": "Heute",
+    "tabPrayer": "Gebet",
+    "tabQuran": "Koran",
+    "tabLearn": "Lernen",
+    "tabMore": "Mehr",
+    "mainLabel": "Hauptnavigation",
+    "footerLabel": "App-Navigation"
   },
   "dashboard": {
     "greeting": "Assalamu Alaikum",
@@ -227,8 +230,6 @@
     "seerahDesc": "Das Leben des Propheten Muhammad ﷺ",
     "ramadan": "Ramadan-Modus",
     "ramadanDesc": "Fasten-Tracker, Iftar-/Suhoor-Zeiten & Khatam",
-    "comingSoon": "Bald verfügbar",
-    "settingsSection": "Einstellungen",
     "settingsDesc": "Sprache, Erscheinungsbild & mehr",
     "installApp": "App installieren",
     "installDesc": "Füge MuslimApp zu deinem Startbildschirm hinzu",
@@ -240,7 +241,19 @@
     "zakat": "Zakat-Rechner",
     "zakatDesc": "Zakat auf dein Vermögen berechnen (2,5 %)",
     "favorites": "Vers-Favoriten",
-    "favoritesDesc": "Deine gespeicherten Koranverse"
+    "favoritesDesc": "Deine gespeicherten Koranverse",
+    "calendar": "Kalender",
+    "calendarDesc": "Hijri-Kalender & islamische Feiertage",
+    "favoritesTitle": "Favoriten",
+    "favoritesEdit": "Bearbeiten",
+    "favoritesDone": "Fertig",
+    "favoritesEmpty": "Tippe bei einem Werkzeug auf den Stern, um es hier anzuheften (bis zu {max}).",
+    "favoritesFull": "Du kannst höchstens {max} Favoriten anheften.",
+    "moveUp": "{name} nach oben",
+    "moveDown": "{name} nach unten",
+    "addFavorite": "{name} zu Favoriten hinzufügen",
+    "removeFavorite": "{name} aus Favoriten entfernen",
+    "appSection": "App"
   },
   "tasbih": {
     "title": "Tasbih",
@@ -310,12 +323,53 @@
     "notificationsEnabled": "Benachrichtigungen sind aktiv",
     "backgroundSupported": "✓ Funktioniert auch, wenn die App geschlossen ist.",
     "backgroundLimited": "Hinweis: Auf deinem Gerät funktionieren Benachrichtigungen nur, solange die App geöffnet ist.",
-    "navTitle": "Deine Navigationsleiste",
-    "navBody": "Wähle bis zu vier Bereiche, die auf dem Handy immer erreichbar sein sollen. Du kannst das später ändern.",
-    "navSelected": "ausgewählt",
     "doneTitle": "Alles bereit",
     "doneBody": "Möge dir die App ein treuer Begleiter sein. Barakallahu fik.",
-    "reopen": "Einrichtung erneut öffnen"
+    "reopen": "Einrichtung erneut öffnen",
+    "levelTitle": "Dein Wissensstand",
+    "levelBody": "Wähle, wo du gerade stehst. Wir heben die passenden Lerninhalte für dich hervor.",
+    "dialogLabel": "Einrichtung",
+    "citySuggestions": "Städtevorschläge"
+  },
+  "knowledge": {
+    "discover": "Entdecken",
+    "discoverDesc": "Ich bin neu im Islam oder möchte die Grundlagen kennenlernen.",
+    "practice": "Praktizieren",
+    "practiceDesc": "Ich praktiziere bereits und möchte meinen Alltag vertiefen.",
+    "deepen": "Vertiefen",
+    "deepenDesc": "Ich kenne die Grundlagen und möchte mein Wissen erweitern.",
+    "changeHint": "Du kannst das jederzeit unter „Lernen“ ändern."
+  },
+  "learn": {
+    "title": "Lernen",
+    "subtitle": "Wissen für jeden Schritt deines Weges",
+    "levelHeading": "Dein Wissensstand",
+    "levelHint": "Wähle deinen Stand, um passende Inhalte hervorzuheben.",
+    "yourLevel": "Dein Stand",
+    "comingSoon": "Bald verfügbar",
+    "quranDesc": "Lesen, hören und verstehen",
+    "upcoming": {
+      "basics": "Grundlagen des Islam",
+      "basicsDesc": "Die fünf Säulen und die wichtigsten Begriffe einfach erklärt",
+      "newMuslim": "Neu im Islam",
+      "newMuslimDesc": "Ein sanfter Einstieg für Neumuslime und Interessierte",
+      "fiqh": "Fiqh des Alltags",
+      "fiqhDesc": "Islamische Regeln für Arbeit, Essen, Reisen und mehr",
+      "aqida": "Aqida",
+      "aqidaDesc": "Glaubenslehre im Detail verstehen",
+      "glossary": "Glossar",
+      "glossaryDesc": "Wichtige islamische Begriffe von A bis Z",
+      "faq": "FAQ",
+      "faqDesc": "Antworten auf häufige Fragen"
+    }
+  },
+  "error": {
+    "notFoundTitle": "Seite nicht gefunden",
+    "notFoundBody": "Diese Seite gibt es nicht oder sie wurde verschoben.",
+    "genericTitle": "Etwas ist schiefgelaufen",
+    "genericBody": "Es ist ein unerwarteter Fehler aufgetreten. Bitte versuche es erneut.",
+    "backHome": "Zur Startseite",
+    "retry": "Erneut versuchen"
   },
   "dua": {
     "title": "Bittgebete",
