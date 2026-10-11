@@ -527,5 +527,12 @@
     "empty": "No favorites saved yet",
     "emptyHint": "Tap the heart next to a verse in the Quran reader",
     "remove": "Remove"
+  },
+  "pwa": {
+    "updateAvailable": "New version available",
+    "update": "Update",
+    "updating": "Updating…",
+    "dismiss": "Dismiss",
+    "offlineReady": "App is ready to work offline"
   }
 }

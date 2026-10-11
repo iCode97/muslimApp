@@ -527,5 +527,12 @@
     "empty": "Noch keine Favoriten gespeichert",
     "emptyHint": "Tippe im Koran-Reader auf das Herz neben einem Vers",
     "remove": "Entfernen"
+  },
+  "pwa": {
+    "updateAvailable": "Neue Version verfügbar",
+    "update": "Aktualisieren",
+    "updating": "Wird aktualisiert…",
+    "dismiss": "Schließen",
+    "offlineReady": "App ist jetzt offline verfügbar"
   }
 }

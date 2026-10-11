@@ -1,0 +1,17 @@
+{
+  // Standalone config for the service worker source (WebWorker lib, no DOM).
+  // Bundled by @vite-pwa/nuxt (injectManifest); this config is only used for
+  // type-checking: `npx tsc -p service-worker/tsconfig.json`
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022", "WebWorker"],
+    "types": [],
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "isolatedModules": true
+  },
+  "include": ["./**/*.ts"]
+}

@@ -527,5 +527,12 @@
     "empty": "Henüz favori kaydedilmedi",
     "emptyHint": "Kuran okuyucuda ayetin yanındaki kalbe dokun",
     "remove": "Kaldır"
+  },
+  "pwa": {
+    "updateAvailable": "Yeni sürüm mevcut",
+    "update": "Güncelle",
+    "updating": "Güncelleniyor…",
+    "dismiss": "Kapat",
+    "offlineReady": "Uygulama artık çevrimdışı kullanılabilir"
   }
 }

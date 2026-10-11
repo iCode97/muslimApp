@@ -12,6 +12,18 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxtjs/i18n',
+    '@vite-pwa/nuxt',
+    // @vite-pwa/nuxt auto-imports its own `usePWA` (a thin `$pwa` accessor),
+    // which would shadow app/composables/usePWA.ts. Drop the module's entry so
+    // ours (which wraps `$pwa` and keeps the install-prompt API) wins.
+    (_options, nuxt) => {
+      nuxt.hook('imports:extend', (imports) => {
+        for (let i = imports.length - 1; i >= 0; i--) {
+          const entry = imports[i]
+          if (entry?.name === 'usePWA' && String(entry.from).includes('@vite-pwa/nuxt')) imports.splice(i, 1)
+        }
+      })
+    },
   ],
 
   app: {
@@ -28,7 +40,6 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
-        { rel: 'manifest', href: '/manifest.json' },
         { rel: 'apple-touch-icon', sizes: '180x180', href: '/icons/icon-180.png' },
         // Preconnect to Google Fonts for faster font loading
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -38,11 +49,60 @@ export default defineNuxtConfig({
           href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap',
         },
       ],
-      script: [
-        {
-          children: `if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js').catch(() => {}) }) }`,
-        },
+    },
+  },
+
+  // PWA: service worker (Workbox, injectManifest) + web app manifest.
+  // The SW is registered by the module's client plugin (registerType 'prompt');
+  // app/components/pwa/UpdatePrompt.vue shows the update / offline-ready UI.
+  pwa: {
+    strategies: 'injectManifest',
+    // Resolved against Vite's root, which is Nuxt's srcDir (app/).
+    srcDir: '../service-worker',
+    filename: 'sw.ts', // emitted as /sw.js — same URL as the legacy worker
+    scope: '/',
+    base: '/',
+    registerType: 'prompt',
+    injectRegister: false,
+    // Adds no-cache headers for /sw.js and /manifest.webmanifest in Nitro.
+    registerWebManifestInRouteRules: true,
+    manifestFilename: 'manifest.webmanifest',
+    manifest: {
+      id: '/',
+      name: 'MuslimApp',
+      short_name: 'MuslimApp',
+      description: 'Gebetszeiten, Koran & islamischer Kalender',
+      lang: 'de',
+      dir: 'ltr',
+      start_url: '/',
+      scope: '/',
+      display: 'standalone',
+      orientation: 'portrait',
+      background_color: '#0A0A0A',
+      theme_color: '#2D6A4F',
+      categories: ['lifestyle', 'education'],
+      icons: [
+        { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+        { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+        { src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
+        // No dedicated maskable artwork exists yet (all icons are circles on a
+        // transparent background); keep the SVG as maskable like the legacy manifest.
+        { src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'maskable' },
       ],
+    },
+    injectManifest: {
+      globPatterns: ['**/*.{js,css,svg,png,ico,woff2}'],
+      globIgnores: ['**/node_modules/**', 'sw.js', 'workbox-*.js'],
+      maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
+    },
+    client: {
+      installPrompt: false, // custom install flow lives in app/composables/usePWA.ts
+      periodicSyncForUpdates: 60 * 60, // check /sw.js for a new deploy hourly
+    },
+    devOptions: {
+      // Keep the SW off in `nuxi dev` to avoid stale dev caches.
+      enabled: false,
+      type: 'module',
     },
   },
 
