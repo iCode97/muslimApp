@@ -74,7 +74,7 @@ const categoryIcons: Record<string, string> = {
         {{ t('hadith.title') }}
       </h1>
       <p class="text-sm text-themed-muted mt-1">
-        {{ t('hadith.subtitle') }}
+        <HonorificText :text="t('hadith.subtitle')" />
       </p>
     </header>
 
@@ -99,8 +99,14 @@ const categoryIcons: Record<string, string> = {
     </div>
 
     <!-- Category filter -->
-    <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar animate-fade-in stagger-2">
+    <div
+      role="group"
+      :aria-label="t('a11y.categories')"
+      class="flex gap-2 overflow-x-auto pb-2 no-scrollbar animate-fade-in stagger-2"
+    >
       <button
+        type="button"
+        :aria-pressed="selectedCategory === 'all'"
         :class="[
           'px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all',
           selectedCategory === 'all'
@@ -114,6 +120,8 @@ const categoryIcons: Record<string, string> = {
       <button
         v-for="cat in HADITH_CATEGORIES"
         :key="cat"
+        type="button"
+        :aria-pressed="selectedCategory === cat"
         :class="[
           'px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all',
           selectedCategory === cat
@@ -122,7 +130,7 @@ const categoryIcons: Record<string, string> = {
         ]"
         @click="selectedCategory = cat"
       >
-        {{ categoryIcons[cat] }} {{ t(`hadith.cat_${cat}`) }}
+        <span aria-hidden="true">{{ categoryIcons[cat] }}</span> {{ t(`hadith.cat_${cat}`) }}
       </button>
     </div>
 
@@ -135,16 +143,18 @@ const categoryIcons: Record<string, string> = {
       >
         <GlassCard>
           <button
+            type="button"
             class="w-full text-left space-y-3"
+            :aria-expanded="expandedIds.has(hadith.id)"
             @click="toggleHadith(hadith.id)"
           >
             <!-- Category + Source + Read status -->
             <div class="flex items-center justify-between">
               <span class="text-xs text-themed-faint glass-subtle px-2 py-0.5 rounded-full">
-                {{ categoryIcons[hadith.category] }} {{ t(`hadith.cat_${hadith.category}`) }}
+                <span aria-hidden="true">{{ categoryIcons[hadith.category] }}</span> {{ t(`hadith.cat_${hadith.category}`) }}
               </span>
               <div class="flex items-center gap-2">
-                <span v-if="progress.isRead(hadith.id)" class="text-[10px] text-[var(--color-primary-light)]">✓</span>
+                <span v-if="progress.isRead(hadith.id)" class="text-[10px] text-[var(--color-primary-light)]" role="img" :aria-label="t('common.read')">✓</span>
                 <span class="text-[10px] text-themed-faint">
                   {{ hadith.source }}
                 </span>
@@ -152,7 +162,7 @@ const categoryIcons: Record<string, string> = {
             </div>
 
             <!-- Arabic text -->
-            <p class="font-arabic text-xl text-right leading-[2.2] text-themed" dir="rtl">
+            <p class="font-arabic text-xl text-right leading-[2.2] text-themed" dir="rtl" lang="ar">
               {{ hadith.arabic }}
             </p>
 

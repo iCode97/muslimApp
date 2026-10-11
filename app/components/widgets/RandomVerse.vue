@@ -74,11 +74,13 @@ onMounted(() => {
           {{ t('widgets.randomVerse') }}
         </h3>
         <button
-          class="text-xs text-themed-faint hover:text-themed-secondary transition-colors"
+          type="button"
+          class="text-xs text-themed-faint hover:text-themed-secondary transition-colors p-1"
           :disabled="loading"
+          :aria-label="t('a11y.refresh')"
           @click="fetchRandomVerse"
         >
-          🔄
+          <span aria-hidden="true">🔄</span>
         </button>
       </div>
 
@@ -88,7 +90,7 @@ onMounted(() => {
 
       <div v-else-if="verse" class="space-y-3">
         <!-- Arabic text -->
-        <p class="font-arabic text-xl text-right leading-[2.2] text-themed" dir="rtl">
+        <p class="font-arabic text-xl text-right leading-[2.2] text-themed" dir="rtl" lang="ar">
           {{ verse.arabic }}
         </p>
 

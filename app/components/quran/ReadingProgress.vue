@@ -33,7 +33,7 @@ const surahName = computed(() => {
             {{ t('quran.verse') }} {{ bookmark.verseNumber }} · {{ timeAgo() }}
           </p>
         </div>
-        <div class="text-3xl opacity-50">
+        <div class="text-3xl opacity-50" aria-hidden="true">
           📖
         </div>
       </div>

@@ -36,7 +36,7 @@ const translation = computed(() => {
       </div>
 
       <!-- Arabic text -->
-      <p class="font-arabic text-lg text-right leading-[2] text-themed" dir="rtl">
+      <p class="font-arabic text-lg text-right leading-[2] text-themed" dir="rtl" lang="ar">
         {{ todayHadith.arabic }}
       </p>
 

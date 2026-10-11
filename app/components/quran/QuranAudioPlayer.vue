@@ -43,6 +43,7 @@ function selectReciter(id: number) {
       <div class="flex items-center gap-3">
         <!-- Play/Pause -->
         <button
+          type="button"
           class="w-12 h-12 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center shrink-0 transition-all duration-200 hover:opacity-90 disabled:opacity-50"
           :disabled="audio.loading.value"
           :aria-label="isPlayingThis ? t('quran.pause') : t('quran.listen')"
@@ -55,10 +56,14 @@ function selectReciter(id: number) {
         <div class="flex-1 min-w-0 space-y-1">
           <!-- Reciter picker toggle -->
           <button
+            type="button"
             class="flex items-center gap-1.5 text-sm font-medium text-themed-secondary hover:text-themed transition-colors"
+            :aria-expanded="showReciterPicker"
+            aria-controls="reciter-list"
+            :aria-label="`${t('a11y.reciterPicker')}: ${audio.reciter.value.name}`"
             @click="showReciterPicker = !showReciterPicker"
           >
-            <span class="truncate">🎙 {{ audio.reciter.value.name }}</span>
+            <span class="truncate" aria-hidden="true">🎙 {{ audio.reciter.value.name }}</span>
             <AppIcon :name="showReciterPicker ? 'chevronUp' : 'chevronDown'" :size="14" />
           </button>
 
@@ -74,7 +79,8 @@ function selectReciter(id: number) {
               step="1"
               :value="audio.currentTime.value"
               class="flex-1 h-1 accent-[var(--color-primary)] cursor-pointer"
-              :aria-label="t('quran.listen')"
+              :aria-label="t('a11y.seek')"
+              :aria-valuetext="`${formatTime(audio.currentTime.value)} / ${formatTime(audio.duration.value)}`"
               @input="onSeek"
             >
             <span class="text-[10px] text-themed-faint tabular-nums w-8 text-right">
@@ -89,10 +95,12 @@ function selectReciter(id: number) {
 
       <!-- Reciter list -->
       <Transition name="slide">
-        <div v-if="showReciterPicker" class="space-y-1">
+        <div v-if="showReciterPicker" id="reciter-list" class="space-y-1">
           <button
             v-for="r in audio.RECITERS"
             :key="r.id"
+            type="button"
+            :aria-pressed="audio.reciterId.value === r.id"
             :class="[
               'w-full flex items-center justify-between px-3 py-2 rounded-xl text-left text-sm transition-all',
               audio.reciterId.value === r.id
@@ -102,12 +110,12 @@ function selectReciter(id: number) {
             @click="selectReciter(r.id)"
           >
             {{ r.name }}
-            <span v-if="audio.reciterId.value === r.id">✓</span>
+            <span v-if="audio.reciterId.value === r.id" aria-hidden="true">✓</span>
           </button>
         </div>
       </Transition>
 
-      <p v-if="audio.error.value" class="text-xs text-[var(--color-danger)]">
+      <p v-if="audio.error.value" class="text-xs text-[var(--color-danger)]" role="alert">
         {{ audio.error.value }}
       </p>
     </div>

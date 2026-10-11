@@ -8,7 +8,11 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "typecheck": "nuxi typecheck"
   },
   "dependencies": {
     "@nuxtjs/i18n": "^9.5.3",
@@ -20,6 +24,11 @@
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.13.2",
-    "typescript": "^5.8.2"
+    "@playwright/test": "^1.64.0",
+    "@vitejs/plugin-vue": "^6.0.10",
+    "@vue/test-utils": "^2.5.1",
+    "happy-dom": "^20.14.6",
+    "typescript": "^5.8.2",
+    "vitest": "^3.2.7"
   }
 }

@@ -11,7 +11,7 @@ const todayName = computed(() => {
   const now = new Date()
   const start = new Date(now.getFullYear(), 0, 0)
   const dayOfYear = Math.floor((now.getTime() - start.getTime()) / 86400000)
-  return ALLAH_NAMES[dayOfYear % 99]
+  return ALLAH_NAMES[dayOfYear % ALLAH_NAMES.length]!
 })
 
 const meaning = computed(() => {
@@ -31,7 +31,7 @@ const meaning = computed(() => {
           <span class="text-xs text-themed-faint">#{{ todayName.id }}/99</span>
         </div>
 
-        <p class="font-arabic text-2xl text-center text-[var(--color-gold)] leading-relaxed" dir="rtl">
+        <p class="font-arabic text-2xl text-center text-[var(--color-gold)] leading-relaxed" dir="rtl" lang="ar">
           {{ todayName.arabic }}
         </p>
 

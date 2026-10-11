@@ -18,6 +18,12 @@ const PRAYER_ICONS: Record<string, string> = {
   isha: '🌙',
 }
 
+function statusLabel(prayer: typeof tracker.TRACKED_PRAYERS[number]): string {
+  const status = tracker.today.value[prayer]
+  const state = status === 'done' ? t('a11y.prayerDone') : status === 'qada' ? t('a11y.prayerQada') : t('a11y.prayerOpen')
+  return `${t(`prayer.${prayer}`)}: ${state}`
+}
+
 function toggle(prayer: typeof tracker.TRACKED_PRAYERS[number]) {
   tracker.cycleStatus(prayer)
   haptics.light()
@@ -43,10 +49,13 @@ function toggle(prayer: typeof tracker.TRACKED_PRAYERS[number]) {
         <button
           v-for="prayer in tracker.TRACKED_PRAYERS"
           :key="prayer"
+          type="button"
           class="flex flex-col items-center gap-1 flex-1"
+          :aria-label="statusLabel(prayer)"
           @click="toggle(prayer)"
         >
           <span
+            aria-hidden="true"
             :class="[
               'w-9 h-9 rounded-full flex items-center justify-center text-sm transition-all duration-200',
               tracker.today.value[prayer] === 'done'
@@ -58,14 +67,14 @@ function toggle(prayer: typeof tracker.TRACKED_PRAYERS[number]) {
           >
             {{ tracker.today.value[prayer] === 'done' ? '✓' : tracker.today.value[prayer] === 'qada' ? 'Q' : PRAYER_ICONS[prayer] }}
           </span>
-          <span class="text-[10px] text-themed-faint">
+          <span class="text-[10px] text-themed-faint" aria-hidden="true">
             {{ t(`prayer.${prayer}`) }}
           </span>
         </button>
       </div>
 
       <div class="flex items-center justify-between text-xs text-themed-muted pt-1">
-        <span>🔥 {{ tracker.streak.value }} {{ t('tracker.streakDays') }}</span>
+        <span><span aria-hidden="true">🔥</span> {{ tracker.streak.value }} {{ t('tracker.streakDays') }}</span>
         <span class="tabular-nums">{{ tracker.todayCount.value }}/5</span>
       </div>
     </div>

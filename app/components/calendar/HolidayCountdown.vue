@@ -20,7 +20,7 @@ onMounted(() => {
   <GlassCard v-else-if="nextHoliday" variant="default" padding="md">
     <div class="flex items-center gap-4">
       <!-- Icon -->
-      <div class="text-3xl shrink-0">
+      <div class="text-3xl shrink-0" aria-hidden="true">
         {{ nextHoliday.icon }}
       </div>
 

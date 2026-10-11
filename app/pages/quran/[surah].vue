@@ -5,6 +5,8 @@
  * Tapping Arabic text toggles per-verse translation visibility.
  */
 
+import type { Verse } from '~/composables/useQuran'
+
 const { t, locale } = useI18n()
 const route = useRoute()
 const quran = useQuran()
@@ -15,6 +17,9 @@ const favorites = useFavorites()
 const surahId = computed(() => Number(route.params.surah))
 
 const surah = computed(() => quran.getSurah(surahId.value))
+
+// useQuran exposes readonly state; VerseDisplay takes the plain Verse shape.
+const verses = computed(() => quran.currentVerses.value as unknown as Verse[])
 
 // Available translation options
 const TRANSLATION_OPTIONS = [
@@ -58,17 +63,63 @@ onMounted(async () => {
   favorites.load()
   await quran.fetchSurahs()
   await quran.fetchVerses(surahId.value)
-
-  // Auto-save bookmark when entering a surah
-  if (surah.value) {
-    saveBookmark(surahId.value, surah.value.nameSimple, 1)
-  }
+  observeVerses()
 })
+
+onBeforeUnmount(() => stopObserving())
 
 // Re-fetch when surah changes (via navigation)
 watch(surahId, async (newId) => {
+  stopObserving()
   await quran.fetchVerses(newId)
+  observeVerses()
 })
+
+/**
+ * Reading bookmark: merely opening a surah must NOT move the bookmark.
+ * It is only updated once a verse has stayed (mostly) in view for DWELL_MS,
+ * i.e. the user is actually reading it.
+ */
+const DWELL_MS = 2000
+const versesRef = ref<HTMLElement | null>(null)
+let observer: IntersectionObserver | null = null
+const dwellTimers = new Map<Element, ReturnType<typeof setTimeout>>()
+
+function stopObserving() {
+  observer?.disconnect()
+  observer = null
+  dwellTimers.forEach(clearTimeout)
+  dwellTimers.clear()
+}
+
+function observeVerses() {
+  if (!import.meta.client || typeof IntersectionObserver === 'undefined') return
+  stopObserving()
+  nextTick(() => {
+    const root = versesRef.value
+    if (!root) return
+    observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        const el = entry.target as HTMLElement
+        if (entry.isIntersecting) {
+          if (dwellTimers.has(el)) continue
+          dwellTimers.set(el, setTimeout(() => {
+            dwellTimers.delete(el)
+            const verseNumber = Number(el.dataset.verseNumber)
+            if (!verseNumber || Number(el.dataset.surahId) !== surahId.value || !surah.value) return
+            saveBookmark(surahId.value, surah.value.nameSimple, verseNumber)
+          }, DWELL_MS))
+        }
+        else {
+          const timer = dwellTimers.get(el)
+          if (timer) clearTimeout(timer)
+          dwellTimers.delete(el)
+        }
+      }
+    }, { threshold: 0.6 })
+    root.querySelectorAll('[data-verse-number]').forEach(el => observer!.observe(el))
+  })
+}
 
 // Navigation helpers
 const prevSurah = computed(() => surahId.value > 1 ? surahId.value - 1 : null)
@@ -90,11 +141,11 @@ const revelationPlace = computed(() => {
         to="/quran"
         class="inline-flex items-center gap-1 text-sm text-themed-muted hover:text-themed-secondary transition-colors"
       >
-        ← {{ t('quran.surahs') }}
+        <span aria-hidden="true">←</span> {{ t('quran.surahs') }}
       </NuxtLink>
 
       <div v-if="surah" class="text-center space-y-1">
-        <p class="font-arabic text-3xl text-themed-secondary">
+        <p class="font-arabic text-3xl text-themed-secondary" lang="ar">
           {{ surah.nameArabic }}
         </p>
         <h1 class="text-xl font-semibold">
@@ -110,10 +161,12 @@ const revelationPlace = computed(() => {
     <QuranAudioPlayer :surah-id="surahId" />
 
     <!-- Translation controls -->
-    <div class="flex items-center justify-center gap-2 flex-wrap">
+    <div role="group" :aria-label="t('a11y.translations')" class="flex items-center justify-center gap-2 flex-wrap">
       <button
         v-for="opt in TRANSLATION_OPTIONS"
         :key="opt.id"
+        type="button"
+        :aria-pressed="isTranslationActive(opt.id)"
         class="px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200"
         :class="isTranslationActive(opt.id)
           ? 'bg-[var(--color-primary)]/20 text-[var(--color-primary-light)]'
@@ -141,7 +194,7 @@ const revelationPlace = computed(() => {
     </div>
 
     <!-- Loading -->
-    <div v-if="quran.loading.value" class="space-y-4">
+    <div v-if="quran.loading.value" class="space-y-4" role="status" :aria-label="t('common.loading')">
       <div v-for="i in 5" :key="i" class="glass p-4 space-y-3">
         <div class="flex justify-end">
           <div class="skeleton skeleton-text w-3/4" style="height: 1.5rem" />
@@ -153,16 +206,16 @@ const revelationPlace = computed(() => {
 
     <!-- Error -->
     <div v-else-if="quran.error.value" class="text-center py-8">
-      <p class="text-[var(--color-danger)] text-sm">{{ quran.error.value }}</p>
+      <p class="text-[var(--color-danger)] text-sm" role="alert">{{ quran.error.value }}</p>
       <GlassButton variant="default" size="sm" class="mt-3" @click="quran.fetchVerses(surahId)">
         {{ t('common.retry') }}
       </GlassButton>
     </div>
 
     <!-- Verses -->
-    <div v-else class="space-y-3">
+    <div v-else ref="versesRef" class="space-y-3">
       <VerseDisplay
-        v-for="verse in quran.currentVerses.value"
+        v-for="verse in verses"
         :key="verse.verseKey"
         :verse="verse"
         :surah-id="surahId"
@@ -174,6 +227,8 @@ const revelationPlace = computed(() => {
     <!-- Mark as read button -->
     <div v-if="surah && !quran.loading.value && !quran.error.value" class="flex justify-center pt-2">
       <button
+        type="button"
+        :aria-pressed="progress.isRead(surahId)"
         :class="[
           'flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200',
           progress.isRead(surahId)
@@ -182,7 +237,7 @@ const revelationPlace = computed(() => {
         ]"
         @click="progress.toggleRead(surahId)"
       >
-        <span>{{ progress.isRead(surahId) ? '✓' : '○' }}</span>
+        <span aria-hidden="true">{{ progress.isRead(surahId) ? '✓' : '○' }}</span>
         {{ progress.isRead(surahId) ? t('common.read') : t('common.markAsRead') }}
       </button>
     </div>
@@ -192,20 +247,20 @@ const revelationPlace = computed(() => {
       <NuxtLink
         v-if="prevSurah"
         :to="`/quran/${prevSurah}`"
+        :aria-label="`${t('a11y.prevSurah')}: ${prevSurah}`"
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 active:scale-[0.97] glass hover:brightness-110 px-3 py-1.5 text-sm"
       >
-        <GlassButton variant="default" size="sm">
-          ← {{ prevSurah }}
-        </GlassButton>
+        <span aria-hidden="true">← {{ prevSurah }}</span>
       </NuxtLink>
       <span v-else />
 
       <NuxtLink
         v-if="nextSurah"
         :to="`/quran/${nextSurah}`"
+        :aria-label="`${t('a11y.nextSurah')}: ${nextSurah}`"
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 active:scale-[0.97] glass hover:brightness-110 px-3 py-1.5 text-sm"
       >
-        <GlassButton variant="default" size="sm">
-          {{ nextSurah }} →
-        </GlassButton>
+        <span aria-hidden="true">{{ nextSurah }} →</span>
       </NuxtLink>
     </div>
   </div>

@@ -737,3 +737,62 @@ body::before {
     transform: translateY(16px) scale(0.98);
   }
 }
+
+/* ============================================
+   PHASE 5 ADDITIONS (a11y, typography, dialogs)
+   ============================================ */
+
+/* Visible keyboard focus everywhere. :where() keeps specificity at 0 so
+   components that draw their own focus style (e.g. GlassInput wrapper) can opt out. */
+:where(a, button, input, select, textarea, summary, [role="button"], [role="switch"], [role="tab"], [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 2px solid var(--color-primary-light);
+  outline-offset: 2px;
+}
+
+/* Honorific ligature (U+FDFA) is missing from Inter and renders badly in the fallback font. */
+.font-honorific {
+  font-family: 'Amiri', 'Traditional Arabic', 'Noto Naskh Arabic', serif;
+  font-size: 1.15em;
+  font-weight: 400;
+  line-height: 1;
+}
+
+/* Centered confirm dialog (ui/ConfirmDialog.vue) */
+.confirm-container {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.confirm-panel {
+  width: 100%;
+  max-width: 24rem;
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.6);
+  -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(1.6);
+  border: 1px solid var(--glass-border-strong);
+  border-radius: 1.5rem;
+  padding: 1.25rem;
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.4);
+}
+
+.confirm-enter-active,
+.confirm-leave-active {
+  transition: opacity 0.2s ease;
+}
+.confirm-enter-active .confirm-panel,
+.confirm-leave-active .confirm-panel {
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.confirm-enter-from,
+.confirm-leave-to {
+  opacity: 0;
+}
+.confirm-enter-from .confirm-panel,
+.confirm-leave-to .confirm-panel {
+  transform: scale(0.96);
+}
