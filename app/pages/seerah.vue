@@ -92,7 +92,7 @@ const categoryIcons: Record<string, string> = {
         {{ t('seerah.title') }}
       </h1>
       <p class="text-sm text-themed-muted mt-1">
-        {{ t('seerah.subtitle') }}
+        <HonorificText :text="t('seerah.subtitle')" />
       </p>
     </header>
 
@@ -109,8 +109,10 @@ const categoryIcons: Record<string, string> = {
 
     <!-- View mode toggle -->
     <div class="flex items-center justify-between gap-3 animate-fade-in stagger-2">
-      <div class="flex gap-1 glass-subtle rounded-full p-1">
+      <div role="group" :aria-label="t('a11y.viewMode')" class="flex gap-1 glass-subtle rounded-full p-1">
         <button
+          type="button"
+          :aria-pressed="viewMode === 'list'"
           :class="[
             'px-3 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-1.5',
             viewMode === 'list' ? 'bg-[var(--color-primary)] text-white' : 'text-themed-secondary'
@@ -121,6 +123,8 @@ const categoryIcons: Record<string, string> = {
           {{ t('seerah.viewList') }}
         </button>
         <button
+          type="button"
+          :aria-pressed="viewMode === 'timeline'"
           :class="[
             'px-3 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-1.5',
             viewMode === 'timeline' ? 'bg-[var(--color-primary)] text-white' : 'text-themed-secondary'
@@ -134,8 +138,14 @@ const categoryIcons: Record<string, string> = {
     </div>
 
     <!-- Category filter -->
-    <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar animate-fade-in stagger-2">
+    <div
+      role="group"
+      :aria-label="t('a11y.categories')"
+      class="flex gap-2 overflow-x-auto pb-2 no-scrollbar animate-fade-in stagger-2"
+    >
       <button
+        type="button"
+        :aria-pressed="selectedCategory === 'all'"
         :class="[
           'px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all',
           selectedCategory === 'all'
@@ -149,6 +159,8 @@ const categoryIcons: Record<string, string> = {
       <button
         v-for="cat in SEERAH_CATEGORIES"
         :key="cat"
+        type="button"
+        :aria-pressed="selectedCategory === cat"
         :class="[
           'px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all',
           selectedCategory === cat
@@ -157,7 +169,7 @@ const categoryIcons: Record<string, string> = {
         ]"
         @click="setCategory(cat)"
       >
-        {{ categoryIcons[cat] }} {{ t(`seerah.cat_${cat}`) }}
+        <span aria-hidden="true">{{ categoryIcons[cat] }}</span> {{ t(`seerah.cat_${cat}`) }}
       </button>
     </div>
 
@@ -170,25 +182,29 @@ const categoryIcons: Record<string, string> = {
       >
         <GlassCard>
           <button
+            type="button"
             class="w-full text-left space-y-3"
+            :aria-expanded="expandedIds.has(chapter.id)"
             @click="toggleChapter(chapter.id)"
           >
             <!-- Chapter header -->
             <div class="flex items-center gap-3">
-              <span class="text-2xl">{{ chapter.icon }}</span>
+              <span class="text-2xl" aria-hidden="true">{{ chapter.icon }}</span>
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2">
                   <span class="text-xs text-[var(--color-gold)]">{{ chapter.year }}</span>
                   <span
                     v-if="progress.isRead(chapter.id)"
                     class="text-[10px] text-[var(--color-primary-light)]"
+                    role="img"
+                    :aria-label="t('seerah.readBadge')"
                   >✓</span>
                 </div>
                 <p class="font-medium text-sm text-themed">
                   {{ t(chapter.titleKey) }}
                 </p>
               </div>
-              <span class="text-themed-faint text-xs">
+              <span class="text-themed-faint text-xs" aria-hidden="true">
                 {{ expandedIds.has(chapter.id) ? '▲' : '▼' }}
               </span>
             </div>
@@ -197,18 +213,18 @@ const categoryIcons: Record<string, string> = {
             <Transition name="expand">
               <div v-if="expandedIds.has(chapter.id)" class="space-y-3 pt-3 border-t border-[var(--glass-border)]">
                 <p class="text-sm text-themed-secondary leading-relaxed whitespace-pre-line">
-                  {{ getContent(chapter) }}
+                  <HonorificText :text="getContent(chapter)" />
                 </p>
 
                 <p
                   v-if="chapter.quranReference"
                   class="text-xs text-[var(--color-gold)] flex items-center gap-1.5"
                 >
-                  📖 {{ t('seerah.quranRef') }}: {{ chapter.quranReference }}
+                  <span aria-hidden="true">📖</span> {{ t('seerah.quranRef') }}: {{ chapter.quranReference }}
                 </p>
 
                 <span class="inline-block text-[10px] text-themed-faint glass-subtle px-2 py-0.5 rounded-full">
-                  {{ categoryIcons[chapter.category] }} {{ t(`seerah.cat_${chapter.category}`) }}
+                  <span aria-hidden="true">{{ categoryIcons[chapter.category] }}</span> {{ t(`seerah.cat_${chapter.category}`) }}
                 </span>
               </div>
             </Transition>
@@ -230,6 +246,7 @@ const categoryIcons: Record<string, string> = {
         >
           <!-- Dot marker -->
           <div
+            aria-hidden="true"
             :class="[
               'absolute -left-6 sm:-left-10 top-1 flex items-center justify-center',
               'w-6 h-6 sm:w-10 sm:h-10 rounded-full transition-all',
@@ -243,7 +260,9 @@ const categoryIcons: Record<string, string> = {
 
           <GlassCard>
             <button
+              type="button"
               class="w-full text-left space-y-2"
+              :aria-expanded="expandedIds.has(chapter.id)"
               @click="toggleChapter(chapter.id)"
             >
               <div class="flex items-baseline justify-between gap-2">
@@ -259,7 +278,7 @@ const categoryIcons: Record<string, string> = {
                 {{ t(chapter.titleKey) }}
               </p>
               <span class="inline-block text-[10px] text-themed-faint glass-subtle px-2 py-0.5 rounded-full">
-                {{ categoryIcons[chapter.category] }} {{ t(`seerah.cat_${chapter.category}`) }}
+                <span aria-hidden="true">{{ categoryIcons[chapter.category] }}</span> {{ t(`seerah.cat_${chapter.category}`) }}
               </span>
 
               <!-- Expanded content in timeline -->
@@ -269,13 +288,13 @@ const categoryIcons: Record<string, string> = {
                   class="space-y-3 pt-3 border-t border-[var(--glass-border)]"
                 >
                   <p class="text-sm text-themed-secondary leading-relaxed whitespace-pre-line">
-                    {{ getContent(chapter) }}
+                    <HonorificText :text="getContent(chapter)" />
                   </p>
                   <p
                     v-if="chapter.quranReference"
                     class="text-xs text-[var(--color-gold)] flex items-center gap-1.5"
                   >
-                    📖 {{ t('seerah.quranRef') }}: {{ chapter.quranReference }}
+                    <span aria-hidden="true">📖</span> {{ t('seerah.quranRef') }}: {{ chapter.quranReference }}
                   </p>
                 </div>
               </Transition>

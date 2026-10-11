@@ -17,7 +17,7 @@ const hijri = computed(() => prayerTimes.data.value?.hijriDate)
       <p class="text-sm text-themed-muted mt-1">
         {{ hijri.year }} {{ hijri.designation }}
       </p>
-      <p v-if="hijri.monthAr" class="font-arabic text-lg text-themed-faint mt-1">
+      <p v-if="hijri.monthAr" class="font-arabic text-lg text-themed-faint mt-1" lang="ar">
         {{ hijri.monthAr }}
       </p>
     </div>

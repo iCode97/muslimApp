@@ -66,8 +66,14 @@ const categoryIcons: Record<string, string> = {
     </header>
 
     <!-- Category filter -->
-    <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar animate-fade-in stagger-1">
+    <div
+      role="group"
+      :aria-label="t('a11y.categories')"
+      class="flex gap-2 overflow-x-auto pb-2 no-scrollbar animate-fade-in stagger-1"
+    >
       <button
+        type="button"
+        :aria-pressed="selectedCategory === 'all'"
         :class="[
           'px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all',
           selectedCategory === 'all'
@@ -81,6 +87,8 @@ const categoryIcons: Record<string, string> = {
       <button
         v-for="cat in DUA_CATEGORIES"
         :key="cat"
+        type="button"
+        :aria-pressed="selectedCategory === cat"
         :class="[
           'px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all',
           selectedCategory === cat
@@ -89,7 +97,7 @@ const categoryIcons: Record<string, string> = {
         ]"
         @click="selectedCategory = cat"
       >
-        {{ categoryIcons[cat] }} {{ t(`dua.cat_${cat}`) }}
+        <span aria-hidden="true">{{ categoryIcons[cat] }}</span> {{ t(`dua.cat_${cat}`) }}
       </button>
     </div>
 
@@ -102,13 +110,15 @@ const categoryIcons: Record<string, string> = {
       >
         <GlassCard>
           <button
+            type="button"
             class="w-full text-left space-y-3"
+            :aria-expanded="expandedIds.has(dua.id)"
             @click="toggleDua(dua.id)"
           >
             <!-- Category badge -->
             <div class="flex items-center justify-between">
               <span class="text-xs text-themed-faint glass-subtle px-2 py-0.5 rounded-full">
-                {{ categoryIcons[dua.category] }} {{ t(`dua.cat_${dua.category}`) }}
+                <span aria-hidden="true">{{ categoryIcons[dua.category] }}</span> {{ t(`dua.cat_${dua.category}`) }}
               </span>
               <span v-if="dua.source" class="text-[10px] text-themed-faint">
                 {{ dua.source }}
@@ -116,7 +126,7 @@ const categoryIcons: Record<string, string> = {
             </div>
 
             <!-- Arabic text -->
-            <p class="font-arabic text-xl text-right leading-[2.2] text-themed" dir="rtl">
+            <p class="font-arabic text-xl text-right leading-[2.2] text-themed" dir="rtl" lang="ar">
               {{ dua.arabic }}
             </p>
 

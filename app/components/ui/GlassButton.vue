@@ -18,6 +18,7 @@ defineEmits<{
 
 <template>
   <button
+    type="button"
     :disabled="disabled"
     :class="[
       // Base

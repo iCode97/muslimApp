@@ -24,6 +24,8 @@ function handleBookmark() {
   save(props.surahId, '', props.verse.verseNumber)
 }
 
+const hintId = computed(() => `verse-hint-${props.verse.verseKey.replace(':', '-')}`)
+
 // Toggle per-verse translations when tapping Arabic text
 function toggleVerseTranslations() {
   verseOverride.value = !verseOverride.value
@@ -71,16 +73,22 @@ watch(() => props.activeTranslations, () => {
 <template>
   <div
     class="glass-subtle px-4 py-4 space-y-3 transition-all duration-200"
+    :data-verse-number="verse.verseNumber"
+    :data-surah-id="surahId"
   >
     <!-- Verse number badge + bookmark + favorite -->
     <div class="flex items-start justify-between">
       <button
+        type="button"
         class="w-8 h-8 flex items-center justify-center rounded-full bg-[var(--color-primary)]/20 text-[var(--color-primary-light)] text-xs font-semibold shrink-0 hover:bg-[var(--color-primary)]/30 transition-colors"
+        :aria-label="t('a11y.setBookmark', { n: verse.verseNumber })"
         @click="handleBookmark"
       >
         {{ verse.verseNumber }}
       </button>
       <button
+        type="button"
+        :aria-pressed="favorites.isFavorite(verse.verseKey)"
         :class="[
           'w-8 h-8 flex items-center justify-center rounded-full transition-colors',
           favorites.isFavorite(verse.verseKey)
@@ -100,10 +108,17 @@ watch(() => props.activeTranslations, () => {
       class="font-arabic text-2xl leading-loose text-themed text-right cursor-pointer hover:text-[var(--color-primary-light)] transition-colors duration-200"
       dir="rtl"
       lang="ar"
+      role="button"
+      tabindex="0"
+      :aria-expanded="visibleTranslations.length > 0"
+      :aria-describedby="hintId"
       @click="toggleVerseTranslations"
+      @keydown.enter.prevent="toggleVerseTranslations"
+      @keydown.space.prevent="toggleVerseTranslations"
     >
       {{ verse.textUthmani }}
     </p>
+    <span :id="hintId" class="sr-only">{{ t('a11y.toggleVerseTranslation', { n: verse.verseNumber }) }}</span>
 
     <!-- Translations -->
     <Transition name="slide-fade">

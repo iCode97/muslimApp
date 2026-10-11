@@ -32,7 +32,7 @@ const areas = computed(() => [
   },
   {
     key: 'seerah',
-    label: 'Seerah',
+    label: t('nav.seerah'),
     icon: '📕',
     current: seerahProgress.summary.value.read,
     total: seerahProgress.summary.value.total,
@@ -74,13 +74,21 @@ const areas = computed(() => [
           :to="area.link"
           class="flex items-center gap-3 px-3 py-2.5 rounded-xl glass-subtle hover:bg-[var(--glass-bg-subtle)] transition-all group"
         >
-          <span class="text-lg">{{ area.icon }}</span>
+          <span class="text-lg" aria-hidden="true">{{ area.icon }}</span>
           <div class="flex-1 min-w-0">
             <div class="flex items-center justify-between">
               <span class="text-xs font-medium text-themed-secondary truncate">{{ area.label }}</span>
               <span class="text-[10px] text-themed-faint tabular-nums">{{ area.current }}/{{ area.total }}</span>
             </div>
-            <div class="w-full h-1.5 rounded-full glass-subtle overflow-hidden mt-1">
+            <div
+              class="w-full h-1.5 rounded-full glass-subtle overflow-hidden mt-1"
+              role="progressbar"
+              :aria-label="area.label"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              :aria-valuenow="area.percent"
+              :aria-valuetext="t('a11y.progressValue', { percent: area.percent })"
+            >
               <div
                 class="h-full rounded-full bg-[var(--color-primary-light)] transition-all duration-500"
                 :style="{ width: `${area.percent}%` }"

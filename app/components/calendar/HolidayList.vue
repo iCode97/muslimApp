@@ -48,7 +48,7 @@ function typeBadgeClass(type: string): string {
         class="glass flex items-center gap-3 px-4 py-3"
       >
         <!-- Icon -->
-        <span class="text-2xl shrink-0">{{ holiday.icon }}</span>
+        <span class="text-2xl shrink-0" aria-hidden="true">{{ holiday.icon }}</span>
 
         <!-- Info -->
         <div class="flex-1 min-w-0">

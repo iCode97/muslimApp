@@ -26,7 +26,11 @@ const emit = defineEmits<{
   'close': []
 }>()
 
+const { t } = useI18n()
 const haptics = useHaptics()
+const uid = useId()
+const titleId = `${uid}-title`
+let previouslyFocused: HTMLElement | null = null
 const panelRef = ref<HTMLDivElement | null>(null)
 const dragStartY = ref<number | null>(null)
 const dragOffset = ref(0)
@@ -43,21 +47,48 @@ function onBackdropClick() {
   close()
 }
 
-// Lock body scroll while open.
-watch(() => props.open, (open) => {
+// Lock body scroll while open; move focus into the sheet and restore it on close.
+watch(() => props.open, async (open) => {
   if (!import.meta.client) return
   if (open) {
+    previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null
     document.body.style.overflow = 'hidden'
+    await nextTick()
+    panelRef.value?.focus({ preventScroll: true })
   } else {
     document.body.style.overflow = ''
     dragOffset.value = 0
     isDragging.value = false
+    previouslyFocused?.focus?.({ preventScroll: true })
+    previouslyFocused = null
   }
 })
 
 function onKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape' && props.open) {
+  if (!props.open) return
+  if (event.key === 'Escape') {
     close()
+    return
+  }
+  // Focus trap: keep Tab inside the panel
+  if (event.key === 'Tab' && panelRef.value) {
+    const items = Array.from(panelRef.value.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    ))
+    if (items.length === 0) {
+      event.preventDefault()
+      return
+    }
+    const first = items[0]!
+    const last = items[items.length - 1]!
+    const active = document.activeElement
+    if (event.shiftKey && (active === first || active === panelRef.value)) {
+      event.preventDefault()
+      last.focus()
+    } else if (!event.shiftKey && active === last) {
+      event.preventDefault()
+      first.focus()
+    }
   }
 }
 
@@ -112,9 +143,12 @@ function onHandlePointerEnd() {
           :style="{ transform: dragOffset > 0 ? `translateY(${dragOffset}px)` : undefined, transition: isDragging ? 'none' : undefined }"
           role="dialog"
           aria-modal="true"
+          tabindex="-1"
+          :aria-labelledby="title ? titleId : undefined"
         >
           <div
             v-if="!persistent"
+            aria-hidden="true"
             class="sheet-handle md:hidden"
             @pointerdown="onHandlePointerDown"
             @pointermove="onHandlePointerMove"
@@ -124,12 +158,13 @@ function onHandlePointerEnd() {
 
           <div v-if="title || $slots.header" class="flex items-center justify-between pt-1 pb-3">
             <slot name="header">
-              <h3 class="text-base font-semibold text-themed">{{ title }}</h3>
+              <h2 :id="titleId" class="text-base font-semibold text-themed">{{ title }}</h2>
             </slot>
             <button
               v-if="!persistent"
+              type="button"
               class="w-8 h-8 flex items-center justify-center rounded-full glass-subtle text-themed-muted hover:text-themed transition-colors"
-              :aria-label="'Close'"
+              :aria-label="t('a11y.close')"
               @click="close"
             >
               <AppIcon name="close" :size="16" />

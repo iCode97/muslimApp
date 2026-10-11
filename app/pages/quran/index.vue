@@ -87,12 +87,13 @@ function revelationPlace(place: string): string {
     <GlassInput
       v-model="searchQuery"
       :placeholder="t('quran.search')"
+      :aria-label="t('quran.search')"
       icon="🔍"
       @update:model-value="onSearchInput"
     />
 
     <!-- Loading (initial surah load) -->
-    <div v-if="quran.loading.value && quran.surahs.value.length === 0" class="space-y-2">
+    <div v-if="quran.loading.value && quran.surahs.value.length === 0" class="space-y-2" role="status" :aria-label="t('common.loading')">
       <SkeletonLoader variant="list" :rows="8" />
     </div>
 
@@ -106,9 +107,9 @@ function revelationPlace(place: string): string {
       <template v-if="isSearching">
         <!-- Matching Surahs Section -->
         <div v-if="filteredSurahs.length > 0" class="space-y-2">
-          <h3 class="text-xs font-semibold text-themed-muted uppercase tracking-wider px-1">
-            📖 {{ t('quran.surahs') }} ({{ filteredSurahs.length }})
-          </h3>
+          <h2 class="text-xs font-semibold text-themed-muted uppercase tracking-wider px-1">
+            <span aria-hidden="true">📖</span> {{ t('quran.surahs') }} ({{ filteredSurahs.length }})
+          </h2>
           <NuxtLink
             v-for="surah in filteredSurahs"
             :key="surah.id"
@@ -122,7 +123,7 @@ function revelationPlace(place: string): string {
               <div class="flex-1 min-w-0">
                 <div class="flex items-center justify-between">
                   <span class="font-medium text-themed truncate">{{ surah.nameSimple }}</span>
-                  <span class="font-arabic text-xl text-themed-secondary shrink-0 ml-2">{{ surah.nameArabic }}</span>
+                  <span class="font-arabic text-xl text-themed-secondary shrink-0 ml-2" lang="ar">{{ surah.nameArabic }}</span>
                 </div>
                 <div class="flex items-center gap-2 text-xs text-themed-muted mt-0.5">
                   <span>{{ surah.translatedName }}</span>
@@ -136,9 +137,9 @@ function revelationPlace(place: string): string {
 
         <!-- Verse Results Section -->
         <div class="space-y-2">
-          <h3 class="text-xs font-semibold text-themed-muted uppercase tracking-wider px-1">
-            🔍 {{ t('quran.verses') }}
-          </h3>
+          <h2 class="text-xs font-semibold text-themed-muted uppercase tracking-wider px-1">
+            <span aria-hidden="true">🔍</span> {{ t('quran.verses') }}
+          </h2>
 
           <!-- Verse search loading -->
           <div v-if="quran.searchLoading.value" class="py-6">
@@ -208,13 +209,14 @@ function revelationPlace(place: string): string {
                   : 'bg-white/5 text-[var(--color-primary-light)]'
               ]"
             >
-              <span v-if="progress.isRead(surah.id)" class="text-base">✓</span>
+              <span v-if="progress.isRead(surah.id)" class="text-base" aria-hidden="true">✓</span>
               <span v-else>{{ surah.id }}</span>
+              <span v-if="progress.isRead(surah.id)" class="sr-only">{{ surah.id }} · {{ t('common.read') }}</span>
             </div>
             <div class="flex-1 min-w-0">
               <div class="flex items-center justify-between">
                 <span class="font-medium text-themed truncate">{{ surah.nameSimple }}</span>
-                <span class="font-arabic text-xl text-themed-secondary shrink-0 ml-2">{{ surah.nameArabic }}</span>
+                <span class="font-arabic text-xl text-themed-secondary shrink-0 ml-2" lang="ar">{{ surah.nameArabic }}</span>
               </div>
               <div class="flex items-center gap-2 text-xs text-themed-muted mt-0.5">
                 <span>{{ surah.translatedName }}</span>

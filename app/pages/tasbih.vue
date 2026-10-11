@@ -6,6 +6,7 @@
  */
 const { t } = useI18n()
 const tasbih = useTasbih()
+const confirm = useConfirm()
 
 onMounted(() => {
   tasbih.loadState()
@@ -29,6 +30,14 @@ function handleTap() {
   setTimeout(() => { isPulsing.value = false }, 150)
 }
 
+async function resetCounter() {
+  if (tasbih.state.value.count > 0 || tasbih.sequenceStep.value > 0) {
+    const ok = await confirm({ message: t('common.resetConfirm'), confirmLabel: t('common.reset'), danger: true })
+    if (!ok) return
+  }
+  tasbih.resetCount()
+}
+
 // Next round after completion
 function nextRound() {
   tasbih.nextRound()
@@ -37,6 +46,14 @@ function nextRound() {
 // Non-sequence modes for the mode selector
 const standaloneModesForSelector = computed(() =>
   tasbih.modes.filter(m => !m.sequence)
+)
+
+// Screen-reader label for the big tap button
+const counterLabel = computed(() =>
+  `${t('a11y.tapCounter')}: ${t('a11y.counterValue', {
+    count: tasbih.state.value.count,
+    target: tasbih.currentMode.value.target || '\u221E',
+  })}`,
 )
 
 // Step labels for sequence indicator
@@ -59,7 +76,11 @@ const sequenceSteps = computed(() =>
 
     <!-- Mode selector button -->
     <button
+      type="button"
       class="glass-subtle px-4 py-2 rounded-full text-sm text-themed-secondary mb-4 animate-fade-in stagger-1"
+      aria-controls="tasbih-mode-list"
+      :aria-expanded="showModeSelector"
+      :aria-label="t('a11y.selectMode')"
       @click="showModeSelector = !showModeSelector"
     >
       <template v-if="tasbih.isSequenceMode.value">
@@ -68,16 +89,18 @@ const sequenceSteps = computed(() =>
       <template v-else>
         {{ t(tasbih.currentMode.value.i18nKey) }}
       </template>
-      <span class="ml-1 text-themed-faint">{{ showModeSelector ? '▲' : '▼' }}</span>
+      <span class="ml-1 text-themed-faint" aria-hidden="true">{{ showModeSelector ? '▲' : '▼' }}</span>
     </button>
 
     <!-- Mode selector dropdown -->
     <Transition name="slide">
-      <div v-if="showModeSelector" class="w-full mb-4">
+      <div v-if="showModeSelector" id="tasbih-mode-list" class="w-full mb-4">
         <GlassCard>
           <div class="space-y-1">
             <!-- Sequence mode entry -->
             <button
+              type="button"
+              :aria-pressed="tasbih.isSequenceMode.value"
               :class="[
                 'w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200',
                 tasbih.isSequenceMode.value
@@ -96,6 +119,8 @@ const sequenceSteps = computed(() =>
             <button
               v-for="mode in standaloneModesForSelector"
               :key="mode.id"
+              type="button"
+              :aria-pressed="tasbih.state.value.modeId === mode.id"
               :class="[
                 'w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200',
                 tasbih.state.value.modeId === mode.id
@@ -105,7 +130,7 @@ const sequenceSteps = computed(() =>
               @click="tasbih.setMode(mode.id); showModeSelector = false"
             >
               <span class="text-sm font-medium">{{ t(mode.i18nKey) }}</span>
-              <span v-if="mode.arabic" class="font-arabic text-base text-themed-muted">{{ mode.arabic }}</span>
+              <span v-if="mode.arabic" class="font-arabic text-base text-themed-muted" lang="ar">{{ mode.arabic }}</span>
               <span v-if="mode.target" class="text-xs text-themed-faint ml-2">{{ mode.target }}×</span>
             </button>
           </div>
@@ -114,9 +139,10 @@ const sequenceSteps = computed(() =>
     </Transition>
 
     <!-- Sequence step indicator (3 dots/labels) -->
-    <div v-if="tasbih.isSequenceMode.value" class="flex items-center gap-2 mb-4 animate-fade-in stagger-2">
+    <ol v-if="tasbih.isSequenceMode.value" class="flex items-center gap-2 mb-4 animate-fade-in stagger-2 list-none p-0">
       <template v-for="(step, idx) in sequenceSteps" :key="step.id">
-        <div
+        <li
+          :aria-current="tasbih.sequenceStep.value === idx ? 'step' : undefined"
           :class="[
             'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300',
             tasbih.sequenceStep.value === idx
@@ -129,18 +155,21 @@ const sequenceSteps = computed(() =>
           <span
             v-if="tasbih.sequenceStep.value > idx || tasbih.isSequenceComplete.value"
             class="text-[var(--color-primary-light)]"
+            aria-hidden="true"
           >✓</span>
-          <span v-else-if="tasbih.sequenceStep.value === idx" class="w-1.5 h-1.5 rounded-full bg-[var(--color-primary-light)]" />
+          <span v-else-if="tasbih.sequenceStep.value === idx" class="w-1.5 h-1.5 rounded-full bg-[var(--color-primary-light)]" aria-hidden="true" />
           <span>{{ t(step.i18nKey) }}</span>
-        </div>
-        <span v-if="idx < sequenceSteps.length - 1" class="text-themed-faint text-xs">→</span>
+        </li>
+        <li v-if="idx < sequenceSteps.length - 1" class="text-themed-faint text-xs" aria-hidden="true">→</li>
       </template>
-    </div>
+    </ol>
 
     <!-- Arabic text display -->
     <div
       v-if="tasbih.currentMode.value.arabic"
       class="font-arabic text-2xl text-[var(--color-gold)] mb-4 animate-fade-in stagger-2 text-center leading-relaxed"
+      lang="ar"
+      dir="rtl"
     >
       {{ tasbih.currentMode.value.arabic }}
     </div>
@@ -148,7 +177,7 @@ const sequenceSteps = computed(() =>
     <!-- Counter ring + tap target -->
     <div class="relative flex items-center justify-center my-4 animate-fade-in stagger-3">
       <!-- Progress ring -->
-      <svg class="absolute w-64 h-64 -rotate-90" viewBox="0 0 260 260">
+      <svg class="absolute w-64 h-64 -rotate-90" viewBox="0 0 260 260" aria-hidden="true" focusable="false">
         <!-- Background ring -->
         <circle
           cx="130" cy="130" r="120"
@@ -177,6 +206,7 @@ const sequenceSteps = computed(() =>
           isPulsing ? 'scale-95' : '',
           tasbih.isRoundComplete.value ? 'ring-2 ring-[var(--color-primary-light)]' : ''
         ]"
+        :aria-label="counterLabel"
         @click="handleTap"
       >
         <span class="text-6xl font-light tabular-nums">
@@ -197,12 +227,14 @@ const sequenceSteps = computed(() =>
       <div
         v-if="tasbih.isRoundComplete.value"
         class="mt-4 animate-fade-in"
+        role="status"
       >
         <button
+          type="button"
           class="glass-primary px-6 py-3 rounded-xl text-sm font-medium text-[var(--color-primary-light)]"
           @click="nextRound"
         >
-          ✓ {{ t('tasbih.roundComplete') }} — {{ t('tasbih.nextRound') }}
+          <span aria-hidden="true">✓</span> {{ t('tasbih.roundComplete') }} — {{ t('tasbih.nextRound') }}
         </button>
       </div>
     </Transition>
@@ -221,8 +253,9 @@ const sequenceSteps = computed(() =>
 
     <!-- Reset button -->
     <button
+      type="button"
       class="mt-4 text-xs text-themed-faint hover:text-[var(--color-danger)] transition-colors"
-      @click="tasbih.resetCount()"
+      @click="resetCounter"
     >
       {{ t('tasbih.reset') }}
     </button>

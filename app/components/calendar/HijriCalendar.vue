@@ -68,6 +68,14 @@ async function nextMonth() {
   await fetchCalendarMonth(m, y)
 }
 
+// Accessible name of a day cell: "12, 03.04., Eid al-Fitr, today"
+function dayLabel(day: NonNullable<typeof calendarDays.value[number]>): string {
+  const parts = [`${day.hijriDay}`, `${day.gregorianDay}.${day.gregorianMonth}.`]
+  if (day.holiday) parts.push(getHolidayName(day.holiday))
+  if (day.isToday) parts.push(t('dashboard.today'))
+  return parts.join(', ')
+}
+
 // Build calendar grid (7 columns for weekdays)
 const calendarGrid = computed(() => {
   if (calendarDays.value.length === 0) return []
@@ -96,21 +104,21 @@ const calendarGrid = computed(() => {
   <GlassCard variant="default" padding="md">
     <!-- Month header with navigation -->
     <div class="flex items-center justify-between mb-4">
-      <GlassButton variant="ghost" size="sm" @click="prevMonth">
-        ←
+      <GlassButton variant="ghost" size="sm" :aria-label="t('a11y.prevMonth')" @click="prevMonth">
+        <span aria-hidden="true">←</span>
       </GlassButton>
 
-      <div class="text-center">
+      <div class="text-center" aria-live="polite">
         <p class="font-semibold text-themed">
           {{ monthName }}
         </p>
         <p class="text-xs text-themed-muted">
-          {{ monthInfo?.nameAR }} · {{ currentHijriYear }} AH
+          <span lang="ar">{{ monthInfo?.nameAR }}</span> · {{ currentHijriYear }} AH
         </p>
       </div>
 
-      <GlassButton variant="ghost" size="sm" @click="nextMonth">
-        →
+      <GlassButton variant="ghost" size="sm" :aria-label="t('a11y.nextMonth')" @click="nextMonth">
+        <span aria-hidden="true">→</span>
       </GlassButton>
     </div>
 
@@ -122,7 +130,7 @@ const calendarGrid = computed(() => {
     <!-- Calendar grid -->
     <div v-else>
       <!-- Weekday headers -->
-      <div class="grid grid-cols-7 gap-1 mb-2">
+      <div class="grid grid-cols-7 gap-1 mb-2" aria-hidden="true">
         <div
           v-for="(label, idx) in weekdayLabels"
           :key="idx"
@@ -133,7 +141,7 @@ const calendarGrid = computed(() => {
       </div>
 
       <!-- Days -->
-      <div class="grid grid-cols-7 gap-1">
+      <div role="list" :aria-label="t('a11y.calendarGrid')" class="grid grid-cols-7 gap-1">
         <div
           v-for="(day, index) in calendarGrid"
           :key="index"
@@ -146,6 +154,10 @@ const calendarGrid = computed(() => {
                 : 'hover:bg-white/5',
             !day ? 'opacity-0' : '',
           ]"
+          :role="day ? 'listitem' : 'presentation'"
+          :aria-hidden="day ? undefined : true"
+          :aria-label="day ? dayLabel(day) : undefined"
+          :aria-current="day?.isToday ? 'date' : undefined"
           :title="day?.holiday ? getHolidayName(day.holiday) : undefined"
         >
           <!-- Hijri day number -->
@@ -170,6 +182,7 @@ const calendarGrid = computed(() => {
           <span
             v-if="day?.holiday"
             class="absolute -top-0.5 -right-0.5 text-[8px]"
+            aria-hidden="true"
           >
             {{ day.holiday.icon }}
           </span>
