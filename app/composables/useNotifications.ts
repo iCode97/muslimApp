@@ -105,8 +105,9 @@ export function useNotifications() {
     if (!('serviceWorker' in navigator)) return false
 
     try {
-      const reg = await navigator.serviceWorker.ready
-      reg.active?.postMessage({
+      const reg = await getSwRegistration()
+      if (!reg?.active) return false
+      reg.active.postMessage({
         type: 'SCHEDULE_PRAYER_NOTIFICATIONS',
         items,
       })

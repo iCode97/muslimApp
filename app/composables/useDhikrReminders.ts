@@ -126,8 +126,9 @@ export function useDhikrReminders() {
     if (items.length === 0) return false
 
     try {
-      const reg = await navigator.serviceWorker.ready
-      reg.active?.postMessage({ type: 'SCHEDULE_DHIKR_REMINDERS', items })
+      const reg = await getSwRegistration()
+      if (!reg?.active) return false
+      reg.active.postMessage({ type: 'SCHEDULE_DHIKR_REMINDERS', items })
       return true
     } catch (err) {
       console.warn('[DhikrReminders] SW scheduling failed', err)
@@ -138,8 +139,8 @@ export function useDhikrReminders() {
   async function clear() {
     if (import.meta.server || !('serviceWorker' in navigator)) return
     try {
-      const reg = await navigator.serviceWorker.ready
-      reg.active?.postMessage({ type: 'CLEAR_DHIKR_REMINDERS' })
+      const reg = await getSwRegistration()
+      reg?.active?.postMessage({ type: 'CLEAR_DHIKR_REMINDERS' })
     } catch { /* ignore */ }
   }
 
