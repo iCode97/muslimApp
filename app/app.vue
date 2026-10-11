@@ -10,7 +10,12 @@ onMounted(() => {
 </script>
 
 <template>
+  <!-- <link rel="manifest"> for the module-generated /manifest.webmanifest -->
+  <NuxtPwaManifest />
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>
+  <ClientOnly>
+    <UpdatePrompt />
+  </ClientOnly>
 </template>
