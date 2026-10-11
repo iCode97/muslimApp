@@ -18,6 +18,10 @@ const ROUTES = [
   '/settings',
   '/about',
   '/more',
+  '/learn',
+  '/tracker',
+  '/zakat',
+  '/favorites',
 ]
 
 test.beforeEach(async ({ page, context, baseURL }) => {
@@ -50,8 +54,8 @@ test.describe('route smoke tests (mobile)', () => {
   }
 })
 
-test.describe('information architecture (known issues, fixed in parallel)', () => {
-  test.fixme('a link to /settings is reachable from "/" within 2 taps on mobile', async ({ page }) => {
+test.describe('information architecture', () => {
+  test('a link to /settings is reachable from "/" within 2 taps on mobile', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
 
     const settingsLink = page.locator('a[href="/settings"]:visible')
@@ -66,7 +70,7 @@ test.describe('information architecture (known issues, fixed in parallel)', () =
     await expect(page).toHaveURL(/\/settings$/)
   })
 
-  test.fixme('bottom navigation has 5 tabs including /more and /learn', async ({ page }) => {
+  test('bottom navigation has 5 tabs including /more and /learn', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
 
     const tabs = page.locator('nav.liquid-nav-pill a')

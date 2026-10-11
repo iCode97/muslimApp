@@ -4,7 +4,7 @@
  * Shows today's checklist, a 7-day grid, streak and 7/30-day stats.
  */
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const tracker = usePrayerTracker()
 const haptics = useHaptics()
 
@@ -35,7 +35,8 @@ function statusSymbol(status: string): string {
   return '○'
 }
 
-const weekdayFormat = computed(() => new Intl.DateTimeFormat(undefined, { weekday: 'short' }))
+// Use the app locale (not the runtime default) so SSR and client agree on weekday names.
+const weekdayFormat = computed(() => new Intl.DateTimeFormat(locale.value, { weekday: 'short' }))
 
 const stats7 = computed(() => tracker.statsPercent(7))
 const stats30 = computed(() => tracker.statsPercent(30))
@@ -127,6 +128,8 @@ const stats30 = computed(() => tracker.statsPercent(30))
           {{ t('tracker.week') }}
         </h3>
 
+        <!-- Dates depend on the viewer's timezone, which the server can't know. -->
+        <ClientOnly>
         <div class="grid grid-cols-7 gap-1.5">
           <div
             v-for="day in tracker.week.value"
@@ -165,6 +168,7 @@ const stats30 = computed(() => tracker.statsPercent(30))
             </div>
           </div>
         </div>
+        </ClientOnly>
 
         <!-- Legend -->
         <div class="flex items-center gap-4 text-[11px] text-themed-faint pt-1">
