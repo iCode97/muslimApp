@@ -137,7 +137,24 @@
     "importData": "Verileri İçe Aktar",
     "importConfirm": "Yedek içe aktarılsın mı? Mevcut veriler üzerine yazılır.",
     "importSuccess": "Yedek geri yüklendi — uygulama yeniden yükleniyor…",
-    "importError": "Geçersiz yedek dosyası"
+    "importError": "Geçersiz yedek dosyası",
+    "timezone": "Saat dilimi",
+    "advanced": "Gelişmiş",
+    "asrMethod": "İkindi hesaplaması",
+    "asrStandard": "Standart",
+    "asrStandardHint": "Şâfiî, Mâlikî, Hanbelî (Diyanet de)",
+    "asrHanafi": "Hanefî",
+    "asrHanafiHint": "Gölge boyu iki kat – ikindi daha geç başlar",
+    "highLatitude": "Yüksek enlemler",
+    "highLatitudeHint": "Yazın geceleri tam kararmadığında (ör. Kuzey ve Orta Avrupa) imsak ve yatsı için kural. Otomatik: 48° enlemin üzerinde açıya dayalı.",
+    "latAuto": "Otomatik",
+    "latAngle": "Açıya dayalı",
+    "latMiddle": "Gecenin ortası",
+    "latSeventh": "Gecenin yedide biri",
+    "latNone": "Yok",
+    "adjustments": "Dakika düzeltmesi",
+    "adjustmentsHint": "Her vakti dakika olarak ince ayarlayın, ör. caminizin takvimine uydurmak için.",
+    "resetAdjustments": "Sıfırla"
   },
   "common": {
     "loading": "Yükleniyor...",
@@ -529,7 +546,16 @@
     "resetAll": "Tüm ilerlemeyi sıfırla",
     "displayMode": "Görüntü Modu",
     "day": "Gün",
-    "tapToExit": "Çıkmak için dokunun"
+    "tapToExit": "Çıkmak için dokunun",
+    "nextRamadan": "Ramazan {year}",
+    "daysLeft": "{n} gün kaldı | {n} gün kaldı",
+    "startsToday": "Bugün başlıyor",
+    "expectedStart": "Tahmini başlangıç: {date}",
+    "trackerStartsHint": "Oruç ve hatim takibi Ramazan'ın başlamasıyla başlar.",
+    "showPastYear": "Ramazan {year} takibini görüntüle",
+    "hidePastYear": "Geçen yılın takibini gizle",
+    "yearLabel": "Ramazan {year}",
+    "readOnlyHint": "Yalnızca görüntüleme"
   },
   "names": {
     "title": "Esmaül Hüsna",

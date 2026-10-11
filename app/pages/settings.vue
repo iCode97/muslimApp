@@ -1,10 +1,18 @@
 <script setup lang="ts">
-import { PRAYER_METHODS } from '~/data/prayer-methods'
+import {
+  ADJUSTABLE_PRAYERS,
+  ASR_SCHOOLS,
+  LATITUDE_ADJUSTMENT_OPTIONS,
+  MAX_PRAYER_ADJUSTMENT,
+  PRAYER_METHODS,
+  type AdjustablePrayer,
+  type LatitudeAdjustmentSetting,
+} from '~/data/prayer-methods'
 import { HADITHS } from '~/data/hadiths'
 import { ALLAH_NAMES } from '~/data/allah-names'
 
 const { t, locale, setLocale, locales } = useI18n()
-const { location } = useLocation()
+const { location, ready: locationReady } = useLocation()
 const theme = useTheme()
 const notifications = useNotifications()
 const dhikrReminders = useDhikrReminders()
@@ -15,7 +23,43 @@ const haptics = useHaptics()
 const backup = useBackup()
 
 const showMethodPicker = ref(false)
+const showAdvanced = ref(false)
 const importInput = ref<HTMLInputElement | null>(null)
+
+// --- Advanced prayer calculation settings ---------------------------------
+
+const LATITUDE_LABELS: Record<string, string> = {
+  auto: 'settings.latAuto',
+  0: 'settings.latNone',
+  1: 'settings.latMiddle',
+  2: 'settings.latSeventh',
+  3: 'settings.latAngle',
+}
+
+function latitudeLabel(option: LatitudeAdjustmentSetting): string {
+  return t(LATITUDE_LABELS[String(option)] ?? 'settings.latAuto')
+}
+
+const hasAdjustments = computed(() =>
+  ADJUSTABLE_PRAYERS.some(p => prayerTimes.settings.value.adjustments[p] !== 0),
+)
+
+function adjust(prayer: AdjustablePrayer, delta: number) {
+  prayerTimes.setAdjustment(prayer, prayerTimes.settings.value.adjustments[prayer] + delta)
+}
+
+function formatAdjustment(minutes: number): string {
+  return minutes > 0 ? `+${minutes}` : String(minutes)
+}
+
+// --- Dhikr reminder time inputs --------------------------------------------
+
+function onDhikrTimeChange(slot: 'morning' | 'evening', event: Event) {
+  const [h, m] = (event.target as HTMLInputElement).value.split(':').map(Number)
+  if (h !== undefined && m !== undefined && !Number.isNaN(h) && !Number.isNaN(m)) {
+    dhikrReminders.setSlotTime(slot, h, m)
+  }
+}
 
 function onImportFile(event: Event) {
   const file = (event.target as HTMLInputElement).files?.[0]
@@ -73,7 +117,7 @@ const availableLocales = computed(() => {
 })
 
 function switchLocale(code: string) {
-  setLocale(code)
+  setLocale(code as Parameters<typeof setLocale>[0])
   if (import.meta.client) {
     localStorage.setItem('muslimapp-locale', code)
   }
@@ -151,15 +195,23 @@ const minutesOptions = [0, 5, 10, 15, 30]
         <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
           {{ t('settings.location') }}
         </h3>
-        <p v-if="location" class="text-themed-secondary">
-          📍 {{ location.displayName || `${location.city}, ${location.country}` }}
-        </p>
-        <p v-else class="text-themed-muted italic text-sm">
-          {{ t('settings.noLocation') }}
-        </p>
-        <p v-if="location" class="text-xs text-themed-faint">
-          {{ location.latitude.toFixed(4) }}°N, {{ location.longitude.toFixed(4) }}°E
-        </p>
+        <template v-if="location">
+          <!-- Tap to change (search / GPS) -->
+          <LocationSelector />
+          <p class="text-xs text-themed-faint">
+            {{ Math.abs(location.latitude).toFixed(4) }}°{{ location.latitude >= 0 ? 'N' : 'S' }},
+            {{ Math.abs(location.longitude).toFixed(4) }}°{{ location.longitude >= 0 ? 'E' : 'W' }}
+            <template v-if="location.timezone">
+              · {{ t('settings.timezone') }}: {{ location.timezone }}
+            </template>
+          </p>
+        </template>
+        <template v-else-if="locationReady">
+          <p class="text-themed-muted italic text-sm">
+            {{ t('settings.noLocation') }}
+          </p>
+          <LocationSetupCTA />
+        </template>
       </div>
     </GlassCard>
 
@@ -284,10 +336,7 @@ const minutesOptions = [0, 5, 10, 15, 30]
               type="time"
               :value="dhikrReminders.formatTime(dhikrReminders.settings.value.morning)"
               class="glass-subtle text-themed text-xs px-2 py-1 rounded-md tabular-nums"
-              @change="(e) => {
-                const [h, m] = (e.target as HTMLInputElement).value.split(':').map(Number)
-                if (!isNaN(h) && !isNaN(m)) dhikrReminders.setSlotTime('morning', h, m)
-              }"
+              @change="onDhikrTimeChange('morning', $event)"
             >
             <button
               :class="[
@@ -321,10 +370,7 @@ const minutesOptions = [0, 5, 10, 15, 30]
               type="time"
               :value="dhikrReminders.formatTime(dhikrReminders.settings.value.evening)"
               class="glass-subtle text-themed text-xs px-2 py-1 rounded-md tabular-nums"
-              @change="(e) => {
-                const [h, m] = (e.target as HTMLInputElement).value.split(':').map(Number)
-                if (!isNaN(h) && !isNaN(m)) dhikrReminders.setSlotTime('evening', h, m)
-              }"
+              @change="onDhikrTimeChange('evening', $event)"
             >
             <button
               :class="[
@@ -492,6 +538,107 @@ const minutesOptions = [0, 5, 10, 15, 30]
         <p class="text-xs text-themed-faint">
           {{ t('settings.methodHint') }}
         </p>
+
+        <!-- Advanced: Asr method, high latitudes, minute adjustments -->
+        <button
+          class="w-full flex items-center justify-between px-3 py-2 rounded-xl glass-subtle text-sm text-themed-secondary"
+          :aria-expanded="showAdvanced"
+          @click="showAdvanced = !showAdvanced"
+        >
+          <span>⚙️ {{ t('settings.advanced') }}</span>
+          <span class="text-themed-faint">{{ showAdvanced ? '▲' : '▼' }}</span>
+        </button>
+
+        <Transition name="slide">
+          <div v-if="showAdvanced" class="space-y-4 pt-1">
+            <!-- Asr juristic method -->
+            <div class="space-y-2">
+              <p class="text-xs font-medium text-themed-muted">{{ t('settings.asrMethod') }}</p>
+              <div class="grid grid-cols-2 gap-2">
+                <button
+                  v-for="school in ASR_SCHOOLS"
+                  :key="school"
+                  :class="[
+                    'py-2 px-3 rounded-xl text-left transition-all',
+                    prayerTimes.settings.value.school === school
+                      ? 'bg-[var(--color-primary)] text-white'
+                      : 'glass-subtle text-themed-secondary hover:text-themed',
+                  ]"
+                  @click="prayerTimes.setSchool(school)"
+                >
+                  <p class="text-sm font-medium">{{ t(school === 0 ? 'settings.asrStandard' : 'settings.asrHanafi') }}</p>
+                  <p class="text-[11px] opacity-75">{{ t(school === 0 ? 'settings.asrStandardHint' : 'settings.asrHanafiHint') }}</p>
+                </button>
+              </div>
+            </div>
+
+            <!-- High-latitude rule -->
+            <div class="space-y-2">
+              <p class="text-xs font-medium text-themed-muted">{{ t('settings.highLatitude') }}</p>
+              <div class="flex flex-wrap gap-2">
+                <button
+                  v-for="option in LATITUDE_ADJUSTMENT_OPTIONS"
+                  :key="String(option)"
+                  :class="[
+                    'py-1.5 px-3 rounded-lg text-xs font-medium transition-all',
+                    prayerTimes.settings.value.latitudeAdjustment === option
+                      ? 'bg-[var(--color-primary)] text-white'
+                      : 'glass-subtle text-themed-secondary hover:text-themed',
+                  ]"
+                  @click="prayerTimes.setLatitudeAdjustment(option)"
+                >
+                  {{ latitudeLabel(option) }}
+                </button>
+              </div>
+              <p class="text-[11px] text-themed-faint">{{ t('settings.highLatitudeHint') }}</p>
+            </div>
+
+            <!-- Per-prayer minute adjustments -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <p class="text-xs font-medium text-themed-muted">{{ t('settings.adjustments') }}</p>
+                <button
+                  v-if="hasAdjustments"
+                  class="text-[11px] text-themed-faint hover:text-themed-secondary transition-colors"
+                  @click="prayerTimes.resetAdjustments()"
+                >
+                  {{ t('settings.resetAdjustments') }}
+                </button>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                <div
+                  v-for="prayer in ADJUSTABLE_PRAYERS"
+                  :key="prayer"
+                  class="flex items-center justify-between gap-2 glass-subtle rounded-xl px-3 py-1.5"
+                >
+                  <span class="text-sm text-themed-secondary">{{ t(`prayer.${prayer.toLowerCase()}`) }}</span>
+                  <div class="flex items-center gap-1.5">
+                    <button
+                      class="w-7 h-7 rounded-lg glass-subtle text-themed-secondary hover:text-themed text-sm font-bold disabled:opacity-40"
+                      :disabled="prayerTimes.settings.value.adjustments[prayer] <= -MAX_PRAYER_ADJUSTMENT"
+                      :aria-label="`${t(`prayer.${prayer.toLowerCase()}`)} −1 min`"
+                      @click="adjust(prayer, -1)"
+                    >
+                      −
+                    </button>
+                    <span class="w-14 text-center text-xs tabular-nums text-themed">
+                      {{ formatAdjustment(prayerTimes.settings.value.adjustments[prayer]) }} min
+                    </span>
+                    <button
+                      class="w-7 h-7 rounded-lg glass-subtle text-themed-secondary hover:text-themed text-sm font-bold disabled:opacity-40"
+                      :disabled="prayerTimes.settings.value.adjustments[prayer] >= MAX_PRAYER_ADJUSTMENT"
+                      :aria-label="`${t(`prayer.${prayer.toLowerCase()}`)} +1 min`"
+                      @click="adjust(prayer, 1)"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <p class="text-[11px] text-themed-faint">{{ t('settings.adjustmentsHint') }}</p>
+            </div>
+          </div>
+        </Transition>
       </div>
     </GlassCard>
 
@@ -589,7 +736,7 @@ const minutesOptions = [0, 5, 10, 15, 30]
           {{ t('settings.about') }}
         </h3>
         <p class="text-themed-muted text-sm">
-          MuslimApp v2.0.0
+          MuslimApp v0.6.0
         </p>
         <p class="text-themed-faint text-xs">
           {{ t('settings.apiInfo') }}
