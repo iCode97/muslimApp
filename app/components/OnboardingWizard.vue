@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * First-run onboarding wizard.
- * Steps: Welcome → Location → Method → Notifications → Nav picker → Done.
+ * Steps: Welcome → Location → Method → Notifications → Knowledge level → Done.
  * Shown automatically on the first visit, and re-openable from Settings.
  */
 import { PRAYER_METHODS } from '~/data/prayer-methods'
@@ -11,7 +11,8 @@ const onboarding = useOnboarding()
 const { location, loading: locLoading, detectGPS, searchLocations, selectSuggestion, suggestions, clearSuggestions } = useLocation()
 const notifications = useNotifications()
 const prayerTimes = usePrayerTimes()
-const nav = useNavigation()
+const knowledge = useKnowledgeLevel()
+const haptics = useHaptics()
 
 const searchQuery = ref('')
 let searchTimeout: ReturnType<typeof setTimeout>
@@ -21,7 +22,7 @@ const steps = [
   { key: 'location', icon: '📍' },
   { key: 'method', icon: '🕌' },
   { key: 'notifications', icon: '🔔' },
-  { key: 'nav', icon: '🧭' },
+  { key: 'level', icon: '🎓' },
   { key: 'done', icon: '✨' },
 ] as const
 
@@ -92,8 +93,7 @@ const progressPct = computed(() =>
     >
       <div
         v-if="onboarding.isOpen.value"
-        class="fixed inset-0 z-[100] flex items-end md:items-center justify-center p-0 md:p-6"
-        style="background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);"
+        class="onboarding-overlay fixed inset-0 z-[100] flex items-end md:items-center justify-center p-0 md:p-6"
       >
         <Transition
           enter-active-class="transition-all duration-400 ease-out"
@@ -103,7 +103,10 @@ const progressPct = computed(() =>
         >
           <div
             v-if="onboarding.isOpen.value"
-            class="glass-strong w-full md:max-w-lg rounded-t-3xl md:rounded-3xl overflow-hidden flex flex-col max-h-[90dvh]"
+            class="onboarding-sheet w-full md:max-w-lg rounded-t-3xl md:rounded-3xl overflow-hidden flex flex-col max-h-[90dvh]"
+            role="dialog"
+            aria-modal="true"
+            :aria-label="t('onboarding.dialogLabel')"
           >
             <!-- Progress bar -->
             <div class="h-1 w-full bg-[var(--glass-bg-subtle)]">
@@ -118,7 +121,7 @@ const progressPct = computed(() =>
               <div class="text-3xl">{{ currentStep?.icon }}</div>
               <button
                 v-if="onboarding.step.value < maxStep"
-                class="text-xs text-themed-faint hover:text-themed-secondary transition-colors"
+                class="text-xs text-themed-faint hover:text-themed-secondary transition-colors px-2 py-2 -mr-2"
                 @click="skip"
               >
                 {{ t('onboarding.skip') }}
@@ -189,27 +192,31 @@ const progressPct = computed(() =>
                   <div class="flex-1 h-px bg-[var(--glass-border)]" />
                 </div>
 
-                <div class="relative">
+                <div class="space-y-2">
                   <GlassInput
                     v-model="searchQuery"
                     :placeholder="t('prayer.searchCity')"
                     icon="🔍"
                     @update:model-value="onSearchInput"
                   />
-                  <div
+                  <!-- Suggestions render inline in the flow (no absolute positioning,
+                       so the scrollable body never clips them) -->
+                  <ul
                     v-if="suggestions.length > 0"
-                    class="absolute left-0 right-0 top-full mt-1 glass-strong rounded-xl overflow-hidden z-50 shadow-lg max-h-60 overflow-y-auto"
+                    class="rounded-xl overflow-hidden border border-[var(--glass-border)] bg-[var(--glass-bg-subtle)]"
+                    :aria-label="t('onboarding.citySuggestions')"
                   >
-                    <button
-                      v-for="(s, i) in suggestions"
-                      :key="i"
-                      class="w-full text-left px-4 py-3 text-sm hover:bg-[var(--color-primary)]/10 transition-colors border-b border-[var(--glass-border)] last:border-b-0 flex items-center gap-2"
-                      @click="handleSelect(s)"
-                    >
-                      <span>📍</span>
-                      <span class="truncate">{{ s.displayName }}</span>
-                    </button>
-                  </div>
+                    <li v-for="(s, i) in suggestions" :key="i" class="border-b border-[var(--glass-border)] last:border-b-0">
+                      <button
+                        type="button"
+                        class="w-full text-left px-4 py-3 min-h-[2.75rem] text-sm hover:bg-[var(--color-primary)]/10 transition-colors flex items-center gap-2"
+                        @click="handleSelect(s)"
+                      >
+                        <span aria-hidden="true">📍</span>
+                        <span class="truncate">{{ s.displayName }}</span>
+                      </button>
+                    </li>
+                  </ul>
                 </div>
               </div>
 
@@ -276,35 +283,39 @@ const progressPct = computed(() =>
                 </p>
               </div>
 
-              <!-- Step 4: Nav picker -->
-              <div v-else-if="currentStep?.key === 'nav'" class="space-y-4">
+              <!-- Step 4: Knowledge level -->
+              <div v-else-if="currentStep?.key === 'level'" class="space-y-4">
                 <h2 class="text-xl font-bold tracking-tight">
-                  {{ t('onboarding.navTitle') }}
+                  {{ t('onboarding.levelTitle') }}
                 </h2>
                 <p class="text-themed-secondary text-sm">
-                  {{ t('onboarding.navBody') }}
+                  {{ t('onboarding.levelBody') }}
                 </p>
-                <div class="grid grid-cols-3 gap-2">
+                <div class="space-y-2" role="radiogroup" :aria-label="t('onboarding.levelTitle')">
                   <button
-                    v-for="item in nav.mobileChoosableItems.value"
-                    :key="item.id"
+                    v-for="lvl in knowledge.levels"
+                    :key="lvl.id"
+                    type="button"
+                    role="radio"
+                    :aria-checked="knowledge.level.value === lvl.id"
                     :class="[
-                      'flex flex-col items-center gap-1 py-3 px-1 rounded-xl transition-all text-[11px]',
-                      item.selected
+                      'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition-all active:scale-[0.99]',
+                      knowledge.level.value === lvl.id
                         ? 'glass-primary text-[var(--color-primary-light)]'
-                        : 'glass-subtle text-themed-faint',
-                      !item.selected && nav.mobileNavIds.value.length >= nav.maxMobileItems
-                        ? 'opacity-40 pointer-events-none'
-                        : '',
+                        : 'glass-subtle text-themed-secondary hover:text-themed',
                     ]"
-                    @click="nav.toggleMobileNavItem(item.id)"
+                    @click="haptics.light(); knowledge.setLevel(lvl.id)"
                   >
-                    <AppIcon :name="item.icon" :size="20" />
-                    <span class="leading-tight text-center">{{ t(item.label) }}</span>
+                    <span class="text-2xl" aria-hidden="true">{{ lvl.emoji }}</span>
+                    <span class="flex-1 min-w-0">
+                      <span class="block text-sm font-semibold">{{ t(`knowledge.${lvl.id}`) }}</span>
+                      <span class="block text-xs text-themed-muted mt-0.5">{{ t(`knowledge.${lvl.id}Desc`) }}</span>
+                    </span>
+                    <span v-if="knowledge.level.value === lvl.id" aria-hidden="true">✓</span>
                   </button>
                 </div>
                 <p class="text-xs text-themed-faint text-center">
-                  {{ nav.mobileNavIds.value.length }}/{{ nav.maxMobileItems }} {{ t('onboarding.navSelected') }}
+                  {{ t('knowledge.changeHint') }}
                 </p>
               </div>
 
@@ -321,7 +332,7 @@ const progressPct = computed(() =>
             </div>
 
             <!-- Footer: step dots + nav buttons -->
-            <div class="px-6 pt-3 pb-5 border-t border-[var(--glass-border)] space-y-3">
+            <div class="onboarding-footer px-6 pt-3 border-t border-[var(--glass-border)] space-y-3">
               <!-- Step dots -->
               <div class="flex items-center justify-center gap-1.5">
                 <span
@@ -371,3 +382,23 @@ const progressPct = computed(() =>
     </Transition>
   </Teleport>
 </template>
+
+<style scoped>
+/* Fully cover the page (incl. the bottom nav) */
+.onboarding-overlay {
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Opaque sheet so nothing behind it shines through */
+.onboarding-sheet {
+  background: linear-gradient(160deg, var(--color-bg-start), var(--color-bg-end));
+  border: 1px solid var(--glass-border-strong);
+  box-shadow: 0 -24px 48px -12px rgba(0, 0, 0, 0.5);
+}
+
+.onboarding-footer {
+  padding-bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+}
+</style>

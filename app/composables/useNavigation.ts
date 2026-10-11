@@ -1,8 +1,10 @@
 /**
  * Navigation composable.
- * - Desktop: shows all nav items in the sidebar
- * - Mobile: user can customize which items appear in the bottom nav (max 5)
- *   "Start" (dashboard) is always pinned at position 1
+ *
+ * Information architecture:
+ * - Mobile: FIXED bottom bar with 5 tabs — Heute · Gebet · Koran · Lernen · Mehr.
+ *   Personalisation lives in the Favorites row on /more (see useFavoriteTools).
+ * - Desktop: sidebar with primary group, tools group and footer (Settings/About).
  */
 
 export interface NavItem {
@@ -10,18 +12,37 @@ export interface NavItem {
   path: string
   /** AppIcon name — resolved to inline SVG in the layout. */
   icon: string
+  /** i18n key (desktop sidebar + generic usage). */
   label: string
-  /** Items grouped under /more routes for active detection */
-  childRoutes?: string[]
 }
 
-/** All available navigation items. `icon` values map to AppIcon names. */
+/** A tool that lives in the /more hub and can be pinned as a favorite. */
+export interface ToolItem {
+  id: string
+  path: string
+  icon: string
+  /** i18n key — short name. */
+  label: string
+  /** i18n key — one-line description. */
+  desc: string
+}
+
+export interface MobileTab {
+  id: string
+  path: string
+  icon: string
+  /** i18n key — short label that must fit 5 tabs at 320px width. */
+  label: string
+  /** Route prefixes for which this tab counts as active. */
+  match: string[]
+}
+
+/** All navigation items. `icon` values map to AppIcon names. */
 export const ALL_NAV_ITEMS: NavItem[] = [
   { id: 'dashboard', path: '/', icon: 'dashboard', label: 'nav.dashboard' },
   { id: 'prayer', path: '/prayer', icon: 'prayer', label: 'nav.prayer' },
-  { id: 'tracker', path: '/tracker', icon: 'tracker', label: 'nav.tracker' },
   { id: 'quran', path: '/quran', icon: 'quran', label: 'nav.quran' },
-  { id: 'favorites', path: '/favorites', icon: 'heart', label: 'nav.favorites' },
+  { id: 'learn', path: '/learn', icon: 'learn', label: 'nav.learn' },
   { id: 'calendar', path: '/calendar', icon: 'calendar', label: 'nav.calendar' },
   { id: 'tasbih', path: '/tasbih', icon: 'tasbih', label: 'nav.tasbih' },
   { id: 'qibla', path: '/qibla', icon: 'qibla', label: 'nav.qibla' },
@@ -31,135 +52,94 @@ export const ALL_NAV_ITEMS: NavItem[] = [
   { id: 'guide', path: '/guide', icon: 'guide', label: 'nav.guide' },
   { id: 'seerah', path: '/seerah', icon: 'seerah', label: 'nav.seerah' },
   { id: 'ramadan', path: '/ramadan', icon: 'ramadan', label: 'nav.ramadan' },
+  { id: 'tracker', path: '/tracker', icon: 'tracker', label: 'nav.tracker' },
   { id: 'zakat', path: '/zakat', icon: 'zakat', label: 'nav.zakat' },
+  { id: 'favorites', path: '/favorites', icon: 'heart', label: 'nav.favorites' },
   { id: 'settings', path: '/settings', icon: 'settings', label: 'nav.settings' },
   { id: 'about', path: '/about', icon: 'about', label: 'nav.about' },
 ]
 
+function pick(ids: string[]): NavItem[] {
+  return ids
+    .map(id => ALL_NAV_ITEMS.find(i => i.id === id))
+    .filter((i): i is NavItem => !!i)
+}
+
 /** Desktop sidebar groups */
-export const DESKTOP_PRIMARY_ITEMS = ALL_NAV_ITEMS.filter(i =>
-  ['dashboard', 'prayer', 'tracker', 'quran', 'calendar'].includes(i.id)
-)
+export const DESKTOP_PRIMARY_ITEMS = pick(['dashboard', 'prayer', 'quran', 'learn', 'calendar'])
+export const DESKTOP_TOOLS_ITEMS = pick([
+  'tasbih', 'qibla', 'dua', 'hadith', 'names', 'guide', 'seerah', 'ramadan',
+  'tracker', 'zakat', 'favorites',
+])
+export const DESKTOP_FOOTER_ITEMS = pick(['settings', 'about'])
 
-export const DESKTOP_TOOLS_ITEMS = ALL_NAV_ITEMS.filter(i =>
-  ['tasbih', 'qibla', 'dua', 'hadith', 'names', 'guide', 'seerah', 'ramadan', 'zakat', 'favorites'].includes(i.id)
-)
-
-export const DESKTOP_FOOTER_ITEMS = ALL_NAV_ITEMS.filter(i =>
-  ['settings', 'about'].includes(i.id)
-)
-
-/** Mobile: items the user can choose from (excludes dashboard which is pinned) */
-const MOBILE_CHOOSABLE_IDS = [
-  'prayer', 'tracker', 'quran', 'favorites', 'calendar', 'tasbih', 'qibla',
-  'dua', 'hadith', 'names', 'guide', 'seerah', 'ramadan', 'zakat', 'settings',
+/** Mobile bottom bar — fixed, not user-customizable. */
+export const MOBILE_TABS: MobileTab[] = [
+  { id: 'today', path: '/', icon: 'dashboard', label: 'nav.tabToday', match: ['/'] },
+  { id: 'prayer', path: '/prayer', icon: 'prayer', label: 'nav.tabPrayer', match: ['/prayer', '/tracker'] },
+  { id: 'quran', path: '/quran', icon: 'quran', label: 'nav.tabQuran', match: ['/quran', '/favorites'] },
+  { id: 'learn', path: '/learn', icon: 'learn', label: 'nav.tabLearn', match: ['/learn', '/guide', '/seerah', '/names', '/hadith'] },
+  {
+    id: 'more',
+    path: '/more',
+    icon: 'more',
+    label: 'nav.tabMore',
+    match: ['/more', '/tasbih', '/qibla', '/dua', '/calendar', '/ramadan', '/zakat', '/settings', '/about'],
+  },
 ]
 
-/** Default mobile nav bar (dashboard + 4 others) */
-const DEFAULT_MOBILE_NAV_IDS = ['prayer', 'quran', 'calendar', 'settings']
+/** Tools shown in the "Werkzeuge" section of /more (all can be pinned). */
+export const TOOL_ITEMS: ToolItem[] = [
+  { id: 'tasbih', path: '/tasbih', icon: 'tasbih', label: 'nav.tasbih', desc: 'more.tasbihDesc' },
+  { id: 'qibla', path: '/qibla', icon: 'qibla', label: 'nav.qibla', desc: 'more.qiblaDesc' },
+  { id: 'dua', path: '/dua', icon: 'dua', label: 'nav.dua', desc: 'more.duaDesc' },
+  { id: 'calendar', path: '/calendar', icon: 'calendar', label: 'nav.calendar', desc: 'more.calendarDesc' },
+  { id: 'ramadan', path: '/ramadan', icon: 'ramadan', label: 'nav.ramadan', desc: 'more.ramadanDesc' },
+  { id: 'tracker', path: '/tracker', icon: 'tracker', label: 'nav.tracker', desc: 'more.trackerDesc' },
+  { id: 'zakat', path: '/zakat', icon: 'zakat', label: 'nav.zakat', desc: 'more.zakatDesc' },
+  { id: 'favorites', path: '/favorites', icon: 'heart', label: 'nav.favorites', desc: 'more.favoritesDesc' },
+]
 
-const MOBILE_NAV_STORAGE_KEY = 'muslimapp-mobile-nav'
-const MOBILE_MAX_ITEMS = 4 // plus dashboard = 5 total
+/**
+ * Tools that live elsewhere (Learn hub) but can still end up in the
+ * favorites list, e.g. via migration from the old customizable nav.
+ */
+export const EXTRA_FAVORITABLE_ITEMS: ToolItem[] = [
+  { id: 'hadith', path: '/hadith', icon: 'hadith', label: 'nav.hadith', desc: 'more.hadithDesc' },
+  { id: 'names', path: '/names', icon: 'names', label: 'nav.names', desc: 'more.namesDesc' },
+  { id: 'guide', path: '/guide', icon: 'guide', label: 'nav.guide', desc: 'more.guideDesc' },
+  { id: 'seerah', path: '/seerah', icon: 'seerah', label: 'nav.seerah', desc: 'more.seerahDesc' },
+]
+
+export const FAVORITABLE_ITEMS: ToolItem[] = [...TOOL_ITEMS, ...EXTRA_FAVORITABLE_ITEMS]
+
+/** App section of /more — always reachable. */
+export const APP_ITEMS: ToolItem[] = [
+  { id: 'settings', path: '/settings', icon: 'settings', label: 'nav.settings', desc: 'more.settingsDesc' },
+  { id: 'about', path: '/about', icon: 'about', label: 'more.about', desc: 'more.aboutDesc' },
+]
+
+function normalize(path: string): string {
+  return path.length > 1 && path.endsWith('/') ? path.slice(0, -1) : path
+}
+
+function matchesPrefix(routePath: string, prefix: string): boolean {
+  const p = normalize(routePath)
+  if (prefix === '/') return p === '/'
+  return p === prefix || p.startsWith(`${prefix}/`)
+}
 
 export function useNavigation() {
   const route = useRoute()
 
-  /** IDs of items selected for mobile nav (excluding dashboard) */
-  const mobileNavIds = useState<string[]>('mobile-nav-ids', () => [...DEFAULT_MOBILE_NAV_IDS])
-  const isEditingMobileNav = useState<boolean>('mobile-nav-editing', () => false)
-
-  function loadMobileNav() {
-    if (import.meta.server) return
-    const saved = localStorage.getItem(MOBILE_NAV_STORAGE_KEY)
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved) as string[]
-        // Validate: only keep known choosable IDs, cap at max
-        const valid = parsed.filter(id => MOBILE_CHOOSABLE_IDS.includes(id))
-        if (valid.length > 0) {
-          mobileNavIds.value = valid.slice(0, MOBILE_MAX_ITEMS)
-        }
-      } catch {
-        localStorage.removeItem(MOBILE_NAV_STORAGE_KEY)
-      }
-    }
-  }
-
-  function saveMobileNav() {
-    if (import.meta.client) {
-      localStorage.setItem(MOBILE_NAV_STORAGE_KEY, JSON.stringify(mobileNavIds.value))
-    }
-  }
-
-  /** Toggle an item in/out of the mobile nav */
-  function toggleMobileNavItem(id: string) {
-    if (!MOBILE_CHOOSABLE_IDS.includes(id)) return
-    const idx = mobileNavIds.value.indexOf(id)
-    if (idx >= 0) {
-      // Remove — but don't allow empty
-      if (mobileNavIds.value.length > 1) {
-        mobileNavIds.value = mobileNavIds.value.filter(i => i !== id)
-      }
-    } else if (mobileNavIds.value.length < MOBILE_MAX_ITEMS) {
-      mobileNavIds.value = [...mobileNavIds.value, id]
-    }
-    saveMobileNav()
-  }
-
-  /** Move a mobile nav item up or down */
-  function moveMobileNavItem(id: string, direction: 'up' | 'down') {
-    const idx = mobileNavIds.value.indexOf(id)
-    if (idx < 0) return
-    const swap = direction === 'up' ? idx - 1 : idx + 1
-    if (swap < 0 || swap >= mobileNavIds.value.length) return
-    const arr = [...mobileNavIds.value]
-    const temp = arr[idx]!
-    arr[idx] = arr[swap]!
-    arr[swap] = temp
-    mobileNavIds.value = arr
-    saveMobileNav()
-  }
-
-  function resetMobileNav() {
-    mobileNavIds.value = [...DEFAULT_MOBILE_NAV_IDS]
-    saveMobileNav()
-  }
-
-  /** Reorder mobile nav entries via drag-and-drop. */
-  function reorderMobileNav(fromId: string, toId: string) {
-    if (fromId === toId) return
-    const list = [...mobileNavIds.value]
-    const fromIdx = list.indexOf(fromId)
-    const toIdx = list.indexOf(toId)
-    if (fromIdx < 0 || toIdx < 0) return
-    const [moved] = list.splice(fromIdx, 1)
-    if (!moved) return
-    list.splice(toIdx, 0, moved)
-    mobileNavIds.value = list
-    saveMobileNav()
-  }
-
-  /** The actual mobile nav items: dashboard pinned first + user selection */
-  const mobileNavItems = computed<NavItem[]>(() => {
-    const dashboard = ALL_NAV_ITEMS.find(i => i.id === 'dashboard')!
-    const selected = mobileNavIds.value
-      .map(id => ALL_NAV_ITEMS.find(i => i.id === id))
-      .filter((i): i is NavItem => !!i)
-    return [dashboard, ...selected]
-  })
-
-  /** All choosable items for the config UI */
-  const mobileChoosableItems = computed(() =>
-    MOBILE_CHOOSABLE_IDS.map(id => ({
-      ...ALL_NAV_ITEMS.find(i => i.id === id)!,
-      selected: mobileNavIds.value.includes(id),
-    }))
-  )
-
-  /** Route-matching logic */
+  /** Generic route matching (desktop sidebar). */
   function isActive(path: string): boolean {
-    if (path === '/') return route.path === '/'
-    return route.path.startsWith(path)
+    return matchesPrefix(route.path, path)
+  }
+
+  /** Is the given mobile tab active for the current route? */
+  function isTabActive(tab: MobileTab): boolean {
+    return tab.match.some(prefix => matchesPrefix(route.path, prefix))
   }
 
   return {
@@ -168,17 +148,9 @@ export function useNavigation() {
     desktopToolsItems: DESKTOP_TOOLS_ITEMS,
     desktopFooterItems: DESKTOP_FOOTER_ITEMS,
     // Mobile
-    mobileNavItems,
-    mobileNavIds,
-    mobileChoosableItems,
-    isEditingMobileNav,
-    loadMobileNav,
-    toggleMobileNavItem,
-    moveMobileNavItem,
-    reorderMobileNav,
-    resetMobileNav,
+    mobileTabs: MOBILE_TABS,
+    isTabActive,
     // Shared
     isActive,
-    maxMobileItems: MOBILE_MAX_ITEMS,
   }
 }

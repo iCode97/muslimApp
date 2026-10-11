@@ -4,7 +4,7 @@
     "tagline": "Your Islamic companion"
   },
   "nav": {
-    "dashboard": "Home",
+    "dashboard": "Today",
     "prayer": "Prayer Times",
     "quran": "Quran",
     "calendar": "Calendar",
@@ -19,14 +19,17 @@
     "seerah": "Seerah",
     "ramadan": "Ramadan",
     "about": "About",
-    "editNav": "Edit Navigation",
-    "editNavDone": "Done",
-    "editNavReset": "Reset",
-    "editNavHint": "Choose up to 4 items for your navigation bar",
-    "editNavOrder": "Order (drag to rearrange)",
     "tracker": "Tracker",
     "zakat": "Zakat",
-    "favorites": "Favorites"
+    "favorites": "Verse Favorites",
+    "learn": "Learn",
+    "tabToday": "Today",
+    "tabPrayer": "Prayer",
+    "tabQuran": "Quran",
+    "tabLearn": "Learn",
+    "tabMore": "More",
+    "mainLabel": "Main navigation",
+    "footerLabel": "App navigation"
   },
   "dashboard": {
     "greeting": "Assalamu Alaikum",
@@ -227,8 +230,6 @@
     "seerahDesc": "The Life of Prophet Muhammad ﷺ",
     "ramadan": "Ramadan Mode",
     "ramadanDesc": "Fasting tracker, Iftar/Suhoor times & Khatam",
-    "comingSoon": "Coming soon",
-    "settingsSection": "Settings",
     "settingsDesc": "Language, appearance & more",
     "installApp": "Install App",
     "installDesc": "Add MuslimApp to your home screen",
@@ -240,7 +241,19 @@
     "zakat": "Zakat Calculator",
     "zakatDesc": "Calculate zakat on your wealth (2.5%)",
     "favorites": "Verse Favorites",
-    "favoritesDesc": "Your saved Quran verses"
+    "favoritesDesc": "Your saved Quran verses",
+    "calendar": "Calendar",
+    "calendarDesc": "Hijri calendar & Islamic holidays",
+    "favoritesTitle": "Favorites",
+    "favoritesEdit": "Edit",
+    "favoritesDone": "Done",
+    "favoritesEmpty": "Tap the star on a tool to pin it here (up to {max}).",
+    "favoritesFull": "You can pin at most {max} favorites.",
+    "moveUp": "Move {name} up",
+    "moveDown": "Move {name} down",
+    "addFavorite": "Add {name} to favorites",
+    "removeFavorite": "Remove {name} from favorites",
+    "appSection": "App"
   },
   "tasbih": {
     "title": "Tasbih",
@@ -310,12 +323,53 @@
     "notificationsEnabled": "Notifications are active",
     "backgroundSupported": "✓ Works even when the app is closed.",
     "backgroundLimited": "Note: On your device, notifications only fire while the app is open.",
-    "navTitle": "Your navigation bar",
-    "navBody": "Pick up to four sections to keep within reach on mobile. You can change this later.",
-    "navSelected": "selected",
     "doneTitle": "All set",
     "doneBody": "May the app be a faithful companion. Barakallahu fik.",
-    "reopen": "Re-open setup"
+    "reopen": "Re-open setup",
+    "levelTitle": "Your level of knowledge",
+    "levelBody": "Tell us where you are right now. We will highlight the learning content that fits you.",
+    "dialogLabel": "Setup",
+    "citySuggestions": "City suggestions"
+  },
+  "knowledge": {
+    "discover": "Discover",
+    "discoverDesc": "I am new to Islam or want to learn the basics.",
+    "practice": "Practise",
+    "practiceDesc": "I already practise and want to deepen my daily routine.",
+    "deepen": "Deepen",
+    "deepenDesc": "I know the basics and want to expand my knowledge.",
+    "changeHint": "You can change this anytime under “Learn”."
+  },
+  "learn": {
+    "title": "Learn",
+    "subtitle": "Knowledge for every step of your journey",
+    "levelHeading": "Your level of knowledge",
+    "levelHint": "Choose your level to highlight matching content.",
+    "yourLevel": "Your level",
+    "comingSoon": "Coming soon",
+    "quranDesc": "Read, listen and understand",
+    "upcoming": {
+      "basics": "Foundations of Islam",
+      "basicsDesc": "The five pillars and key terms explained simply",
+      "newMuslim": "New to Islam",
+      "newMuslimDesc": "A gentle start for new Muslims and the curious",
+      "fiqh": "Everyday Fiqh",
+      "fiqhDesc": "Islamic rulings for work, food, travel and more",
+      "aqida": "Aqidah",
+      "aqidaDesc": "Understand the creed in detail",
+      "glossary": "Glossary",
+      "glossaryDesc": "Key Islamic terms from A to Z",
+      "faq": "FAQ",
+      "faqDesc": "Answers to common questions"
+    }
+  },
+  "error": {
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "This page does not exist or has been moved.",
+    "genericTitle": "Something went wrong",
+    "genericBody": "An unexpected error occurred. Please try again.",
+    "backHome": "Back to home",
+    "retry": "Try again"
   },
   "dua": {
     "title": "Supplications",
