@@ -55,6 +55,9 @@ const LOCALE_MAP: Record<string, string> = {
 
 const CACHE_PREFIX = 'muslimapp-quran'
 
+// Guards against out-of-order responses when the user switches surahs quickly
+let verseFetchToken = 0
+
 export function useQuran() {
   const config = useRuntimeConfig()
   const { t, locale } = useI18n()
@@ -63,6 +66,7 @@ export function useQuran() {
   const surahs = useState<Surah[]>('quran-surahs', () => [])
   const surahsLocale = useState<string>('quran-surahs-locale', () => '')
   const currentVerses = useState<Verse[]>('quran-verses', () => [])
+  const verseCache = useState<Record<number, Verse[]>>('quran-verse-cache', () => ({}))
   const loading = ref(false)
   const searchLoading = ref(false)
   const error = ref<string | null>(null)
@@ -147,11 +151,21 @@ export function useQuran() {
     }
   }
 
-  // Fetch verses for a specific surah with translations
-  // Checks IndexedDB (offline) first, then localStorage cache, then API
-  async function fetchVerses(surahId: number, page: number = 1, perPage: number = 50): Promise<void> {
-    loading.value = true
+  // Fetch ALL verses of a surah with translations (a surah has at most 286 verses,
+  // the API serves up to 300 per page). Order: memory → IndexedDB (offline) → API.
+  async function fetchVerses(surahId: number): Promise<void> {
+    const token = ++verseFetchToken
     error.value = null
+
+    // 0. Session memory cache
+    const memory = verseCache.value[surahId]
+    if (memory) {
+      currentVerses.value = memory
+      loading.value = false
+      return
+    }
+
+    loading.value = true
 
     // 1. Try IndexedDB offline storage first
     if (import.meta.client) {
@@ -159,6 +173,8 @@ export function useQuran() {
         const offlineQuran = useOfflineQuran()
         const offlineVerses = await offlineQuran.getSurahOffline(surahId)
         if (offlineVerses && offlineVerses.length > 0) {
+          if (token !== verseFetchToken) return
+          verseCache.value = { ...verseCache.value, [surahId]: offlineVerses }
           currentVerses.value = offlineVerses
           loading.value = false
           return
@@ -168,23 +184,16 @@ export function useQuran() {
       }
     }
 
-    // 2. Try localStorage cache
-    const cacheKey = `${CACHE_PREFIX}-surah-${surahId}-p${page}`
+    // Drop legacy per-page caches (they only ever held the first 50 verses)
     if (import.meta.client) {
-      const cached = localStorage.getItem(cacheKey)
-      if (cached) {
-        try {
-          currentVerses.value = JSON.parse(cached)
-          loading.value = false
-          return
-        }
-        catch {
-          localStorage.removeItem(cacheKey)
-        }
-      }
+      try {
+        Object.keys(localStorage)
+          .filter(k => /^muslimapp-quran-surah-\d+-p\d+$/.test(k))
+          .forEach(k => localStorage.removeItem(k))
+      } catch { /* storage unavailable */ }
     }
 
-    // 3. Fetch from API
+    // 2. Fetch from API (the service worker keeps a copy for offline re-reads)
     try {
       const translationIds = `${TRANSLATIONS.turkish},${TRANSLATIONS.german},${TRANSLATIONS.english}`
 
@@ -215,15 +224,16 @@ export function useQuran() {
           params: {
             translations: translationIds,
             language: apiLang(),
-            per_page: perPage,
-            page,
+            per_page: 300,
             fields: 'verse_key',
           },
         }),
       ])
 
-      currentVerses.value = translationRes.verses.map((tv, index) => {
-        const arabicVerse = arabicRes.verses[index + (page - 1) * perPage]
+      if (token !== verseFetchToken) return
+
+      const verses: Verse[] = translationRes.verses.map((tv, index) => {
+        const arabicVerse = arabicRes.verses.find(a => a.verse_key === tv.verse_key) ?? arabicRes.verses[index]
         return {
           id: tv.id,
           verseNumber: tv.verse_number,
@@ -238,16 +248,16 @@ export function useQuran() {
         }
       })
 
-      if (import.meta.client) {
-        localStorage.setItem(cacheKey, JSON.stringify(currentVerses.value))
-      }
+      verseCache.value = { ...verseCache.value, [surahId]: verses }
+      currentVerses.value = verses
     }
     catch (err) {
+      if (token !== verseFetchToken) return
       error.value = t('errors.verseLoad')
       console.error('Quran verses fetch error:', err)
     }
     finally {
-      loading.value = false
+      if (token === verseFetchToken) loading.value = false
     }
   }
 

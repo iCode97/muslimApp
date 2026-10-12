@@ -12,6 +12,8 @@
  *    same URL → cached "/" as last resort. Never cache-first, so a deploy is
  *    picked up on the next online navigation.
  *  - Aladhan proxy (/api/aladhan/**) and api.quran.com: NetworkFirst + expiry.
+ *  - Quran verse / word audio (verses.quran.com, audio.qurancdn.com, mirrors.quranicaudio.com):
+ *    CacheFirst on whole files, answered as byte ranges (needed by <audio> in Safari).
  *  - Google Fonts: stylesheets StaleWhileRevalidate, font files CacheFirst.
  *  - Nominatim geocoding: network only.
  *
@@ -23,6 +25,7 @@ import { NavigationRoute, registerRoute, setCatchHandler } from 'workbox-routing
 import { CacheFirst, NetworkFirst, NetworkOnly, StaleWhileRevalidate } from 'workbox-strategies'
 import { ExpirationPlugin } from 'workbox-expiration'
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
+import { RangeRequestsPlugin } from 'workbox-range-requests'
 import { clientsClaim } from 'workbox-core'
 
 declare let self: ServiceWorkerGlobalScope
@@ -145,6 +148,37 @@ registerRoute(
       new ExpirationPlugin({ maxEntries: 300, maxAgeSeconds: 90 * DAY, purgeOnQuotaError: true }),
     ],
   }),
+)
+
+// Quran verse + word-by-word audio. These hosts send `Access-Control-Allow-Origin: *` and the
+// app loads them with crossOrigin="anonymous", so responses are cacheable (not opaque) and
+// RangeRequestsPlugin can answer byte-range requests from a cached full file.
+const QURAN_AUDIO_CACHE = 'muslimapp-quran-audio'
+const QURAN_AUDIO_HOSTS = new Set(['verses.quran.com', 'audio.qurancdn.com', 'mirrors.quranicaudio.com'])
+const quranAudioStrategy = new CacheFirst({
+  cacheName: QURAN_AUDIO_CACHE,
+  plugins: [
+    new CacheableResponsePlugin({ statuses: [200] }),
+    new RangeRequestsPlugin(),
+    new ExpirationPlugin({ maxEntries: 300, maxAgeSeconds: 90 * DAY, purgeOnQuotaError: true }),
+  ],
+})
+registerRoute(
+  ({ url }) => QURAN_AUDIO_HOSTS.has(url.hostname),
+  async ({ request, event }) => {
+    // Media elements ask for `Range: bytes=0-` and get a 206, which can't be cached. On a miss we
+    // pass that request through and fetch the whole file once in the background to fill the cache.
+    if (request.headers.has('range')) {
+      const cache = await caches.open(QURAN_AUDIO_CACHE)
+      if (!(await cache.match(request.url))) {
+        event.waitUntil(
+          quranAudioStrategy.handle({ request: new Request(request.url, { mode: 'cors' }), event }).catch(() => {}),
+        )
+        return fetch(request)
+      }
+    }
+    return quranAudioStrategy.handle({ request, event })
+  },
 )
 
 // Google Fonts stylesheets

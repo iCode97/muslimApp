@@ -6,13 +6,19 @@
  */
 
 import type { Verse } from '~/composables/useQuran'
+import { parseVerseTarget } from '~/utils/quran'
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
 const route = useRoute()
+const router = useRouter()
 const quran = useQuran()
 const { save: saveBookmark } = useBookmark()
 const progress = useProgress('quran', 114)
 const favorites = useFavorites()
+const reader = useReaderSettings()
+const audio = useQuranAudio()
+const wordApi = useQuranWords()
+const translit = useQuranTransliteration()
 
 const surahId = computed(() => Number(route.params.surah))
 
@@ -21,59 +27,135 @@ const surah = computed(() => quran.getSurah(surahId.value))
 // useQuran exposes readonly state; VerseDisplay takes the plain Verse shape.
 const verses = computed(() => quran.currentVerses.value as unknown as Verse[])
 
-// Available translation options
+// Available translation options (quick toggles; full control lives in the settings sheet)
 const TRANSLATION_OPTIONS = [
   { key: 'tr', id: 52, labelKey: 'quran.turkishTranslation' },
   { key: 'de', id: 27, labelKey: 'quran.germanTranslation' },
   { key: 'en', id: 20, labelKey: 'quran.englishTranslation' },
 ] as const
 
-// Active translation IDs as reactive array (Vue tracks arrays better than Sets)
-const activeTranslations = ref<number[]>([])
+const activeTranslations = reader.activeTranslations
+const showTranslations = computed(() => activeTranslations.value.length > 0)
 
-// Initialize active translations based on locale
-function initTranslations() {
-  const localeMap: Record<string, number> = { tr: 52, de: 27, en: 20 }
-  const defaultId = localeMap[locale.value] ?? 20
-  activeTranslations.value = [defaultId]
+const settingsOpen = ref(false)
+const tafsirOpen = ref(false)
+const tafsirKey = ref<string | null>(null)
+function openTafsir(verse: Verse) {
+  tafsirKey.value = verse.verseKey
+  tafsirOpen.value = true
 }
 
-// Toggle a translation on/off
-function toggleTranslation(id: number) {
-  const idx = activeTranslations.value.indexOf(id)
-  if (idx >= 0) {
-    activeTranslations.value = activeTranslations.value.filter(x => x !== id)
-  } else {
-    activeTranslations.value = [...activeTranslations.value, id]
+const audioActive = computed(() => audio.surah.value !== null)
+
+// ----- loading: verses first, then the optional per-surah extras -----
+async function loadExtras() {
+  const id = surahId.value
+  if (reader.settings.value.showTransliteration) await translit.load(id)
+  if (reader.settings.value.wordByWord) await wordApi.load(id)
+}
+
+async function loadSurah(id: number) {
+  stopObserving()
+  await quran.fetchVerses(id)
+  observeVerses()
+  await afterVersesLoaded()
+  void loadExtras()
+}
+
+onMounted(async () => {
+  reader.load()
+  audio.loadSettings()
+  progress.load()
+  favorites.load()
+  window.addEventListener('wheel', markUserScrolled, { passive: true })
+  window.addEventListener('touchstart', markUserScrolled, { passive: true })
+  await quran.fetchSurahs()
+  await loadSurah(surahId.value)
+})
+
+onBeforeUnmount(() => {
+  stopObserving()
+  window.removeEventListener('wheel', markUserScrolled)
+  window.removeEventListener('touchstart', markUserScrolled)
+  clearTimeout(flashTimer)
+})
+
+// Re-fetch when surah changes (via navigation)
+watch(surahId, id => loadSurah(id))
+
+// Load extras when they get switched on (or the language changes word translations)
+watch(
+  () => [reader.settings.value.showTransliteration, reader.settings.value.wordByWord, wordApi.wbwLang.value] as const,
+  () => { if (verses.value.length) void loadExtras() },
+)
+
+// Stop playback when leaving the Quran area — the mini player only exists on Quran routes.
+onBeforeRouteLeave((to) => {
+  if (!to.path.startsWith('/quran')) audio.pause()
+})
+
+// ----- deep links: /quran/2?verse=255 or /quran/2#255 -----
+const flashVerse = ref<number | null>(null)
+let flashTimer: ReturnType<typeof setTimeout> | undefined
+let userScrolled = false
+function markUserScrolled() { userScrolled = true }
+
+function prefersReducedMotion(): boolean {
+  return typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+}
+
+function scrollToVerse(n: number, smooth = true): boolean {
+  const el = document.getElementById(`v${n}`)
+  if (!el) return false
+  el.scrollIntoView({ behavior: smooth && !prefersReducedMotion() ? 'smooth' : 'auto', block: 'center' })
+  return true
+}
+
+async function jumpToTarget(): Promise<boolean> {
+  const target = parseVerseTarget(route.query.verse, route.hash)
+  const max = surah.value?.versesCount ?? verses.value.length
+  if (!target || (max && target > max)) return false
+  await nextTick()
+  userScrolled = false
+  if (!scrollToVerse(target, false)) return false
+  flashVerse.value = target
+  clearTimeout(flashTimer)
+  flashTimer = setTimeout(() => { flashVerse.value = null }, 2500)
+  // Extras (transliteration, word chips) change heights after the first scroll — correct once.
+  setTimeout(() => { if (!userScrolled) scrollToVerse(target, false) }, 700)
+  return true
+}
+
+async function afterVersesLoaded() {
+  if (!verses.value.length) return
+  if (await jumpToTarget()) return
+  // Playback is running on this surah (e.g. followed from the previous one) → show it.
+  if (audio.surah.value === surahId.value && audio.verse.value && reader.settings.value.autoScroll) {
+    await nextTick()
+    scrollToVerse(audio.verse.value)
   }
 }
 
-// Is a specific translation active?
-function isTranslationActive(id: number): boolean {
-  return activeTranslations.value.includes(id)
-}
+// Same-page deep links (e.g. from the bookmark card or search while already on the surah)
+watch(() => [route.query.verse, route.hash], () => { void jumpToTarget() })
 
-// Global: are any translations active?
-const showTranslations = computed(() => activeTranslations.value.length > 0)
-
-// Fetch surah list (if not already loaded) + verses
-onMounted(async () => {
-  initTranslations()
-  progress.load()
-  favorites.load()
-  await quran.fetchSurahs()
-  await quran.fetchVerses(surahId.value)
-  observeVerses()
+// ----- audio ↔ reader sync -----
+watch(() => audio.verse.value, (v) => {
+  if (v === null || audio.surah.value !== surahId.value) return
+  if (!reader.settings.value.autoScroll || !audio.isPlaying.value && !audio.loading.value) return
+  scrollToVerse(v)
 })
 
-onBeforeUnmount(() => stopObserving())
-
-// Re-fetch when surah changes (via navigation)
-watch(surahId, async (newId) => {
-  stopObserving()
-  await quran.fetchVerses(newId)
-  observeVerses()
+// Continue-to-next-surah: follow the recitation when it rolls over to the next surah
+watch(() => audio.surah.value, (next, prev) => {
+  if (next === null || prev !== surahId.value || next === surahId.value) return
+  if (reader.settings.value.autoScroll && audio.isPlaying.value) {
+    router.push(`/quran/${next}`)
+  }
 })
+
+const isCurrentVerse = (n: number) => audio.surah.value === surahId.value && audio.verse.value === n
+const isPlayingVerse = (n: number) => isCurrentVerse(n) && audio.isPlaying.value
 
 /**
  * Reading bookmark: merely opening a surah must NOT move the bookmark.
@@ -133,19 +215,31 @@ const revelationPlace = computed(() => {
 </script>
 
 <template>
-  <div class="app-container pt-6 pb-8 space-y-4 max-w-3xl mx-auto">
+  <div class="app-container pt-6 space-y-4 max-w-3xl mx-auto" :class="audioActive ? 'pb-36' : 'pb-8'">
     <!-- Header -->
     <header class="space-y-2">
-      <!-- Back link -->
-      <NuxtLink
-        to="/quran"
-        class="inline-flex items-center gap-1 text-sm text-themed-muted hover:text-themed-secondary transition-colors"
-      >
-        <span aria-hidden="true">←</span> {{ t('quran.surahs') }}
-      </NuxtLink>
+      <div class="flex items-center justify-between">
+        <!-- Back link -->
+        <NuxtLink
+          to="/quran"
+          class="inline-flex items-center gap-1 text-sm text-themed-muted hover:text-themed-secondary transition-colors"
+        >
+          <span aria-hidden="true">←</span> {{ t('quran.surahs') }}
+        </NuxtLink>
+
+        <button
+          type="button"
+          class="w-9 h-9 flex items-center justify-center rounded-full glass-subtle text-themed-secondary hover:text-themed transition-colors"
+          :aria-label="t('reader.open')"
+          aria-haspopup="dialog"
+          @click="settingsOpen = true"
+        >
+          <AppIcon name="settings" :size="18" />
+        </button>
+      </div>
 
       <div v-if="surah" class="text-center space-y-1">
-        <p class="font-arabic text-3xl text-themed-secondary" lang="ar">
+        <p class="font-arabic text-3xl text-themed-secondary" dir="rtl" lang="ar">
           {{ surah.nameArabic }}
         </p>
         <h1 class="text-xl font-semibold">
@@ -160,18 +254,21 @@ const revelationPlace = computed(() => {
     <!-- Audio recitation -->
     <QuranAudioPlayer :surah-id="surahId" />
 
+    <!-- About this surah -->
+    <QuranSurahInfo v-if="surah" :surah-id="surahId" />
+
     <!-- Translation controls -->
     <div role="group" :aria-label="t('a11y.translations')" class="flex items-center justify-center gap-2 flex-wrap">
       <button
         v-for="opt in TRANSLATION_OPTIONS"
         :key="opt.id"
         type="button"
-        :aria-pressed="isTranslationActive(opt.id)"
+        :aria-pressed="reader.isTranslationActive(opt.id)"
         class="px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200"
-        :class="isTranslationActive(opt.id)
+        :class="reader.isTranslationActive(opt.id)
           ? 'bg-[var(--color-primary)]/20 text-[var(--color-primary-light)]'
           : 'glass-subtle text-themed-faint'"
-        @click="toggleTranslation(opt.id)"
+        @click="reader.toggleTranslation(opt.id)"
       >
         {{ t(opt.labelKey) }}
       </button>
@@ -212,15 +309,33 @@ const revelationPlace = computed(() => {
       </GlassButton>
     </div>
 
+    <p v-if="reader.settings.value.wordByWord && wordApi.error.value" class="text-xs text-[var(--color-danger)] text-center" role="alert">
+      {{ wordApi.error.value }}
+    </p>
+    <p v-if="reader.settings.value.wordByWord && wordApi.isFallback.value" class="text-[11px] text-themed-faint text-center">
+      {{ t('reader.wordFallback') }}
+    </p>
+
     <!-- Verses -->
-    <div v-else ref="versesRef" class="space-y-3">
+    <div v-if="!quran.loading.value && !quran.error.value" ref="versesRef" class="space-y-3">
       <VerseDisplay
         v-for="verse in verses"
         :key="verse.verseKey"
         :verse="verse"
         :surah-id="surahId"
         :active-translations="activeTranslations"
+        :arabic-size="reader.settings.value.arabicSize"
+        :translation-size="reader.settings.value.translationSize"
+        :transliteration="reader.settings.value.showTransliteration ? translit.forVerse(surahId, verse.verseKey) : ''"
+        :word-by-word="reader.settings.value.wordByWord"
+        :words="reader.settings.value.wordByWord ? wordApi.wordsFor(surahId, verse.verseKey) : []"
+        :words-fallback="wordApi.isFallback.value"
+        :current="isCurrentVerse(verse.verseNumber)"
+        :playing="isPlayingVerse(verse.verseNumber)"
+        :flash="flashVerse === verse.verseNumber"
         class="animate-fade-in"
+        @play="audio.toggleVerse(surahId, verse.verseNumber)"
+        @tafsir="openTafsir(verse)"
       />
     </div>
 
@@ -263,5 +378,9 @@ const revelationPlace = computed(() => {
         <span aria-hidden="true">{{ nextSurah }} →</span>
       </NuxtLink>
     </div>
+
+    <QuranMiniPlayer />
+    <QuranReaderSettings v-model:open="settingsOpen" />
+    <QuranTafsirSheet v-model:open="tafsirOpen" :verse-key="tafsirKey" />
   </div>
 </template>
