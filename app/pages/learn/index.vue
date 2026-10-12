@@ -5,14 +5,37 @@
  * The section matching the user's chosen level is highlighted.
  */
 import type { KnowledgeLevel } from '~/composables/useKnowledgeLevel'
+import { LEARNING_PATHS, UPCOMING_PATHS, getLesson, getPath, localize } from '~/data/learn'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const haptics = useHaptics()
 const knowledge = useKnowledgeLevel()
+const learnProgress = useLearnProgress()
 
-useHead({ title: () => t('learn.title') })
+useSeoMeta({
+  title: () => t('learn.title'),
+  description: () => t('learn.subtitle'),
+})
 
-onMounted(() => knowledge.load())
+onMounted(() => {
+  knowledge.load()
+  learnProgress.load()
+})
+
+/** "Weiterlernen" card — only after progress was loaded on the client. */
+const resume = computed(() => {
+  const r = learnProgress.resume.value
+  if (!r) return null
+  const path = getPath(r.pathId)
+  const lesson = getLesson(r.pathId, r.lessonId)
+  if (!path || !lesson) return null
+  return {
+    to: `/learn/${r.pathId}/${r.lessonId}`,
+    pathTitle: localize(path.title, locale.value),
+    lessonTitle: localize(lesson.title, locale.value),
+    summary: learnProgress.pathSummary(r.pathId),
+  }
+})
 
 interface LearnItem {
   path: string
@@ -21,16 +44,10 @@ interface LearnItem {
   desc: string
 }
 
-interface UpcomingItem {
-  id: string
-  icon: string
-}
-
 interface LearnSection {
   level: KnowledgeLevel
   emoji: string
   items: LearnItem[]
-  upcoming: UpcomingItem[]
 }
 
 const sections: LearnSection[] = [
@@ -40,11 +57,7 @@ const sections: LearnSection[] = [
     items: [
       { path: '/guide', icon: 'guide', label: 'nav.guide', desc: 'more.guideDesc' },
       { path: '/names', icon: 'names', label: 'nav.names', desc: 'more.namesDesc' },
-    ],
-    upcoming: [
-      { id: 'basics', icon: 'learn' },
-      { id: 'newMuslim', icon: 'heart' },
-      { id: 'glossary', icon: 'hadith' },
+      { path: '/learn/glossary', icon: 'hadith', label: 'learn.glossaryTitle', desc: 'learn.glossaryDesc' },
     ],
   },
   {
@@ -53,10 +66,7 @@ const sections: LearnSection[] = [
     items: [
       { path: '/dua', icon: 'dua', label: 'nav.dua', desc: 'more.duaDesc' },
       { path: '/quran', icon: 'quran', label: 'nav.quran', desc: 'learn.quranDesc' },
-    ],
-    upcoming: [
-      { id: 'fiqh', icon: 'prayer' },
-      { id: 'faq', icon: 'about' },
+      { path: '/learn/faq', icon: 'about', label: 'learn.faqTitle', desc: 'learn.faqDesc' },
     ],
   },
   {
@@ -66,11 +76,16 @@ const sections: LearnSection[] = [
       { path: '/hadith', icon: 'hadith', label: 'nav.hadith', desc: 'more.hadithDesc' },
       { path: '/seerah', icon: 'seerah', label: 'nav.seerah', desc: 'more.seerahDesc' },
     ],
-    upcoming: [
-      { id: 'aqida', icon: 'names' },
-    ],
   },
 ]
+
+function pathsFor(level: KnowledgeLevel) {
+  return LEARNING_PATHS.filter(p => p.level === level)
+}
+
+function upcomingFor(level: KnowledgeLevel) {
+  return UPCOMING_PATHS.filter(p => p.level === level)
+}
 
 function selectLevel(id: KnowledgeLevel) {
   haptics.light()
@@ -89,6 +104,29 @@ function selectLevel(id: KnowledgeLevel) {
         {{ t('learn.subtitle') }}
       </p>
     </header>
+
+    <!-- Continue learning -->
+    <section v-if="resume" aria-labelledby="resume-heading">
+      <NuxtLink
+        :to="resume.to"
+        class="resume-card glass-primary flex items-center gap-4 p-4 rounded-2xl"
+        @click="haptics.tap()"
+      >
+        <span class="flex-1 min-w-0 space-y-1">
+          <span id="resume-heading" class="block text-[11px] font-semibold uppercase tracking-wider text-[var(--color-primary-light)]">
+            {{ t('learn.continue') }}
+          </span>
+          <span class="block font-semibold text-sm truncate">{{ resume.lessonTitle }}</span>
+          <span class="block text-xs text-themed-muted truncate">
+            {{ resume.pathTitle }} · {{ t('learn.lessonsDone', { done: resume.summary.done, total: resume.summary.total }) }}
+          </span>
+        </span>
+        <span class="resume-cta" aria-hidden="true">
+          <AppIcon name="play" :size="18" />
+        </span>
+        <span class="sr-only">{{ t('learn.resume') }}</span>
+      </NuxtLink>
+    </section>
 
     <!-- Level selector -->
     <section aria-labelledby="level-heading" class="space-y-2">
@@ -147,6 +185,11 @@ function selectLevel(id: KnowledgeLevel) {
       </div>
 
       <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <!-- Learning paths -->
+        <li v-for="p in pathsFor(s.level)" :key="p.id" class="glass rounded-2xl">
+          <LearnPathCard :path="p" :done="learnProgress.pathSummary(p.id).done" />
+        </li>
+
         <li v-for="item in s.items" :key="item.path" class="glass rounded-2xl">
           <NuxtLink
             :to="item.path"
@@ -166,7 +209,7 @@ function selectLevel(id: KnowledgeLevel) {
 
         <!-- Upcoming learning paths (placeholders) -->
         <li
-          v-for="up in s.upcoming"
+          v-for="up in upcomingFor(s.level)"
           :key="up.id"
           class="glass-subtle rounded-2xl border border-dashed border-[var(--glass-border-strong)]"
         >
@@ -191,6 +234,21 @@ function selectLevel(id: KnowledgeLevel) {
 </template>
 
 <style scoped>
+.resume-card:focus-visible {
+  outline: 2px solid var(--color-primary-light);
+  outline-offset: 2px;
+}
+.resume-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background: var(--color-primary);
+  color: #fff;
+}
 .icon-tile {
   display: flex;
   align-items: center;
