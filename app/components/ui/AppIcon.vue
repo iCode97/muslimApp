@@ -96,6 +96,20 @@ const ICONS: Record<string, string> = {
     '<path d="M8.5 5.5 L18 12 L8.5 18.5 Z" fill="currentColor" stroke="none" />',
   pause:
     '<path d="M8.5 5.5 V18.5 M15.5 5.5 V18.5" stroke-width="2.5" />',
+  lightbulb:
+    '<path d="M9 18 H15" /><path d="M10 21 H14" /><path d="M12 3 A6 6 0 0 0 8 13.5 C8.7 14.2 9 15 9 16 V18 H15 V16 C15 15 15.3 14.2 16 13.5 A6 6 0 0 0 12 3 Z" />',
+  alertCircle:
+    '<circle cx="12" cy="12" r="9" /><path d="M12 7.5 V13" /><circle cx="12" cy="16.5" r="0.8" fill="currentColor" stroke="none" />',
+  scale:
+    '<path d="M12 4 V20 M8 20 H16" /><path d="M5 7 H19" /><path d="M5 7 L2.5 13 A3 3 0 0 0 7.5 13 Z" /><path d="M19 7 L16.5 13 A3 3 0 0 0 21.5 13 Z" />',
+  arrowLeft:
+    '<path d="M19 12 H5 M11 6 L5 12 L11 18" />',
+  arrowRight:
+    '<path d="M5 12 H19 M13 6 L19 12 L13 18" />',
+  clock:
+    '<circle cx="12" cy="12" r="9" /><path d="M12 7 V12 L15.5 14" />',
+  checkCircle:
+    '<circle cx="12" cy="12" r="9" /><path d="M8 12.5 L11 15.5 L16 9" />',
 }
 
 const svg = computed(() => ICONS[props.name] ?? '')
