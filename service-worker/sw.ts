@@ -398,6 +398,33 @@ self.addEventListener('push', (event) => {
   )
 })
 
+// The push service rotated/expired our subscription: subscribe again with the
+// same VAPID key and let the server move the stored reminder settings over
+// (POST /api/push/subscribe with `oldEndpoint`). The page also re-syncs on the
+// next app start, so a failure here is not fatal.
+interface PushSubscriptionChangeEventLike extends ExtendableEvent {
+  oldSubscription?: PushSubscription | null
+  newSubscription?: PushSubscription | null
+}
+
+self.addEventListener('pushsubscriptionchange', ((event: PushSubscriptionChangeEventLike) => {
+  event.waitUntil((async () => {
+    const old = event.oldSubscription ?? null
+    let next = event.newSubscription ?? null
+    if (!next) {
+      const key = old?.options?.applicationServerKey
+      if (!key) return
+      next = await self.registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: key })
+    }
+    if (!old?.endpoint) return
+    await fetch('/api/push/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ subscription: next.toJSON(), oldEndpoint: old.endpoint }),
+    })
+  })().catch(err => console.warn('[SW] pushsubscriptionchange failed', err)))
+}) as EventListener)
+
 // ============================================
 // NOTIFICATION CLICK
 // ============================================

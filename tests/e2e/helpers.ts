@@ -163,6 +163,8 @@ export async function mockExternalApis(page: Page, baseURL: string) {
   await page.route('**://fonts.googleapis.com/**', route => route.fulfill({ status: 200, contentType: 'text/css', body: '' }))
   await page.route('**://api.quran.com/**', mockQuranApi)
   await page.route('**/api/aladhan/**', mockAladhan)
+  // Web Push: report "not configured" so the app stays in local-reminder mode
+  await page.route('**/api/push/config', route => json(route, { enabled: false, publicKey: null }))
   await page.route('**://nominatim.openstreetmap.org/**', (route) => {
     const url = route.request().url()
     if (url.includes('/reverse')) {

@@ -377,7 +377,24 @@
     "morningBody": "Beginne deinen Tag mit den Morgen-Bittgebeten.",
     "eveningTitle": "Abend-Adhkar",
     "eveningBody": "Beschliesse deinen Tag mit den Abend-Bittgebeten.",
-    "foregroundOnly": "Hinweis: Dein Browser unterstützt keine Hintergrund-Planung. Erinnerungen funktionieren nur, solange der Tab geöffnet ist."
+    "foregroundOnly": "Hinweis: Erinnerungen werden nur angezeigt, solange die App geöffnet ist."
+  },
+  "push": {
+    "statusPush": "Zuverlässige Push-Benachrichtigungen aktiv",
+    "statusLocal": "Nur bei geöffneter App",
+    "statusUnsupported": "Dein Browser unterstützt keine Benachrichtigungen.",
+    "localHint": "Dein Browser unterstützt keine Push-Benachrichtigungen. Erinnerungen erscheinen nur, solange die App geöffnet ist.",
+    "serverDisabled": "Push-Benachrichtigungen sind auf diesem Server nicht eingerichtet. Erinnerungen erscheinen nur, solange die App geöffnet ist.",
+    "setupFailed": "Push konnte nicht eingerichtet werden. Erinnerungen erscheinen vorerst nur, solange die App geöffnet ist.",
+    "iosInstallHint": "Auf iPhone und iPad kommen Erinnerungen bei geschlossener App nur an, wenn du MuslimApp zum Home-Bildschirm hinzufügst (Teilen → „Zum Home-Bildschirm“) und von dort öffnest.",
+    "sendTest": "Test-Benachrichtigung senden",
+    "testSent": "Gesendet",
+    "testFailed": "Senden fehlgeschlagen",
+    "testTitle": "MuslimApp",
+    "testBody": "Test-Benachrichtigung: Erinnerungen funktionieren.",
+    "privacy": "Für Push speichern wir deinen ungefähren Standort (~1 km) und deine Erinnerungseinstellungen auf unserem Server, nur um Erinnerungen zu senden. Deaktivieren löscht die Daten sofort.",
+    "aboutTitle": "Push-Benachrichtigungen",
+    "aboutText": "Wenn du Erinnerungen aktivierst und dein Gerät Web Push unterstützt, speichern wir auf unserem Server nur die Push-Adresse deines Browsers, deinen auf ca. 1 km gerundeten Standort mit Zeitzone, die Berechnungseinstellungen und deine Erinnerungseinstellungen – ausschließlich, um Gebets- und Dhikr-Erinnerungen zu senden. Kein Konto, keine weiteren Daten. Deaktivierst du alle Erinnerungen, werden diese Daten sofort gelöscht."
   },
   "onboarding": {
     "skip": "Überspringen",

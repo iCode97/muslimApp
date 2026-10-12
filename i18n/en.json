@@ -377,7 +377,24 @@
     "morningBody": "Begin your day with the morning supplications.",
     "eveningTitle": "Evening Adhkar",
     "eveningBody": "Close your day with the evening supplications.",
-    "foregroundOnly": "Note: your browser doesn't support background scheduling. Reminders only fire while the tab is open."
+    "foregroundOnly": "Note: reminders only appear while the app is open."
+  },
+  "push": {
+    "statusPush": "Reliable push notifications active",
+    "statusLocal": "Only while the app is open",
+    "statusUnsupported": "Your browser doesn't support notifications.",
+    "localHint": "Your browser doesn't support push notifications. Reminders only appear while the app is open.",
+    "serverDisabled": "Push notifications aren't set up on this server. Reminders only appear while the app is open.",
+    "setupFailed": "Push couldn't be set up. For now, reminders only appear while the app is open.",
+    "iosInstallHint": "On iPhone and iPad, reminders only arrive while the app is closed if you add MuslimApp to your Home Screen (Share → \"Add to Home Screen\") and open it from there.",
+    "sendTest": "Send test notification",
+    "testSent": "Sent",
+    "testFailed": "Sending failed",
+    "testTitle": "MuslimApp",
+    "testBody": "Test notification: reminders are working.",
+    "privacy": "For push, we store your approximate location (~1 km) and your reminder settings on our server, solely to send reminders. Disabling deletes the data immediately.",
+    "aboutTitle": "Push notifications",
+    "aboutText": "If you enable reminders and your device supports Web Push, our server stores only your browser's push address, your location rounded to about 1 km with its timezone, the calculation settings and your reminder settings — solely to send prayer and dhikr reminders. No account, no other data. Turning off all reminders deletes this data immediately."
   },
   "onboarding": {
     "skip": "Skip",

@@ -131,8 +131,29 @@ export default defineNuxtConfig({
     // Server-only: upstream URL for the Aladhan proxy routes in /server/api/aladhan/**.
     // Override via NUXT_ALADHAN_BASE_URL in production if needed.
     aladhanBaseUrl: 'https://api.aladhan.com/v1',
+    // Web Push (VAPID). Generate a pair with `npm run vapid`. Push is disabled
+    // gracefully (local reminders only) unless all three are set:
+    //   NUXT_VAPID_PRIVATE_KEY, NUXT_VAPID_SUBJECT ("mailto:…"), NUXT_PUBLIC_VAPID_PUBLIC_KEY
+    vapidPrivateKey: '',
+    vapidSubject: '',
     public: {
       quranBaseUrl: 'https://api.quran.com/api/v4',
+      vapidPublicKey: '',
+    },
+  },
+
+  nitro: {
+    experimental: {
+      tasks: true,
+    },
+    // Server-side push scheduler (server/tasks/push/dispatch.ts)
+    scheduledTasks: {
+      '* * * * *': ['push:dispatch'],
+    },
+    storage: {
+      // Push subscribers (one JSON file per subscription). Persist ./.data in
+      // production (Docker volume on /app/.data, see docker-compose.yml).
+      push: { driver: 'fs', base: './.data/push' },
     },
   },
 
