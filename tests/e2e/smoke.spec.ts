@@ -22,6 +22,7 @@ const ROUTES = [
   '/tracker',
   '/zakat',
   '/favorites',
+  '/mosques',
 ]
 
 test.beforeEach(async ({ page, context, baseURL }) => {

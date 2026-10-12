@@ -63,3 +63,11 @@ Vereinfachte Standardschrift, teils Auszüge (Ref nennt ganzen Vers): 2:255, 31:
 - [ ] Sunniten/Schiiten: neutrale historische Darstellung, nur 3:103 und 49:10 als Quellen — ggf. historische Quelle ergänzen
 - [ ] Notrufnummern (110, 112, TelefonSeelsorge 0800 111 0 111) sind deutschlandspezifisch, auch im EN/TR-Text — Lokalisierung klären
 - [ ] Koran-Übersetzungen teils gekürzt: 5:3, 31:14-15, 47:19, 113, 114
+
+## Kalender (`app/data/holiday-info.ts`, Fastentage in `app/utils/hijri-dates.ts`)
+
+- [ ] Sahih Muslim 1162 (Arafah, Aschura, Montag), 1163 (Muharram), 1164 (sechs Tage Schawwal)
+- [ ] Sahih al-Bukhari 1503 (Zakat al-Fitr), 2017 (ungerade Nächte der letzten zehn), 349 (Isra/Mi'radsch) — 349 unsicher
+- [ ] Tirmidhi 745/747 (Fasten Montag/Donnerstag) — unsicher
+- [ ] Ohne Nummer zitiert: Aschura (Bukhari), Weiße Tage (Tirmidhi/Nasa'i über Abu Dharr), Tasu'a (Muslim), Mondsichtung Ramadan, Fasten im Scha'ban
+- [ ] Kandil-Nächte (Regaip, Miraç, Berat) als türkisch-islamische Tradition mit Hinweis auf Gelehrtenkritik — Formulierung prüfen
