@@ -49,6 +49,13 @@ test.describe('route smoke tests (mobile)', () => {
       await page.waitForTimeout(300)
 
       expect(errors, errors.join('\n')).toEqual([])
+
+      // No horizontal page scroll on a phone-width viewport.
+      const { scrollWidth, clientWidth } = await page.evaluate(() => ({
+        scrollWidth: document.documentElement.scrollWidth,
+        clientWidth: document.documentElement.clientWidth,
+      }))
+      expect(scrollWidth, `${route} overflows horizontally`).toBeLessThanOrEqual(clientWidth)
     })
   }
 })

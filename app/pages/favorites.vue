@@ -57,7 +57,7 @@ const dateFormat = computed(() => new Intl.DateTimeFormat(locale.value, { dateSt
         <div class="space-y-3">
           <div class="flex items-center justify-between">
             <NuxtLink
-              :to="`/quran/${fav.surahId}`"
+              :to="verseLink(fav.surahId, fav.verseNumber)"
               class="text-xs font-semibold text-[var(--color-primary-light)] hover:underline"
             >
               {{ t('quran.verse') }} {{ fav.verseKey }} →
