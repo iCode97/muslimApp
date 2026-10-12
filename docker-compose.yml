@@ -7,4 +7,15 @@ services:
     environment:
       - NUXT_PUBLIC_ALADHAN_BASE_URL=https://api.aladhan.com/v1
       - NUXT_PUBLIC_QURAN_BASE_URL=https://api.quran.com/api/v4
+      # Web Push (generate with `npm run vapid`; put real values in .env, not here).
+      # Push is disabled gracefully when any of them is empty.
+      - NUXT_PUBLIC_VAPID_PUBLIC_KEY=${NUXT_PUBLIC_VAPID_PUBLIC_KEY:-}
+      - NUXT_VAPID_PRIVATE_KEY=${NUXT_VAPID_PRIVATE_KEY:-}
+      - NUXT_VAPID_SUBJECT=${NUXT_VAPID_SUBJECT:-}
+    volumes:
+      # Persist push subscribers (Nitro storage "push" → /app/.data/push)
+      - muslimapp-data:/app/.data
     restart: unless-stopped
+
+volumes:
+  muslimapp-data:

@@ -54,6 +54,38 @@ function formatAdjustment(minutes: number): string {
   return minutes > 0 ? `+${minutes}` : String(minutes)
 }
 
+// --- Reminder delivery (Web Push vs. local) ---------------------------------
+
+const anyReminderEnabled = computed(() =>
+  notifications.settings.value.enabled || dhikrReminders.settings.value.enabled,
+)
+
+/** Why push isn't used (i18n key), shown below the "only while open" status. */
+const localReason = computed(() => {
+  if (notifications.iosNeedsInstall.value) return 'push.iosInstallHint'
+  if (notifications.pushError.value) return notifications.pushError.value
+  if (notifications.pushConfig.value && !notifications.pushConfig.value.enabled) return 'push.serverDisabled'
+  return 'push.localHint'
+})
+
+/** Push could be used on this device (server configured, browser capable). */
+const pushPossible = computed(() =>
+  notifications.mode.value === 'push'
+  || (!!notifications.pushConfig.value?.enabled && !notifications.iosNeedsInstall.value && notifications.mode.value !== 'unsupported'),
+)
+
+const testState = ref<'idle' | 'sending' | 'sent' | 'failed'>('idle')
+let testResetTimer: ReturnType<typeof setTimeout> | undefined
+
+async function sendTestNotification() {
+  if (testState.value === 'sending') return
+  testState.value = 'sending'
+  const ok = await notifications.sendTest()
+  testState.value = ok ? 'sent' : 'failed'
+  if (testResetTimer) clearTimeout(testResetTimer)
+  testResetTimer = setTimeout(() => { testState.value = 'idle' }, 4000)
+}
+
 // --- Dhikr reminder time inputs --------------------------------------------
 
 function onDhikrTimeChange(slot: 'morning' | 'evening', event: Event) {
@@ -105,6 +137,7 @@ onMounted(() => {
   knowledge.load()
   notifications.loadSettings()
   dhikrReminders.loadSettings()
+  notifications.refreshPushStatus()
   offlineQuran.checkStatus()
   quranProgress.load()
   seerahProgress.load()
@@ -307,6 +340,41 @@ const minutesOptions = [0, 5, 10, 15, 30]
         <p v-if="notifications.permission.value === 'denied'" class="text-xs text-[var(--color-danger)]">
           {{ t('notifications.denied') }}
         </p>
+
+        <!-- Delivery status (shared by prayer & dhikr reminders) -->
+        <div v-if="anyReminderEnabled && notifications.permission.value === 'granted'" class="space-y-2 pt-1" data-testid="push-status">
+          <div
+            v-if="notifications.mode.value === 'push'"
+            class="flex items-start gap-2 glass-primary rounded-xl px-3 py-2 text-xs text-[var(--color-primary-light)]"
+          >
+            <span aria-hidden="true">✓</span>
+            <span>{{ t('push.statusPush') }}</span>
+          </div>
+          <div v-else-if="notifications.mode.value === 'unsupported'" class="glass-subtle rounded-xl px-3 py-2 text-xs text-themed-muted">
+            {{ t('push.statusUnsupported') }}
+          </div>
+          <div v-else class="glass-subtle rounded-xl px-3 py-2 space-y-1">
+            <p class="text-xs font-medium text-themed-secondary">{{ t('push.statusLocal') }}</p>
+            <p class="text-[11px] text-themed-faint leading-relaxed">{{ t(localReason) }}</p>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button
+              type="button"
+              class="glass-subtle rounded-lg px-3 py-1.5 text-xs font-medium text-themed-secondary disabled:opacity-50"
+              :disabled="testState === 'sending'"
+              @click="sendTestNotification"
+            >
+              {{ t('push.sendTest') }}
+            </button>
+            <span v-if="testState === 'sent'" class="text-[11px] text-[var(--color-primary-light)]" role="status">{{ t('push.testSent') }}</span>
+            <span v-else-if="testState === 'failed'" class="text-[11px] text-[var(--color-danger)]" role="status">{{ t('push.testFailed') }}</span>
+          </div>
+
+          <p v-if="pushPossible" class="text-[11px] text-themed-faint leading-relaxed">
+            {{ t('push.privacy') }}
+          </p>
+        </div>
       </div>
     </GlassCard>
 
@@ -382,8 +450,17 @@ const minutesOptions = [0, 5, 10, 15, 30]
               />
           </div>
 
-          <p v-if="!dhikrReminders.supportsBackground()" class="text-[11px] text-themed-faint">
+          <p v-if="notifications.mode.value === 'push'" class="text-[11px] text-[var(--color-primary-light)]">
+            ✓ {{ t('push.statusPush') }}
+          </p>
+          <p v-else-if="notifications.iosNeedsInstall.value" class="text-[11px] text-themed-faint">
+            {{ t('push.iosInstallHint') }}
+          </p>
+          <p v-else-if="!dhikrReminders.supportsBackground()" class="text-[11px] text-themed-faint">
             {{ t('dhikrReminder.foregroundOnly') }}
+          </p>
+          <p v-if="dhikrReminders.permission.value === 'denied'" class="text-[11px] text-[var(--color-danger)]">
+            {{ t('notifications.denied') }}
           </p>
         </template>
       </div>

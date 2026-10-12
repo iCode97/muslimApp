@@ -1,47 +1,63 @@
 /**
- * Dhikr reminder composable.
- * Schedules daily morning & evening adhkar nudges via the Service Worker
- * using the Notification Triggers API (TimestampTrigger).
+ * Dhikr reminder composable — daily morning & evening adhkar nudges.
  *
- * Falls back silently if background scheduling is unsupported — the toggle
- * still stores user preference but reminders only fire while the tab is open.
+ * Delivery follows the notification mode of useNotifications():
+ *   - 'push':  the server sends the reminders via Web Push (works while the
+ *              app is closed); prefs are synced by the push-sync plugin.
+ *   - 'local': scheduled in the Service Worker via the Notification Triggers
+ *              API where available, otherwise page-scope timers (only while
+ *              the app is open).
  */
 
-interface DhikrSlot {
+export interface DhikrSlot {
   enabled: boolean
   hour: number   // 0–23
   minute: number // 0–59
 }
 
-interface DhikrReminderSettings {
+export interface DhikrReminderSettings {
   enabled: boolean
   morning: DhikrSlot
   evening: DhikrSlot
 }
 
-const STORAGE_KEY = 'muslimapp-dhikr-reminders'
-/** Days ahead to schedule notifications for (reduced to stay under any browser quotas) */
-const SCHEDULE_HORIZON_DAYS = 7
-
-export function useDhikrReminders() {
-  const { t } = useI18n()
-
-  const settings = useState<DhikrReminderSettings>('dhikr-reminder-settings', () => ({
+export function defaultDhikrSettings(): DhikrReminderSettings {
+  return {
     enabled: false,
     morning: { enabled: true, hour: 7, minute: 0 },
     evening: { enabled: true, hour: 19, minute: 0 },
-  }))
+  }
+}
 
-  const permission = ref<NotificationPermission>('default')
+const STORAGE_KEY = 'muslimapp-dhikr-reminders'
+/** Days ahead to schedule trigger notifications for (stays under browser quotas) */
+const SCHEDULE_HORIZON_DAYS = 7
+/** Page-timer fallback only covers the next 24h */
+const TIMER_HORIZON_MS = 24 * 60 * 60 * 1000
+
+const dhikrTimers: ReturnType<typeof setTimeout>[] = []
+let dhikrLoaded = false
+
+export function useDhikrReminders() {
+  const i18n = useNuxtApp().$i18n
+  const t = i18n.t
+  const notifications = useNotifications()
+
+  const settings = useState<DhikrReminderSettings>('dhikr-reminder-settings', defaultDhikrSettings)
+  const permission = useState<NotificationPermission>('notification-permission', () => 'default')
 
   function loadSettings() {
     if (import.meta.server) return
-    const saved = localStorage.getItem(STORAGE_KEY)
-    if (saved) {
-      try {
-        settings.value = { ...settings.value, ...JSON.parse(saved) }
-      } catch {
-        localStorage.removeItem(STORAGE_KEY)
+    if (!dhikrLoaded) {
+      dhikrLoaded = true
+      const saved = localStorage.getItem(STORAGE_KEY)
+      if (saved) {
+        try {
+          settings.value = { ...settings.value, ...JSON.parse(saved) }
+        }
+        catch {
+          localStorage.removeItem(STORAGE_KEY)
+        }
       }
     }
     permission.value = 'Notification' in window ? Notification.permission : 'denied'
@@ -53,9 +69,10 @@ export function useDhikrReminders() {
     }
   }
 
+  /** True when reminders also fire while the app is closed. */
   function supportsBackground(): boolean {
     if (import.meta.server || !('Notification' in window)) return false
-    return 'showTrigger' in Notification.prototype
+    return notifications.mode.value === 'push' || 'showTrigger' in Notification.prototype
   }
 
   async function requestPermission(): Promise<boolean> {
@@ -80,96 +97,108 @@ export function useDhikrReminders() {
     return result
   }
 
+  function clearTimers() {
+    dhikrTimers.forEach(clearTimeout)
+    dhikrTimers.length = 0
+  }
+
+  /** Schedule local reminders (no-op in push mode — the server sends them). */
   async function schedule() {
-    if (import.meta.server || !('serviceWorker' in navigator)) return false
-    if (!settings.value.enabled || permission.value !== 'granted') {
+    if (import.meta.server) return false
+    clearTimers()
+    if (!settings.value.enabled || permission.value !== 'granted' || notifications.mode.value === 'push') {
       await clear()
       return false
     }
 
     const items: Array<{ tag: string, title: string, body: string, timestamp: number, url: string }> = []
-
-    if (settings.value.morning.enabled) {
-      const times = nextOccurrences(
-        settings.value.morning.hour,
-        settings.value.morning.minute,
-        SCHEDULE_HORIZON_DAYS,
-      )
-      times.forEach((ts) => {
+    for (const slot of ['morning', 'evening'] as const) {
+      const prefs = settings.value[slot]
+      if (!prefs.enabled) continue
+      for (const ts of nextOccurrences(prefs.hour, prefs.minute, SCHEDULE_HORIZON_DAYS)) {
         items.push({
-          tag: `dhikr-morning-${ts}`,
-          title: t('dhikrReminder.morningTitle'),
-          body: t('dhikrReminder.morningBody'),
+          tag: `dhikr-${slot}-${ts}`,
+          title: t(slot === 'morning' ? 'dhikrReminder.morningTitle' : 'dhikrReminder.eveningTitle'),
+          body: t(slot === 'morning' ? 'dhikrReminder.morningBody' : 'dhikrReminder.eveningBody'),
           timestamp: ts,
-          url: '/dua?cat=morning',
+          url: `/dua?cat=${slot}`,
         })
-      })
+      }
     }
-
-    if (settings.value.evening.enabled) {
-      const times = nextOccurrences(
-        settings.value.evening.hour,
-        settings.value.evening.minute,
-        SCHEDULE_HORIZON_DAYS,
-      )
-      times.forEach((ts) => {
-        items.push({
-          tag: `dhikr-evening-${ts}`,
-          title: t('dhikrReminder.eveningTitle'),
-          body: t('dhikrReminder.eveningBody'),
-          timestamp: ts,
-          url: '/dua?cat=evening',
-        })
-      })
-    }
-
     if (items.length === 0) return false
 
-    try {
-      const reg = await getSwRegistration()
-      if (!reg?.active) return false
-      reg.active.postMessage({ type: 'SCHEDULE_DHIKR_REMINDERS', items })
-      return true
-    } catch (err) {
-      console.warn('[DhikrReminders] SW scheduling failed', err)
-      return false
+    // Notification Triggers API (fires while closed) where available
+    if ('Notification' in window && 'showTrigger' in Notification.prototype) {
+      try {
+        const reg = await getSwRegistration()
+        if (reg?.active) {
+          reg.active.postMessage({ type: 'SCHEDULE_DHIKR_REMINDERS', items })
+          return true
+        }
+      }
+      catch (err) {
+        console.warn('[DhikrReminders] SW scheduling failed', err)
+      }
     }
+
+    // Fallback: page-scope timers (only while the app is open)
+    const now = Date.now()
+    for (const item of items) {
+      const delay = item.timestamp - now
+      if (delay <= 0 || delay > TIMER_HORIZON_MS) continue
+      dhikrTimers.push(setTimeout(() => {
+        if (!('Notification' in window) || Notification.permission !== 'granted') return
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+          navigator.serviceWorker.controller.postMessage({
+            type: 'SHOW_NOTIFICATION', title: item.title, body: item.body, tag: item.tag, url: item.url,
+          })
+        }
+        else {
+          try {
+            new Notification(item.title, { body: item.body, tag: item.tag, icon: '/favicon.svg' })
+          }
+          catch { /* ignore */ }
+        }
+      }, delay))
+    }
+    return true
   }
 
   async function clear() {
+    clearTimers()
     if (import.meta.server || !('serviceWorker' in navigator)) return
+    if (!('Notification' in window) || !('showTrigger' in Notification.prototype)) return
     try {
       const reg = await getSwRegistration()
       reg?.active?.postMessage({ type: 'CLEAR_DHIKR_REMINDERS' })
-    } catch { /* ignore */ }
+    }
+    catch { /* ignore */ }
   }
 
   async function toggleEnabled(): Promise<void> {
     if (!settings.value.enabled) {
       const granted = await requestPermission()
       if (granted) {
-        settings.value.enabled = true
+        settings.value = { ...settings.value, enabled: true }
         saveSettings()
-        await schedule()
       }
-    } else {
-      settings.value.enabled = false
+    }
+    else {
+      settings.value = { ...settings.value, enabled: false }
       saveSettings()
       await clear()
     }
+    await notifications.syncPush()
   }
 
   function toggleSlot(slot: 'morning' | 'evening') {
-    settings.value[slot].enabled = !settings.value[slot].enabled
+    settings.value = { ...settings.value, [slot]: { ...settings.value[slot], enabled: !settings.value[slot].enabled } }
     saveSettings()
-    if (settings.value.enabled) schedule()
   }
 
   function setSlotTime(slot: 'morning' | 'evening', hour: number, minute: number) {
-    settings.value[slot].hour = hour
-    settings.value[slot].minute = minute
+    settings.value = { ...settings.value, [slot]: { ...settings.value[slot], hour, minute } }
     saveSettings()
-    if (settings.value.enabled) schedule()
   }
 
   function formatTime(slot: DhikrSlot): string {

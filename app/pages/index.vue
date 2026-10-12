@@ -6,9 +6,8 @@
 
 const { t } = useI18n()
 // Location + prayer times are loaded/refreshed globally (plugins/app-init.client.ts)
-const { location, prayerTimes, hijriDisplay } = usePrayerInit()
+const { location, hijriDisplay } = usePrayerInit()
 const dashboard = useDashboard()
-const notifications = useNotifications()
 
 // Drag-and-drop reordering for the dashboard editor
 const dashboardDnd = useDragReorder({
@@ -16,21 +15,9 @@ const dashboardDnd = useDragReorder({
   onReorder: (fromId, toId) => dashboard.reorderById(fromId, toId),
 })
 
-// Schedule prayer notifications whenever the actual prayer times change
-// (not on every passed/next-prayer recomputation).
-const prayerScheduleKey = computed(() => {
-  const prayers = prayerTimes.data.value?.prayers
-  return prayers ? prayers.map(p => `${p.name}@${p.timestamp}`).join('|') : null
-})
-
+// Prayer reminders are scheduled globally (plugins/push-sync.client.ts).
 onMounted(() => {
   dashboard.loadConfig()
-  notifications.loadSettings()
-
-  watch(prayerScheduleKey, (key) => {
-    const prayers = prayerTimes.data.value?.prayers
-    if (key && prayers) notifications.schedulePrayerNotifications(prayers)
-  }, { immediate: true })
 })
 
 // Greeting based on time of day

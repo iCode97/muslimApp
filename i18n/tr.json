@@ -321,7 +321,24 @@
     "morningBody": "Güne sabah duaları ile başla.",
     "eveningTitle": "Akşam Zikri",
     "eveningBody": "Güne akşam duaları ile son ver.",
-    "foregroundOnly": "Not: Tarayıcınız arka plan planlamayı desteklemiyor. Hatırlatıcılar yalnızca sekme açıkken çalışır."
+    "foregroundOnly": "Not: Hatırlatıcılar yalnızca uygulama açıkken görünür."
+  },
+  "push": {
+    "statusPush": "Güvenilir anlık bildirimler etkin",
+    "statusLocal": "Yalnızca uygulama açıkken",
+    "statusUnsupported": "Tarayıcınız bildirimleri desteklemiyor.",
+    "localHint": "Tarayıcınız anlık bildirimleri desteklemiyor. Hatırlatıcılar yalnızca uygulama açıkken görünür.",
+    "serverDisabled": "Bu sunucuda anlık bildirimler ayarlanmamış. Hatırlatıcılar yalnızca uygulama açıkken görünür.",
+    "setupFailed": "Anlık bildirimler ayarlanamadı. Hatırlatıcılar şimdilik yalnızca uygulama açıkken görünür.",
+    "iosInstallHint": "iPhone ve iPad'de hatırlatıcılar, uygulama kapalıyken yalnızca MuslimApp'i ana ekrana eklersen (Paylaş → \"Ana Ekrana Ekle\") ve oradan açarsan gelir.",
+    "sendTest": "Test bildirimi gönder",
+    "testSent": "Gönderildi",
+    "testFailed": "Gönderilemedi",
+    "testTitle": "MuslimApp",
+    "testBody": "Test bildirimi: Hatırlatıcılar çalışıyor.",
+    "privacy": "Anlık bildirimler için yaklaşık konumunu (~1 km) ve hatırlatıcı ayarlarını yalnızca hatırlatma göndermek amacıyla sunucumuzda saklıyoruz. Devre dışı bırakmak verileri hemen siler.",
+    "aboutTitle": "Anlık bildirimler",
+    "aboutText": "Hatırlatıcıları etkinleştirirsen ve cihazın Web Push'u destekliyorsa, sunucumuz yalnızca tarayıcının push adresini, yaklaşık 1 km'ye yuvarlanmış konumunu ve saat dilimini, hesaplama ayarlarını ve hatırlatıcı ayarlarını saklar – sadece namaz ve zikir hatırlatmaları göndermek için. Hesap yok, başka veri yok. Tüm hatırlatıcıları kapatırsan bu veriler hemen silinir."
   },
   "onboarding": {
     "skip": "Atla",

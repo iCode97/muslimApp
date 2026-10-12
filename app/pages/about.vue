@@ -248,6 +248,18 @@ const duaSources = [
       </GlassCard>
     </section>
 
+    <!-- Push-Benachrichtigungen (Datenschutz) -->
+    <section class="space-y-2">
+      <h2 class="text-xs font-medium text-themed-muted uppercase tracking-wider px-1">
+        {{ t('push.aboutTitle') }}
+      </h2>
+      <GlassCard variant="subtle">
+        <p class="text-xs text-themed-muted leading-relaxed">
+          {{ t('push.aboutText') }}
+        </p>
+      </GlassCard>
+    </section>
+
     <!-- Hinweis -->
     <section class="space-y-2">
       <h2 class="text-xs font-medium text-themed-muted uppercase tracking-wider px-1">
