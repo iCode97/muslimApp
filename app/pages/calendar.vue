@@ -27,6 +27,9 @@ const { t } = useI18n()
 
       <!-- All Holidays -->
       <HolidayList />
+
+      <!-- Gregorian <-> Hijri converter -->
+      <HijriConverter />
     </div>
   </div>
 </template>

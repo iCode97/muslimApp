@@ -110,6 +110,8 @@ const ICONS: Record<string, string> = {
     '<circle cx="12" cy="12" r="9" /><path d="M12 7 V12 L15.5 14" />',
   checkCircle:
     '<circle cx="12" cy="12" r="9" /><path d="M8 12.5 L11 15.5 L16 9" />',
+  mosque:
+    '<path d="M12 4 V6" /><path d="M7 14 A5 5 0 0 1 17 14" /><path d="M5 21 V14 H19 V21" /><path d="M3 21 H21" /><path d="M10 21 V18 A2 2 0 0 1 14 18 V21" /><path d="M3.5 21 V11 L5 8 L6.5 11 V14" />',
 }
 
 const svg = computed(() => ICONS[props.name] ?? '')

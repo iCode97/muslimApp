@@ -5,7 +5,9 @@
  */
 
 const { t } = useI18n()
-const { nextHoliday, fetchUpcomingHolidays, loading, getHolidayName } = useHolidays()
+const { nextHoliday, fetchUpcomingHolidays, loading, getHolidayName, getHijriLabel } = useHolidays()
+const haptics = useHaptics()
+const sheetOpen = ref(false)
 
 onMounted(() => {
   fetchUpcomingHolidays()
@@ -18,7 +20,12 @@ onMounted(() => {
   </div>
 
   <GlassCard v-else-if="nextHoliday" variant="default" padding="md">
-    <div class="flex items-center gap-4">
+    <button
+      type="button"
+      class="flex w-full items-center gap-4 text-left countdown-btn"
+      aria-haspopup="dialog"
+      @click="haptics.light(); sheetOpen = true"
+    >
       <!-- Icon -->
       <div class="text-3xl shrink-0" aria-hidden="true">
         {{ nextHoliday.icon }}
@@ -46,6 +53,20 @@ onMounted(() => {
           {{ t('calendar.days') }}
         </p>
       </div>
-    </div>
+    </button>
+
+    <HolidaySheet
+      v-model:open="sheetOpen"
+      :holiday="nextHoliday"
+      :hijri-label="getHijriLabel(nextHoliday)"
+    />
   </GlassCard>
 </template>
+
+<style scoped>
+.countdown-btn:focus-visible {
+  outline: 2px solid var(--color-primary-light);
+  outline-offset: 4px;
+  border-radius: 0.75rem;
+}
+</style>

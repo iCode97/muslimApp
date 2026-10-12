@@ -98,6 +98,7 @@ export const TOOL_ITEMS: ToolItem[] = [
   { id: 'tracker', path: '/tracker', icon: 'tracker', label: 'nav.tracker', desc: 'more.trackerDesc' },
   { id: 'zakat', path: '/zakat', icon: 'zakat', label: 'nav.zakat', desc: 'more.zakatDesc' },
   { id: 'favorites', path: '/favorites', icon: 'heart', label: 'nav.favorites', desc: 'more.favoritesDesc' },
+  { id: 'mosques', path: '/mosques', icon: 'mosque', label: 'nav.mosques', desc: 'more.mosquesDesc' },
 ]
 
 /**
