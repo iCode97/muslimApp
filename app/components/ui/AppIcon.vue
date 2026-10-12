@@ -113,11 +113,20 @@ const ICONS: Record<string, string> = {
 }
 
 const svg = computed(() => ICONS[props.name] ?? '')
+/** Unknown names (e.g. an emoji from content data) render as text instead of an empty box. */
+const isRegistered = computed(() => props.name in ICONS)
 const dimension = computed(() => typeof props.size === 'number' ? `${props.size}px` : props.size)
 </script>
 
 <template>
+  <span
+    v-if="!isRegistered"
+    aria-hidden="true"
+    class="inline-flex items-center justify-center leading-none"
+    :style="{ width: dimension, height: dimension, fontSize: `calc(${dimension} * 0.9)` }"
+  >{{ name }}</span>
   <svg
+    v-else
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="none"
