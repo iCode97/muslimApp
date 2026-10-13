@@ -63,7 +63,7 @@ Gebaut mit Nuxt 4, TypeScript und einem Apple-inspirierten Liquid-Glass-Design. 
 - **Datensicherung** — alle App-Daten als JSON exportieren/importieren (Geräte-Wechsel ohne Datenverlust)
 
 ### App
-- Dark/Light/System-Theme, Sprachen DE · TR · EN
+- Dark/Light/System-Theme, Sprachen DE · TR · EN · AR (Arabisch mit vollständigem RTL-Layout; Inhalte ohne arabische Übersetzung erscheinen auf Englisch)
 - **PWA**: installierbar, Workbox-Service-Worker (Navigationen network-first, Update-Hinweis bei neuer Version), Offline-Betrieb für Shell, bereits geladene Seiten, Koran-Daten und Audio
 - Fehlerseite, Skeleton-Loader, Barrierefreiheit (Fokus-Management, ARIA in BottomSheet/Dialogen)
 

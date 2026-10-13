@@ -1,7 +1,7 @@
 # MuslimApp — Masterplan
 
 > **Vision:** Der Anlaufpunkt für alle, die sich mit dem Islam befassen — vom Neugierigen über die Praktizierende bis zum Vertiefenden. Eine mobile-first Progressive Web App (PWA) mit Gebetszeiten, Koran-Reader, Lernzentrum, Adhkar, Hadith, islamischem Kalender und praktischen Werkzeugen.
-> **Erstellt:** 22. März 2026 | **Letztes Update:** 13. Oktober 2026 | **Status:** Phase 1–10 abgeschlossen · Version 2.0 umgesetzt (siehe [V2-PLAN.md](./V2-PLAN.md)) · **Phase 11 (Plattform) in Arbeit** — Arabisch/RTL wird gerade ergänzt
+> **Erstellt:** 22. März 2026 | **Letztes Update:** 13. Oktober 2026 | **Status:** Phase 1–10 abgeschlossen · Version 2.0 umgesetzt (siehe [V2-PLAN.md](./V2-PLAN.md)) · **Phase 11 (Plattform) in Arbeit** — Arabisch/RTL umgesetzt; Datenschutzseite, maskierbares Icon und Performance offen
 
 ---
 
@@ -13,7 +13,7 @@
 | Styling | Tailwind CSS 4 + Liquid Glass | **Tailwind CSS 3.4** + Custom Glass CSS | Tailwind 4 war inkompatibel, v3 funktioniert einwandfrei |
 | State Management | Pinia | **Nuxt `useState` Composables** | Pinia-Modul inkompatibel mit Nuxt 4, useState reicht aus |
 | PWA | @vite-plugin-pwa | **@vite-pwa/nuxt 1.1.1 (injectManifest)** + Workbox | Eigener Service Worker in `service-worker/sw.ts`, Update-Hinweis (`registerType: 'prompt'`), Navigationen network-first |
-| i18n | @nuxtjs/i18n | **@nuxtjs/i18n 9.5** | DE + TR + EN vollständig; Arabisch/RTL in Arbeit (Phase 11) |
+| i18n | @nuxtjs/i18n | **@nuxtjs/i18n 9.5** | DE + TR + EN + AR (RTL) vollständig; Inhalte für AR fallen auf Englisch zurück |
 | Deployment | Docker + Cloudflare Pages | **Docker implementiert** (inkl. Volume für `.data`) | Cloudflare Pages zurückgestellt: Web Push braucht einen dauerhaft laufenden Node-Prozess (Scheduler) |
 | Gebetszeiten-API | Aladhan API (Method 13) | **Aladhan API über eigenen Nitro-Proxy** (wählbar, Standard: Method 13) | 15 Methoden, Asr-Madhhab, Hochbreiten-Regel, Minutenkorrektur |
 | Koran-Daten | quran.com API v4 + Offline-JSON | **quran.com API v4 + IndexedDB Offline-Bundle** | Zusätzlich Vers-/Wort-Audio, Tafsir, Transliteration |
@@ -132,7 +132,7 @@ Neuer Tab **Lernen** mit Wissensstufen (Entdecken · Praktizieren · Vertiefen),
 - [x] Integration: Nav-Einträge, Dashboard-Widgets, Erinnerungen öffnen `/adhkar`
 
 ### Phase 11 — Plattform 🔄 In Arbeit
-- [ ] 🔄 **Arabische Oberfläche (`ar`) mit RTL-Layout** — in Arbeit
+- [x] **Arabische Oberfläche (`ar`) mit RTL-Layout** — `i18n/ar.json`, logische CSS-Eigenschaften, gespiegelte Icons, lateinische Ziffern (`ar-u-nu-latn`), Kompass/Medien-Steuerung bewusst LTR; Inhalte fallen auf Englisch zurück
 - [ ] **Lighthouse-Audit** (Performance, A11y, PWA) und Behebung der Befunde — offen
 - [ ] **Maskable-Icon** — offen (aktuell nur runde Icons auf transparentem Grund; das SVG dient als Maskable-Platzhalter)
 - [ ] **Datenschutzseite** in der App — offen (Inhalt liegt als Abschnitt in der README vor)
@@ -468,7 +468,7 @@ GitHub Actions (`.github/workflows/ci.yml`) bei Push auf `main` und für jeden P
 | 32 | Phase 8: Lernzentrum (Engine, 3 Pfade, Glossar, FAQ) | ✅ | Branch `feat/phase-5-foundation` |
 | 33 | Phase 9: Hadith-Grade, Adhkar, Kalender-Erklärungen/Fastentage/ICS | ✅ | Branch `feat/phase-5-foundation` |
 | 34 | Phase 10: Moscheen in der Nähe | ✅ | Branch `feat/phase-5-foundation` |
-| 35 | Phase 11: Arabisch/RTL | 🔄 | in Arbeit |
+| 35 | Phase 11: Arabisch/RTL | ✅ | `feat/phase-5-foundation` |
 
 ---
 
