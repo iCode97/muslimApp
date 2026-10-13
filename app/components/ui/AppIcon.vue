@@ -37,6 +37,8 @@ const ICONS: Record<string, string> = {
     '<circle cx="12" cy="12" r="9" /><path d="M9 15 L12 5 L15 15 L12 13 Z" fill="currentColor" stroke="none" /><path d="M12 2 V4 M12 20 V22 M2 12 H4 M20 12 H22" />',
   dua:
     '<path d="M8 11 V7 A1.5 1.5 0 0 1 11 7 V11" /><path d="M13 11 V7 A1.5 1.5 0 0 1 16 7 V11" /><path d="M6 11 H18 V15 A6 6 0 0 1 12 21 A6 6 0 0 1 6 15 Z" /><path d="M9 4 V7 M15 4 V7" />',
+  adhkar:
+    '<path d="M3 16 H21" /><path d="M7 16 A5 5 0 0 1 17 16" /><path d="M12 5 V7.5 M5.6 8.6 L7.3 10.3 M18.4 8.6 L16.7 10.3" /><circle cx="8" cy="20" r="1" fill="currentColor" stroke="none" /><circle cx="12" cy="20" r="1" fill="currentColor" stroke="none" /><circle cx="16" cy="20" r="1" fill="currentColor" stroke="none" />',
   hadith:
     '<path d="M4 5 H16 A3 3 0 0 1 19 8 V19 A2 2 0 0 1 17 21 H6 A2 2 0 0 1 4 19 Z" /><path d="M7 9 H15 M7 13 H13 M7 17 H11" />',
   names:

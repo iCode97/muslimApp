@@ -65,6 +65,21 @@ const categoryIcons: Record<string, string> = {
       </p>
     </header>
 
+    <!-- Adhkar (daily routines with counter) -->
+    <NuxtLink
+      to="/adhkar"
+      class="glass-primary rounded-2xl flex items-center gap-4 p-4 animate-fade-in transition-transform active:scale-[0.99]"
+    >
+      <span class="w-10 h-10 rounded-xl glass-subtle flex items-center justify-center flex-shrink-0 text-[var(--color-primary-light)]" aria-hidden="true">
+        <AppIcon name="adhkar" :size="22" />
+      </span>
+      <span class="flex-1 min-w-0">
+        <span class="block font-medium text-sm">{{ t('adhkar.duaLinkTitle') }}</span>
+        <span class="block text-xs text-themed-muted mt-0.5">{{ t('adhkar.duaLinkDesc') }}</span>
+      </span>
+      <AppIcon name="chevronRight" :size="18" class="text-themed-faint flex-shrink-0" />
+    </NuxtLink>
+
     <!-- Category filter -->
     <div
       role="group"

@@ -47,6 +47,7 @@ export const ALL_NAV_ITEMS: NavItem[] = [
   { id: 'tasbih', path: '/tasbih', icon: 'tasbih', label: 'nav.tasbih' },
   { id: 'qibla', path: '/qibla', icon: 'qibla', label: 'nav.qibla' },
   { id: 'dua', path: '/dua', icon: 'dua', label: 'nav.dua' },
+  { id: 'adhkar', path: '/adhkar', icon: 'adhkar', label: 'adhkar.toolName' },
   { id: 'hadith', path: '/hadith', icon: 'hadith', label: 'nav.hadith' },
   { id: 'names', path: '/names', icon: 'names', label: 'nav.names' },
   { id: 'guide', path: '/guide', icon: 'guide', label: 'nav.guide' },
@@ -68,7 +69,7 @@ function pick(ids: string[]): NavItem[] {
 /** Desktop sidebar groups */
 export const DESKTOP_PRIMARY_ITEMS = pick(['dashboard', 'prayer', 'quran', 'learn', 'calendar'])
 export const DESKTOP_TOOLS_ITEMS = pick([
-  'tasbih', 'qibla', 'dua', 'hadith', 'names', 'guide', 'seerah', 'ramadan',
+  'tasbih', 'qibla', 'dua', 'adhkar', 'hadith', 'names', 'guide', 'seerah', 'ramadan',
   'tracker', 'zakat', 'favorites',
 ])
 export const DESKTOP_FOOTER_ITEMS = pick(['settings', 'about'])
@@ -84,7 +85,7 @@ export const MOBILE_TABS: MobileTab[] = [
     path: '/more',
     icon: 'more',
     label: 'nav.tabMore',
-    match: ['/more', '/tasbih', '/qibla', '/dua', '/calendar', '/ramadan', '/zakat', '/settings', '/about'],
+    match: ['/more', '/tasbih', '/qibla', '/dua', '/adhkar', '/calendar', '/ramadan', '/zakat', '/settings', '/about'],
   },
 ]
 
@@ -93,6 +94,7 @@ export const TOOL_ITEMS: ToolItem[] = [
   { id: 'tasbih', path: '/tasbih', icon: 'tasbih', label: 'nav.tasbih', desc: 'more.tasbihDesc' },
   { id: 'qibla', path: '/qibla', icon: 'qibla', label: 'nav.qibla', desc: 'more.qiblaDesc' },
   { id: 'dua', path: '/dua', icon: 'dua', label: 'nav.dua', desc: 'more.duaDesc' },
+  { id: 'adhkar', path: '/adhkar', icon: 'adhkar', label: 'adhkar.toolName', desc: 'more.adhkarDesc' },
   { id: 'calendar', path: '/calendar', icon: 'calendar', label: 'nav.calendar', desc: 'more.calendarDesc' },
   { id: 'ramadan', path: '/ramadan', icon: 'ramadan', label: 'nav.ramadan', desc: 'more.ramadanDesc' },
   { id: 'tracker', path: '/tracker', icon: 'tracker', label: 'nav.tracker', desc: 'more.trackerDesc' },
