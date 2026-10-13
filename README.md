@@ -32,8 +32,8 @@ Gebaut mit Nuxt 4, TypeScript und einem Apple-inspirierten Liquid-Glass-Design. 
 - **Juz-Ansicht**, Volltextsuche, Lesezeichen („Weiterlesen“), Vers-Favoriten, optionales Offline-Bundle (IndexedDB)
 
 ### Lernen
-- **Lernpfade** mit Lektionen, Quiz und Fortschritt: *Grundlagen des Islam* (12 Lektionen), *Neu im Islam* (10), *Fiqh des Alltags* (12)
-- **Glossar** (134 Begriffe) und **FAQ** (35 Einträge) mit Suche und Kategorien
+- **Lernpfade** mit Lektionen, Quiz und Fortschritt: *Grundlagen des Islam* (12 Lektionen), *Neu im Islam* (10), *Fiqh des Alltags* (12), *Hajj & Umrah* (8), *Aqida — Glaubenslehre vertieft* (10)
+- **Glossar** (178 Begriffe) und **FAQ** (35 Einträge) mit Suche und Kategorien
 - Quellenangaben in jeder Lektion; bei Meinungsunterschieden der Rechtsschulen neutrale Hinweise
 - Weitere Lernbereiche: Gebetsanleitung, Seerah (Leben des Propheten ﷺ), 99 Namen Allahs
 - Dashboard-Widget „Weiterlernen“

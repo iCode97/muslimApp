@@ -1,7 +1,7 @@
 # MuslimApp — Masterplan
 
 > **Vision:** Der Anlaufpunkt für alle, die sich mit dem Islam befassen — vom Neugierigen über die Praktizierende bis zum Vertiefenden. Eine mobile-first Progressive Web App (PWA) mit Gebetszeiten, Koran-Reader, Lernzentrum, Adhkar, Hadith, islamischem Kalender und praktischen Werkzeugen.
-> **Erstellt:** 22. März 2026 | **Letztes Update:** 13. Oktober 2026 | **Status:** Phase 1–10 abgeschlossen · Version 2.0 umgesetzt (siehe [V2-PLAN.md](./V2-PLAN.md)) · **Phase 11 (Plattform) in Arbeit** — Arabisch/RTL sowie Aqida- und Hajj-Lernpfad werden gerade ergänzt
+> **Erstellt:** 22. März 2026 | **Letztes Update:** 13. Oktober 2026 | **Status:** Phase 1–10 abgeschlossen · Version 2.0 umgesetzt (siehe [V2-PLAN.md](./V2-PLAN.md)) · **Phase 11 (Plattform) in Arbeit** — Arabisch/RTL wird gerade ergänzt
 
 ---
 
@@ -104,17 +104,17 @@ Ausgangspunkt war ein QA-Durchlauf der Version 2.0. Behobene Befunde und neu gel
 - [ ] **Tajwid-Farben** — offen (Datenquelle/Schrift noch zu klären)
 - [ ] Khatm-Planer (Leseplan) — offen (Khatam-Tracker existiert nur im Ramadan-Modus)
 
-### Phase 8 — Lernzentrum ✅ Abgeschlossen (Aqida & Hajj in Arbeit)
+### Phase 8 — Lernzentrum ✅ Abgeschlossen
 Neuer Tab **Lernen** mit Wissensstufen (Entdecken · Praktizieren · Vertiefen), Lernpfaden, Lektionsleser, Quiz, Glossar und FAQ; Fortschritt wird lokal gespeichert, Dashboard-Widget „Weiterlernen“.
 - [x] **Lern-Engine:** typisiertes Content-Schema (`app/data/learn/types.ts`: Text-, Koran-, Hadith-, Hinweis-, Begriffs- und Link-Blöcke, Quiz, Quellen, `review`-Status), Lektionsleser, Quiz, Fortschritt (`useLearnProgress`)
 - [x] **Pfad „Grundlagen des Islam“** — 12 Lektionen
 - [x] **Pfad „Neu im Islam“** — 10 Lektionen
 - [x] **Pfad „Fiqh des Alltags“** — 12 Lektionen
-- [x] **Glossar** — 134 Begriffe (inkl. Fiqh-Begriffe), tappbare Begriffs-Chips in Lektionen
+- [x] **Glossar** — 178 Begriffe (inkl. Fiqh-, Aqida- und Hajj-Begriffe), tappbare Begriffs-Chips in Lektionen
 - [x] **FAQ** — 35 Einträge in 8 Kategorien
 - [x] Redaktionelle Regeln: Quellenangabe pro Aussage, neutrale Darstellung bei Rechtsschul-Unterschieden, alle Inhalte `draft` bis zur Prüfung ([docs/CONTENT-REVIEW.md](./docs/CONTENT-REVIEW.md))
-- [ ] 🔄 **Pfad „Aqida“** — in Arbeit (bereits als „Bald verfügbar“ angekündigt)
-- [ ] 🔄 **Pfad „Hajj & Umra“** — in Arbeit
+- [x] **Pfad „Aqida — Glaubenslehre vertieft“** — 10 Lektionen (Vertiefen)
+- [x] **Pfad „Hajj & Umrah“** — 8 Lektionen inkl. Packliste (Praktizieren)
 
 ### Phase 9 — Inhalte vertiefen ✅ Abgeschlossen (Hisnul-Muslim-Vervollständigung & Tajwid offen)
 - [x] **Hadith:** 100 Einträge (vorher 43), **Authentizitätsgrade** (sahih · hasan · daif · ungeprüft) mit Grader-Hinweis, Grad-Filter, Teilen und **Deep-Links** (`/hadith?id=…`)
@@ -133,7 +133,6 @@ Neuer Tab **Lernen** mit Wissensstufen (Entdecken · Praktizieren · Vertiefen),
 
 ### Phase 11 — Plattform 🔄 In Arbeit
 - [ ] 🔄 **Arabische Oberfläche (`ar`) mit RTL-Layout** — in Arbeit
-- [ ] 🔄 **Aqida- und Hajj-Lernpfad** — in Arbeit (siehe Phase 8)
 - [ ] **Lighthouse-Audit** (Performance, A11y, PWA) und Behebung der Befunde — offen
 - [ ] **Maskable-Icon** — offen (aktuell nur runde Icons auf transparentem Grund; das SVG dient als Maskable-Platzhalter)
 - [ ] **Datenschutzseite** in der App — offen (Inhalt liegt als Abschnitt in der README vor)
@@ -469,7 +468,7 @@ GitHub Actions (`.github/workflows/ci.yml`) bei Push auf `main` und für jeden P
 | 32 | Phase 8: Lernzentrum (Engine, 3 Pfade, Glossar, FAQ) | ✅ | Branch `feat/phase-5-foundation` |
 | 33 | Phase 9: Hadith-Grade, Adhkar, Kalender-Erklärungen/Fastentage/ICS | ✅ | Branch `feat/phase-5-foundation` |
 | 34 | Phase 10: Moscheen in der Nähe | ✅ | Branch `feat/phase-5-foundation` |
-| 35 | Phase 11: Arabisch/RTL, Aqida- und Hajj-Pfad | 🔄 | in Arbeit |
+| 35 | Phase 11: Arabisch/RTL | 🔄 | in Arbeit |
 
 ---
 
