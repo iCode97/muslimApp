@@ -198,6 +198,24 @@ const duaSources = [
       </GlassCard>
     </section>
 
+    <!-- Karten & Orte -->
+    <section class="space-y-2">
+      <h2 class="text-xs font-medium text-themed-muted uppercase tracking-wider px-1">
+        {{ t('about.mapsSection') }}
+      </h2>
+      <GlassCard>
+        <div class="space-y-2.5">
+          <p class="text-xs text-themed-muted leading-relaxed">{{ t('about.mapsBody') }}</p>
+          <a
+            href="https://www.openstreetmap.org/copyright"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block text-[11px] text-themed-faint underline-offset-2 hover:underline"
+          >{{ t('about.mapsAttribution') }}</a>
+        </div>
+      </GlassCard>
+    </section>
+
     <!-- Islamischer Kalender -->
     <section class="space-y-2">
       <h2 class="text-xs font-medium text-themed-muted uppercase tracking-wider px-1">
