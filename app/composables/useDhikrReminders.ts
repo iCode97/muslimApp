@@ -121,7 +121,7 @@ export function useDhikrReminders() {
           title: t(slot === 'morning' ? 'dhikrReminder.morningTitle' : 'dhikrReminder.eveningTitle'),
           body: t(slot === 'morning' ? 'dhikrReminder.morningBody' : 'dhikrReminder.eveningBody'),
           timestamp: ts,
-          url: `/dua?cat=${slot}`,
+          url: `/adhkar?set=${slot}`,
         })
       }
     }

@@ -174,7 +174,7 @@ export function candidatesFor(record: PushRecord, now: number, lookup: TimingsLo
             title: slot === 'morning' ? msgs.morningTitle : msgs.eveningTitle,
             body: slot === 'morning' ? msgs.morningBody : msgs.eveningBody,
             tag: `push-${notificationId}`,
-            url: `/dua?cat=${slot}`,
+            url: `/adhkar?set=${slot}`,
           },
           ttlSeconds: 2 * 60 * 60,
         })

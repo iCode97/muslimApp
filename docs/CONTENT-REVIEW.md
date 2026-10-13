@@ -71,3 +71,25 @@ Vereinfachte Standardschrift, teils Auszüge (Ref nennt ganzen Vers): 2:255, 31:
 - [ ] Tirmidhi 745/747 (Fasten Montag/Donnerstag) — unsicher
 - [ ] Ohne Nummer zitiert: Aschura (Bukhari), Weiße Tage (Tirmidhi/Nasa'i über Abu Dharr), Tasu'a (Muslim), Mondsichtung Ramadan, Fasten im Scha'ban
 - [ ] Kandil-Nächte (Regaip, Miraç, Berat) als türkisch-islamische Tradition mit Hinweis auf Gelehrtenkritik — Formulierung prüfen
+
+## Adhkar (`app/data/adhkar.ts`, 56 Einträge in 9 Sets)
+
+Arabischer Wortlaut hat höchste Priorität — jeder Eintrag wird wörtlich rezitiert.
+
+- [ ] Sayyid al-Istighfar (Bukhari 6306): „وَأَبُوءُ لَكَ بِذَنْبِي" vs. Hisn „وَأَبُوءُ بِذَنْبِي"
+- [ ] Drei Quls 3× morgens/abends: Abu Dawud 5082 / Tirmidhi 3575 (hasan)
+- [ ] „Allahumma bika asbahna/amsayna": Tirmidhi 3391 / Abu Dawud 5068 (hasan); Abendversion endet auf „وَإِلَيْكَ الْمَصِيرُ"?
+- [ ] Al-'afw wal-'afiyah: Abu Dawud 5074 / Ibn Majah 3871 — „عَوْرَاتِي" vs. „عَوْرَتِي"
+- [ ] „Raditu billahi rabba": Abu Dawud 5072 / Tirmidhi 3389 (hasan), Text mit „صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ" nach Hisn
+- [ ] „Bismillah alladhi la yadurru": Abu Dawud 5088 / Tirmidhi 3388 (hasan)
+- [ ] „A'udhu bi-kalimatillah…" abends 3× (Anzahl aus Hisn/Ahmad, Muslim 2709 ohne Anzahl); Reise 1× (Muslim 2708)
+- [ ] Schlafen/Aufwachen: Bukhari 6324 — evtl. 6312/6314; Wortfolge variiert
+- [ ] „Allahumma a'inni" nach dem Gebet: Abu Dawud 1522 (sahih)
+- [ ] Haus verlassen „Bismillah, tawakkaltu…": Abu Dawud 5095 / Tirmidhi 3426
+- [ ] Bismillah vergessen: Abu Dawud 3767 — „بِسْمِ اللَّهِ أَوَّلَهُ وَآخِرَهُ" vs. Hisn „فِي أَوَّلِهِ وَآخِرِهِ"
+- [ ] Nach dem Essen: Abu Dawud 4023 / Tirmidhi 3458 (hasan) inkl. Tugend „vergangene Sünden vergeben"
+- [ ] Dua des Yunus: Tugend nach Tirmidhi 3505
+- [ ] Kummer-Dua (Bukhari 6369): „وَالْبُخْلِ وَالْجُبْنِ" — Reihenfolge prüfen
+- [ ] Tugend-Quellen: Ayat al-Kursi vor dem Schlafen (Bukhari 2311), letzte zwei Verse al-Baqara (Bukhari 5009, Muslim 807)
+- [ ] 100× Tahlil im Morgen-Set: Bukhari 6403 / Muslim 2691
+- [ ] Alle Übersetzungen eigene Wiedergabe — insbesondere Türkisch muttersprachlich prüfen

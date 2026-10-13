@@ -29,6 +29,7 @@ const DEFAULT_WIDGETS: DashboardWidget[] = [
   { id: 'progress-overview', i18nKey: 'widgets.progressOverview', icon: '📊', enabled: true, order: 10, colSpan: 2 },
   { id: 'prayer-tracker', i18nKey: 'widgets.prayerTracker', icon: '✅', enabled: true, order: 11, colSpan: 2 },
   { id: 'learn-continue', i18nKey: 'learn.widgetName', icon: '🎓', enabled: true, order: 12, colSpan: 2 },
+  { id: 'adhkar', i18nKey: 'adhkar.widgetName', icon: '📿', enabled: true, order: 13, colSpan: 2 },
 ]
 
 /** Fresh deep copy of the defaults — callers mutate widgets, so never share objects. */

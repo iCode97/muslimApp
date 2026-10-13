@@ -223,7 +223,7 @@ describe('planDispatch — dhikr', () => {
       recordId: 'rec-berlin',
       notificationId: 'dhikr-morning-2026-10-12',
       fireAt: fire,
-      payload: { title: 'Sabah Zikri', body: 'Güne sabah duaları ile başla.', tag: 'push-dhikr-morning-2026-10-12', url: '/dua?cat=morning' },
+      payload: { title: 'Sabah Zikri', body: 'Güne sabah duaları ile başla.', tag: 'push-dhikr-morning-2026-10-12', url: '/adhkar?set=morning' },
       ttlSeconds: 7200,
     }])
   })
@@ -233,7 +233,7 @@ describe('planDispatch — dhikr', () => {
     const fire = utc('2026-10-12T23:30:00Z') // 19:30 EDT
     const sends = planDispatch([r], fire + 500, () => null)
     expect(sends.map(s => s.notificationId)).toEqual(['dhikr-evening-2026-10-12'])
-    expect(sends[0]!.payload.url).toBe('/dua?cat=evening')
+    expect(sends[0]!.payload.url).toBe('/adhkar?set=evening')
   })
 
   it('skips disabled slots, the master switch and already sent reminders', () => {

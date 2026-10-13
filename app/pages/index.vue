@@ -45,6 +45,7 @@ const widgetComponents: Record<string, ReturnType<typeof resolveComponent>> = {
   'progress-overview': resolveComponent('ProgressOverview'),
   'prayer-tracker': resolveComponent('PrayerTrackerWidget'),
   'learn-continue': resolveComponent('LearnContinue'),
+  'adhkar': resolveComponent('AdhkarWidget'),
 }
 </script>
 

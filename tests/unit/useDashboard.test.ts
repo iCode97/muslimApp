@@ -12,7 +12,7 @@ describe('useDashboard', () => {
 
   it('starts with the default widgets', () => {
     const { widgets, enabledWidgets } = useDashboard()
-    expect(widgets.value.length).toBe(13)
+    expect(widgets.value.length).toBe(14)
     expect(enabledWidgets.value.every(w => w.enabled)).toBe(true)
     const orders = enabledWidgets.value.map(w => w.order)
     expect(orders).toEqual([...orders].sort((a, b) => a - b))
@@ -92,7 +92,7 @@ describe('useDashboard', () => {
     ]))
     const { widgets, loadConfig } = useDashboard()
     loadConfig()
-    expect(widgets.value.length).toBe(13)
+    expect(widgets.value.length).toBe(14)
     expect(widgets.value.find(w => w.id === 'prayer-times')!.enabled).toBe(false)
   })
 
@@ -100,7 +100,7 @@ describe('useDashboard', () => {
     localStorage.setItem('muslimapp-dashboard', '{not json')
     const { widgets, loadConfig } = useDashboard()
     expect(() => loadConfig()).not.toThrow()
-    expect(widgets.value.length).toBe(13)
+    expect(widgets.value.length).toBe(14)
     expect(localStorage.getItem('muslimapp-dashboard')).toBeNull()
   })
 })

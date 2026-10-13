@@ -53,6 +53,7 @@ export const ALL_NAV_ITEMS: NavItem[] = [
   { id: 'guide', path: '/guide', icon: 'guide', label: 'nav.guide' },
   { id: 'seerah', path: '/seerah', icon: 'seerah', label: 'nav.seerah' },
   { id: 'ramadan', path: '/ramadan', icon: 'ramadan', label: 'nav.ramadan' },
+  { id: 'mosques', path: '/mosques', icon: 'mosque', label: 'nav.mosques' },
   { id: 'tracker', path: '/tracker', icon: 'tracker', label: 'nav.tracker' },
   { id: 'zakat', path: '/zakat', icon: 'zakat', label: 'nav.zakat' },
   { id: 'favorites', path: '/favorites', icon: 'heart', label: 'nav.favorites' },
@@ -70,7 +71,7 @@ function pick(ids: string[]): NavItem[] {
 export const DESKTOP_PRIMARY_ITEMS = pick(['dashboard', 'prayer', 'quran', 'learn', 'calendar'])
 export const DESKTOP_TOOLS_ITEMS = pick([
   'tasbih', 'qibla', 'dua', 'adhkar', 'hadith', 'names', 'guide', 'seerah', 'ramadan',
-  'tracker', 'zakat', 'favorites',
+  'mosques', 'tracker', 'zakat', 'favorites',
 ])
 export const DESKTOP_FOOTER_ITEMS = pick(['settings', 'about'])
 
@@ -85,7 +86,7 @@ export const MOBILE_TABS: MobileTab[] = [
     path: '/more',
     icon: 'more',
     label: 'nav.tabMore',
-    match: ['/more', '/tasbih', '/qibla', '/dua', '/adhkar', '/calendar', '/ramadan', '/zakat', '/settings', '/about'],
+    match: ['/more', '/tasbih', '/qibla', '/dua', '/adhkar', '/calendar', '/ramadan', '/mosques', '/zakat', '/settings', '/about'],
   },
 ]
 
