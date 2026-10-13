@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ZakatInputs } from '~/composables/useZakat'
 /**
  * Zakat Calculator — fully offline.
  * Assets (cash, gold, silver, other) minus debts, compared against the
@@ -12,10 +13,13 @@ const zakat = useZakat()
 
 onMounted(() => zakat.load())
 
-function onInput(field: keyof typeof zakat.inputs.value, event: Event) {
+/** Keys of ZakatInputs whose values are numbers (everything except basis/currency). */
+type NumericField = { [K in keyof ZakatInputs]: ZakatInputs[K] extends number ? K : never }[keyof ZakatInputs]
+
+function onInput(field: NumericField, event: Event) {
   const raw = (event.target as HTMLInputElement).value
   const num = Number.parseFloat(raw)
-  ;(zakat.inputs.value as Record<string, unknown>)[field] = Number.isFinite(num) && num >= 0 ? num : 0
+  zakat.inputs.value[field] = Number.isFinite(num) && num >= 0 ? num : 0
   zakat.save()
 }
 
@@ -24,14 +28,22 @@ function setBasis(basis: 'gold' | 'silver') {
   zakat.save()
 }
 
-const numberFormat = computed(() => new Intl.NumberFormat(locale.value, {
+const numberFormat = computed(() => new Intl.NumberFormat(intlTag(locale.value), {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 }))
 
 function fmt(value: number): string {
-  return `${numberFormat.value.format(value)} ${zakat.inputs.value.currency}`
+  const text = `${numberFormat.value.format(value)} ${zakat.inputs.value.currency}`
+  // LRI…PDI isolate keeps "1,234.00 EUR" in reading order inside RTL text
+  return isRtlLocale(locale.value) ? `\u2066${text}\u2069` : text
 }
+
+/** Placeholder in reading order even inside RTL inputs (LRI…PDI isolate). */
+const gramPlaceholder = computed(() => {
+  const text = `0.00 ${zakat.inputs.value.currency}/g`
+  return isRtlLocale(locale.value) ? `\u2066${text}\u2069` : text
+})
 
 const assetFields = [
   { key: 'cash', labelKey: 'zakat.cash', icon: '💵' },
@@ -93,7 +105,7 @@ const assetFields = [
             {{ basis === 'gold' ? '🥇' : '🥈' }}
             {{ t(`zakat.${basis}`) }}
             <span class="block text-[10px] opacity-75">
-              {{ basis === 'gold' ? NISAB_GOLD_GRAMS : NISAB_SILVER_GRAMS }} g
+              <bdi dir="ltr">{{ basis === 'gold' ? NISAB_GOLD_GRAMS : NISAB_SILVER_GRAMS }} g</bdi>
             </span>
           </button>
         </div>
@@ -118,7 +130,7 @@ const assetFields = [
               step="0.01"
               inputmode="decimal"
               :value="zakat.inputs.value.goldPricePerGram || ''"
-              :placeholder="`0.00 ${zakat.inputs.value.currency}/g`"
+              :placeholder="gramPlaceholder"
               class="w-full glass-subtle rounded-xl px-3 py-2.5 text-sm text-themed bg-transparent outline-none focus:ring-2 focus:ring-[var(--color-primary)]/50 tabular-nums"
               @input="onInput('goldPricePerGram', $event)"
             >
@@ -131,7 +143,7 @@ const assetFields = [
               step="0.01"
               inputmode="decimal"
               :value="zakat.inputs.value.silverPricePerGram || ''"
-              :placeholder="`0.00 ${zakat.inputs.value.currency}/g`"
+              :placeholder="gramPlaceholder"
               class="w-full glass-subtle rounded-xl px-3 py-2.5 text-sm text-themed bg-transparent outline-none focus:ring-2 focus:ring-[var(--color-primary)]/50 tabular-nums"
               @input="onInput('silverPricePerGram', $event)"
             >
@@ -161,7 +173,7 @@ const assetFields = [
               inputmode="decimal"
               :value="zakat.inputs.value[field.key] || ''"
               placeholder="0"
-              class="w-28 text-right bg-transparent outline-none text-sm text-themed tabular-nums"
+              class="w-28 text-end bg-transparent outline-none text-sm text-themed tabular-nums"
               @input="onInput(field.key, $event)"
             >
             <span class="text-xs text-themed-faint w-5">

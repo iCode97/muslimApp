@@ -13,6 +13,11 @@ const showTomorrow = computed(() => tomorrowPrayers.value.length > 0)
 const tomorrowFajr = computed(() => tomorrowPrayers.value.find(p => p.name === 'Fajr') || null)
 const tomorrowRest = computed(() => tomorrowPrayers.value.filter(p => p.name !== 'Fajr'))
 const showAllTomorrow = ref(false)
+
+// Short label of the active calculation method for the card header
+const methodLabel = computed(() =>
+  prayerTimes.method.value === 13 ? t('prayer.diyanet') : prayerTimes.methodName.value,
+)
 </script>
 
 <template>
@@ -21,10 +26,10 @@ const showAllTomorrow = ref(false)
       <h2 class="text-sm font-semibold text-themed-muted uppercase tracking-wider">
         {{ t('dashboard.allPrayers') }}
       </h2>
-      <span class="text-xs text-themed-faint">{{ t('prayer.diyanet') }}</span>
+      <span class="text-xs text-themed-faint truncate max-w-[50%]">{{ methodLabel }}</span>
     </div>
 
-    <div v-if="prayerTimes.loading.value" class="py-2">
+    <div v-if="prayerTimes.loading.value && prayers.length === 0" class="py-2">
       <SkeletonLoader variant="prayer-row" :rows="6" />
     </div>
 

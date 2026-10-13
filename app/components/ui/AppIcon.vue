@@ -37,6 +37,8 @@ const ICONS: Record<string, string> = {
     '<circle cx="12" cy="12" r="9" /><path d="M9 15 L12 5 L15 15 L12 13 Z" fill="currentColor" stroke="none" /><path d="M12 2 V4 M12 20 V22 M2 12 H4 M20 12 H22" />',
   dua:
     '<path d="M8 11 V7 A1.5 1.5 0 0 1 11 7 V11" /><path d="M13 11 V7 A1.5 1.5 0 0 1 16 7 V11" /><path d="M6 11 H18 V15 A6 6 0 0 1 12 21 A6 6 0 0 1 6 15 Z" /><path d="M9 4 V7 M15 4 V7" />',
+  adhkar:
+    '<path d="M3 16 H21" /><path d="M7 16 A5 5 0 0 1 17 16" /><path d="M12 5 V7.5 M5.6 8.6 L7.3 10.3 M18.4 8.6 L16.7 10.3" /><circle cx="8" cy="20" r="1" fill="currentColor" stroke="none" /><circle cx="12" cy="20" r="1" fill="currentColor" stroke="none" /><circle cx="16" cy="20" r="1" fill="currentColor" stroke="none" />',
   hadith:
     '<path d="M4 5 H16 A3 3 0 0 1 19 8 V19 A2 2 0 0 1 17 21 H6 A2 2 0 0 1 4 19 Z" /><path d="M7 9 H15 M7 13 H13 M7 17 H11" />',
   names:
@@ -51,6 +53,8 @@ const ICONS: Record<string, string> = {
     '<circle cx="12" cy="12" r="3" /><path d="M19.4 15 A1.65 1.65 0 0 0 19.7 16.8 L19.8 16.9 A2 2 0 1 1 17 19.7 L16.9 19.6 A1.65 1.65 0 0 0 15 19.3 A1.65 1.65 0 0 0 13.9 20.8 V21 A2 2 0 1 1 9.9 21 V20.9 A1.65 1.65 0 0 0 8.8 19.4 A1.65 1.65 0 0 0 7 19.7 L6.9 19.8 A2 2 0 1 1 4.1 17 L4.2 16.9 A1.65 1.65 0 0 0 4.5 15 A1.65 1.65 0 0 0 3 13.9 H2.9 A2 2 0 1 1 2.9 9.9 H3 A1.65 1.65 0 0 0 4.5 8.8 A1.65 1.65 0 0 0 4.2 7 L4.1 6.9 A2 2 0 1 1 6.9 4.1 L7 4.2 A1.65 1.65 0 0 0 8.8 4.5 A1.65 1.65 0 0 0 9.9 3 V2.9 A2 2 0 1 1 13.9 2.9 V3 A1.65 1.65 0 0 0 15 4.5 A1.65 1.65 0 0 0 16.8 4.2 L16.9 4.1 A2 2 0 1 1 19.7 6.9 L19.6 7 A1.65 1.65 0 0 0 19.3 8.8 A1.65 1.65 0 0 0 20.8 9.9 H21 A2 2 0 1 1 21 13.9 H20.8 A1.65 1.65 0 0 0 19.4 15 Z" />',
   about:
     '<circle cx="12" cy="12" r="9" /><path d="M12 8 V8.01" /><path d="M11 12 H12 V17 H13" />',
+  shield:
+    '<path d="M12 3 L19 6 V12 C19 16.5 16 19.5 12 21 C8 19.5 5 16.5 5 12 V6 Z" /><path d="M9 12 L11 14 L15 10" />',
   // Widget + UI helpers
   edit:
     '<path d="M4 20 H9 L20 9 L15 4 L4 15 Z" /><path d="M14 5 L19 10" />',
@@ -84,18 +88,55 @@ const ICONS: Record<string, string> = {
     '<ellipse cx="12" cy="6" rx="7" ry="2.5" /><path d="M5 6 V12 C5 13.4 8.1 14.5 12 14.5 C15.9 14.5 19 13.4 19 12 V6" /><path d="M5 12 V18 C5 19.4 8.1 20.5 12 20.5 C15.9 20.5 19 19.4 19 18 V12" />',
   heart:
     '<path d="M12 20 C7 16 4 13 4 9.5 A4.3 4.3 0 0 1 12 7 A4.3 4.3 0 0 1 20 9.5 C20 13 17 16 12 20 Z" />',
+  learn:
+    '<path d="M2 9 L12 4 L22 9 L12 14 Z" /><path d="M6 11.5 V16 C6 17.5 9 19 12 19 C15 19 18 17.5 18 16 V11.5" /><path d="M22 9 V14" />',
+  star:
+    '<path d="M12 3.5 L14.6 9 L20.5 9.7 L16.2 13.8 L17.3 19.7 L12 16.8 L6.7 19.7 L7.8 13.8 L3.5 9.7 L9.4 9 Z" />',
+  starFilled:
+    '<path d="M12 3.5 L14.6 9 L20.5 9.7 L16.2 13.8 L17.3 19.7 L12 16.8 L6.7 19.7 L7.8 13.8 L3.5 9.7 L9.4 9 Z" fill="currentColor" />',
+  chevronRight:
+    '<path d="M9 6 L15 12 L9 18" />',
   play:
     '<path d="M8.5 5.5 L18 12 L8.5 18.5 Z" fill="currentColor" stroke="none" />',
   pause:
     '<path d="M8.5 5.5 V18.5 M15.5 5.5 V18.5" stroke-width="2.5" />',
+  lightbulb:
+    '<path d="M9 18 H15" /><path d="M10 21 H14" /><path d="M12 3 A6 6 0 0 0 8 13.5 C8.7 14.2 9 15 9 16 V18 H15 V16 C15 15 15.3 14.2 16 13.5 A6 6 0 0 0 12 3 Z" />',
+  alertCircle:
+    '<circle cx="12" cy="12" r="9" /><path d="M12 7.5 V13" /><circle cx="12" cy="16.5" r="0.8" fill="currentColor" stroke="none" />',
+  scale:
+    '<path d="M12 4 V20 M8 20 H16" /><path d="M5 7 H19" /><path d="M5 7 L2.5 13 A3 3 0 0 0 7.5 13 Z" /><path d="M19 7 L16.5 13 A3 3 0 0 0 21.5 13 Z" />',
+  arrowLeft:
+    '<path d="M19 12 H5 M11 6 L5 12 L11 18" />',
+  arrowRight:
+    '<path d="M5 12 H19 M13 6 L19 12 L13 18" />',
+  clock:
+    '<circle cx="12" cy="12" r="9" /><path d="M12 7 V12 L15.5 14" />',
+  checkCircle:
+    '<circle cx="12" cy="12" r="9" /><path d="M8 12.5 L11 15.5 L16 9" />',
+  mosque:
+    '<path d="M12 4 V6" /><path d="M7 14 A5 5 0 0 1 17 14" /><path d="M5 21 V14 H19 V21" /><path d="M3 21 H21" /><path d="M10 21 V18 A2 2 0 0 1 14 18 V21" /><path d="M3.5 21 V11 L5 8 L6.5 11 V14" />',
 }
 
+/** Icons that point in a reading direction → mirrored in RTL (see .icon-dir in main.css). */
+const DIRECTIONAL = new Set(['chevronRight', 'arrowLeft', 'arrowRight'])
+const isDirectional = computed(() => DIRECTIONAL.has(props.name))
+
 const svg = computed(() => ICONS[props.name] ?? '')
+/** Unknown names (e.g. an emoji from content data) render as text instead of an empty box. */
+const isRegistered = computed(() => props.name in ICONS)
 const dimension = computed(() => typeof props.size === 'number' ? `${props.size}px` : props.size)
 </script>
 
 <template>
+  <span
+    v-if="!isRegistered"
+    aria-hidden="true"
+    class="inline-flex items-center justify-center leading-none"
+    :style="{ width: dimension, height: dimension, fontSize: `calc(${dimension} * 0.9)` }"
+  >{{ name }}</span>
   <svg
+    v-else
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="none"
@@ -103,6 +144,7 @@ const dimension = computed(() => typeof props.size === 'number' ? `${props.size}
     :stroke-width="stroke"
     stroke-linecap="round"
     stroke-linejoin="round"
+    :class="isDirectional ? 'icon-dir' : undefined"
     :width="dimension"
     :height="dimension"
     :aria-hidden="true"

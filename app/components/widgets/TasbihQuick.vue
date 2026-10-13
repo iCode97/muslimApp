@@ -36,13 +36,15 @@ function handleTap() {
           <p class="text-sm font-medium truncate">
             {{ t(tasbih.currentMode.value.i18nKey) }}
           </p>
-          <p v-if="tasbih.currentMode.value.arabic" class="font-arabic text-base text-[var(--color-gold)] truncate" dir="rtl">
+          <p v-if="tasbih.currentMode.value.arabic" class="font-arabic text-base text-[var(--color-gold)] truncate" dir="rtl" lang="ar">
             {{ tasbih.currentMode.value.arabic }}
           </p>
         </div>
 
         <!-- Tap counter -->
         <button
+          type="button"
+          :aria-label="`${t('a11y.tapCounter')}: ${t('a11y.counterValue', { count: tasbih.state.value.count, target: tasbih.currentMode.value.target || '\u221E' })}`"
           :class="[
             'w-16 h-16 rounded-full glass-strong flex flex-col items-center justify-center',
             'active:scale-90 transition-transform duration-100 select-none',

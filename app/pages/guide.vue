@@ -5,12 +5,22 @@
 import { GUIDE_SECTIONS, PRAYER_RAKA_INFO, type PrayerStep } from '~/data/prayer-guide'
 
 const { t, locale } = useI18n()
+const isRtl = computed(() => isRtlLocale(locale.value))
 
 const activeSection = ref<string>('wudu')
 
 const currentSection = computed(() =>
-  GUIDE_SECTIONS.find(s => s.id === activeSection.value) || GUIDE_SECTIONS[0],
+  GUIDE_SECTIONS.find(s => s.id === activeSection.value) || GUIDE_SECTIONS[0]!,
 )
+
+// Roving-tabindex keyboard support for the tablist (arrow keys)
+function moveTab(delta: number) {
+  const idx = GUIDE_SECTIONS.findIndex(s => s.id === activeSection.value)
+  const next = GUIDE_SECTIONS[(idx + delta + GUIDE_SECTIONS.length) % GUIDE_SECTIONS.length]
+  if (!next) return
+  activeSection.value = next.id
+  nextTick(() => document.getElementById(`guide-tab-${next.id}`)?.focus())
+}
 
 function getInstruction(step: PrayerStep): string {
   return step.instruction[locale.value as keyof typeof step.instruction] || step.instruction.en
@@ -34,10 +44,16 @@ function getTranslation(step: PrayerStep): string {
     </header>
 
     <!-- Section tabs -->
-    <div class="flex gap-2 animate-fade-in stagger-1">
+    <div role="tablist" :aria-label="t('a11y.sections')" class="flex gap-2 animate-fade-in stagger-1">
       <button
         v-for="section in GUIDE_SECTIONS"
+        :id="`guide-tab-${section.id}`"
         :key="section.id"
+        type="button"
+        role="tab"
+        :aria-selected="activeSection === section.id"
+        :aria-controls="`guide-panel-${section.id}`"
+        :tabindex="activeSection === section.id ? 0 : -1"
         :class="[
           'flex-1 py-2.5 px-4 rounded-xl text-sm font-medium transition-all duration-200',
           activeSection === section.id
@@ -45,8 +61,10 @@ function getTranslation(step: PrayerStep): string {
             : 'glass-subtle text-themed-secondary hover:text-themed',
         ]"
         @click="activeSection = section.id"
+        @keydown.right.prevent="moveTab(isRtl ? -1 : 1)"
+        @keydown.left.prevent="moveTab(isRtl ? 1 : -1)"
       >
-        {{ section.icon }} {{ t(section.titleKey) }}
+        <span aria-hidden="true">{{ section.icon }}</span> {{ t(section.titleKey) }}
       </button>
     </div>
 
@@ -56,7 +74,12 @@ function getTranslation(step: PrayerStep): string {
     </p>
 
     <!-- Steps -->
-    <div class="space-y-4">
+    <div
+      :id="`guide-panel-${activeSection}`"
+      role="tabpanel"
+      :aria-labelledby="`guide-tab-${activeSection}`"
+      class="space-y-4"
+    >
       <div
         v-for="(step, idx) in currentSection.steps"
         :key="step.id"
@@ -66,7 +89,7 @@ function getTranslation(step: PrayerStep): string {
           <div class="space-y-3">
             <!-- Step header -->
             <div class="flex items-center gap-3">
-              <span class="w-10 h-10 flex items-center justify-center rounded-full glass-subtle text-xl">
+              <span class="w-10 h-10 flex items-center justify-center rounded-full glass-subtle text-xl" aria-hidden="true">
                 {{ step.position }}
               </span>
               <div class="flex-1">
@@ -79,7 +102,7 @@ function getTranslation(step: PrayerStep): string {
                     {{ step.repetitions }}×
                   </span>
                 </div>
-                <p class="text-sm text-themed-secondary leading-relaxed mt-0.5">
+                <p class="text-sm text-themed-secondary leading-relaxed mt-0.5" dir="auto">
                   {{ getInstruction(step) }}
                 </p>
               </div>
@@ -87,13 +110,13 @@ function getTranslation(step: PrayerStep): string {
 
             <!-- Arabic text -->
             <div v-if="step.arabicText" class="pt-2 border-t border-[var(--glass-border)] space-y-2">
-              <p class="font-arabic text-xl text-right text-[var(--color-gold)] leading-[2.2]" dir="rtl">
+              <p class="font-arabic text-xl text-end text-[var(--color-gold)] leading-[2.2]" dir="rtl" lang="ar">
                 {{ step.arabicText }}
               </p>
-              <p v-if="step.transliteration" class="text-sm text-themed-muted italic">
+              <p v-if="step.transliteration" class="text-sm text-themed-muted italic" dir="ltr">
                 {{ step.transliteration }}
               </p>
-              <p v-if="getTranslation(step)" class="text-xs text-themed-secondary leading-relaxed">
+              <p v-if="getTranslation(step)" class="text-xs text-themed-secondary leading-relaxed" dir="auto">
                 {{ getTranslation(step) }}
               </p>
             </div>
@@ -104,9 +127,9 @@ function getTranslation(step: PrayerStep): string {
 
     <!-- Raka info table (only in salah section) -->
     <div v-if="activeSection === 'salah'" class="space-y-3 animate-fade-in">
-      <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
+      <h2 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
         {{ t('guide.rakaOverview') }}
-      </h3>
+      </h2>
       <GlassCard>
         <div class="space-y-2">
           <div

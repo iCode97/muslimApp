@@ -4,7 +4,7 @@
  * Falls back to static direction display when compass unavailable.
  */
 const { t } = useI18n()
-const { location } = useLocation()
+const { location, ready } = useLocation()
 const qibla = useQibla()
 const haptics = useHaptics()
 
@@ -59,21 +59,18 @@ onMounted(() => {
       showCalibrationHint.value = false
     }
   }
-  // Auto-start if location available
-  if (location.value) {
-    activateCompass()
-  }
+  // Auto-start the compass once a location is known (also after reload, when
+  // the app-init plugin restores it after mount). On iOS the permission
+  // prompt needs a user gesture, so there we wait for the button tap.
+  watch(location, (loc) => {
+    if (loc && !compassStarted.value && !qibla.needsPermission.value) {
+      activateCompass()
+    }
+  }, { immediate: true })
 })
 
 onUnmounted(() => {
   qibla.stopCompass()
-})
-
-// Watch for location becoming available
-watch(location, (loc) => {
-  if (loc && !compassStarted.value) {
-    activateCompass()
-  }
 })
 </script>
 
@@ -89,18 +86,17 @@ watch(location, (loc) => {
       </p>
     </header>
 
-    <!-- No location -->
-    <GlassCard v-if="!location" class="w-full animate-fade-in stagger-1">
-      <div class="text-center py-6">
-        <span class="text-4xl mb-3 block">📍</span>
-        <p class="text-sm text-themed-secondary">{{ t('qibla.needLocation') }}</p>
-        <NuxtLink to="/" class="mt-3 inline-block text-sm text-[var(--color-primary-light)]">
-          {{ t('qibla.goToDashboard') }}
-        </NuxtLink>
-      </div>
-    </GlassCard>
+    <!-- Saved location not restored yet (first client tick after hydration) -->
+    <div v-if="!ready" class="w-full" />
+
+    <!-- No location: open the location setup right here -->
+    <div v-else-if="!location" class="w-full space-y-3 animate-fade-in stagger-1">
+      <p class="text-sm text-themed-secondary text-center">{{ t('qibla.needLocation') }}</p>
+      <LocationSetupCTA />
+    </div>
 
     <template v-else>
+      <LocationSelector class="w-full mb-2" />
       <!-- Calibration hint (dismissible) -->
       <Transition name="expand">
         <GlassCard
@@ -130,7 +126,8 @@ watch(location, (loc) => {
       </Transition>
 
       <!-- Compass -->
-      <div class="relative w-72 h-72 my-6 animate-fade-in stagger-1">
+      <!-- Geographic instrument: never mirrored in RTL -->
+      <div class="relative w-72 h-72 my-6 animate-fade-in stagger-1" dir="ltr">
         <!-- Aligned glow halo -->
         <div
           :class="[
@@ -227,7 +224,7 @@ watch(location, (loc) => {
           <div class="flex items-center justify-between">
             <span class="text-sm text-themed-muted">{{ t('qibla.direction') }}</span>
             <span class="text-lg font-semibold text-[var(--color-primary-light)] tabular-nums">
-              {{ qibla.qiblaAngle.value.toFixed(1) }}°
+              <bdi dir="ltr">{{ qibla.qiblaAngle.value.toFixed(1) }}°</bdi>
             </span>
           </div>
         </GlassCard>
@@ -237,7 +234,7 @@ watch(location, (loc) => {
           <div class="flex items-center justify-between">
             <span class="text-sm text-themed-muted">{{ t('qibla.distance') }}</span>
             <span class="text-lg font-semibold tabular-nums">
-              {{ qibla.distanceToKaaba.value.toLocaleString() }} km
+              <bdi dir="ltr">{{ qibla.distanceToKaaba.value.toLocaleString() }} km</bdi>
             </span>
           </div>
         </GlassCard>

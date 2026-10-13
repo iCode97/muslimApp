@@ -5,14 +5,8 @@
  */
 
 const { t } = useI18n()
-const { location, prayerTimes, hijriDisplay, init, startRefresh, stopRefresh } = usePrayerInit()
-
-onMounted(async () => {
-  await init()
-  startRefresh()
-})
-
-onUnmounted(() => stopRefresh())
+// Location + prayer times are loaded/refreshed globally (plugins/app-init.client.ts)
+const { location, hijriDisplay } = usePrayerInit()
 </script>
 
 <template>

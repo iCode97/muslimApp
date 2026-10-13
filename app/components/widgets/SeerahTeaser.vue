@@ -11,7 +11,7 @@ const todayChapter = computed(() => {
   const now = new Date()
   const start = new Date(now.getFullYear(), 0, 0)
   const dayOfYear = Math.floor((now.getTime() - start.getTime()) / 86400000)
-  return SEERAH_CHAPTERS[dayOfYear % SEERAH_CHAPTERS.length]
+  return SEERAH_CHAPTERS[dayOfYear % SEERAH_CHAPTERS.length]!
 })
 
 const preview = computed(() => {
@@ -29,17 +29,17 @@ const preview = computed(() => {
           <h3 class="text-xs font-semibold text-themed-muted uppercase tracking-wider">
             {{ t('seerah.storyOfDay') }}
           </h3>
-          <span class="text-xs text-[var(--color-gold)]">{{ todayChapter.year }}</span>
+          <span class="text-xs text-[var(--color-gold)]">{{ localizeEra(todayChapter.year, locale) }}</span>
         </div>
 
         <div class="flex items-start gap-3">
-          <span class="text-2xl">{{ todayChapter.icon }}</span>
+          <span class="text-2xl" aria-hidden="true">{{ todayChapter.icon }}</span>
           <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-themed">
               {{ t(todayChapter.titleKey) }}
             </p>
-            <p class="text-xs text-themed-muted mt-1 leading-relaxed line-clamp-3">
-              {{ preview }}
+            <p class="text-xs text-themed-muted mt-1 leading-relaxed line-clamp-3" dir="auto">
+              <HonorificText :text="preview" />
             </p>
           </div>
         </div>

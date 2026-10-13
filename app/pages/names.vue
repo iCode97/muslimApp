@@ -82,8 +82,14 @@ const categoryIcons: Record<string, string> = {
     </div>
 
     <!-- Category filter -->
-    <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar animate-fade-in stagger-2">
+    <div
+      role="group"
+      :aria-label="t('a11y.categories')"
+      class="flex gap-2 overflow-x-auto pb-2 no-scrollbar animate-fade-in stagger-2"
+    >
       <button
+        type="button"
+        :aria-pressed="selectedCategory === 'all'"
         :class="[
           'px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all',
           selectedCategory === 'all'
@@ -92,11 +98,13 @@ const categoryIcons: Record<string, string> = {
         ]"
         @click="selectedCategory = 'all'"
       >
-        {{ t('names.all') }} (99)
+        {{ t('names.all') }} ({{ ALLAH_NAMES.length }})
       </button>
       <button
         v-for="cat in NAME_CATEGORIES"
         :key="cat"
+        type="button"
+        :aria-pressed="selectedCategory === cat"
         :class="[
           'px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all',
           selectedCategory === cat
@@ -105,7 +113,7 @@ const categoryIcons: Record<string, string> = {
         ]"
         @click="selectedCategory = cat"
       >
-        {{ categoryIcons[cat] }} {{ t(`names.cat_${cat}`) }}
+        <span aria-hidden="true">{{ categoryIcons[cat] }}</span> {{ t(`names.cat_${cat}`) }}
       </button>
     </div>
 
@@ -121,6 +129,9 @@ const categoryIcons: Record<string, string> = {
             <!-- Number + Category -->
             <div class="flex items-center justify-between">
               <button
+                type="button"
+                :aria-pressed="progress.isRead(name.id)"
+                :aria-label="`${t('common.markAsRead')}: ${name.id}. ${name.transliteration}`"
                 :class="[
                   'w-8 h-8 flex items-center justify-center rounded-lg font-semibold text-xs transition-colors',
                   progress.isRead(name.id)
@@ -129,16 +140,16 @@ const categoryIcons: Record<string, string> = {
                 ]"
                 @click="progress.toggleRead(name.id)"
               >
-                <span v-if="progress.isRead(name.id)">✓</span>
-                <span v-else>{{ name.id }}</span>
+                <span v-if="progress.isRead(name.id)" aria-hidden="true">✓</span>
+                <span v-else aria-hidden="true">{{ name.id }}</span>
               </button>
               <span class="text-[10px] text-themed-faint glass-subtle px-2 py-0.5 rounded-full">
-                {{ categoryIcons[name.category] }} {{ t(`names.cat_${name.category}`) }}
+                <span aria-hidden="true">{{ categoryIcons[name.category] }}</span> {{ t(`names.cat_${name.category}`) }}
               </span>
             </div>
 
             <!-- Arabic name -->
-            <p class="font-arabic text-2xl text-center text-[var(--color-gold)] leading-relaxed" dir="rtl">
+            <p class="font-arabic text-2xl text-center text-[var(--color-gold)] leading-relaxed" dir="rtl" lang="ar">
               {{ name.arabic }}
             </p>
 
@@ -148,7 +159,7 @@ const categoryIcons: Record<string, string> = {
             </p>
 
             <!-- Meaning -->
-            <p class="text-xs text-themed-muted text-center">
+            <p class="text-xs text-themed-muted text-center" dir="auto">
               {{ getMeaning(name) }}
             </p>
           </div>

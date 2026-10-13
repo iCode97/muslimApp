@@ -4,7 +4,7 @@
  * hosts the full GPS + search flow, keeping the inline surface minimal.
  */
 const { t } = useI18n()
-const { location, loading, error, detectGPS, searchLocations, selectSuggestion, suggestions, clearSuggestions, searchLoading } = useLocation()
+const { location, ready, loading, error, detectGPS, searchLocations, selectSuggestion, suggestions, clearSuggestions, searchLoading } = useLocation()
 const haptics = useHaptics()
 
 const open = ref(false)
@@ -46,14 +46,14 @@ function openSheet() {
 </script>
 
 <template>
-  <GlassCard v-if="!location" variant="primary" interactive class="text-center space-y-4">
+  <GlassCard v-if="ready && !location" variant="primary" interactive class="text-center space-y-4">
     <div class="space-y-2">
       <div class="flex justify-center">
         <AppIcon name="location" :size="32" class="text-[var(--color-primary-light)]" />
       </div>
-      <h3 class="text-lg font-semibold text-themed">
+      <h2 class="text-lg font-semibold text-themed">
         {{ t('location.setupTitle') }}
-      </h3>
+      </h2>
       <p class="text-sm text-themed-secondary">
         {{ t('location.setupDescription') }}
       </p>
@@ -92,7 +92,7 @@ function openSheet() {
             icon="🔍"
             @update:model-value="onSearchInput"
           />
-          <div v-if="searchLoading" class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+          <div v-if="searchLoading" class="absolute end-3 top-1/2 -translate-y-1/2 pointer-events-none">
             <span class="animate-spin inline-block text-themed-muted text-sm">⟳</span>
           </div>
         </div>
@@ -101,7 +101,7 @@ function openSheet() {
           <button
             v-for="(suggestion, index) in suggestions"
             :key="index"
-            class="w-full text-left px-3 py-2.5 rounded-lg glass-subtle hover:bg-[var(--color-primary)]/10 transition-colors flex items-center gap-2"
+            class="w-full text-start px-3 py-2.5 rounded-lg glass-subtle hover:bg-[var(--color-primary)]/10 transition-colors flex items-center gap-2"
             @click="handleSelect(suggestion)"
           >
             <AppIcon name="location" :size="14" class="shrink-0 text-themed-muted" />

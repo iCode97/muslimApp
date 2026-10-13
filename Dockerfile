@@ -11,5 +11,9 @@ WORKDIR /app
 COPY --from=builder /app/.output ./.output
 ENV HOST=0.0.0.0
 ENV PORT=3000
+# Runtime data (Web Push subscribers in /app/.data/push). Mount a volume here
+# so subscriptions survive container rebuilds (see docker-compose.yml).
+RUN mkdir -p /app/.data/push
+VOLUME ["/app/.data"]
 EXPOSE 3000
 CMD ["node", ".output/server/index.mjs"]

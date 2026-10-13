@@ -1,0 +1,180 @@
+# Fachliche Prüfliste — Lerninhalte
+
+Alle Inhalte unter `app/data/learn/` tragen `review: 'draft'`. Die App zeigt dafür den Hinweis
+„Inhalt wird noch fachlich geprüft". Nach der Prüfung durch eine fachkundige Person den Status
+pro Lektion / Begriff / FAQ-Eintrag auf `'reviewed'` setzen.
+
+Die folgenden Punkte haben die erstellenden Agents selbst als unsicher markiert. Sie sollten
+zuerst geprüft werden. Darüber hinaus gilt: alle Hadith-Nummern stichprobenartig gegen
+sunnah.com prüfen und alle Koran-Übersetzungen gegen die genannten Referenzübersetzungen
+(Bubenheim/Elyas, Sahih International, Diyanet) abgleichen — sie sind teils gekürzt oder
+paraphrasiert.
+
+## Pfad „Grundlagen des Islam" (`paths/basics.ts`) + Glossar (`glossary.ts`, 116 Begriffe)
+
+### Hadith-Nummern (wahrscheinlich korrekt, nicht verifiziert)
+- [ ] Sahih Muslim 26 — „Wer stirbt und weiß, dass es keinen Gott außer Allah gibt …"
+- [ ] Sahih Muslim 2996 — Engel aus Licht erschaffen
+- [ ] Sahih Muslim 2664 — der starke Gläubige / „sag nicht ‚hätte ich doch …'" (gekürzt)
+- [ ] Sahih Muslim 746 — „Sein Charakter war der Koran" (gekürzt)
+- [ ] Sahih Muslim 1955 — Ihsan in allen Dingen (gekürzt)
+- [ ] Sahih al-Bukhari 3559 / Sahih Muslim 2321 — die Besten mit dem besten Charakter
+- [ ] Sunan at-Tirmidhi 1162 / Abi Dawud 4682 — Grad „hasan" (Tirmidhi: hasan sahih)
+- [ ] Sahih al-Bukhari 4986/4987 — Koran-Sammlung unter Abu Bakr / Uthman (nur Quellenangabe)
+- [ ] Sahih al-Bukhari 528 / Sahih Muslim 667 — Gleichnis vom Fluss
+- [ ] Sahih al-Bukhari 631 — „Betet, wie ihr mich beten seht"
+- [ ] Arabischer Text des Hadith Bukhari 8 (fünf Säulen)
+- [ ] Glossar „Dua": Hadith „Das Bittgebet ist Gottesdienst" — Nummer fehlt
+
+### Arabischer Korantext
+Vereinfachte Standardschrift, teils Auszüge (Ref nennt ganzen Vers): 2:255, 31:13, 47:19, 48:29, 2:256.
+- [ ] Alle `arabic`-Felder gegen Uthmani-Text prüfen
+
+### Lehrinhaltliche Punkte
+- [ ] Sechs „Bedingungen der Schahada" als spätere Gelehrtenzusammenfassung dargestellt
+- [ ] Dreiteilung des Tawhid als Lehrhilfe (Athari vs. Asch'ari/Maturidi) markiert
+- [ ] Rolle Mika'ils (Regen/Versorgung) „nach Überlieferung"
+- [ ] Zunahme/Abnahme des Iman (Hanafi-Maturidi vs. Mehrheit)
+- [ ] Theologische Schulen zu Qadar
+- [ ] „Rund 2 Milliarden Muslime" (Pew-Schätzung)
+- [ ] Versanzahl „über 6.200 (meist 6.236), je nach Zählweise"
+- [ ] Alle vier Rechtsschulen verlangen Wudu zum Berühren des Mushaf
+- [ ] Nisab 85 g Gold / 595 g Silber; hanafitische Unterscheidung wajib/makruh
+- [ ] Lektion 8: Quiz-Erklärung zur Qibla nennt in DE Deutschland, in TR die Türkei (bewusste Lokalisierung)
+
+## Pfad „Neu im Islam" (`paths/new-muslim.ts`) + FAQ (`faq.ts`, 35 Einträge)
+
+- [ ] Ghusl-Hadith (Qays ibn Asim): Abu Dawud 355 / Tirmidhi 605, Grad hasan
+- [ ] Ghusl bei Konversion: „Hanbali: Pflicht; Hanafi/Schafi'i: empfohlen, außer bei Dschanaba" — malikitische Position fehlt
+- [ ] Schahada: Zeugen keine Bedingung; Aussprechen in eigener Sprache „nach vielen Gelehrten"
+- [ ] Ablesen von Karte/Bildschirm im Gebet: Abu Hanifa → ungültig; andere erlauben es zumindest im freiwilligen Gebet
+- [ ] Abu Dawud 832 (Dhikr für jemanden, der noch nicht rezitieren kann)
+- [ ] Sahih Muslim 705 (Ibn Abbas, Zusammenlegen in Medina) und Aussage zur hanafitischen Position
+- [ ] Tirmidhi 2801 (kein Sitzen an Tischen mit Alkohol) — Nummer und Grad
+- [ ] Tattoo-Hadith Bukhari 5937 / Muslim 2124; Entfernung nicht nötig, wenn sie schadet
+- [ ] Muslim 2139 (Namensänderung „Asiya" → „Jamila")
+- [ ] Meerestiere: Abu Dawud 83 / Tirmidhi 69; hanafitische Position (Garnelen umstritten, Muscheln/Tintenfisch nicht erlaubt)
+- [ ] Musik: Bukhari 5590 (Isnad u. a. von Ibn Hazm kritisiert), Bukhari 952 / Muslim 892, Deutung von 31:6; Formulierung Mehrheit/Minderheit
+- [ ] Medikamente beim Fasten: Verallgemeinerung zu Fiqh-Räten (Injektionen ohne Nährwert, Inhalatoren/Tropfen umstritten), keine konkrete Resolution zitiert
+- [ ] Gelatine/Istihala und Spuren von Alkohol: Darstellung Mehrheit/Minderheit
+- [ ] Bukhari 7257 / Muslim 1840 („kein Gehorsam im Ungehorsam")
+- [ ] Weihnachten: „viele zeitgenössische Gelehrte, besonders in Europa" erlauben Familienbesuche und Geschenke
+- [ ] Hijab: bewusst ohne `scholarlyDifference`, Konsens der vier Schulen zur Haarbedeckung, druckfreier Ton — redaktionell bestätigen
+- [ ] Sunniten/Schiiten: neutrale historische Darstellung, nur 3:103 und 49:10 als Quellen — ggf. historische Quelle ergänzen
+- [ ] Notrufnummern (110, 112, TelefonSeelsorge 0800 111 0 111) sind deutschlandspezifisch, auch im EN/TR-Text — Lokalisierung klären
+- [ ] Koran-Übersetzungen teils gekürzt: 5:3, 31:14-15, 47:19, 113, 114
+
+## Kalender (`app/data/holiday-info.ts`, Fastentage in `app/utils/hijri-dates.ts`)
+
+- [ ] Sahih Muslim 1162 (Arafah, Aschura, Montag), 1163 (Muharram), 1164 (sechs Tage Schawwal)
+- [ ] Sahih al-Bukhari 1503 (Zakat al-Fitr), 2017 (ungerade Nächte der letzten zehn), 349 (Isra/Mi'radsch) — 349 unsicher
+- [ ] Tirmidhi 745/747 (Fasten Montag/Donnerstag) — unsicher
+- [ ] Ohne Nummer zitiert: Aschura (Bukhari), Weiße Tage (Tirmidhi/Nasa'i über Abu Dharr), Tasu'a (Muslim), Mondsichtung Ramadan, Fasten im Scha'ban
+- [ ] Kandil-Nächte (Regaip, Miraç, Berat) als türkisch-islamische Tradition mit Hinweis auf Gelehrtenkritik — Formulierung prüfen
+
+## Adhkar (`app/data/adhkar.ts`, 56 Einträge in 9 Sets)
+
+Arabischer Wortlaut hat höchste Priorität — jeder Eintrag wird wörtlich rezitiert.
+
+- [ ] Sayyid al-Istighfar (Bukhari 6306): „وَأَبُوءُ لَكَ بِذَنْبِي" vs. Hisn „وَأَبُوءُ بِذَنْبِي"
+- [ ] Drei Quls 3× morgens/abends: Abu Dawud 5082 / Tirmidhi 3575 (hasan)
+- [ ] „Allahumma bika asbahna/amsayna": Tirmidhi 3391 / Abu Dawud 5068 (hasan); Abendversion endet auf „وَإِلَيْكَ الْمَصِيرُ"?
+- [ ] Al-'afw wal-'afiyah: Abu Dawud 5074 / Ibn Majah 3871 — „عَوْرَاتِي" vs. „عَوْرَتِي"
+- [ ] „Raditu billahi rabba": Abu Dawud 5072 / Tirmidhi 3389 (hasan), Text mit „صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ" nach Hisn
+- [ ] „Bismillah alladhi la yadurru": Abu Dawud 5088 / Tirmidhi 3388 (hasan)
+- [ ] „A'udhu bi-kalimatillah…" abends 3× (Anzahl aus Hisn/Ahmad, Muslim 2709 ohne Anzahl); Reise 1× (Muslim 2708)
+- [ ] Schlafen/Aufwachen: Bukhari 6324 — evtl. 6312/6314; Wortfolge variiert
+- [ ] „Allahumma a'inni" nach dem Gebet: Abu Dawud 1522 (sahih)
+- [ ] Haus verlassen „Bismillah, tawakkaltu…": Abu Dawud 5095 / Tirmidhi 3426
+- [ ] Bismillah vergessen: Abu Dawud 3767 — „بِسْمِ اللَّهِ أَوَّلَهُ وَآخِرَهُ" vs. Hisn „فِي أَوَّلِهِ وَآخِرِهِ"
+- [ ] Nach dem Essen: Abu Dawud 4023 / Tirmidhi 3458 (hasan) inkl. Tugend „vergangene Sünden vergeben"
+- [ ] Dua des Yunus: Tugend nach Tirmidhi 3505
+- [ ] Kummer-Dua (Bukhari 6369): „وَالْبُخْلِ وَالْجُبْنِ" — Reihenfolge prüfen
+- [ ] Tugend-Quellen: Ayat al-Kursi vor dem Schlafen (Bukhari 2311), letzte zwei Verse al-Baqara (Bukhari 5009, Muslim 807)
+- [ ] 100× Tahlil im Morgen-Set: Bukhari 6403 / Muslim 2691
+- [ ] Alle Übersetzungen eigene Wiedergabe — insbesondere Türkisch muttersprachlich prüfen
+
+## Pfad „Fiqh des Alltags" (`paths/fiqh.ts`) + `glossary-fiqh.ts` (18 Begriffe)
+
+### Hadith-Nummern (ziemlich, aber nicht ganz sicher)
+- [ ] Bukhari 946 (Asr bei Banu Qurayza; Muslim 1770 nennt Zuhr)
+- [ ] Bukhari 60 / Muslim 241 (Fersen) · Muslim 234 (Dua nach Wudu, „sinngemäß")
+- [ ] Bukhari 338 / Muslim 368 ('Ammar, Tayammum) · Bukhari 218 / Muslim 292 (zwei Gräber)
+- [ ] Muslim 279 (Hundegefäß, mit Erde) · Abu Dawud 83 / Tirmidhi 69 (Meerwasser)
+- [ ] Bukhari 1224 / Muslim 570 (Ibn Buhayna) · Bukhari 1229 / Muslim 573 (Dhul-Yadayn) · Bukhari 401 / Muslim 572
+- [ ] Bukhari 1111 / Muslim 704 (Zusammenlegen auf Reisen) · Muslim 686 (Ya'la/'Umar, „Sadaqa")
+- [ ] Muslim 865 (Jumu'a vernachlässigen) · Bukhari 723 / Muslim 433 (gerade Reihen) · Bukhari 691 / Muslim 427 · Muslim 673
+- [ ] Muslim 1587 (sechs Güter) · Muslim 2588 · Bukhari 2072 (al-Miqdam) · Bukhari 7288 / Muslim 1337 · Bukhari 7352 / Muslim 1716
+
+### Positionen der Rechtsschulen
+- [ ] Zwei Qulla „≈190–270 Liter"; hanafitische Dirham-Toleranz bei Najasa; malikitische Position
+- [ ] Hund: Positionen der vier Schulen
+- [ ] Anzahl der Fard-Teile von Wudu (Hanafi 4, Schafi'i 6, Maliki 7, Hanbali 6 mit Tasmiya wajib) und Ghusl
+- [ ] Wudu-Brecher je Schule (Berührung des anderen Geschlechts, Blut/Erbrechen, Berühren der Scham, Kamelfleisch, lautes Lachen)
+- [ ] Tayammum: Anzahl der Schläge, zulässiges Material, Gültigkeitsdauer
+- [ ] Niyya als Bedingung (Hanafi/Hanbali) vs. Teil des Gebets (Schafi'i/Maliki); Awrah-Details; hanafitische Arkan
+- [ ] Sajdat as-Sahw vor/nach dem Salam je Schule; Qada absichtlich versäumter Gebete (Ibn Hazm / Ibn Taymiyya als Minderheit); Tartib
+- [ ] Reisedistanz „80–90 km", Aufenthaltsgrenzen (15 vs. ~4 Tage); Zusammenlegen (Hanafi nur Arafa/Muzdalifa)
+- [ ] Jumu'a-Mindestzahl (3/12/40); Gebet beim Eintreten während der Khutba; Rezitation hinter dem Imam
+- [ ] Zeitpunkt der Fasten-Niyya; Augentropfen/Kohl, Schröpfen; Schwangere/Stillende und Fidya; Fidya-Mengen; Kaffara bei absichtlichem Essen
+- [ ] Zakat: Schmuck (Hanafi), Nisab-Zeitpunkt, Schuldenabzug, Silber-Nisab, „ca. 2,577 %" im Sonnenjahr, Zakat al-Fitr in Geld (Hanafi)
+- [ ] „Rund 500 Rechtsverse" und Verbreitungsgebiete der Schulen
+- [ ] Gekürzte Koranübersetzungen: 4:59, 5:6, 2:144, 4:101, 2:184, 2:187, 9:103, 2:168, 62:9, 83:1-3
+
+## Hadith-Sammlung (`app/data/hadiths.ts`)
+
+Alle 100 Hadithe tragen `review: 'draft'`, einen Authentizitätsgrad (`grade`) und strukturierte
+Quellen (`collections`). Regel: alles aus Sahih al-Bukhari / Sahih Muslim ist `sahih`; sonst nur
+mit benannter Bewertung (`gradeNote`, z. B. at-Tirmidhi, al-Albani), andernfalls `unverified`.
+Stand: 77 sahih · 13 hasan · 1 da'if · 9 unverified. Die `gradeNote`-Angaben der Sunan-Hadithe
+stammen aus dem Gedächtnis des erstellenden Agents und sind gegen sunnah.com / Dorar zu prüfen.
+
+### „Quelle prüfen" (Quelle, Nummer oder Überlieferer vermutlich falsch → `unverified`)
+- [ ] #42 Ibn Majah 2341 — „la darar wa la dirar": Nr. 2341 wird von Ibn 'Abbas überliefert, im Datensatz steht Abu Sa'id al-Khudri (dessen Version: ad-Daraqutni / al-Hakim, Nawawi40 Nr. 32)
+- [ ] #52 Tirmidhi 2516 — „wisse, dass der Sieg mit der Geduld kommt …": Wortlaut fehlt bei at-Tirmidhi, stammt aus der längeren Version bei Ahmad (vgl. Nawawi40 Nr. 19)
+- [ ] #57 Quran 14:7 — Koranvers, kein Hadith; in eine andere Sammlung verschieben oder ersetzen
+- [ ] #58 Tirmidhi 1919 — Nr. 1919 wird von Anas ibn Malik überliefert; im Datensatz steht Abdullah ibn 'Amr (dessen Version: Tirmidhi 1920 / Abu Dawud 4943)
+- [ ] #61 Ibn Majah 3671 — dort „akrimu awladakum …" von Anas (al-Albani: da'if); arabischer Text („addibu …") und Überlieferer (Ibn 'Abbas) weichen ab
+- [ ] #77 Abu Dawud 3641, Tirmidhi 2685 — Vollmond-Gleichnis ist der Hadith von Abu ad-Darda' (Abu Dawud 3641, Tirmidhi **2682**); im Datensatz stehen Tirmidhi 2685 und Abu Umama
+- [ ] #89 Tirmidhi 2417 — Wortlaut und Nr. passen zu Abu Barza al-Aslami; im Datensatz steht Ibn Mas'ud (dessen Version: Nr. 2416)
+
+### Grad nicht festgelegt (`unverified`, Bewertungen uneinheitlich)
+- [ ] #43 Tirmidhi 2520 — „wer Erlaubtes isst, nach der Sunna handelt …" (at-Tirmidhi: hasan gharib; spätere Bewertungen uneinheitlich)
+- [ ] #65 Tirmidhi 1209 — „der ehrliche, vertrauenswürdige Händler …" (at-Tirmidhi: hasan; spätere Bewertungen uneinheitlich)
+
+### Als da'if markiert (redaktionell entscheiden: mit Kennzeichnung behalten oder entfernen)
+- [ ] #10 Baihaqi (ohne Nummer) — „Das Gebet ist die Säule der Religion" (Kette unterbrochen; al-'Iraqi, al-Albani: da'if)
+
+### Sahih, aber Nummer prüfen (Grad bleibt sahih, da in Bukhari/Muslim)
+- [ ] #33 Bukhari 6077, Muslim 2559 — Muslim-Nummer für Abu Ayyub evtl. 2560
+- [ ] #63 Bukhari 1427, Muslim 1033 — Bukhari 1427 ist von Hakim ibn Hizam; Ibn 'Umars Version evtl. 1429
+- [ ] #90 Bukhari 6508, Muslim 2683 — Bukhari 6507 ('Ubada) / 6508 (Abu Musa), Überlieferer im Datensatz: Abu Huraira
+
+### Quellen ohne Nummer (Grad gesetzt, Fundstelle ergänzen)
+- [ ] #20 Baihaqi, Tabarani — „Allah liebt es, wenn … gewissenhaft" (al-Albani: hasan)
+- [ ] #36 Tabarani, Daraqutni — „Die besten Menschen sind die nützlichsten" (al-Albani: hasan)
+
+## Pfade „Aqida" (`paths/aqida.ts`) und „Hajj & Umrah" (`paths/hajj.ts`) + `glossary-aqida.ts` (44 Begriffe)
+
+### Hadith-Nummern
+- [ ] Abu Dawud 2041 (hasan) — der Prophet ﷺ erwidert den Gruß
+- [ ] Bukhari 1562 / Muslim 1211 ('Aischa, drei Ihram-Arten) · Muslim 975 (Dua für die Gräber, Buraida)
+- [ ] Bukhari 1531 (Dhat 'Irq durch 'Umar) · Bukhari 1539 (Parfüm vor Ihram) · Bukhari 1193 / Muslim 1399 (Quba' samstags)
+- [ ] Bukhari 3207 / Muslim 162 (al-Bayt al-Ma'mur; Erzähler bei Bukhari über Malik ibn Sa'sa'a)
+- [ ] Bukhari 3194 statt 7404 („Meine Barmherzigkeit übertrifft Meinen Zorn")
+- [ ] Nur als Quelle: Musnad Ahmad (Riya' als „kleiner Schirk", ohne Nummer), Abu Dawud 4753 (drei Fragen im Grab), Tirmidhi 1071 (Munkar und Nakir), Abu Dawud Kitab al-Mahdi
+- [ ] Talbiya-Arabisch (Bukhari 1549) und Rückkehr-Dua (Bukhari 1797)
+
+### Fiqh des Hajj
+- [ ] Sofortige Pflicht des Hajj (Mehrheit ja, Schafi'i Aufschub möglich); Umrah Pflicht (Schafi'i/Hanbali) vs. Sunna mu'akkada (Hanafi/Maliki)
+- [ ] Mahram (Hanafi/Hanbali Pflicht; Schafi'i/Maliki sichere Gruppe); beste Hajj-Art je Schule
+- [ ] Mindestmaß beim Haarekürzen; Wudu beim Tawaf; Sa'i wajib (Hanafi) vs. Rukn; Reihenfolge am 10.
+- [ ] Ehevertrag im Ihram (Hanafi gültig); Tawaf al-Wada' Sunna (Maliki); Wuquf-Dauer; Jeddah als Miqat; Steinigung durch Stellvertreter
+- [ ] Praktische Angaben (Impfpflicht, Rawda-Termine, Opfergutscheine, saudische Genehmigungs-/Mahram-Regeln) ändern sich — Aktualität prüfen
+
+### Aqida
+- [ ] Wortlaut der Aussage Imam Maliks zum Istiwa'; asch'aritische 7 Eigenschaften vs. maturiditisches Takwin
+- [ ] Ahad-Hadithe in der Glaubenslehre; Qada'/Qadar-Definitionen; 'Isma und kleine Fehltritte (Zalla)
+- [ ] Fünf Prophetenqualitäten (Diyanet-Lehrbuchliste); Mahdi „nach vielen Gelehrten"; Iblis Engel/Dschinn; Ahl al-Fatra
+- [ ] Tawassul und Grabbesuchsbräuche als Meinungsspektrum; „alle drei Schulen zu Ahl as-Sunna"; Sterbedaten der Schulgründer
+- [ ] Koran-Refs ohne Arabisch über ganze Bereiche: 23:99-100, 17:13-14, 36:78-79, 81:28-29, 3:96-97

@@ -1,10 +1,18 @@
 <script setup lang="ts">
-import { PRAYER_METHODS } from '~/data/prayer-methods'
+import {
+  ADJUSTABLE_PRAYERS,
+  ASR_SCHOOLS,
+  LATITUDE_ADJUSTMENT_OPTIONS,
+  MAX_PRAYER_ADJUSTMENT,
+  PRAYER_METHODS,
+  type AdjustablePrayer,
+  type LatitudeAdjustmentSetting,
+} from '~/data/prayer-methods'
 import { HADITHS } from '~/data/hadiths'
 import { ALLAH_NAMES } from '~/data/allah-names'
 
 const { t, locale, setLocale, locales } = useI18n()
-const { location } = useLocation()
+const { location, ready: locationReady } = useLocation()
 const theme = useTheme()
 const notifications = useNotifications()
 const dhikrReminders = useDhikrReminders()
@@ -13,17 +21,88 @@ const offlineQuran = useOfflineQuran()
 const onboarding = useOnboarding()
 const haptics = useHaptics()
 const backup = useBackup()
+const confirm = useConfirm()
+const knowledge = useKnowledgeLevel()
 
 const showMethodPicker = ref(false)
+const showAdvanced = ref(false)
 const importInput = ref<HTMLInputElement | null>(null)
 
-function onImportFile(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0]
-  if (file && confirm(t('settings.importConfirm'))) {
+// --- Advanced prayer calculation settings ---------------------------------
+
+const LATITUDE_LABELS: Record<string, string> = {
+  auto: 'settings.latAuto',
+  0: 'settings.latNone',
+  1: 'settings.latMiddle',
+  2: 'settings.latSeventh',
+  3: 'settings.latAngle',
+}
+
+function latitudeLabel(option: LatitudeAdjustmentSetting): string {
+  return t(LATITUDE_LABELS[String(option)] ?? 'settings.latAuto')
+}
+
+const hasAdjustments = computed(() =>
+  ADJUSTABLE_PRAYERS.some(p => prayerTimes.settings.value.adjustments[p] !== 0),
+)
+
+function adjust(prayer: AdjustablePrayer, delta: number) {
+  prayerTimes.setAdjustment(prayer, prayerTimes.settings.value.adjustments[prayer] + delta)
+}
+
+function formatAdjustment(minutes: number): string {
+  return minutes > 0 ? `+${minutes}` : String(minutes)
+}
+
+// --- Reminder delivery (Web Push vs. local) ---------------------------------
+
+const anyReminderEnabled = computed(() =>
+  notifications.settings.value.enabled || dhikrReminders.settings.value.enabled,
+)
+
+/** Why push isn't used (i18n key), shown below the "only while open" status. */
+const localReason = computed(() => {
+  if (notifications.iosNeedsInstall.value) return 'push.iosInstallHint'
+  if (notifications.pushError.value) return notifications.pushError.value
+  if (notifications.pushConfig.value && !notifications.pushConfig.value.enabled) return 'push.serverDisabled'
+  return 'push.localHint'
+})
+
+/** Push could be used on this device (server configured, browser capable). */
+const pushPossible = computed(() =>
+  notifications.mode.value === 'push'
+  || (!!notifications.pushConfig.value?.enabled && !notifications.iosNeedsInstall.value && notifications.mode.value !== 'unsupported'),
+)
+
+const testState = ref<'idle' | 'sending' | 'sent' | 'failed'>('idle')
+let testResetTimer: ReturnType<typeof setTimeout> | undefined
+
+async function sendTestNotification() {
+  if (testState.value === 'sending') return
+  testState.value = 'sending'
+  const ok = await notifications.sendTest()
+  testState.value = ok ? 'sent' : 'failed'
+  if (testResetTimer) clearTimeout(testResetTimer)
+  testResetTimer = setTimeout(() => { testState.value = 'idle' }, 4000)
+}
+
+// --- Dhikr reminder time inputs --------------------------------------------
+
+function onDhikrTimeChange(slot: 'morning' | 'evening', event: Event) {
+  const [h, m] = (event.target as HTMLInputElement).value.split(':').map(Number)
+  if (h !== undefined && m !== undefined && !Number.isNaN(h) && !Number.isNaN(m)) {
+    dhikrReminders.setSlotTime(slot, h, m)
+  }
+}
+
+async function onImportFile(event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  // Allow re-selecting the same file later
+  input.value = ''
+  if (file && await confirm({ message: t('settings.importConfirm') })) {
     backup.importData(file)
   }
-  // Allow re-selecting the same file later
-  ;(event.target as HTMLInputElement).value = ''
 }
 
 // Progress tracking
@@ -39,14 +118,14 @@ const progressAreas = computed(() => [
   { key: 'names', label: t('names.title'), icon: '✨', progress: namesProgress },
 ])
 
-function resetArea(area: { progress: ReturnType<typeof useProgress> }) {
-  if (confirm(t('common.resetConfirm'))) {
+async function resetArea(area: { progress: ReturnType<typeof useProgress> }) {
+  if (await confirm({ message: t('common.resetConfirm'), danger: true })) {
     area.progress.resetAll()
   }
 }
 
-function resetAllProgress() {
-  if (confirm(t('common.resetConfirm'))) {
+async function resetAllProgress() {
+  if (await confirm({ message: t('common.resetConfirm'), danger: true })) {
     quranProgress.resetAll()
     seerahProgress.resetAll()
     hadithProgress.resetAll()
@@ -55,8 +134,10 @@ function resetAllProgress() {
 }
 
 onMounted(() => {
+  knowledge.load()
   notifications.loadSettings()
   dhikrReminders.loadSettings()
+  notifications.refreshPushStatus()
   offlineQuran.checkStatus()
   quranProgress.load()
   seerahProgress.load()
@@ -73,7 +154,7 @@ const availableLocales = computed(() => {
 })
 
 function switchLocale(code: string) {
-  setLocale(code)
+  setLocale(code as Parameters<typeof setLocale>[0])
   if (import.meta.client) {
     localStorage.setItem('muslimapp-locale', code)
   }
@@ -126,20 +207,51 @@ const minutesOptions = [0, 5, 10, 15, 30]
         <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
           {{ t('settings.language') }}
         </h3>
-        <div class="flex gap-2">
+        <div class="grid grid-cols-2 gap-2">
           <button
             v-for="loc in availableLocales"
             :key="loc.code"
             :class="[
-              'flex-1 py-2 px-3 rounded-xl text-sm font-medium transition-all duration-200',
+              'py-2 px-3 rounded-xl text-sm font-medium transition-all duration-200',
               locale === loc.code
                 ? 'bg-[var(--color-primary)] text-white'
                 : 'glass-subtle text-themed-secondary hover:text-themed',
             ]"
+            :lang="loc.code"
             @click="switchLocale(loc.code)"
           >
-            {{ loc.code === 'de' ? '🇩🇪' : loc.code === 'tr' ? '🇹🇷' : '🇬🇧' }}
+            <!-- Arabic gets no flag (the language spans many countries) -->
+            <template v-if="loc.code !== 'ar'">{{ loc.code === 'de' ? '🇩🇪' : loc.code === 'tr' ? '🇹🇷' : '🇬🇧' }}</template>
             {{ loc.name }}
+          </button>
+        </div>
+      </div>
+    </GlassCard>
+
+    <!-- Knowledge level -->
+    <GlassCard>
+      <div class="space-y-3">
+        <div>
+          <h3 id="knowledge-level-heading" class="text-sm font-medium text-themed-muted uppercase tracking-wider">
+            {{ t('learn.levelHeading') }}
+          </h3>
+        </div>
+        <div class="flex gap-2" role="radiogroup" aria-labelledby="knowledge-level-heading">
+          <button
+            v-for="lvl in knowledge.levels"
+            :key="lvl.id"
+            role="radio"
+            :aria-checked="knowledge.level.value === lvl.id"
+            :class="[
+              'flex-1 py-2 px-2 rounded-xl text-sm font-medium transition-all duration-200',
+              knowledge.level.value === lvl.id
+                ? 'bg-[var(--color-primary)] text-white'
+                : 'glass-subtle text-themed-secondary hover:text-themed',
+            ]"
+            @click="knowledge.setLevel(lvl.id)"
+          >
+            <span aria-hidden="true">{{ lvl.emoji }}</span>
+            {{ t(`knowledge.${lvl.id}`) }}
           </button>
         </div>
       </div>
@@ -151,15 +263,23 @@ const minutesOptions = [0, 5, 10, 15, 30]
         <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
           {{ t('settings.location') }}
         </h3>
-        <p v-if="location" class="text-themed-secondary">
-          📍 {{ location.displayName || `${location.city}, ${location.country}` }}
-        </p>
-        <p v-else class="text-themed-muted italic text-sm">
-          {{ t('settings.noLocation') }}
-        </p>
-        <p v-if="location" class="text-xs text-themed-faint">
-          {{ location.latitude.toFixed(4) }}°N, {{ location.longitude.toFixed(4) }}°E
-        </p>
+        <template v-if="location">
+          <!-- Tap to change (search / GPS) -->
+          <LocationSelector />
+          <p class="text-xs text-themed-faint">
+            <bdi dir="ltr">{{ Math.abs(location.latitude).toFixed(4) }}°{{ location.latitude >= 0 ? 'N' : 'S' }},
+            {{ Math.abs(location.longitude).toFixed(4) }}°{{ location.longitude >= 0 ? 'E' : 'W' }}</bdi>
+            <template v-if="location.timezone">
+              · {{ t('settings.timezone') }}: {{ location.timezone }}
+            </template>
+          </p>
+        </template>
+        <template v-else-if="locationReady">
+          <p class="text-themed-muted italic text-sm">
+            {{ t('settings.noLocation') }}
+          </p>
+          <LocationSetupCTA />
+        </template>
       </div>
     </GlassCard>
 
@@ -170,22 +290,11 @@ const minutesOptions = [0, 5, 10, 15, 30]
           <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
             {{ t('notifications.title') }}
           </h3>
-          <button
-            :class="[
-              'relative w-12 h-7 rounded-full transition-all duration-200',
-              notifications.settings.value.enabled
-                ? 'bg-[var(--color-primary)]'
-                : 'glass-subtle'
-            ]"
-            @click="notifications.toggleEnabled()"
-          >
-            <span
-              :class="[
-                'absolute top-1 w-5 h-5 rounded-full bg-white shadow transition-all duration-200',
-                notifications.settings.value.enabled ? 'left-6' : 'left-1'
-              ]"
+          <ToggleSwitch
+            :model-value="notifications.settings.value.enabled"
+            :aria-label="t('notifications.title')"
+            @update:model-value="notifications.toggleEnabled()"
             />
-          </button>
         </div>
 
         <template v-if="notifications.settings.value.enabled">
@@ -233,6 +342,41 @@ const minutesOptions = [0, 5, 10, 15, 30]
         <p v-if="notifications.permission.value === 'denied'" class="text-xs text-[var(--color-danger)]">
           {{ t('notifications.denied') }}
         </p>
+
+        <!-- Delivery status (shared by prayer & dhikr reminders) -->
+        <div v-if="anyReminderEnabled && notifications.permission.value === 'granted'" class="space-y-2 pt-1" data-testid="push-status">
+          <div
+            v-if="notifications.mode.value === 'push'"
+            class="flex items-start gap-2 glass-primary rounded-xl px-3 py-2 text-xs text-[var(--color-primary-light)]"
+          >
+            <span aria-hidden="true">✓</span>
+            <span>{{ t('push.statusPush') }}</span>
+          </div>
+          <div v-else-if="notifications.mode.value === 'unsupported'" class="glass-subtle rounded-xl px-3 py-2 text-xs text-themed-muted">
+            {{ t('push.statusUnsupported') }}
+          </div>
+          <div v-else class="glass-subtle rounded-xl px-3 py-2 space-y-1">
+            <p class="text-xs font-medium text-themed-secondary">{{ t('push.statusLocal') }}</p>
+            <p class="text-[11px] text-themed-faint leading-relaxed">{{ t(localReason) }}</p>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button
+              type="button"
+              class="glass-subtle rounded-lg px-3 py-1.5 text-xs font-medium text-themed-secondary disabled:opacity-50"
+              :disabled="testState === 'sending'"
+              @click="sendTestNotification"
+            >
+              {{ t('push.sendTest') }}
+            </button>
+            <span v-if="testState === 'sent'" class="text-[11px] text-[var(--color-primary-light)]" role="status">{{ t('push.testSent') }}</span>
+            <span v-else-if="testState === 'failed'" class="text-[11px] text-[var(--color-danger)]" role="status">{{ t('push.testFailed') }}</span>
+          </div>
+
+          <p v-if="pushPossible" class="text-[11px] text-themed-faint leading-relaxed">
+            {{ t('push.privacy') }}
+          </p>
+        </div>
       </div>
     </GlassCard>
 
@@ -248,30 +392,18 @@ const minutesOptions = [0, 5, 10, 15, 30]
               {{ t('dhikrReminder.subtitle') }}
             </p>
           </div>
-          <button
-            :class="[
-              'relative w-12 h-7 rounded-full transition-all duration-200 shrink-0',
-              dhikrReminders.settings.value.enabled
-                ? 'bg-[var(--color-primary)]'
-                : 'glass-subtle'
-            ]"
+          <ToggleSwitch
+            :model-value="dhikrReminders.settings.value.enabled"
             :aria-label="t('dhikrReminder.title')"
-            @click="dhikrReminders.toggleEnabled()"
-          >
-            <span
-              :class="[
-                'absolute top-1 w-5 h-5 rounded-full bg-white shadow transition-all duration-200',
-                dhikrReminders.settings.value.enabled ? 'left-6' : 'left-1'
-              ]"
+            @update:model-value="dhikrReminders.toggleEnabled()"
             />
-          </button>
         </div>
 
         <template v-if="dhikrReminders.settings.value.enabled">
           <!-- Morning slot -->
           <div class="flex items-center justify-between gap-3 glass-subtle rounded-xl px-3 py-2">
             <button
-              class="flex items-center gap-2 flex-1 min-w-0 text-left"
+              class="flex items-center gap-2 flex-1 min-w-0 text-start"
               @click="dhikrReminders.toggleSlot('morning')"
             >
               <span class="text-lg">🌅</span>
@@ -284,31 +416,20 @@ const minutesOptions = [0, 5, 10, 15, 30]
               type="time"
               :value="dhikrReminders.formatTime(dhikrReminders.settings.value.morning)"
               class="glass-subtle text-themed text-xs px-2 py-1 rounded-md tabular-nums"
-              @change="(e) => {
-                const [h, m] = (e.target as HTMLInputElement).value.split(':').map(Number)
-                if (!isNaN(h) && !isNaN(m)) dhikrReminders.setSlotTime('morning', h, m)
-              }"
+              @change="onDhikrTimeChange('morning', $event)"
             >
-            <button
-              :class="[
-                'relative w-10 h-6 rounded-full transition-all shrink-0',
-                dhikrReminders.settings.value.morning.enabled ? 'bg-[var(--color-primary)]' : 'bg-[var(--glass-border)]'
-              ]"
-              @click="dhikrReminders.toggleSlot('morning')"
-            >
-              <span
-                :class="[
-                  'absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all',
-                  dhikrReminders.settings.value.morning.enabled ? 'left-[18px]' : 'left-0.5'
-                ]"
+            <ToggleSwitch
+              size="sm"
+              :model-value="dhikrReminders.settings.value.morning.enabled"
+              :aria-label="t('dhikrReminder.morning')"
+              @update:model-value="dhikrReminders.toggleSlot('morning')"
               />
-            </button>
           </div>
 
           <!-- Evening slot -->
           <div class="flex items-center justify-between gap-3 glass-subtle rounded-xl px-3 py-2">
             <button
-              class="flex items-center gap-2 flex-1 min-w-0 text-left"
+              class="flex items-center gap-2 flex-1 min-w-0 text-start"
               @click="dhikrReminders.toggleSlot('evening')"
             >
               <span class="text-lg">🌙</span>
@@ -321,35 +442,34 @@ const minutesOptions = [0, 5, 10, 15, 30]
               type="time"
               :value="dhikrReminders.formatTime(dhikrReminders.settings.value.evening)"
               class="glass-subtle text-themed text-xs px-2 py-1 rounded-md tabular-nums"
-              @change="(e) => {
-                const [h, m] = (e.target as HTMLInputElement).value.split(':').map(Number)
-                if (!isNaN(h) && !isNaN(m)) dhikrReminders.setSlotTime('evening', h, m)
-              }"
+              @change="onDhikrTimeChange('evening', $event)"
             >
-            <button
-              :class="[
-                'relative w-10 h-6 rounded-full transition-all shrink-0',
-                dhikrReminders.settings.value.evening.enabled ? 'bg-[var(--color-primary)]' : 'bg-[var(--glass-border)]'
-              ]"
-              @click="dhikrReminders.toggleSlot('evening')"
-            >
-              <span
-                :class="[
-                  'absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all',
-                  dhikrReminders.settings.value.evening.enabled ? 'left-[18px]' : 'left-0.5'
-                ]"
+            <ToggleSwitch
+              size="sm"
+              :model-value="dhikrReminders.settings.value.evening.enabled"
+              :aria-label="t('dhikrReminder.evening')"
+              @update:model-value="dhikrReminders.toggleSlot('evening')"
               />
-            </button>
           </div>
 
-          <p v-if="!dhikrReminders.supportsBackground()" class="text-[11px] text-themed-faint">
+          <p v-if="notifications.mode.value === 'push'" class="text-[11px] text-[var(--color-primary-light)]">
+            ✓ {{ t('push.statusPush') }}
+          </p>
+          <p v-else-if="notifications.iosNeedsInstall.value" class="text-[11px] text-themed-faint">
+            {{ t('push.iosInstallHint') }}
+          </p>
+          <p v-else-if="!dhikrReminders.supportsBackground()" class="text-[11px] text-themed-faint">
             {{ t('dhikrReminder.foregroundOnly') }}
+          </p>
+          <p v-if="dhikrReminders.permission.value === 'denied'" class="text-[11px] text-[var(--color-danger)]">
+            {{ t('notifications.denied') }}
           </p>
         </template>
       </div>
     </GlassCard>
 
     <!-- Haptics -->
+    <ClientOnly>
     <GlassCard v-if="haptics.isSupported.value">
       <div class="space-y-2">
         <div class="flex items-center justify-between">
@@ -359,23 +479,15 @@ const minutesOptions = [0, 5, 10, 15, 30]
             </h3>
             <p class="text-xs text-themed-faint mt-1">{{ t('settings.hapticsHint') }}</p>
           </div>
-          <button
-            :class="[
-              'relative w-12 h-7 rounded-full transition-all duration-200',
-              haptics.enabled.value ? 'bg-[var(--color-primary)]' : 'glass-subtle',
-            ]"
-            @click="haptics.setEnabled(!haptics.enabled.value); haptics.medium()"
-          >
-            <span
-              :class="[
-                'absolute top-1 w-5 h-5 rounded-full bg-white shadow transition-all duration-200',
-                haptics.enabled.value ? 'left-6' : 'left-1',
-              ]"
+          <ToggleSwitch
+            :model-value="haptics.enabled.value"
+            :aria-label="t('settings.haptics')"
+            @update:model-value="(v: boolean) => { haptics.setEnabled(v); haptics.medium() }"
             />
-          </button>
         </div>
       </div>
     </GlassCard>
+    </ClientOnly>
 
     <!-- Offline Quran -->
     <GlassCard>
@@ -392,7 +504,7 @@ const minutesOptions = [0, 5, 10, 15, 30]
           </div>
           <p class="text-xs text-themed-faint">
             {{ offlineQuran.status.value.surahsDownloaded }}/114 {{ t('quran.surahs') }}
-            · ~{{ offlineQuran.status.value.sizeEstimateMB }} MB
+            · <bdi dir="ltr">~{{ offlineQuran.status.value.sizeEstimateMB }} MB</bdi>
           </p>
           <button
             class="text-xs text-[var(--color-danger)] hover:underline"
@@ -455,7 +567,7 @@ const minutesOptions = [0, 5, 10, 15, 30]
           class="w-full flex items-center justify-between px-3 py-2 rounded-xl glass-subtle"
           @click="showMethodPicker = !showMethodPicker"
         >
-          <div class="text-left">
+          <div class="text-start">
             <p class="text-sm text-themed-secondary">
               🕌 {{ PRAYER_METHODS.find(m => m.id === prayerTimes.method.value)?.name || 'Diyanet' }}
             </p>
@@ -473,7 +585,7 @@ const minutesOptions = [0, 5, 10, 15, 30]
               v-for="m in PRAYER_METHODS"
               :key="m.id"
               :class="[
-                'w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left transition-all',
+                'w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-start transition-all',
                 prayerTimes.method.value === m.id
                   ? 'bg-[var(--color-primary)] bg-opacity-20 text-[var(--color-primary-light)]'
                   : 'hover:bg-[var(--glass-bg-subtle)] text-themed-secondary'
@@ -492,6 +604,107 @@ const minutesOptions = [0, 5, 10, 15, 30]
         <p class="text-xs text-themed-faint">
           {{ t('settings.methodHint') }}
         </p>
+
+        <!-- Advanced: Asr method, high latitudes, minute adjustments -->
+        <button
+          class="w-full flex items-center justify-between px-3 py-2 rounded-xl glass-subtle text-sm text-themed-secondary"
+          :aria-expanded="showAdvanced"
+          @click="showAdvanced = !showAdvanced"
+        >
+          <span>⚙️ {{ t('settings.advanced') }}</span>
+          <span class="text-themed-faint">{{ showAdvanced ? '▲' : '▼' }}</span>
+        </button>
+
+        <Transition name="slide">
+          <div v-if="showAdvanced" class="space-y-4 pt-1">
+            <!-- Asr juristic method -->
+            <div class="space-y-2">
+              <p class="text-xs font-medium text-themed-muted">{{ t('settings.asrMethod') }}</p>
+              <div class="grid grid-cols-2 gap-2">
+                <button
+                  v-for="school in ASR_SCHOOLS"
+                  :key="school"
+                  :class="[
+                    'py-2 px-3 rounded-xl text-start transition-all',
+                    prayerTimes.settings.value.school === school
+                      ? 'bg-[var(--color-primary)] text-white'
+                      : 'glass-subtle text-themed-secondary hover:text-themed',
+                  ]"
+                  @click="prayerTimes.setSchool(school)"
+                >
+                  <p class="text-sm font-medium">{{ t(school === 0 ? 'settings.asrStandard' : 'settings.asrHanafi') }}</p>
+                  <p class="text-[11px] opacity-75">{{ t(school === 0 ? 'settings.asrStandardHint' : 'settings.asrHanafiHint') }}</p>
+                </button>
+              </div>
+            </div>
+
+            <!-- High-latitude rule -->
+            <div class="space-y-2">
+              <p class="text-xs font-medium text-themed-muted">{{ t('settings.highLatitude') }}</p>
+              <div class="flex flex-wrap gap-2">
+                <button
+                  v-for="option in LATITUDE_ADJUSTMENT_OPTIONS"
+                  :key="String(option)"
+                  :class="[
+                    'py-1.5 px-3 rounded-lg text-xs font-medium transition-all',
+                    prayerTimes.settings.value.latitudeAdjustment === option
+                      ? 'bg-[var(--color-primary)] text-white'
+                      : 'glass-subtle text-themed-secondary hover:text-themed',
+                  ]"
+                  @click="prayerTimes.setLatitudeAdjustment(option)"
+                >
+                  {{ latitudeLabel(option) }}
+                </button>
+              </div>
+              <p class="text-[11px] text-themed-faint">{{ t('settings.highLatitudeHint') }}</p>
+            </div>
+
+            <!-- Per-prayer minute adjustments -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <p class="text-xs font-medium text-themed-muted">{{ t('settings.adjustments') }}</p>
+                <button
+                  v-if="hasAdjustments"
+                  class="text-[11px] text-themed-faint hover:text-themed-secondary transition-colors"
+                  @click="prayerTimes.resetAdjustments()"
+                >
+                  {{ t('settings.resetAdjustments') }}
+                </button>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                <div
+                  v-for="prayer in ADJUSTABLE_PRAYERS"
+                  :key="prayer"
+                  class="flex items-center justify-between gap-2 glass-subtle rounded-xl px-3 py-1.5"
+                >
+                  <span class="text-sm text-themed-secondary">{{ t(`prayer.${prayer.toLowerCase()}`) }}</span>
+                  <div class="flex items-center gap-1.5">
+                    <button
+                      class="w-7 h-7 rounded-lg glass-subtle text-themed-secondary hover:text-themed text-sm font-bold disabled:opacity-40"
+                      :disabled="prayerTimes.settings.value.adjustments[prayer] <= -MAX_PRAYER_ADJUSTMENT"
+                      :aria-label="`${t(`prayer.${prayer.toLowerCase()}`)} −1 min`"
+                      @click="adjust(prayer, -1)"
+                    >
+                      −
+                    </button>
+                    <span class="w-14 text-center text-xs tabular-nums text-themed">
+                      <bdi dir="ltr">{{ formatAdjustment(prayerTimes.settings.value.adjustments[prayer]) }} min</bdi>
+                    </span>
+                    <button
+                      class="w-7 h-7 rounded-lg glass-subtle text-themed-secondary hover:text-themed text-sm font-bold disabled:opacity-40"
+                      :disabled="prayerTimes.settings.value.adjustments[prayer] >= MAX_PRAYER_ADJUSTMENT"
+                      :aria-label="`${t(`prayer.${prayer.toLowerCase()}`)} +1 min`"
+                      @click="adjust(prayer, 1)"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <p class="text-[11px] text-themed-faint">{{ t('settings.adjustmentsHint') }}</p>
+            </div>
+          </div>
+        </Transition>
       </div>
     </GlassCard>
 
@@ -589,7 +802,7 @@ const minutesOptions = [0, 5, 10, 15, 30]
           {{ t('settings.about') }}
         </h3>
         <p class="text-themed-muted text-sm">
-          MuslimApp v2.0.0
+          MuslimApp v0.6.0
         </p>
         <p class="text-themed-faint text-xs">
           {{ t('settings.apiInfo') }}
@@ -600,6 +813,12 @@ const minutesOptions = [0, 5, 10, 15, 30]
         >
           ☪ {{ t('onboarding.reopen') }}
         </button>
+        <NuxtLink
+          to="/privacy"
+          class="block text-xs text-themed-secondary hover:text-themed underline-offset-2 hover:underline transition-colors"
+        >
+          🛡 {{ t('privacy.title') }}
+        </NuxtLink>
       </div>
     </GlassCard>
     </div><!-- end grid -->

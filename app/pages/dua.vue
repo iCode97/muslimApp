@@ -65,9 +65,30 @@ const categoryIcons: Record<string, string> = {
       </p>
     </header>
 
+    <!-- Adhkar (daily routines with counter) -->
+    <NuxtLink
+      to="/adhkar"
+      class="glass-primary rounded-2xl flex items-center gap-4 p-4 animate-fade-in transition-transform active:scale-[0.99]"
+    >
+      <span class="w-10 h-10 rounded-xl glass-subtle flex items-center justify-center flex-shrink-0 text-[var(--color-primary-light)]" aria-hidden="true">
+        <AppIcon name="adhkar" :size="22" />
+      </span>
+      <span class="flex-1 min-w-0">
+        <span class="block font-medium text-sm">{{ t('adhkar.duaLinkTitle') }}</span>
+        <span class="block text-xs text-themed-muted mt-0.5">{{ t('adhkar.duaLinkDesc') }}</span>
+      </span>
+      <AppIcon name="chevronRight" :size="18" class="text-themed-faint flex-shrink-0" />
+    </NuxtLink>
+
     <!-- Category filter -->
-    <div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar animate-fade-in stagger-1">
+    <div
+      role="group"
+      :aria-label="t('a11y.categories')"
+      class="flex gap-2 overflow-x-auto pb-2 no-scrollbar animate-fade-in stagger-1"
+    >
       <button
+        type="button"
+        :aria-pressed="selectedCategory === 'all'"
         :class="[
           'px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all',
           selectedCategory === 'all'
@@ -81,6 +102,8 @@ const categoryIcons: Record<string, string> = {
       <button
         v-for="cat in DUA_CATEGORIES"
         :key="cat"
+        type="button"
+        :aria-pressed="selectedCategory === cat"
         :class="[
           'px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all',
           selectedCategory === cat
@@ -89,7 +112,7 @@ const categoryIcons: Record<string, string> = {
         ]"
         @click="selectedCategory = cat"
       >
-        {{ categoryIcons[cat] }} {{ t(`dua.cat_${cat}`) }}
+        <span aria-hidden="true">{{ categoryIcons[cat] }}</span> {{ t(`dua.cat_${cat}`) }}
       </button>
     </div>
 
@@ -102,13 +125,15 @@ const categoryIcons: Record<string, string> = {
       >
         <GlassCard>
           <button
-            class="w-full text-left space-y-3"
+            type="button"
+            class="w-full text-start space-y-3"
+            :aria-expanded="expandedIds.has(dua.id)"
             @click="toggleDua(dua.id)"
           >
             <!-- Category badge -->
             <div class="flex items-center justify-between">
               <span class="text-xs text-themed-faint glass-subtle px-2 py-0.5 rounded-full">
-                {{ categoryIcons[dua.category] }} {{ t(`dua.cat_${dua.category}`) }}
+                <span aria-hidden="true">{{ categoryIcons[dua.category] }}</span> {{ t(`dua.cat_${dua.category}`) }}
               </span>
               <span v-if="dua.source" class="text-[10px] text-themed-faint">
                 {{ dua.source }}
@@ -116,7 +141,7 @@ const categoryIcons: Record<string, string> = {
             </div>
 
             <!-- Arabic text -->
-            <p class="font-arabic text-xl text-right leading-[2.2] text-themed" dir="rtl">
+            <p class="font-arabic text-xl text-end leading-[2.2] text-themed" dir="rtl" lang="ar">
               {{ dua.arabic }}
             </p>
 
@@ -124,12 +149,12 @@ const categoryIcons: Record<string, string> = {
             <Transition name="expand">
               <div v-if="expandedIds.has(dua.id)" class="space-y-3 pt-2 border-t border-[var(--glass-border)]">
                 <!-- Transliteration -->
-                <p class="text-sm text-[var(--color-gold)] italic leading-relaxed">
+                <p class="text-sm text-[var(--color-gold)] italic leading-relaxed" dir="ltr">
                   {{ dua.transliteration }}
                 </p>
 
                 <!-- Translation -->
-                <p class="text-sm text-themed-secondary leading-relaxed">
+                <p class="text-sm text-themed-secondary leading-relaxed" dir="auto">
                   {{ getTranslation(dua) }}
                 </p>
               </div>

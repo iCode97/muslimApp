@@ -28,10 +28,17 @@ const DEFAULT_WIDGETS: DashboardWidget[] = [
   { id: 'seerah-teaser', i18nKey: 'widgets.seerahTeaser', icon: '📕', enabled: false, order: 9 },
   { id: 'progress-overview', i18nKey: 'widgets.progressOverview', icon: '📊', enabled: true, order: 10, colSpan: 2 },
   { id: 'prayer-tracker', i18nKey: 'widgets.prayerTracker', icon: '✅', enabled: true, order: 11, colSpan: 2 },
+  { id: 'learn-continue', i18nKey: 'learn.widgetName', icon: '🎓', enabled: true, order: 12, colSpan: 2 },
+  { id: 'adhkar', i18nKey: 'adhkar.widgetName', icon: '📿', enabled: true, order: 13, colSpan: 2 },
 ]
 
+/** Fresh deep copy of the defaults — callers mutate widgets, so never share objects. */
+function cloneDefaults(): DashboardWidget[] {
+  return DEFAULT_WIDGETS.map(w => ({ ...w }))
+}
+
 export function useDashboard() {
-  const widgets = useState<DashboardWidget[]>('dashboard-widgets', () => [...DEFAULT_WIDGETS])
+  const widgets = useState<DashboardWidget[]>('dashboard-widgets', () => cloneDefaults())
   const isEditing = useState<boolean>('dashboard-editing', () => false)
 
   function loadConfig() {
@@ -41,7 +48,7 @@ export function useDashboard() {
       try {
         const parsed = JSON.parse(saved) as DashboardWidget[]
         // Merge with defaults to pick up new widgets
-        const merged = DEFAULT_WIDGETS.map(def => {
+        const merged = cloneDefaults().map(def => {
           const saved = parsed.find(w => w.id === def.id)
           return saved ? { ...def, enabled: saved.enabled, order: saved.order } : def
         })
@@ -88,7 +95,7 @@ export function useDashboard() {
   }
 
   function resetToDefaults() {
-    widgets.value = [...DEFAULT_WIDGETS]
+    widgets.value = cloneDefaults()
     saveConfig()
   }
 

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { verseLink } from '~/utils/quran'
+
 const { t } = useI18n()
 const { bookmark, load, timeAgo } = useBookmark()
 const quran = useQuran()
@@ -17,7 +19,7 @@ const surahName = computed(() => {
 <template>
   <NuxtLink
     v-if="bookmark"
-    :to="`/quran/${bookmark.surahId}`"
+    :to="verseLink(bookmark.surahId, bookmark.verseNumber)"
     class="block"
   >
     <GlassCard variant="primary" padding="md">
@@ -33,7 +35,7 @@ const surahName = computed(() => {
             {{ t('quran.verse') }} {{ bookmark.verseNumber }} · {{ timeAgo() }}
           </p>
         </div>
-        <div class="text-3xl opacity-50">
+        <div class="text-3xl opacity-50" aria-hidden="true">
           📖
         </div>
       </div>

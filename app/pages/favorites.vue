@@ -12,14 +12,14 @@ onMounted(() => favorites.load())
 // Preferred translation resource ID per app locale
 const LOCALE_TRANSLATION: Record<string, number> = { tr: 52, de: 27, en: 20 }
 
-function translationFor(fav: { translations: { id: number, text: string }[] }): string {
+function translationFor(fav: { readonly translations: readonly { readonly id: number, readonly text: string }[] }): string {
   const preferred = LOCALE_TRANSLATION[locale.value] ?? 20
   return fav.translations.find(tr => tr.id === preferred)?.text
     ?? fav.translations[0]?.text
     ?? ''
 }
 
-const dateFormat = computed(() => new Intl.DateTimeFormat(locale.value, { dateStyle: 'medium' }))
+const dateFormat = computed(() => new Intl.DateTimeFormat(intlTag(locale.value), { dateStyle: 'medium' }))
 </script>
 
 <template>
@@ -41,7 +41,7 @@ const dateFormat = computed(() => new Intl.DateTimeFormat(locale.value, { dateSt
         <p class="text-xs text-themed-faint">{{ t('favorites.emptyHint') }}</p>
         <NuxtLink to="/quran">
           <GlassButton variant="primary" size="sm" class="mt-2">
-            {{ t('quran.title') }} →
+            {{ t('quran.title') }} <span class="icon-dir" aria-hidden="true">→</span>
           </GlassButton>
         </NuxtLink>
       </div>
@@ -57,10 +57,10 @@ const dateFormat = computed(() => new Intl.DateTimeFormat(locale.value, { dateSt
         <div class="space-y-3">
           <div class="flex items-center justify-between">
             <NuxtLink
-              :to="`/quran/${fav.surahId}`"
+              :to="verseLink(fav.surahId, fav.verseNumber)"
               class="text-xs font-semibold text-[var(--color-primary-light)] hover:underline"
             >
-              {{ t('quran.verse') }} {{ fav.verseKey }} →
+              {{ t('quran.verse') }} {{ fav.verseKey }} <span class="icon-dir" aria-hidden="true">→</span>
             </NuxtLink>
             <button
               class="text-themed-faint hover:text-red-400 transition-colors"
@@ -72,14 +72,14 @@ const dateFormat = computed(() => new Intl.DateTimeFormat(locale.value, { dateSt
           </div>
 
           <p
-            class="font-arabic text-xl leading-loose text-themed text-right"
+            class="font-arabic text-xl leading-loose text-themed text-end"
             dir="rtl"
             lang="ar"
           >
             {{ fav.textUthmani }}
           </p>
 
-          <p v-if="translationFor(fav)" class="text-sm text-themed-secondary leading-relaxed pt-2 border-t border-[var(--glass-border)]">
+          <p v-if="translationFor(fav)" class="text-sm text-themed-secondary leading-relaxed pt-2 border-t border-[var(--glass-border)]" dir="auto">
             {{ translationFor(fav) }}
           </p>
 

@@ -3,8 +3,34 @@
  * List of all upcoming Islamic holidays with countdown.
  */
 
+import type { Holiday } from '~/composables/useHolidays'
+
 const { t } = useI18n()
-const { holidays, fetchUpcomingHolidays, loading, getHolidayName, getHolidayDescription } = useHolidays()
+const {
+  holidays, fetchUpcomingHolidays, loading, getHolidayName, getHolidayDescription,
+  getHijriLabel, exportAllIcs, exporting,
+} = useHolidays()
+const haptics = useHaptics()
+
+const selected = ref<Holiday | null>(null)
+const sheetOpen = ref(false)
+const exportNote = ref<string | null>(null)
+let noteTimer: ReturnType<typeof setTimeout> | undefined
+onBeforeUnmount(() => clearTimeout(noteTimer))
+
+function openHoliday(holiday: Holiday) {
+  haptics.light()
+  selected.value = holiday
+  sheetOpen.value = true
+}
+
+async function exportAll() {
+  haptics.light()
+  const count = await exportAllIcs()
+  exportNote.value = count > 0 ? t('calendar.exportAllDone', { count }) : t('calendar.exportUnavailable')
+  clearTimeout(noteTimer)
+  noteTimer = setTimeout(() => (exportNote.value = null), 5000)
+}
 
 onMounted(() => {
   if (holidays.value.length === 0) {
@@ -42,18 +68,21 @@ function typeBadgeClass(type: string): string {
     </div>
 
     <div v-else class="space-y-2">
-      <div
+      <button
         v-for="holiday in holidays"
         :key="holiday.id"
-        class="glass flex items-center gap-3 px-4 py-3"
+        type="button"
+        class="glass flex w-full items-center gap-3 px-4 py-3 text-start transition-transform active:scale-[0.99] holiday-row"
+        aria-haspopup="dialog"
+        @click="openHoliday(holiday)"
       >
         <!-- Icon -->
-        <span class="text-2xl shrink-0">{{ holiday.icon }}</span>
+        <span class="text-2xl shrink-0" aria-hidden="true">{{ holiday.icon }}</span>
 
         <!-- Info -->
         <div class="flex-1 min-w-0">
           <div class="flex items-center gap-2">
-            <span class="font-medium text-themed truncate text-sm">
+            <span class="font-medium text-themed truncate text-sm" dir="auto">
               {{ getHolidayName(holiday) }}
             </span>
             <span
@@ -68,7 +97,7 @@ function typeBadgeClass(type: string): string {
           <p class="text-xs text-themed-muted mt-0.5">
             {{ holiday.gregorianDate || '—' }}
           </p>
-          <p class="text-xs text-themed-faint mt-0.5">
+          <p class="text-xs text-themed-faint mt-0.5" dir="auto">
             {{ getHolidayDescription(holiday) }}
           </p>
         </div>
@@ -89,7 +118,31 @@ function typeBadgeClass(type: string): string {
             {{ t('calendar.days') }}
           </p>
         </div>
+      </button>
+
+      <!-- ICS export of all holidays in the next 12 months -->
+      <div class="pt-1 space-y-2">
+        <GlassButton class="w-full" :disabled="exporting" @click="exportAll">
+          <AppIcon name="calendar" :size="18" class="me-2" />
+          {{ t('calendar.exportAll') }}
+        </GlassButton>
+        <p v-if="exportNote" role="status" class="text-xs text-themed-muted text-center">
+          {{ exportNote }}
+        </p>
       </div>
     </div>
+
+    <HolidaySheet
+      v-model:open="sheetOpen"
+      :holiday="selected"
+      :hijri-label="selected ? getHijriLabel(selected) : undefined"
+    />
   </div>
 </template>
+
+<style scoped>
+.holiday-row:focus-visible {
+  outline: 2px solid var(--color-primary-light);
+  outline-offset: 2px;
+}
+</style>
