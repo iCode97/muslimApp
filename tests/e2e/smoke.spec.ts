@@ -24,6 +24,8 @@ const ROUTES = [
   '/favorites',
   '/mosques',
   '/adhkar',
+  '/hadith?id=5',
+  '/learn/fiqh',
 ]
 
 test.beforeEach(async ({ page, context, baseURL }) => {
