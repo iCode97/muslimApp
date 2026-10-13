@@ -328,6 +328,26 @@ export function useNotifications() {
     return syncChain
   }
 
+  /**
+   * Remove this device's push subscription from the server (stored record is
+   * deleted) and from the browser, and cancel locally scheduled reminders.
+   * Used by "delete all local data"; does not touch the stored settings.
+   */
+  async function unsubscribePush(): Promise<void> {
+    if (import.meta.server) return
+    await syncChain.catch(() => {})
+    const reg = await getSwRegistration()
+    const sub = await reg?.pushManager?.getSubscription()
+    if (sub) {
+      await postJson('/api/push/unsubscribe', { endpoint: sub.endpoint }).catch(() => {})
+      await sub.unsubscribe().catch(() => false)
+    }
+    pushActive.value = false
+    lastSynced = null
+    if (mode.value === 'push') mode.value = 'local'
+    clearScheduled()
+  }
+
   /** Send a test notification (via the server in push mode, locally otherwise). */
   async function sendTest(): Promise<boolean> {
     if (import.meta.server || permission.value !== 'granted') return false
@@ -477,6 +497,7 @@ export function useNotifications() {
     refreshPushStatus,
     buildPushPrefs,
     syncPush,
+    unsubscribePush,
     sendTest,
     PRAYER_NAMES,
   }

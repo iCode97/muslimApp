@@ -86,7 +86,7 @@ export const MOBILE_TABS: MobileTab[] = [
     path: '/more',
     icon: 'more',
     label: 'nav.tabMore',
-    match: ['/more', '/tasbih', '/qibla', '/dua', '/adhkar', '/calendar', '/ramadan', '/mosques', '/zakat', '/settings', '/about'],
+    match: ['/more', '/tasbih', '/qibla', '/dua', '/adhkar', '/calendar', '/ramadan', '/mosques', '/zakat', '/settings', '/about', '/privacy'],
   },
 ]
 
@@ -121,6 +121,7 @@ export const FAVORITABLE_ITEMS: ToolItem[] = [...TOOL_ITEMS, ...EXTRA_FAVORITABL
 export const APP_ITEMS: ToolItem[] = [
   { id: 'settings', path: '/settings', icon: 'settings', label: 'nav.settings', desc: 'more.settingsDesc' },
   { id: 'about', path: '/about', icon: 'about', label: 'more.about', desc: 'more.aboutDesc' },
+  { id: 'privacy', path: '/privacy', icon: 'shield', label: 'more.privacy', desc: 'more.privacyDesc' },
 ]
 
 function normalize(path: string): string {

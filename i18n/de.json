@@ -1,7 +1,8 @@
 {
   "app": {
     "name": "MuslimApp",
-    "tagline": "Dein islamischer Begleiter"
+    "tagline": "Dein islamischer Begleiter",
+    "description": "Gebetszeiten, Koran, Qibla, islamischer Kalender und Lernzentrum: kostenlos, ohne Konto und ohne Tracking."
   },
   "nav": {
     "dashboard": "Heute",
@@ -418,7 +419,9 @@
     "moveDown": "{name} nach unten",
     "addFavorite": "{name} zu Favoriten hinzufügen",
     "removeFavorite": "{name} aus Favoriten entfernen",
-    "appSection": "App"
+    "appSection": "App",
+    "privacy": "Datenschutz",
+    "privacyDesc": "Welche Daten gespeichert werden & Daten löschen"
   },
   "tasbih": {
     "title": "Tasbih",
@@ -938,6 +941,97 @@
     "empty": "Noch keine Favoriten gespeichert",
     "emptyHint": "Tippe im Koran-Reader auf das Herz neben einem Vers",
     "remove": "Entfernen"
+  },
+  "privacy": {
+    "title": "Datenschutz",
+    "subtitle": "Stand: Oktober 2026",
+    "linkDesc": "Welche Daten die App speichert und wohin sie gesendet werden",
+    "tldrTitle": "Kurz gesagt",
+    "tldr": "MuslimApp hat keine Benutzerkonten, kein Tracking, keine Analyse-Tools und keine Werbung. Deine Einstellungen, dein Fortschritt und dein Standort bleiben auf deinem Gerät. Nur wenn du Gebets-Erinnerungen per Web Push aktivierst, speichert unser Server wenige Daten (siehe unten) und löscht sie sofort wieder, wenn du die Erinnerungen ausschaltest.",
+    "controller": {
+      "title": "Verantwortlicher",
+      "p1": "Verantwortlich für diese App und den zugehörigen Server im Sinne der DSGVO ist:",
+      "placeholderTag": "Platzhalter",
+      "placeholderNote": "Vom Betreiber auszufüllen: Diese Angaben sind noch nicht hinterlegt (Konstante OPERATOR in app/pages/privacy.vue). Bitte vor der Veröffentlichung ergänzen, ein Impressum bereitstellen und den gesamten Text rechtlich prüfen lassen.",
+      "value": "[bitte eintragen]",
+      "name": "Name / Firma",
+      "address": "Anschrift",
+      "email": "E-Mail",
+      "phone": "Telefon (optional)",
+      "hosting": "Hosting-Anbieter und Server-Logfiles"
+    },
+    "local": {
+      "title": "Was auf deinem Gerät gespeichert wird",
+      "p1": "MuslimApp speichert alle deine Daten lokal in deinem Browser bzw. in der installierten App. Sie werden nicht an uns übertragen:",
+      "li1": "Einstellungen, Standort, Gebets-Tracker, Lese- und Lernfortschritt, Favoriten, Lesezeichen, Tasbih-Zähler und Erinnerungseinstellungen im localStorage (alle Schlüssel beginnen mit „muslimapp-“).",
+      "li2": "Der für die Offline-Nutzung heruntergeladene Koran in der IndexedDB deines Browsers („muslimapp-quran-offline“).",
+      "li3": "Zwischenspeicher des Service Workers: App-Dateien, besuchte Seiten, Gebetszeiten, Koran-Antworten und bereits abgespielte Rezitationen, damit die App auch offline funktioniert.",
+      "li4": "Ein Cookie „muslimapp-locale“, das deine Sprachauswahl merkt.",
+      "note": "Diese Speicherung ist für den Betrieb der App technisch erforderlich bzw. geschieht auf deinen ausdrücklichen Wunsch. Du kannst alles jederzeit löschen (siehe „Daten löschen“)."
+    },
+    "noTracking": {
+      "title": "Keine Konten, kein Tracking",
+      "p1": "Es gibt keine Registrierung und keine Benutzerkonten. Wir setzen keine Analyse-, Statistik- oder Werbedienste ein, laden keine Tracking-Skripte und erstellen keine Profile. Außer dem oben genannten Sprach-Cookie werden keine Cookies gesetzt."
+    },
+    "fonts": {
+      "title": "Schriften",
+      "p1": "Die Schriften (Inter, Amiri und Noto Sans Arabic) werden von unserem eigenen Server ausgeliefert. Es findet keine Verbindung zu Google Fonts oder anderen Schriftenanbietern statt."
+    },
+    "thirdParty": {
+      "title": "Verbindungen zu Drittanbietern (direkt aus deinem Browser)",
+      "p1": "Einige Funktionen laden Inhalte direkt von externen Diensten. Diese erhalten dabei technisch bedingt deine IP-Adresse und die jeweilige Anfrage. Darauf haben wir keinen Einfluss; es gelten die Datenschutzbestimmungen der Anbieter.",
+      "li1": "api.quran.com (Quran.com): Koran-Text und Übersetzungen, sobald du Suren liest oder suchst.",
+      "li2": "verses.quran.com und audio.qurancdn.com: Audiodateien, sobald du eine Rezitation oder ein Wort-für-Wort-Audio abspielst.",
+      "li3": "nominatim.openstreetmap.org (OpenStreetMap Foundation): Umwandlung deiner Koordinaten in einen Ortsnamen sowie die Ortssuche. Gesendet werden die Koordinaten bzw. dein Suchbegriff.",
+      "li4": "overpass-api.de (OpenStreetMap-Daten): Moschee-Suche. Gesendet werden die Koordinaten deines gespeicherten Standorts und der Suchradius, nur wenn du die Suche startest.",
+      "li5": "OpenStreetMap bzw. Apple Karten: Nur wenn du in der Moschee-Suche eine Route öffnest, wird der jeweilige Dienst in einem neuen Tab aufgerufen."
+    },
+    "aladhan": {
+      "title": "Gebetszeiten und Hijri-Datum (Aladhan über unseren Server)",
+      "p1": "Gebetszeiten und Datumsumrechnungen stammen von der Aladhan-API (aladhan.com). Dein Browser fragt dafür nicht Aladhan direkt, sondern unseren Server, der die Anfrage weiterleitet. Dabei werden nur Berechnungsparameter übertragen (Koordinaten, Berechnungsmethode, Asr-Schule, Anpassungen, Datum). Deine IP-Adresse, Cookies und andere Kopfzeilen werden nicht weitergegeben; Aladhan sieht nur die Adresse unseres Servers.",
+      "p2": "Die Antworten werden bis zu 24 Stunden auf dem Server zwischengespeichert (Koordinaten auf ca. 1 km gerundet), ohne Bezug zu einer Person."
+    },
+    "location": {
+      "title": "Standort",
+      "p1": "Dein Standort wird nur nach deiner Freigabe im Browser (GPS) oder durch manuelle Eingabe verwendet, für Gebetszeiten, Qibla-Richtung und Moschee-Suche. Er wird lokal gespeichert und verlässt dein Gerät nur in den hier beschriebenen Fällen: Aladhan-Anfragen über unseren Server, Ortsname über Nominatim, Moschee-Suche über Overpass sowie, nur bei aktivierten Push-Erinnerungen, auf ca. 1 km gerundet an unseren Server."
+    },
+    "push": {
+      "title": "Push-Erinnerungen (optional)",
+      "p1": "Wenn du Gebets- oder Dhikr-Erinnerungen aktivierst und Web Push auf diesem Server eingerichtet ist, fragt dein Browser nach der Erlaubnis für Benachrichtigungen. Damit Erinnerungen auch bei geschlossener App ankommen, speichert unser Server pro Gerät:",
+      "li1": "die Push-Adresse (Endpoint) und die Schlüssel deines Browsers, über die der Push-Dienst deines Browser- bzw. Geräteherstellers (Google, Mozilla, Apple oder Microsoft) Nachrichten zustellt;",
+      "li2": "die App-Sprache und die Zeitzone deines Geräts;",
+      "li3": "deinen Standort, auf zwei Nachkommastellen (ca. 1 km) gerundet, samt Zeitzone des Ortes;",
+      "li4": "Berechnungsparameter (Methode, Asr-Schule, Breitengrad-Regel, Minuten-Anpassungen) und Erinnerungseinstellungen (welche Gebete, Vorlaufzeit, Dhikr-Zeiten);",
+      "li5": "Erstellungs- und Änderungszeitpunkt sowie die Kennungen bereits gesendeter Erinnerungen (zur Vermeidung von Doppelmeldungen, nach 3 Tagen automatisch gelöscht).",
+      "p2": "Kein Name, keine E-Mail-Adresse, kein Konto. Zweck ist ausschließlich der Versand deiner Erinnerungen. Wenn du alle Erinnerungen ausschaltest, wird der Datensatz sofort vom Server gelöscht; er wird außerdem gelöscht, sobald der Push-Dienst meldet, dass die Adresse nicht mehr gültig ist. Zum Schutz vor Missbrauch wird deine IP-Adresse nur kurzzeitig im Arbeitsspeicher für eine Ratenbegrenzung der Push-Schnittstellen verwendet und nicht dauerhaft gespeichert.",
+      "note": "Rechtsgrundlage ist deine Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), die du jederzeit durch Ausschalten der Erinnerungen widerrufen kannst."
+    },
+    "backup": {
+      "title": "Datensicherung (Export und Import)",
+      "p1": "In den Einstellungen kannst du alle lokalen Daten als JSON-Datei exportieren und wieder importieren. Die Datei wird nur auf deinem Gerät erzeugt und nicht an uns gesendet. Sie enthält unter anderem deinen gespeicherten Standort und deinen Fortschritt. Bewahre sie entsprechend sicher auf."
+    },
+    "delete": {
+      "title": "Daten löschen",
+      "p1": "Mit der folgenden Schaltfläche löschst du alle Daten dieser App auf diesem Gerät:",
+      "li1": "alle Einstellungen und Fortschritte (localStorage „muslimapp-*“) sowie das Sprach-Cookie,",
+      "li2": "den heruntergeladenen Offline-Koran (IndexedDB) und die Zwischenspeicher der App,",
+      "li3": "das Push-Abonnement, einschließlich des zugehörigen Datensatzes auf unserem Server.",
+      "p2": "Danach wird die App neu geladen. Das kann nicht rückgängig gemacht werden; exportiere vorher bei Bedarf eine Datensicherung. Alternativ kannst du die Websitedaten auch in den Einstellungen deines Browsers entfernen.",
+      "button": "Alle lokalen Daten löschen",
+      "working": "Wird gelöscht …",
+      "confirmTitle": "Alle lokalen Daten löschen?",
+      "confirm": "Einstellungen, Fortschritt, Favoriten, Standort und der Offline-Koran werden unwiderruflich von diesem Gerät gelöscht.",
+      "confirmLabel": "Alles löschen",
+      "error": "Das Löschen war nicht vollständig. Bitte entferne die Websitedaten zusätzlich in den Einstellungen deines Browsers."
+    },
+    "rights": {
+      "title": "Deine Rechte",
+      "p1": "Nach der DSGVO hast du das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie das Recht, dich bei einer Datenschutz-Aufsichtsbehörde zu beschweren. Da wir keine Konten führen und Push-Datensätze keiner Person zuordnen können, löschst du Daten am einfachsten selbst: über die Schaltfläche oben oder durch Ausschalten der Erinnerungen. Für alle weiteren Anliegen wende dich an den Verantwortlichen (siehe oben)."
+    },
+    "changes": {
+      "title": "Änderungen",
+      "p1": "Wir passen diese Erklärung an, wenn sich die App ändert. Das Datum der letzten Änderung steht oben auf dieser Seite."
+    }
   },
   "pwa": {
     "updateAvailable": "Neue Version verfügbar",

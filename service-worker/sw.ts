@@ -14,7 +14,7 @@
  *  - Aladhan proxy (/api/aladhan/**) and api.quran.com: NetworkFirst + expiry.
  *  - Quran verse / word audio (verses.quran.com, audio.qurancdn.com, mirrors.quranicaudio.com):
  *    CacheFirst on whole files, answered as byte ranges (needed by <audio> in Safari).
- *  - Google Fonts: stylesheets StaleWhileRevalidate, font files CacheFirst.
+ *  - Fonts are self-hosted (/fonts/*.woff2) and precached with the build.
  *  - Nominatim geocoding: network only.
  *
  * Notifications: message-driven scheduling of prayer / dhikr notifications
@@ -22,7 +22,7 @@
  */
 import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching'
 import { NavigationRoute, registerRoute, setCatchHandler } from 'workbox-routing'
-import { CacheFirst, NetworkFirst, NetworkOnly, StaleWhileRevalidate } from 'workbox-strategies'
+import { CacheFirst, NetworkFirst, NetworkOnly } from 'workbox-strategies'
 import { ExpirationPlugin } from 'workbox-expiration'
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
 import { RangeRequestsPlugin } from 'workbox-range-requests'
@@ -179,30 +179,6 @@ registerRoute(
     }
     return quranAudioStrategy.handle({ request, event })
   },
-)
-
-// Google Fonts stylesheets
-registerRoute(
-  ({ url }) => url.origin === 'https://fonts.googleapis.com',
-  new StaleWhileRevalidate({
-    cacheName: 'google-fonts-stylesheets',
-    plugins: [
-      new CacheableResponsePlugin({ statuses: [0, 200] }),
-      new ExpirationPlugin({ maxEntries: 10, maxAgeSeconds: 365 * DAY }),
-    ],
-  }),
-)
-
-// Google Fonts files (immutable)
-registerRoute(
-  ({ url }) => url.origin === 'https://fonts.gstatic.com',
-  new CacheFirst({
-    cacheName: 'google-fonts-webfonts',
-    plugins: [
-      new CacheableResponsePlugin({ statuses: [0, 200] }),
-      new ExpirationPlugin({ maxEntries: 30, maxAgeSeconds: 365 * DAY }),
-    ],
-  }),
 )
 
 // Nominatim geocoding: always live (usage policy + location privacy)

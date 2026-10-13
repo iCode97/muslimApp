@@ -17,6 +17,7 @@ const ROUTES = [
   '/ramadan',
   '/settings',
   '/about',
+  '/privacy',
   '/more',
   '/learn',
   '/tracker',

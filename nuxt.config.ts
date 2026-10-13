@@ -41,13 +41,8 @@ export default defineNuxtConfig({
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
         { rel: 'apple-touch-icon', sizes: '180x180', href: '/icons/icon-180.png' },
-        // Preconnect to Google Fonts for faster font loading
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap',
-        },
+        // Fonts are self-hosted (public/fonts, @font-face in main.css); preload the Latin subset
+        { rel: 'preload', as: 'font', type: 'font/woff2', href: '/fonts/inter-latin.woff2', crossorigin: 'anonymous' },
       ],
     },
   },
@@ -84,10 +79,9 @@ export default defineNuxtConfig({
       icons: [
         { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
         { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+        // Full-bleed square artwork (theme color), logo inside the 80% safe zone
+        { src: '/icons/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         { src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
-        // No dedicated maskable artwork exists yet (all icons are circles on a
-        // transparent background); keep the SVG as maskable like the legacy manifest.
-        { src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'maskable' },
       ],
     },
     injectManifest: {
@@ -144,6 +138,9 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    // Pre-compress build assets (gzip + brotli) so the bare Node server (see Dockerfile)
+    // serves them compressed without needing a reverse proxy to do it.
+    compressPublicAssets: true,
     experimental: {
       tasks: true,
     },

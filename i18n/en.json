@@ -1,7 +1,8 @@
 {
   "app": {
     "name": "MuslimApp",
-    "tagline": "Your Islamic companion"
+    "tagline": "Your Islamic companion",
+    "description": "Prayer times, Quran, Qibla, Islamic calendar and learning center: free, no account and no tracking."
   },
   "nav": {
     "dashboard": "Today",
@@ -418,7 +419,9 @@
     "moveDown": "Move {name} down",
     "addFavorite": "Add {name} to favorites",
     "removeFavorite": "Remove {name} from favorites",
-    "appSection": "App"
+    "appSection": "App",
+    "privacy": "Privacy",
+    "privacyDesc": "What data is stored & delete your data"
   },
   "tasbih": {
     "title": "Tasbih",
@@ -938,6 +941,97 @@
     "empty": "No favorites saved yet",
     "emptyHint": "Tap the heart next to a verse in the Quran reader",
     "remove": "Remove"
+  },
+  "privacy": {
+    "title": "Privacy",
+    "subtitle": "Last updated: October 2026",
+    "linkDesc": "What data the app stores and where it is sent",
+    "tldrTitle": "In short",
+    "tldr": "MuslimApp has no user accounts, no tracking, no analytics tools and no advertising. Your settings, progress and location stay on your device. Only if you enable prayer reminders via Web Push does our server store a small amount of data (see below), and it deletes it immediately when you turn the reminders off.",
+    "controller": {
+      "title": "Controller",
+      "p1": "The controller of this app and its server within the meaning of the GDPR is:",
+      "placeholderTag": "Placeholder",
+      "placeholderNote": "To be completed by the operator: these details have not been entered yet (constant OPERATOR in app/pages/privacy.vue). Please fill them in before publishing, provide a legal notice (imprint) and have the whole text reviewed legally.",
+      "value": "[please fill in]",
+      "name": "Name / company",
+      "address": "Address",
+      "email": "Email",
+      "phone": "Phone (optional)",
+      "hosting": "Hosting provider and server log files"
+    },
+    "local": {
+      "title": "What is stored on your device",
+      "p1": "MuslimApp keeps all your data locally in your browser or in the installed app. It is not transmitted to us:",
+      "li1": "Settings, location, prayer tracker, reading and learning progress, favorites, bookmarks, tasbih counter and reminder settings in localStorage (all keys start with \"muslimapp-\").",
+      "li2": "The Quran downloaded for offline use in your browser's IndexedDB (\"muslimapp-quran-offline\").",
+      "li3": "Service worker caches: app files, visited pages, prayer times, Quran responses and recitations you have already played, so the app also works offline.",
+      "li4": "One cookie, \"muslimapp-locale\", which remembers your language choice.",
+      "note": "This storage is technically necessary to run the app or happens at your explicit request. You can delete everything at any time (see \"Delete data\")."
+    },
+    "noTracking": {
+      "title": "No accounts, no tracking",
+      "p1": "There is no registration and there are no user accounts. We do not use analytics, statistics or advertising services, do not load tracking scripts and do not build profiles. Apart from the language cookie mentioned above, no cookies are set."
+    },
+    "fonts": {
+      "title": "Fonts",
+      "p1": "The fonts (Inter, Amiri and Noto Sans Arabic) are served from our own server. No connection is made to Google Fonts or any other font provider."
+    },
+    "thirdParty": {
+      "title": "Connections to third parties (directly from your browser)",
+      "p1": "Some features load content directly from external services. As with any web request, these services receive your IP address and the request itself. We have no influence on this; the providers' own privacy policies apply.",
+      "li1": "api.quran.com (Quran.com): Quran text and translations whenever you read or search surahs.",
+      "li2": "verses.quran.com and audio.qurancdn.com: audio files when you play a recitation or word-by-word audio.",
+      "li3": "nominatim.openstreetmap.org (OpenStreetMap Foundation): turning your coordinates into a place name, and place search. Your coordinates or search term are sent.",
+      "li4": "overpass-api.de (OpenStreetMap data): mosque search. The coordinates of your saved location and the search radius are sent, only when you start a search.",
+      "li5": "OpenStreetMap or Apple Maps: only if you open a route in the mosque search is the respective service opened in a new tab."
+    },
+    "aladhan": {
+      "title": "Prayer times and Hijri date (Aladhan via our server)",
+      "p1": "Prayer times and date conversions come from the Aladhan API (aladhan.com). Your browser does not contact Aladhan directly; it asks our server, which forwards the request. Only calculation parameters are transmitted (coordinates, calculation method, Asr school, adjustments, date). Your IP address, cookies and other headers are not passed on; Aladhan only sees our server's address.",
+      "p2": "Responses are cached on the server for up to 24 hours (coordinates rounded to about 1 km), with no link to any person."
+    },
+    "location": {
+      "title": "Location",
+      "p1": "Your location is only used after you grant permission in your browser (GPS) or enter it manually, for prayer times, Qibla direction and mosque search. It is stored locally and only leaves your device in the cases described here: Aladhan requests via our server, place name via Nominatim, mosque search via Overpass and, only with push reminders enabled, rounded to about 1 km to our server."
+    },
+    "push": {
+      "title": "Push reminders (optional)",
+      "p1": "If you enable prayer or dhikr reminders and Web Push is set up on this server, your browser asks for permission to show notifications. So that reminders also arrive while the app is closed, our server stores per device:",
+      "li1": "the push address (endpoint) and keys of your browser, through which the push service of your browser or device vendor (Google, Mozilla, Apple or Microsoft) delivers messages;",
+      "li2": "the app language and your device's time zone;",
+      "li3": "your location, rounded to two decimal places (about 1 km), together with the location's time zone;",
+      "li4": "calculation parameters (method, Asr school, high-latitude rule, minute adjustments) and reminder settings (which prayers, lead time, dhikr times);",
+      "li5": "the creation and update time and the IDs of reminders already sent (to avoid duplicates, automatically deleted after 3 days).",
+      "p2": "No name, no email address, no account. The only purpose is to send your reminders. When you turn all reminders off, the record is deleted from the server immediately; it is also deleted as soon as the push service reports that the address is no longer valid. To prevent abuse, your IP address is used only briefly in memory for rate limiting of the push endpoints and is not stored permanently.",
+      "note": "The legal basis is your consent (Art. 6(1)(a) GDPR), which you can withdraw at any time by turning the reminders off."
+    },
+    "backup": {
+      "title": "Backup (export and import)",
+      "p1": "In the settings you can export all local data as a JSON file and import it again. The file is created on your device only and is not sent to us. It contains, among other things, your saved location and your progress. Keep it somewhere safe."
+    },
+    "delete": {
+      "title": "Delete data",
+      "p1": "The button below deletes all data of this app on this device:",
+      "li1": "all settings and progress (localStorage \"muslimapp-*\") and the language cookie,",
+      "li2": "the downloaded offline Quran (IndexedDB) and the app's caches,",
+      "li3": "the push subscription, including the matching record on our server.",
+      "p2": "The app then reloads. This cannot be undone; export a backup first if you need one. You can also remove the site data in your browser's settings.",
+      "button": "Delete all local data",
+      "working": "Deleting …",
+      "confirmTitle": "Delete all local data?",
+      "confirm": "Settings, progress, favorites, location and the offline Quran will be permanently deleted from this device.",
+      "confirmLabel": "Delete everything",
+      "error": "Deletion was not complete. Please also remove the site data in your browser settings."
+    },
+    "rights": {
+      "title": "Your rights",
+      "p1": "Under the GDPR you have the right to access, rectification, erasure, restriction of processing, data portability and objection, as well as the right to lodge a complaint with a data protection supervisory authority. Because we keep no accounts and cannot link push records to a person, the easiest way to erase data is to do it yourself: with the button above or by turning the reminders off. For anything else, contact the controller (see above)."
+    },
+    "changes": {
+      "title": "Changes",
+      "p1": "We will update this notice when the app changes. The date of the last update is shown at the top of this page."
+    }
   },
   "pwa": {
     "updateAvailable": "New version available",
