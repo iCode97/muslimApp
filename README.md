@@ -1,193 +1,94 @@
-# MuslimApp 2.0
+# MuslimApp
 
-Eine mobile-first Progressive Web App (PWA) für Muslime — mit Gebetszeiten, Koran-Reader (inkl. Audio-Rezitation), islamischem Kalender, Gebets-Tracker, Zakat-Rechner und spirituellen Werkzeugen.
+Der Anlaufpunkt für alle, die sich mit dem Islam befassen — egal, ob sie gerade **entdecken**, im Alltag **praktizieren** oder ihr Wissen **vertiefen** möchten. MuslimApp ist eine mobile-first Progressive Web App (PWA) mit Gebetszeiten, Koran-Reader, Lernzentrum, Adhkar, Hadith-Sammlung, islamischem Kalender und praktischen Werkzeugen. Sie ist installierbar und weitgehend offline nutzbar.
 
-Gebaut mit Nuxt 4, TypeScript und einem Apple-inspirierten Liquid Glass Design.
+Gebaut mit Nuxt 4, TypeScript und einem Apple-inspirierten Liquid-Glass-Design. Oberfläche in Deutsch (Standard), Türkisch und Englisch.
 
-> Der vollständige Plan für Version 2.0 ist in [`V2-PLAN.md`](./V2-PLAN.md) dokumentiert.
+> Pläne und Fortschritt: [`MASTERPLAN.md`](./MASTERPLAN.md) (Phasen, Architektur, offene Punkte) · [`V2-PLAN.md`](./V2-PLAN.md) (ursprünglicher Plan für Version 2.0)
 
----
-
-## Neu in Version 2.0
-
-- **Gebets-Tracker** — die 5 täglichen Gebete abhaken (verrichtet / Qada), Serien-Zähler, Wochenübersicht, 7/30-Tage-Statistik + Dashboard-Widget
-- **Zakat-Rechner** — Nisab-Basis Gold (85 g) oder Silber (595 g), Vermögen minus Schulden, 2,5 % — komplett offline
-- **Koran Audio-Rezitation** — Audio-Player im Suren-Reader mit 5 wählbaren Rezitatoren (quran.com API, kein API-Key)
-- **Vers-Favoriten** — Verse per Herz speichern, eigene Favoriten-Seite (offline verfügbar)
-- **Datensicherung** — alle App-Daten als JSON exportieren/importieren (Gerätewechsel ohne Datenverlust)
+> **Inhaltlicher Hinweis:** Alle religiösen Inhalte (Lektionen, Glossar, FAQ, Kalender-Erklärungen, Adhkar, Hadith-Grade) sind als Entwurf (`draft`) markiert, bis sie fachlich geprüft wurden. Siehe [Inhaltsprüfung](#inhaltsprüfung).
 
 ---
 
 ## Features
 
-### Gebetszeiten
-- Tagesübersicht aller 6 Gebetszeiten (Fajr, Sonnenaufgang, Dhuhr, Asr, Maghrib, Isha)
-- **Live-Countdown** zum nächsten Gebet (sekundengenau)
-- Nächstes Gebet wird visuell hervorgehoben, vergangene Gebete ausgegraut
-- Standorterkennung via **GPS** oder **manuelle Stadtsuche** mit Autocomplete
-- Standort wird im Browser gespeichert (localStorage)
-- **15 Berechnungsmethoden** wählbar (Diyanet, ISNA, MWL, Ägypten u.v.m.)
-- **Push-Notifications** für Gebetszeiten (pro Gebet einzeln konfigurierbar)
+### Heute (Dashboard)
+- Begrüßung mit Tageszeit, Hijri-Datum und Onboarding-Assistent beim ersten Start (inkl. Wissensstufe Entdecken / Praktizieren / Vertiefen)
+- 14 konfigurierbare Widgets (ein-/ausschaltbar, sortierbar): Gebets-Countdown, Gebetszeiten, Feiertags-Countdown, Koran-Lesezeichen, zufälliger Vers, Tasbih, Hijri-Datum, Hadith des Tages, Name des Tages (99 Namen Allahs), Seerah-Teaser, Fortschrittsübersicht, Gebets-Tracker, „Weiterlernen“, Adhkar
 
-### Koran-Reader
-- Alle **114 Suren** mit Name (lateinisch + arabisch), Versanzahl, Offenbarungsort
-- Arabischer Text in **Uthmani-Schrift** (RTL)
-- Übersetzungen parallel: **Türkisch** (Elmalılı Hamdi Yazır) + **Deutsch** (Bubenheim & Elyas)
-- Übersetzungen ein-/ausschaltbar für reines Arabisch-Lesen
-- **Volltextsuche** über den gesamten Koran (Arabisch, Türkisch, Deutsch, Englisch)
-- **Lesezeichen** — letzter Lesestand wird gespeichert und auf dem Dashboard angezeigt
-- Navigation zur vorherigen/nächsten Sure
-- **Offline-Caching** via IndexedDB (nach erstem Laden vollständig offline verfügbar)
+### Gebet
+- Alle 6 Zeiten des Tages mit sekundengenauem Countdown zum nächsten Gebet; Berechnung **zeitzonenkorrekt** für den gewählten Ort (auch wenn die Stadt in einer anderen Zeitzone liegt als das Gerät)
+- Standort per **GPS** oder **Stadtsuche** mit Autocomplete; wird beim App-Start global wiederhergestellt
+- **15 Berechnungsmethoden** (Standard: Diyanet), **Madhhab-Wahl für Asr** (Standard / Hanafi), **Regel für hohe Breitengrade** (automatisch oder fest), **Minutenkorrektur pro Gebet** (zusätzlich zu den Offsets der Methode)
+- **Erinnerungen**: pro Gebet einstellbar, mit Vorlaufzeit. Mit konfigurierten VAPID-Keys als echte **Web-Push-Nachrichten** (auch bei geschlossener App, serverseitig geplant); ohne Keys als lokale Erinnerungen, die nur bei geöffneter App feuern. Dazu optionale **Adhkar-Erinnerungen** (Morgen/Abend)
+- **Gebets-Tracker**: die 5 Gebete abhaken (verrichtet / Qada), Serien-Zähler, Wochenübersicht, 7-/30-Tage-Statistik
+- **Gebetsanleitung** (Wudu und Salah Schritt für Schritt) unter `/guide`
 
-### Islamischer Kalender
-- **Hijri-Kalender** mit navigierbarer Monatsansicht
-- Kalender-Grid zeigt Hijri-Tag + gregorianisches Datum
-- Feiertage werden im Kalender markiert
-- **11 islamische Feiertage & Kandil-Nächte** mit automatischer Datumsberechnung
-- **Countdown** zum nächsten Feiertag (auf Dashboard + Kalender-Seite)
-- Feiertage mit Typ-Badges: Feiertag, Kandil-Nacht, Gedenktag
+### Koran
+- Alle 114 Suren mit Uthmani-Text, Übersetzungen Deutsch (Bubenheim & Elyas), Türkisch (Elmalılı) und Englisch — einzeln ein-/ausschaltbar; Transliteration; einstellbare Schriftgrößen
+- **Vers-Audio** mit Hervorhebung des aktuellen Verses, 6 Rezitatoren, Geschwindigkeit, Wiederholung und **Hifz-Schleife** (Verse wiederholen), Mini-Player
+- **Wort-für-Wort**-Ansicht (inkl. Wort-Audio)
+- **Tafsir** pro Vers (Ibn Kathir und Ma'arif al-Qur'an auf Englisch, al-Muyassar und as-Sa'di auf Arabisch) sowie Sureninfo
+- **Juz-Ansicht**, Volltextsuche, Lesezeichen („Weiterlesen“), Vers-Favoriten, optionales Offline-Bundle (IndexedDB)
 
-### Dashboard
-- Flexibler Startbildschirm mit **7 konfigurierbaren Widgets**
-- Begrüßung mit tageszeit-abhängigem Gruß + Hijri-Datum
-- Widgets: Gebetszeiten-Countdown, Feiertags-Countdown, Koran-Lesezeichen, Tasbih-Schnellzähler, Hijri-Datum, Hadith des Tages, Zufälliger Vers
-- Widgets ein-/ausschaltbar und neu sortierbar
+### Lernen
+- **Lernpfade** mit Lektionen, Quiz und Fortschritt: *Grundlagen des Islam* (12 Lektionen), *Neu im Islam* (10), *Fiqh des Alltags* (12)
+- **Glossar** (134 Begriffe) und **FAQ** (35 Einträge) mit Suche und Kategorien
+- Quellenangaben in jeder Lektion; bei Meinungsunterschieden der Rechtsschulen neutrale Hinweise
+- Weitere Lernbereiche: Gebetsanleitung, Seerah (Leben des Propheten ﷺ), 99 Namen Allahs
+- Dashboard-Widget „Weiterlernen“
 
-### Werkzeuge (Mehr-Hub)
-- **Tasbih (Gebetszähler)** — 7 Dhikr-Modi (Subhanallah, Alhamdulillah, Allahu Akbar u.a.), SVG-Fortschrittsring, Haptic Feedback
-- **Qibla-Kompass** — Richtung nach Mekka via Device Orientation API + Great Circle Berechnung
-- **Dua-Sammlung** — 14 Bittgebete in 8 Kategorien (Arabisch + Transliteration + 3 Sprachen)
-- **Hadith-Sammlung** — 43 kuratierte Hadiths mit Kategorien und Volltext-Suche
+### Adhkar & Dua
+- **Adhkar** in 9 Sets (Morgen, Abend, nach dem Gebet, Schlaf, Aufwachen, Reise, Zuhause, Essen, Bedrängnis; insgesamt 56 Einträge) mit Zählern und Tagesfortschritt
+- **Dua-Sammlung** in Kategorien (Arabisch, Transliteration, DE/EN/TR)
 
-### Einstellungen & App
-- **Dark/Light Mode** + automatische System-Erkennung
-- **3 Sprachen** — Deutsch (Standard), Türkisch, Englisch
-- **PWA** — Installierbar auf Home Screen, Service Worker, Offline-Betrieb
-- Berechnungsmethode für Gebetszeiten wählbar
+### Hadith
+- 100 kuratierte Hadithe mit Kategorien und Suche
+- **Authentizitätsgrade** (sahih / hasan / daif / ungeprüft) mit Gradierungshinweis, Grad-Filter, **Teilen** und **Deep-Links** (`/hadith?id=…`)
 
----
+### Kalender
+- Hijri-Kalender mit Monatsansicht, 11 Feiertagen und Kandil-Nächten, Countdown zum nächsten Feiertag
+- **Erklärungen** zu Feiertagen, **Fastentage** (z. B. Aschura, Arafa, Weiße Tage, Montag/Donnerstag) und **ICS-Export** in den eigenen Kalender
+- **Hijri-Konverter** (Gregorianisch ↔ Hijri)
 
-## Datenquellen & APIs
+### Moscheen in der Nähe
+- Umkreissuche (2–25 km) über OpenStreetMap/Overpass, sortiert nach Entfernung, mit Adresse, Betreiber und Karten-Link. Dein Standort wird nur auf Knopfdruck an den Overpass-Dienst gesendet.
 
-Die App nutzt ausschließlich **kostenlose, öffentliche APIs** ohne API-Keys.
+### Weitere Werkzeuge
+- **Zakat-Rechner** — Nisab Gold (85 g) oder Silber (595 g), Vermögen minus Schulden, 2,5 %, komplett offline
+- **Qibla-Kompass** — Richtung nach Mekka (Device Orientation API + Großkreisberechnung)
+- **Tasbih** — 7 Dhikr-Modi, Fortschrittsring, haptisches Feedback
+- **Ramadan-Modus** — Iftar-/Suhoor-Countdown, Fasten- und Khatam-Tracker pro Hijri-Jahr, Countdown zum nächsten Ramadan
+- **Favoriten** — Verse speichern, häufig genutzte Werkzeuge anpinnen
+- **Datensicherung** — alle App-Daten als JSON exportieren/importieren (Geräte-Wechsel ohne Datenverlust)
 
-### Gebetszeiten — Aladhan API
-
-| | |
-|---|---|
-| **API** | [Aladhan Prayer Times API](https://aladhan.com/prayer-times-api) |
-| **Base-URL** | `https://api.aladhan.com/v1/` |
-| **Standard-Berechnungsmethode** | Method 13 — **Diyanet İşleri Başkanlığı** (Türkei) |
-| **Authentifizierung** | Keine (kostenlos, kein API-Key) |
-| **Genutzte Endpoints** | `/timings/{date}`, `/gToH/{date}`, `/hijriCalendar/{month}/{year}`, `/hToG/{date}` |
-| **Caching** | Gebetszeiten werden für den aktuellen Tag im localStorage gecacht |
-
-15 Berechnungsmethoden werden unterstützt (Diyanet, ISNA, MWL, Ägypten, Karachi u.v.m.) und können in den Einstellungen gewechselt werden.
-
-### Koran — quran.com API v4
-
-| | |
-|---|---|
-| **API** | [quran.com API](https://api.quran.com) |
-| **Base-URL** | `https://api.quran.com/api/v4/` |
-| **Authentifizierung** | Keine (kostenlos, kein API-Key) |
-| **Arabischer Text** | Uthmani-Schrift (`/quran/verses/uthmani`) |
-| **Türkische Übersetzung** | Elmalılı Hamdi Yazır (Translation ID 52) |
-| **Deutsche Übersetzung** | Bubenheim & Elyas (Translation ID 27) |
-| **Suche** | Volltextsuche via `/search` Endpoint |
-| **Caching** | Suren-Liste + geladene Verse werden im localStorage und IndexedDB gecacht |
-
-### Standort — OpenStreetMap Nominatim
-
-| | |
-|---|---|
-| **API** | [Nominatim](https://nominatim.openstreetmap.org) |
-| **Verwendung** | Reverse Geocoding (GPS → Stadtname) und Vorwärts-Geocoding (Stadtname → Koordinaten) |
-| **Authentifizierung** | Keine |
-
-### Islamische Feiertage
-
-Die Feiertage sind als **statische Daten** in `data/holidays.json` hinterlegt mit ihren Hijri-Daten. Die Umrechnung in gregorianische Daten erfolgt **dynamisch** über die Aladhan API (`/hToG/`), sodass die Daten für jedes Jahr automatisch korrekt sind.
-
-Enthaltene Feiertage:
-- Eid al-Fitr (Ramazan Bayramı), Eid al-Adha (Kurban Bayramı)
-- Mawlid an-Nabi, Islamisches Neujahr, Aschura, Tag von Arafat
-- Kandil-Nächte: Regaip, Miraç, Berat, Kadir Gecesi, Beginn Ramadan
+### App
+- Dark/Light/System-Theme, Sprachen DE · TR · EN
+- **PWA**: installierbar, Workbox-Service-Worker (Navigationen network-first, Update-Hinweis bei neuer Version), Offline-Betrieb für Shell, bereits geladene Seiten, Koran-Daten und Audio
+- Fehlerseite, Skeleton-Loader, Barrierefreiheit (Fokus-Management, ARIA in BottomSheet/Dialogen)
 
 ---
 
-## Offline-Fähigkeit
+## Navigation
 
-| Was | Offline verfügbar? | Details |
-|---|---|---|
-| **App-Shell** (Layout, Navigation) | Ja | Service Worker + SSR-Cache |
-| **Gebetszeiten** | Teilweise | Heutige Zeiten gecacht; für neue Tage ist Internet nötig |
-| **Koran (Suren-Liste)** | Ja | Wird im localStorage gecacht |
-| **Koran (Verse)** | Ja | Einmal geladene Suren in localStorage + IndexedDB |
-| **Koran (Offline-Bundle)** | Ja (nach Download) | Vollständiges Bundle via IndexedDB (in Einstellungen ladbar) |
-| **Kalender** | Nein | Benötigt Aladhan API für Hijri-Daten |
-| **Feiertage** | Teilweise | Hijri-Daten sind lokal, gregorianische Umrechnung benötigt API |
-| **Lesezeichen** | Ja | Komplett in localStorage |
-| **Standort** | Ja | Wird nach erster Erkennung im localStorage gespeichert |
-| **Tasbih / Dua / Hadith** | Ja | Vollständig lokale Daten (statische JSON/TS-Dateien) |
+- **Mobil:** feste Tab-Leiste mit 5 Tabs — **Heute · Gebet · Koran · Lernen · Mehr**. Tracker gehört zu *Gebet*, Favoriten zu *Koran*; Hadith, Seerah, Namen und Gebetsanleitung zu *Lernen*.
+- **„Mehr“-Hub:** alle Werkzeuge (Tasbih, Qibla, Dua, Adhkar, Kalender, Ramadan, Tracker, Zakat, Favoriten, Moscheen) sowie Einstellungen und „Über die App“. Im Hub lassen sich Werkzeuge als **Favoriten** anpinnen; sie erscheinen oben als Schnellzugriff.
+- **Desktop:** Seitenleiste mit Hauptbereichen, Werkzeugen und Einstellungen/Über.
 
 ---
 
 ## Tech-Stack
 
-| Komponente | Technologie | Version |
-|---|---|---|
-| **Framework** | [Nuxt](https://nuxt.com) | 4.4.2 |
-| **Sprache** | TypeScript | 5.8 |
-| **UI-Framework** | [Vue.js](https://vuejs.org) | 3.5 |
-| **Styling** | [Tailwind CSS](https://tailwindcss.com) + Custom Liquid Glass CSS | 3.4 |
-| **i18n** | [@nuxtjs/i18n](https://i18n.nuxtjs.org) | 9.5 |
-| **PWA** | [@vite-pwa/nuxt](https://vite-pwa-org.netlify.app/frameworks/nuxt) | 1.1.1 |
-| **Datums-Hilfsbibliothek** | [dayjs](https://day.js.org) | 1.11 |
-| **State** | Nuxt `useState` Composables | — |
-| **Schriftarten** | Inter (UI) + Amiri (Arabisch) | Google Fonts |
-
----
-
-## Schnellstart
-
-### Voraussetzungen
-- Node.js 22+
-- npm
-
-### Entwicklung
-
-```bash
-# Repository klonen
-git clone https://github.com/iCode97/muslimApp.git
-cd muslimApp
-
-# Dependencies installieren
-npm install
-
-# Entwicklungsserver starten
-npm run dev
-```
-
-Die App läuft dann unter `http://localhost:3000`.
-
-### Produktions-Build
-
-```bash
-npm run build
-node .output/server/index.mjs
-```
-
-### Docker
-
-```bash
-# Build & Start
-docker compose up -d
-
-# Oder manuell
-docker build -t muslimapp .
-docker run -p 3000:3000 muslimapp
-```
+| Bereich | Technologie |
+|---|---|
+| Framework | Nuxt 4 (Vue 3.5, TypeScript, SSR + Nitro) |
+| Styling | Tailwind CSS 3 + eigenes Liquid-Glass-CSS |
+| i18n | `@nuxtjs/i18n` (DE · TR · EN) |
+| State | Nuxt `useState`-Composables, Persistenz in localStorage / IndexedDB |
+| PWA | `@vite-pwa/nuxt` (injectManifest) + Workbox, eigener Service Worker in `service-worker/sw.ts` |
+| Push | `web-push` (VAPID), Nitro Storage (`fs`) + Nitro Scheduled Task (jede Minute) |
+| Tests | Vitest (Unit) + Playwright (E2E, Mobile-Chromium) |
+| CI | GitHub Actions |
 
 ---
 
@@ -195,86 +96,120 @@ docker run -p 3000:3000 muslimapp
 
 ```
 muslimApp/
-├── nuxt.config.ts                  # Nuxt-Konfiguration
-├── Dockerfile                      # Multi-Stage Docker Build
-├── docker-compose.yml              # Docker Compose Setup
-├── data/
-│   └── holidays.json               # Islamische Feiertage (Hijri-Daten)
-├── i18n/
-│   ├── de.json                     # Deutsche UI-Texte
-│   ├── tr.json                     # Türkische UI-Texte
-│   └── en.json                     # Englische UI-Texte
-├── public/
-│   ├── favicon.svg                 # App-Icon
-│   ├── manifest.json               # PWA Manifest
-│   └── sw.js                       # Service Worker
-└── app/
-    ├── app.vue                     # Root-Komponente
-    ├── layouts/
-    │   └── default.vue             # Layout mit Bottom-Navigation (5 Tabs)
-    ├── pages/
-    │   ├── index.vue               # Dashboard (konfigurierbare Widgets)
-    │   ├── prayer.vue              # Gebetszeiten-Detail
-    │   ├── calendar.vue            # Hijri-Kalender + Feiertage
-    │   ├── settings.vue            # Einstellungen (Theme, Sprache, Methode)
-    │   ├── more.vue                # Werkzeuge-Hub (Tasbih, Qibla, Dua, Hadith)
-    │   ├── tasbih.vue              # Gebetszähler (7 Dhikr-Modi)
-    │   ├── qibla.vue               # Qibla-Kompass
-    │   ├── dua.vue                 # Dua-Sammlung (14 Bittgebete)
-    │   ├── hadith.vue              # Hadith-Sammlung (43 Hadiths)
-    │   └── quran/
-    │       ├── index.vue           # Surenübersicht + Suche
-    │       └── [surah].vue         # Einzelne Sure lesen
-    ├── components/
-    │   ├── ui/                     # Liquid Glass Design System
-    │   │   ├── GlassCard.vue       #   Glassmorphism-Karte (4 Varianten)
-    │   │   ├── GlassButton.vue     #   Button
-    │   │   ├── GlassInput.vue      #   Eingabefeld mit Icon
-    │   │   └── LoadingSpinner.vue  #   Lade-Animation
-    │   ├── prayer/                 # Gebetszeiten-Komponenten
-    │   │   ├── PrayerTimesCard.vue #   Liste aller 6 Gebetszeiten
-    │   │   ├── PrayerCountdown.vue #   Countdown zum nächsten Gebet
-    │   │   ├── PrayerTimeRow.vue   #   Einzelne Gebetszeit-Zeile
-    │   │   └── LocationSelector.vue#   GPS-Erkennung + Stadtsuche
-    │   ├── quran/                  # Koran-Komponenten
-    │   │   ├── VerseDisplay.vue    #   Einzelner Vers (AR + TR + DE)
-    │   │   └── ReadingProgress.vue #   Lesezeichen-Widget
-    │   ├── calendar/               # Kalender-Komponenten
-    │   │   ├── HijriCalendar.vue   #   Monatskalender-Grid
-    │   │   ├── HolidayCountdown.vue#   Nächster Feiertag + Countdown
-    │   │   └── HolidayList.vue     #   Alle Feiertage chronologisch
-    │   └── widgets/                # Dashboard-Widgets
-    │       ├── TasbihQuick.vue     #   Schnell-Tasbih auf Dashboard
-    │       ├── HijriDateWidget.vue #   Hijri-Datum Anzeige
-    │       ├── HadithOfDay.vue     #   Zufälliger Hadith des Tages
-    │       └── RandomVerse.vue     #   Zufälliger Koran-Vers
-    ├── composables/                # Business Logic
-    │   ├── useLocation.ts          #   GPS + Stadtsuche + Persistenz
-    │   ├── usePrayerTimes.ts       #   Gebetszeiten (Aladhan API + Caching)
-    │   ├── useCountdown.ts         #   Generischer Countdown-Timer
-    │   ├── useQuran.ts             #   Koran-Daten (quran.com API)
-    │   ├── useBookmark.ts          #   Koran-Lesezeichen (localStorage)
-    │   ├── useHolidays.ts          #   Feiertage + Hijri-Kalender
-    │   ├── useDashboard.ts         #   Widget-Konfiguration
-    │   ├── useNotifications.ts     #   Gebetszeit-Benachrichtigungen
-    │   ├── useTheme.ts             #   Dark/Light Mode + System-Erkennung
-    │   ├── usePWA.ts               #   PWA-Installation
-    │   ├── useTasbih.ts            #   Gebetszähler-State (7 Modi)
-    │   ├── useQibla.ts             #   Kompass-Berechnung (Great Circle)
-    │   └── useOfflineQuran.ts      #   IndexedDB Offline-Caching
-    ├── data/                       # Statische App-Daten
-    │   ├── hadiths.ts              #   43 kuratierte Hadiths
-    │   ├── duas.ts                 #   14 Bittgebete (8 Kategorien)
-    │   ├── prayer-methods.ts       #   15 Berechnungsmethoden
-    │   └── surah-names-de.ts       #   Deutsche Suren-Namen
-    └── assets/css/
-        └── main.css                # Tailwind + Liquid Glass Styles
+├── app/
+│   ├── pages/            # Routen: Dashboard, prayer, quran, learn/**, adhkar, hadith, calendar,
+│   │                     #   mosques, tracker, zakat, qibla, tasbih, ramadan, favorites, settings …
+│   ├── components/       # ui (Glass-Design-System), prayer, quran, learn, calendar, widgets, …
+│   ├── composables/      # Business-Logik (usePrayerTimes, useQuran, useNotifications, …)
+│   ├── data/             # Statische Inhalte: hadiths, adhkar, duas, learn/** (Pfade, Glossar, FAQ), …
+│   ├── plugins/          # app-init (globale Initialisierung), push-sync
+│   └── utils/            # Reine Helfer (geo, ics, hijri-dates, quran, mosques, …)
+├── server/
+│   ├── api/aladhan/      # Aladhan-Proxy (gecacht, validiert)
+│   ├── api/push/         # Web-Push-API (config, subscribe, update, unsubscribe, test)
+│   ├── tasks/push/       # Geplanter Versand (dispatch, jede Minute)
+│   └── utils/            # aladhan, push, push-dispatch
+├── shared/               # Von Client und Server genutzt (push/**, time)
+├── service-worker/sw.ts  # Workbox-Service-Worker (Caching, Push, Notifications)
+├── i18n/                 # de.json · tr.json · en.json
+├── data/holidays.json    # Feiertage (Hijri-Daten) + Hijri-Monate
+├── docs/CONTENT-REVIEW.md# Fachliche Prüfliste
+├── tests/                # unit/ (Vitest) und e2e/ (Playwright)
+├── Dockerfile · docker-compose.yml · .env.example
+└── .github/workflows/ci.yml
 ```
 
 ---
 
-## Lizenz
+## Entwicklung
 
-Dieses Projekt ist privat.
+Voraussetzung: Node.js 22.
 
-Koran-Text bereitgestellt durch [quran.com](https://quran.com). Gebetszeiten berechnet durch [Aladhan](https://aladhan.com). Geocoding durch [OpenStreetMap Nominatim](https://nominatim.openstreetmap.org).
+```bash
+git clone https://github.com/iCode97/muslimApp.git
+cd muslimApp
+npm install
+npm run dev          # http://localhost:3000
+```
+
+| Script | Zweck |
+|---|---|
+| `npm run dev` | Entwicklungsserver (Service Worker ist im Dev-Modus aus) |
+| `npm run build` | Produktions-Build (`.output/`) |
+| `npm run preview` | Produktions-Build lokal ansehen |
+| `npm test` | Unit-Tests (Vitest); `npm run test:watch` im Watch-Modus |
+| `npm run test:e2e` | E2E-Tests (Playwright; baut die App und startet sie auf Port 3104) |
+| `npm run typecheck` | `nuxi typecheck` |
+| `npm run vapid` | Erzeugt ein VAPID-Schlüsselpaar für Web Push |
+
+Produktionsserver starten: `npm run build && node .output/server/index.mjs`.
+
+---
+
+## Umgebungsvariablen
+
+Siehe [`.env.example`](./.env.example) (nach `.env` kopieren; echte Schlüssel nie committen).
+
+| Variable | Bedeutung |
+|---|---|
+| `NUXT_PUBLIC_VAPID_PUBLIC_KEY` | Öffentlicher VAPID-Schlüssel (`npm run vapid`) |
+| `NUXT_VAPID_PRIVATE_KEY` | Privater VAPID-Schlüssel (nur Server) |
+| `NUXT_VAPID_SUBJECT` | Kontakt für Push-Dienste (`mailto:…` oder `https://…`) |
+| `NUXT_ALADHAN_BASE_URL` | Optional: Upstream des Aladhan-Proxys (Standard `https://api.aladhan.com/v1`) |
+| `NUXT_PUBLIC_QURAN_BASE_URL` | Optional: quran.com-API (Standard `https://api.quran.com/api/v4`) |
+
+Fehlt eine der drei VAPID-Variablen, ist Web Push abgeschaltet; die App nutzt dann lokale Erinnerungen, die nur bei geöffneter App feuern.
+
+---
+
+## Deployment (Docker)
+
+```bash
+cp .env.example .env     # VAPID-Keys eintragen (npm run vapid)
+docker compose up -d
+```
+
+- Multi-Stage-Dockerfile (Node 22 Alpine), Port 3000.
+- **Volume für `.data`:** Push-Abonnenten liegen als JSON-Dateien in `/app/.data/push`. `docker-compose.yml` bindet dafür das Volume `muslimapp-data` an `/app/.data` — ohne Volume gehen Abonnements bei jedem Neu-Deployment verloren.
+- Die Push-Zustellung läuft im selben Node-Prozess (Nitro-Scheduler, jede Minute). Für **eine** Instanz ausgelegt; Rate-Limits liegen im Arbeitsspeicher der Instanz.
+- Web Push erfordert HTTPS (oder `localhost`). Auf iOS funktioniert Push nur bei zum Home-Bildschirm hinzugefügter PWA (iOS/iPadOS 16.4+).
+
+---
+
+## Datenquellen & Lizenzen
+
+Alle genutzten Dienste sind kostenlos und benötigen keinen API-Key.
+
+| Quelle | Verwendung | Hinweise |
+|---|---|---|
+| [Aladhan API](https://aladhan.com/prayer-times-api) | Gebetszeiten (Monatskalender), Hijri-Konvertierung, Hijri-Kalender | Läuft über den eigenen Proxy `/api/aladhan/**` (serverseitig gecacht) |
+| [quran.com API v4](https://api.quran.com) | Koran-Text, Übersetzungen, Transliteration, Wort-für-Wort, Tafsir, Suche | Direkt vom Browser; Übersetzungen: Bubenheim & Elyas (DE), Elmalılı (TR), Sahih International (EN) |
+| verses.quran.com · audio.qurancdn.com · mirrors.quranicaudio.com | Vers-, Wort- und Sure-Audio | Rezitationen der jeweiligen Rezitatoren, bereitgestellt über quran.com/Quran.Foundation |
+| [OpenStreetMap Overpass](https://overpass-api.de) | Moscheen in der Nähe | Daten © OpenStreetMap-Mitwirkende, [ODbL](https://www.openstreetmap.org/copyright) |
+| [OpenStreetMap Nominatim](https://nominatim.openstreetmap.org) | Geocoding (Stadtsuche, Reverse-Geocoding) | © OpenStreetMap-Mitwirkende, ODbL |
+| Google Fonts | Schriften Inter und Amiri | Werden vom Browser geladen |
+
+Der Quellcode dieses Projekts ist privat. Die Inhalte der Lernpfade, des Glossars, der FAQ und der Kalender-Erklärungen wurden für diese App erstellt und sind noch nicht fachlich geprüft.
+
+---
+
+## Datenschutz
+
+- **Fast alles bleibt auf dem Gerät:** Standort, Einstellungen, Lesezeichen, Favoriten, Tracker, Lernfortschritt usw. liegen in localStorage/IndexedDB und lassen sich per JSON-Backup exportieren. Es gibt keine Konten und kein Tracking.
+- **Serverseitig gespeichert wird ausschließlich, wenn du Web-Push-Erinnerungen aktivierst:** die Push-Subscription (Endpoint und Schlüssel), Sprache, Zeitzone, Standort **auf 2 Nachkommastellen gerundet (~1 km)**, Berechnungsparameter, Erinnerungs-Einstellungen sowie technische Zeitstempel/Versand-Markierungen. Beim Deaktivieren (oder wenn der Push-Dienst die Subscription für ungültig erklärt) wird der Eintrag gelöscht.
+- Für die Rate-Begrenzung hält der Server IP-Adressen kurzzeitig im Arbeitsspeicher (nicht persistent).
+- **Dienste von Dritten:** Gebetszeiten-Anfragen enthalten die Koordinaten und gehen über den eigenen Server an Aladhan. Stadtsuche/Reverse-Geocoding (Nominatim), Moscheesuche (Overpass), Koran-Daten/Audio (quran.com-Dienste) und Google Fonts werden direkt vom Browser kontaktiert und sehen dabei die IP-Adresse.
+
+---
+
+## Inhaltsprüfung
+
+Alle Lektionen, Glossar-Begriffe und FAQ-Einträge tragen `review: 'draft'`; die App zeigt dazu den Hinweis „Inhalt wird noch fachlich geprüft“. Hadith-Grade, Kalender-Erklärungen und Adhkar sind ebenfalls ungeprüft. Die Prüfliste mit allen Stellen, die die erstellenden Agents selbst als unsicher markiert haben (Hadith-Nummern, arabischer Wortlaut, Rechtsschul-Positionen), steht in [`docs/CONTENT-REVIEW.md`](./docs/CONTENT-REVIEW.md). Nach der Prüfung durch eine fachkundige Person wird der Status auf `'reviewed'` gesetzt.
+
+---
+
+## Tests & CI
+
+- **Unit-Tests (Vitest):** Gebetszeiten-/Push-Planung, Koran-Hilfsfunktionen, Lerninhalte (Schema, Quellen, Verweise), Adhkar, Hadith-Grade, Kalender/Fastentage, ICS, Geo, i18n-Vollständigkeit, UI-Komponenten
+- **E2E-Smoketests (Playwright, Mobile-Chromium):** alle Routen laden ohne Konsolenfehler, Navigation, Hadith-Deep-Link, Fiqh-Pfad; externe APIs werden gemockt
+- **CI (GitHub Actions):** Typecheck → Unit-Tests → Build, dazu ein separater E2E-Job. Läuft bei Push auf `main` und bei jedem Pull Request.
