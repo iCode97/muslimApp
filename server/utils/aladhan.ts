@@ -126,7 +126,10 @@ export function normalizeCalendarQuery(query: Record<string, unknown>): Calendar
     return { ok: false, error: 'invalid_param_method' }
   }
 
-  const value: CalendarQuery = { latitude, longitude, method }
+  // Round to ~1 km before fetching so the upstream request matches the shared cache key
+  // (otherwise a cache hit could serve times computed for a different nearby point).
+  const round2 = (n: number) => Math.round(n * 100) / 100
+  const value: CalendarQuery = { latitude: round2(latitude), longitude: round2(longitude), method }
 
   if (!isBlank(query.school)) {
     const school = Number(query.school)
