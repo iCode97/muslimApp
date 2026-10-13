@@ -224,7 +224,7 @@ const revelationPlace = computed(() => {
           to="/quran"
           class="inline-flex items-center gap-1 text-sm text-themed-muted hover:text-themed-secondary transition-colors"
         >
-          <span aria-hidden="true">←</span> {{ t('quran.surahs') }}
+          <span class="icon-dir" aria-hidden="true">←</span> {{ t('quran.surahs') }}
         </NuxtLink>
 
         <button
@@ -365,7 +365,7 @@ const revelationPlace = computed(() => {
         :aria-label="`${t('a11y.prevSurah')}: ${prevSurah}`"
         class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 active:scale-[0.97] glass hover:brightness-110 px-3 py-1.5 text-sm"
       >
-        <span aria-hidden="true">← {{ prevSurah }}</span>
+        <span class="icon-dir" aria-hidden="true">←</span><span aria-hidden="true"> {{ prevSurah }}</span>
       </NuxtLink>
       <span v-else />
 
@@ -375,7 +375,7 @@ const revelationPlace = computed(() => {
         :aria-label="`${t('a11y.nextSurah')}: ${nextSurah}`"
         class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 active:scale-[0.97] glass hover:brightness-110 px-3 py-1.5 text-sm"
       >
-        <span aria-hidden="true">{{ nextSurah }} →</span>
+        <span aria-hidden="true">{{ nextSurah }} </span><span class="icon-dir" aria-hidden="true">→</span>
       </NuxtLink>
     </div>
 

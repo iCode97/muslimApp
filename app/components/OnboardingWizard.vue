@@ -121,7 +121,7 @@ const progressPct = computed(() =>
               <div class="text-3xl">{{ currentStep?.icon }}</div>
               <button
                 v-if="onboarding.step.value < maxStep"
-                class="text-xs text-themed-faint hover:text-themed-secondary transition-colors px-2 py-2 -mr-2"
+                class="text-xs text-themed-faint hover:text-themed-secondary transition-colors px-2 py-2 -me-2"
                 @click="skip"
               >
                 {{ t('onboarding.skip') }}
@@ -172,7 +172,7 @@ const progressPct = computed(() =>
                     📍 {{ location.displayName }}
                   </p>
                   <p class="text-xs text-themed-faint mt-0.5">
-                    {{ location.latitude.toFixed(3) }}°, {{ location.longitude.toFixed(3) }}°
+                    <bdi dir="ltr">{{ location.latitude.toFixed(3) }}°, {{ location.longitude.toFixed(3) }}°</bdi>
                   </p>
                 </div>
 
@@ -209,7 +209,7 @@ const progressPct = computed(() =>
                     <li v-for="(s, i) in suggestions" :key="i" class="border-b border-[var(--glass-border)] last:border-b-0">
                       <button
                         type="button"
-                        class="w-full text-left px-4 py-3 min-h-[2.75rem] text-sm hover:bg-[var(--color-primary)]/10 transition-colors flex items-center gap-2"
+                        class="w-full text-start px-4 py-3 min-h-[2.75rem] text-sm hover:bg-[var(--color-primary)]/10 transition-colors flex items-center gap-2"
                         @click="handleSelect(s)"
                       >
                         <span aria-hidden="true">📍</span>
@@ -228,12 +228,12 @@ const progressPct = computed(() =>
                 <p class="text-themed-secondary text-sm">
                   {{ t('onboarding.methodBody') }}
                 </p>
-                <div class="space-y-1.5 max-h-60 overflow-y-auto pr-1">
+                <div class="space-y-1.5 max-h-60 overflow-y-auto pe-1">
                   <button
                     v-for="m in PRAYER_METHODS"
                     :key="m.id"
                     :class="[
-                      'w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left transition-all',
+                      'w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-start transition-all',
                       prayerTimes.method.value === m.id
                         ? 'glass-primary text-[var(--color-primary-light)]'
                         : 'glass-subtle text-themed-secondary hover:text-themed'
@@ -299,7 +299,7 @@ const progressPct = computed(() =>
                     role="radio"
                     :aria-checked="knowledge.level.value === lvl.id"
                     :class="[
-                      'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition-all active:scale-[0.99]',
+                      'w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-start transition-all active:scale-[0.99]',
                       knowledge.level.value === lvl.id
                         ? 'glass-primary text-[var(--color-primary-light)]'
                         : 'glass-subtle text-themed-secondary hover:text-themed',

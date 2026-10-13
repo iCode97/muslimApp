@@ -93,6 +93,7 @@ export function startPrayerSync(): void {
 export function usePrayerInit() {
   const { location } = useLocation()
   const prayerTimes = usePrayerTimes()
+  const { locale } = useI18n()
 
   /** @deprecated Loading happens globally in the app-init plugin. Kept for compatibility. */
   async function init() {
@@ -108,6 +109,8 @@ export function usePrayerInit() {
   const hijriDisplay = computed(() => {
     const h = prayerTimes.data.value?.hijriDate
     if (!h) return ''
+    // Arabic: Arabic month name, no "1." ordinal dot, "هـ" instead of "AH"
+    if (locale.value === 'ar') return `${h.day} ${h.monthAr || h.month} ${h.year} هـ`
     return `${h.day}. ${h.month} ${h.year} ${h.designation}`
   })
 

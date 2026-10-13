@@ -45,7 +45,7 @@ async function fetchRandomVerse() {
         verse_key: string
       }
     }>(`${config.public.quranBaseUrl}/verses/by_key/${surahId}:${verseNum}`, {
-      params: { translations: translationId, language: locale.value }
+      params: { translations: translationId, language: locale.value === 'ar' ? 'en' : locale.value }
     })
 
     verse.value = {
@@ -90,12 +90,12 @@ onMounted(() => {
 
       <div v-else-if="verse" class="space-y-3">
         <!-- Arabic text -->
-        <p class="font-arabic text-xl text-right leading-[2.2] text-themed" dir="rtl" lang="ar">
+        <p class="font-arabic text-xl text-end leading-[2.2] text-themed" dir="rtl" lang="ar">
           {{ verse.arabic }}
         </p>
 
         <!-- Translation -->
-        <p class="text-sm text-themed-secondary leading-relaxed">
+        <p class="text-sm text-themed-secondary leading-relaxed" dir="auto">
           {{ verse.translation }}
         </p>
 

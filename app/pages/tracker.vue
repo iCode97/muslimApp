@@ -36,7 +36,7 @@ function statusSymbol(status: string): string {
 }
 
 // Use the app locale (not the runtime default) so SSR and client agree on weekday names.
-const weekdayFormat = computed(() => new Intl.DateTimeFormat(locale.value, { weekday: 'short' }))
+const weekdayFormat = computed(() => new Intl.DateTimeFormat(intlTag(locale.value), { weekday: 'short' }))
 
 const stats7 = computed(() => tracker.statsPercent(7))
 const stats30 = computed(() => tracker.statsPercent(30))
@@ -91,7 +91,7 @@ const stats30 = computed(() => tracker.statsPercent(30))
           <button
             v-for="prayer in tracker.TRACKED_PRAYERS"
             :key="prayer"
-            class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl glass-subtle transition-all duration-200 text-left"
+            class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl glass-subtle transition-all duration-200 text-start"
             @click="toggle(prayer)"
           >
             <span class="text-lg">{{ PRAYER_ICONS[prayer] }}</span>

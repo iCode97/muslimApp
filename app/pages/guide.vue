@@ -5,6 +5,7 @@
 import { GUIDE_SECTIONS, PRAYER_RAKA_INFO, type PrayerStep } from '~/data/prayer-guide'
 
 const { t, locale } = useI18n()
+const isRtl = computed(() => isRtlLocale(locale.value))
 
 const activeSection = ref<string>('wudu')
 
@@ -60,8 +61,8 @@ function getTranslation(step: PrayerStep): string {
             : 'glass-subtle text-themed-secondary hover:text-themed',
         ]"
         @click="activeSection = section.id"
-        @keydown.right.prevent="moveTab(1)"
-        @keydown.left.prevent="moveTab(-1)"
+        @keydown.right.prevent="moveTab(isRtl ? -1 : 1)"
+        @keydown.left.prevent="moveTab(isRtl ? 1 : -1)"
       >
         <span aria-hidden="true">{{ section.icon }}</span> {{ t(section.titleKey) }}
       </button>
@@ -101,7 +102,7 @@ function getTranslation(step: PrayerStep): string {
                     {{ step.repetitions }}×
                   </span>
                 </div>
-                <p class="text-sm text-themed-secondary leading-relaxed mt-0.5">
+                <p class="text-sm text-themed-secondary leading-relaxed mt-0.5" dir="auto">
                   {{ getInstruction(step) }}
                 </p>
               </div>
@@ -109,13 +110,13 @@ function getTranslation(step: PrayerStep): string {
 
             <!-- Arabic text -->
             <div v-if="step.arabicText" class="pt-2 border-t border-[var(--glass-border)] space-y-2">
-              <p class="font-arabic text-xl text-right text-[var(--color-gold)] leading-[2.2]" dir="rtl" lang="ar">
+              <p class="font-arabic text-xl text-end text-[var(--color-gold)] leading-[2.2]" dir="rtl" lang="ar">
                 {{ step.arabicText }}
               </p>
-              <p v-if="step.transliteration" class="text-sm text-themed-muted italic">
+              <p v-if="step.transliteration" class="text-sm text-themed-muted italic" dir="ltr">
                 {{ step.transliteration }}
               </p>
-              <p v-if="getTranslation(step)" class="text-xs text-themed-secondary leading-relaxed">
+              <p v-if="getTranslation(step)" class="text-xs text-themed-secondary leading-relaxed" dir="auto">
                 {{ getTranslation(step) }}
               </p>
             </div>

@@ -6,7 +6,7 @@
 import { fastingKindsFor, type FastingKind } from '~/data/holiday-info'
 import type { HijriDay, Holiday } from '~/composables/useHolidays'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const haptics = useHaptics()
 const {
   calendarDays,
@@ -183,7 +183,7 @@ const calendarGrid = computed(() => {
     <!-- Month header with navigation -->
     <div class="flex items-center justify-between mb-4">
       <GlassButton variant="ghost" size="sm" :aria-label="t('a11y.prevMonth')" @click="prevMonth">
-        <span aria-hidden="true">←</span>
+        <span class="icon-dir" aria-hidden="true">←</span>
       </GlassButton>
 
       <div class="text-center" aria-live="polite">
@@ -191,12 +191,12 @@ const calendarGrid = computed(() => {
           {{ monthName }}
         </p>
         <p class="text-xs text-themed-muted">
-          <span lang="ar">{{ monthInfo?.nameAR }}</span> · {{ currentHijriYear }} AH
+          <template v-if="locale !== 'ar'"><span lang="ar">{{ monthInfo?.nameAR }}</span> · </template>{{ currentHijriYear }} {{ locale === 'ar' ? 'هـ' : 'AH' }}
         </p>
       </div>
 
       <GlassButton variant="ghost" size="sm" :aria-label="t('a11y.nextMonth')" @click="nextMonth">
-        <span aria-hidden="true">→</span>
+        <span class="icon-dir" aria-hidden="true">→</span>
       </GlassButton>
     </div>
 
@@ -268,7 +268,7 @@ const calendarGrid = computed(() => {
               <!-- Holiday marker -->
               <span
                 v-if="day.holiday"
-                class="absolute -top-0.5 -right-0.5 text-[8px]"
+                class="absolute -top-0.5 -end-0.5 text-[8px]"
                 aria-hidden="true"
               >
                 {{ day.holiday.icon }}
@@ -282,7 +282,7 @@ const calendarGrid = computed(() => {
       <button
         v-if="isShawwal"
         type="button"
-        class="cell mt-3 flex w-full items-start gap-2 rounded-xl glass-subtle p-3 text-left"
+        class="cell mt-3 flex w-full items-start gap-2 rounded-xl glass-subtle p-3 text-start"
         aria-haspopup="dialog"
         @click="haptics.light(); shawwalOpen = true"
       >

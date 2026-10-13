@@ -89,7 +89,7 @@ const sequenceSteps = computed(() =>
       <template v-else>
         {{ t(tasbih.currentMode.value.i18nKey) }}
       </template>
-      <span class="ml-1 text-themed-faint" aria-hidden="true">{{ showModeSelector ? '▲' : '▼' }}</span>
+      <span class="ms-1 text-themed-faint" aria-hidden="true">{{ showModeSelector ? '▲' : '▼' }}</span>
     </button>
 
     <!-- Mode selector dropdown -->
@@ -131,7 +131,7 @@ const sequenceSteps = computed(() =>
             >
               <span class="text-sm font-medium">{{ t(mode.i18nKey) }}</span>
               <span v-if="mode.arabic" class="font-arabic text-base text-themed-muted" lang="ar">{{ mode.arabic }}</span>
-              <span v-if="mode.target" class="text-xs text-themed-faint ml-2">{{ mode.target }}×</span>
+              <span v-if="mode.target" class="text-xs text-themed-faint ms-2">{{ mode.target }}×</span>
             </button>
           </div>
         </GlassCard>
@@ -160,7 +160,7 @@ const sequenceSteps = computed(() =>
           <span v-else-if="tasbih.sequenceStep.value === idx" class="w-1.5 h-1.5 rounded-full bg-[var(--color-primary-light)]" aria-hidden="true" />
           <span>{{ t(step.i18nKey) }}</span>
         </li>
-        <li v-if="idx < sequenceSteps.length - 1" class="text-themed-faint text-xs" aria-hidden="true">→</li>
+        <li v-if="idx < sequenceSteps.length - 1" class="text-themed-faint text-xs" aria-hidden="true"><span class="icon-dir">→</span></li>
       </template>
     </ol>
 

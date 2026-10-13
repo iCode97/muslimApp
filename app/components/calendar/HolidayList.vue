@@ -72,7 +72,7 @@ function typeBadgeClass(type: string): string {
         v-for="holiday in holidays"
         :key="holiday.id"
         type="button"
-        class="glass flex w-full items-center gap-3 px-4 py-3 text-left transition-transform active:scale-[0.99] holiday-row"
+        class="glass flex w-full items-center gap-3 px-4 py-3 text-start transition-transform active:scale-[0.99] holiday-row"
         aria-haspopup="dialog"
         @click="openHoliday(holiday)"
       >
@@ -82,7 +82,7 @@ function typeBadgeClass(type: string): string {
         <!-- Info -->
         <div class="flex-1 min-w-0">
           <div class="flex items-center gap-2">
-            <span class="font-medium text-themed truncate text-sm">
+            <span class="font-medium text-themed truncate text-sm" dir="auto">
               {{ getHolidayName(holiday) }}
             </span>
             <span
@@ -97,7 +97,7 @@ function typeBadgeClass(type: string): string {
           <p class="text-xs text-themed-muted mt-0.5">
             {{ holiday.gregorianDate || '—' }}
           </p>
-          <p class="text-xs text-themed-faint mt-0.5">
+          <p class="text-xs text-themed-faint mt-0.5" dir="auto">
             {{ getHolidayDescription(holiday) }}
           </p>
         </div>
@@ -123,7 +123,7 @@ function typeBadgeClass(type: string): string {
       <!-- ICS export of all holidays in the next 12 months -->
       <div class="pt-1 space-y-2">
         <GlassButton class="w-full" :disabled="exporting" @click="exportAll">
-          <AppIcon name="calendar" :size="18" class="mr-2" />
+          <AppIcon name="calendar" :size="18" class="me-2" />
           {{ t('calendar.exportAll') }}
         </GlassButton>
         <p v-if="exportNote" role="status" class="text-xs text-themed-muted text-center">

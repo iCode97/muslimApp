@@ -126,7 +126,8 @@ onUnmounted(() => {
       </Transition>
 
       <!-- Compass -->
-      <div class="relative w-72 h-72 my-6 animate-fade-in stagger-1">
+      <!-- Geographic instrument: never mirrored in RTL -->
+      <div class="relative w-72 h-72 my-6 animate-fade-in stagger-1" dir="ltr">
         <!-- Aligned glow halo -->
         <div
           :class="[
@@ -223,7 +224,7 @@ onUnmounted(() => {
           <div class="flex items-center justify-between">
             <span class="text-sm text-themed-muted">{{ t('qibla.direction') }}</span>
             <span class="text-lg font-semibold text-[var(--color-primary-light)] tabular-nums">
-              {{ qibla.qiblaAngle.value.toFixed(1) }}°
+              <bdi dir="ltr">{{ qibla.qiblaAngle.value.toFixed(1) }}°</bdi>
             </span>
           </div>
         </GlassCard>
@@ -233,7 +234,7 @@ onUnmounted(() => {
           <div class="flex items-center justify-between">
             <span class="text-sm text-themed-muted">{{ t('qibla.distance') }}</span>
             <span class="text-lg font-semibold tabular-nums">
-              {{ qibla.distanceToKaaba.value.toLocaleString() }} km
+              <bdi dir="ltr">{{ qibla.distanceToKaaba.value.toLocaleString() }} km</bdi>
             </span>
           </div>
         </GlassCard>

@@ -90,19 +90,19 @@ const duaSources = [
           <div class="space-y-2.5">
             <div class="flex justify-between items-start gap-4">
               <span class="text-xs text-themed-muted shrink-0">{{ t('about.quranArabicLabel') }}</span>
-              <span class="text-xs text-themed-secondary text-right">{{ t('about.quranArabicVal') }}</span>
+              <span class="text-xs text-themed-secondary text-end">{{ t('about.quranArabicVal') }}</span>
             </div>
             <div class="flex justify-between items-start gap-4">
               <span class="text-xs text-themed-muted shrink-0">{{ t('about.quranTrLabel') }}</span>
-              <span class="text-xs text-themed-secondary text-right">{{ t('about.quranTrVal') }}</span>
+              <span class="text-xs text-themed-secondary text-end">{{ t('about.quranTrVal') }}</span>
             </div>
             <div class="flex justify-between items-start gap-4">
               <span class="text-xs text-themed-muted shrink-0">{{ t('about.quranDeLabel') }}</span>
-              <span class="text-xs text-themed-secondary text-right">{{ t('about.quranDeVal') }}</span>
+              <span class="text-xs text-themed-secondary text-end">{{ t('about.quranDeVal') }}</span>
             </div>
             <div class="flex justify-between items-start gap-4">
               <span class="text-xs text-themed-muted shrink-0">{{ t('about.quranEnLabel') }}</span>
-              <span class="text-xs text-themed-secondary text-right">{{ t('about.quranEnVal') }}</span>
+              <span class="text-xs text-themed-secondary text-end">{{ t('about.quranEnVal') }}</span>
             </div>
           </div>
 
@@ -183,11 +183,11 @@ const duaSources = [
           <div class="space-y-2.5">
             <div class="flex justify-between items-start gap-4">
               <span class="text-xs text-themed-muted shrink-0">{{ t('about.prayerDefaultLabel') }}</span>
-              <span class="text-xs text-themed-secondary text-right">{{ t('about.prayerDefaultVal') }}</span>
+              <span class="text-xs text-themed-secondary text-end">{{ t('about.prayerDefaultVal') }}</span>
             </div>
             <div class="flex justify-between items-start gap-4">
               <span class="text-xs text-themed-muted shrink-0">{{ t('about.prayerMethodsLabel') }}</span>
-              <span class="text-xs text-themed-secondary text-right">{{ t('about.prayerMethodsVal', { count: stats.methods }) }}</span>
+              <span class="text-xs text-themed-secondary text-end">{{ t('about.prayerMethodsVal', { count: stats.methods }) }}</span>
             </div>
           </div>
 
@@ -228,11 +228,11 @@ const duaSources = [
           <div class="space-y-2.5">
             <div class="flex justify-between items-start gap-4">
               <span class="text-xs text-themed-muted shrink-0">{{ t('about.calendarHolidaysLabel') }}</span>
-              <span class="text-xs text-themed-secondary text-right">{{ t('about.calendarHolidaysVal') }}</span>
+              <span class="text-xs text-themed-secondary text-end">{{ t('about.calendarHolidaysVal') }}</span>
             </div>
             <div class="flex justify-between items-start gap-4">
               <span class="text-xs text-themed-muted shrink-0">{{ t('about.calendarTraditionLabel') }}</span>
-              <span class="text-xs text-themed-secondary text-right">{{ t('about.calendarTraditionVal') }}</span>
+              <span class="text-xs text-themed-secondary text-end">{{ t('about.calendarTraditionVal') }}</span>
             </div>
           </div>
 
@@ -255,11 +255,11 @@ const duaSources = [
           <div class="space-y-2.5">
             <div class="flex justify-between items-start gap-4">
               <span class="text-xs text-themed-muted shrink-0">{{ t('about.locationPurposeLabel') }}</span>
-              <span class="text-xs text-themed-secondary text-right">{{ t('about.locationPurposeVal') }}</span>
+              <span class="text-xs text-themed-secondary text-end">{{ t('about.locationPurposeVal') }}</span>
             </div>
             <div class="flex justify-between items-start gap-4">
               <span class="text-xs text-themed-muted shrink-0">{{ t('about.locationStorageLabel') }}</span>
-              <span class="text-xs text-themed-secondary text-right">{{ t('about.locationStorageVal') }}</span>
+              <span class="text-xs text-themed-secondary text-end">{{ t('about.locationStorageVal') }}</span>
             </div>
           </div>
         </div>

@@ -103,6 +103,10 @@ describe('localize', () => {
     expect(localize({ de: '', en: 'Hello', tr: '' }, 'tr')).toBe('Hello')
     expect(localize({ de: '  ', en: 'Hello', tr: 'x' }, 'fr')).toBe('Hello')
   })
+  it('falls back ar → en → de', () => {
+    expect(localize(text, 'ar')).toBe('Hello')
+    expect(localize({ de: 'Hallo', en: '', tr: '' }, 'ar')).toBe('Hallo')
+  })
   it('handles missing text', () => {
     expect(localize(undefined, 'de')).toBe('')
   })

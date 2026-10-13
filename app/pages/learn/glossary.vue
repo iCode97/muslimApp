@@ -106,9 +106,9 @@ function jump(letter: string) {
     <ul v-if="searching && results.length" class="space-y-2">
       <li v-for="term in results" :key="term.id">
         <button type="button" class="term-row glass rounded-2xl" @click="open(term.id)">
-          <span class="flex-1 min-w-0 text-left">
+          <span class="flex-1 min-w-0 text-start">
             <span class="block text-sm font-semibold">{{ term.term }}</span>
-            <span class="block text-xs text-themed-muted line-clamp-2 mt-0.5">{{ localize(term.definition, locale) }}</span>
+            <span class="block text-xs text-themed-muted line-clamp-2 mt-0.5" dir="auto">{{ localize(term.definition, locale) }}</span>
           </span>
           <span class="font-arabic text-xl text-[var(--color-gold)] flex-shrink-0" lang="ar" dir="rtl">{{ term.arabic }}</span>
         </button>
@@ -127,9 +127,9 @@ function jump(letter: string) {
         <ul class="space-y-2">
           <li v-for="term in g.terms" :key="term.id">
             <button type="button" class="term-row glass rounded-2xl" @click="open(term.id)">
-              <span class="flex-1 min-w-0 text-left">
+              <span class="flex-1 min-w-0 text-start">
                 <span class="block text-sm font-semibold">{{ term.term }}</span>
-                <span class="block text-xs text-themed-muted line-clamp-2 mt-0.5">{{ localize(term.definition, locale) }}</span>
+                <span class="block text-xs text-themed-muted line-clamp-2 mt-0.5" dir="auto">{{ localize(term.definition, locale) }}</span>
               </span>
               <span class="font-arabic text-xl text-[var(--color-gold)] flex-shrink-0" lang="ar" dir="rtl">{{ term.arabic }}</span>
             </button>

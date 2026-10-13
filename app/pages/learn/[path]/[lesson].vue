@@ -102,10 +102,11 @@ function onQuizFinished(score: number, quizTotal: number) {
         ref="titleRef"
         tabindex="-1"
         class="text-2xl font-semibold leading-tight outline-none"
+        dir="auto"
       >
         {{ localize(lesson.title, locale) }}
       </h1>
-      <p class="text-sm text-themed-muted leading-relaxed">{{ localize(lesson.summary, locale) }}</p>
+      <p class="text-sm text-themed-muted leading-relaxed" dir="auto">{{ localize(lesson.summary, locale) }}</p>
       <LearnDraftBadge v-if="lesson.review === 'draft'" />
     </header>
 
@@ -174,7 +175,7 @@ function onQuizFinished(score: number, quizTotal: number) {
         <AppIcon name="arrowLeft" :size="18" class="flex-shrink-0 text-themed-faint" />
         <span class="min-w-0">
           <span class="block text-[10px] uppercase tracking-wider text-themed-faint">{{ t('learn.prevLesson') }}</span>
-          <span class="block text-xs font-medium truncate">{{ localize(prev.title, locale) }}</span>
+          <span class="block text-xs font-medium truncate" dir="auto">{{ localize(prev.title, locale) }}</span>
         </span>
       </NuxtLink>
       <span v-else />
@@ -182,19 +183,19 @@ function onQuizFinished(score: number, quizTotal: number) {
       <NuxtLink
         v-if="next"
         :to="`/learn/${path.id}/${next.id}`"
-        class="step-link glass rounded-2xl p-3 flex items-center justify-end gap-2 text-right"
+        class="step-link glass rounded-2xl p-3 flex items-center justify-end gap-2 text-end"
         @click="haptics.tap()"
       >
         <span class="min-w-0">
           <span class="block text-[10px] uppercase tracking-wider text-themed-faint">{{ t('learn.nextLesson') }}</span>
-          <span class="block text-xs font-medium truncate">{{ localize(next.title, locale) }}</span>
+          <span class="block text-xs font-medium truncate" dir="auto">{{ localize(next.title, locale) }}</span>
         </span>
         <AppIcon name="arrowRight" :size="18" class="flex-shrink-0 text-[var(--color-primary-light)]" />
       </NuxtLink>
       <NuxtLink
         v-else
         :to="`/learn/${path.id}`"
-        class="step-link glass rounded-2xl p-3 flex items-center justify-end gap-2 text-right"
+        class="step-link glass rounded-2xl p-3 flex items-center justify-end gap-2 text-end"
         @click="haptics.tap()"
       >
         <span class="min-w-0">

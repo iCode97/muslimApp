@@ -126,7 +126,7 @@ const categoryIcons: Record<string, string> = {
         <GlassCard>
           <button
             type="button"
-            class="w-full text-left space-y-3"
+            class="w-full text-start space-y-3"
             :aria-expanded="expandedIds.has(dua.id)"
             @click="toggleDua(dua.id)"
           >
@@ -141,7 +141,7 @@ const categoryIcons: Record<string, string> = {
             </div>
 
             <!-- Arabic text -->
-            <p class="font-arabic text-xl text-right leading-[2.2] text-themed" dir="rtl" lang="ar">
+            <p class="font-arabic text-xl text-end leading-[2.2] text-themed" dir="rtl" lang="ar">
               {{ dua.arabic }}
             </p>
 
@@ -149,12 +149,12 @@ const categoryIcons: Record<string, string> = {
             <Transition name="expand">
               <div v-if="expandedIds.has(dua.id)" class="space-y-3 pt-2 border-t border-[var(--glass-border)]">
                 <!-- Transliteration -->
-                <p class="text-sm text-[var(--color-gold)] italic leading-relaxed">
+                <p class="text-sm text-[var(--color-gold)] italic leading-relaxed" dir="ltr">
                   {{ dua.transliteration }}
                 </p>
 
                 <!-- Translation -->
-                <p class="text-sm text-themed-secondary leading-relaxed">
+                <p class="text-sm text-themed-secondary leading-relaxed" dir="auto">
                   {{ getTranslation(dua) }}
                 </p>
               </div>

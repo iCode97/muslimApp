@@ -100,6 +100,8 @@ const chipOff = 'glass-subtle text-themed-secondary hover:text-themed'
           <div class="quran-miniplayer-inner glass">
             <!-- Main row -->
             <div class="flex items-center gap-2">
+              <!-- Transport controls keep media-player orientation (prev | play | next) in every UI direction -->
+              <div class="flex items-center gap-2 shrink-0" dir="ltr">
               <button
                 type="button"
                 class="w-9 h-9 shrink-0 flex items-center justify-center rounded-full glass-subtle text-themed-secondary hover:text-themed"
@@ -125,6 +127,7 @@ const chipOff = 'glass-subtle text-themed-secondary hover:text-themed'
               >
                 <AppIcon name="chevronRight" :size="16" />
               </button>
+              </div>
 
               <div class="flex-1 min-w-0 px-1">
                 <p class="text-sm font-medium text-themed truncate" aria-live="polite">
@@ -165,7 +168,7 @@ const chipOff = 'glass-subtle text-themed-secondary hover:text-themed'
             </div>
 
             <!-- Seek -->
-            <div class="flex items-center gap-2 mt-2">
+            <div class="flex items-center gap-2 mt-2" dir="ltr">
               <span class="text-[10px] text-themed-faint tabular-nums w-8">{{ formatTime(audio.currentTime.value) }}</span>
               <input
                 type="range"
@@ -178,7 +181,7 @@ const chipOff = 'glass-subtle text-themed-secondary hover:text-themed'
                 :aria-valuetext="`${formatTime(audio.currentTime.value)} / ${formatTime(audio.duration.value)}`"
                 @input="onSeek"
               >
-              <span class="text-[10px] text-themed-faint tabular-nums w-8 text-right">{{ formatTime(audio.duration.value) }}</span>
+              <span class="text-[10px] text-themed-faint tabular-nums w-8 text-end">{{ formatTime(audio.duration.value) }}</span>
             </div>
 
             <p v-if="audio.error.value" class="text-xs text-[var(--color-danger)] mt-2" role="alert">
@@ -297,7 +300,7 @@ const chipOff = 'glass-subtle text-themed-secondary hover:text-themed'
 @media (min-width: 768px) {
   .quran-miniplayer {
     bottom: 1rem;
-    padding-left: calc(4.5rem + 0.75rem); /* desktop icon rail */
+    padding-inline-start: calc(4.5rem + 0.75rem); /* desktop icon rail (sidebar sits on the start side) */
   }
 }
 

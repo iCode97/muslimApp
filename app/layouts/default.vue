@@ -17,7 +17,7 @@ onMounted(() => {
 <template>
   <div class="min-h-[100dvh] flex flex-col md:flex-row">
     <!-- Desktop Sidebar — slim icon rail, expands on hover -->
-    <aside class="hidden md:flex md:flex-col md:fixed md:inset-y-0 md:left-0 sidebar-modern safe-top z-50">
+    <aside class="hidden md:flex md:flex-col md:fixed md:inset-y-0 md:start-0 sidebar-modern safe-top z-50">
       <!-- App branding -->
       <div class="flex items-center gap-3 px-5 pt-7 pb-5">
         <span class="text-xl text-[var(--color-primary-light)] flex-shrink-0">☪</span>
@@ -91,7 +91,7 @@ onMounted(() => {
     </aside>
 
     <!-- Main Content Area -->
-    <main class="flex-1 pb-28 md:pb-6 md:ml-[4.5rem] safe-top">
+    <main class="flex-1 pb-28 md:pb-6 md:ms-[4.5rem] safe-top">
       <slot />
     </main>
 

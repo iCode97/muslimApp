@@ -63,8 +63,8 @@ const card = computed(() => {
             <AppIcon :name="card.icon" :size="20" />
           </span>
           <div class="flex-1 min-w-0">
-            <p class="text-sm font-medium text-themed truncate">{{ card.title }}</p>
-            <p class="text-xs text-themed-muted mt-0.5 truncate">{{ card.sub }}</p>
+            <p class="text-sm font-medium text-themed truncate" dir="auto">{{ card.title }}</p>
+            <p class="text-xs text-themed-muted mt-0.5 truncate" dir="auto">{{ card.sub }}</p>
           </div>
           <AppIcon name="chevronRight" :size="18" class="text-themed-faint flex-shrink-0" />
         </div>

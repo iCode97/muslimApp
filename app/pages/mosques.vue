@@ -96,7 +96,7 @@ const errorKey = computed(() => {
           ]"
           @click="selectRadius(km)"
         >
-          {{ km }} km
+          <bdi dir="ltr">{{ km }} km</bdi>
         </button>
       </div>
 

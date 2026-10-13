@@ -19,7 +19,7 @@ const link = computed(() =>
   <figure class="quran-block glass rounded-2xl p-4 space-y-3">
     <p
       v-if="arabic"
-      class="font-arabic text-2xl text-right leading-[2.2] text-themed"
+      class="font-arabic text-2xl text-end leading-[2.2] text-themed"
       dir="rtl"
       lang="ar"
     >

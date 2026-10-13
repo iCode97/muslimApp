@@ -64,9 +64,9 @@ const nativeLink = computed(() => {
           </span>
         </div>
       </div>
-      <div class="text-right shrink-0">
+      <div class="text-end shrink-0">
         <p class="text-sm font-semibold text-[var(--color-primary-light)]">
-          {{ distance }}
+          <bdi dir="ltr">{{ distance }}</bdi>
         </p>
       </div>
     </div>
@@ -103,7 +103,7 @@ const nativeLink = computed(() => {
         :href="osmObjectUrl(mosque.id)"
         target="_blank"
         rel="noopener noreferrer"
-        class="text-[11px] text-themed-faint underline underline-offset-2 ml-auto py-2"
+        class="text-[11px] text-themed-faint underline underline-offset-2 ms-auto py-2"
       >
         {{ t('mosques.viewOnOsm') }}
       </a>

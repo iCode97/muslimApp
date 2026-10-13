@@ -159,7 +159,7 @@ const categoryIcons: Record<string, string> = {
             </p>
 
             <!-- Meaning -->
-            <p class="text-xs text-themed-muted text-center">
+            <p class="text-xs text-themed-muted text-center" dir="auto">
               {{ getMeaning(name) }}
             </p>
           </div>

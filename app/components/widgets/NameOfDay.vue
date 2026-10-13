@@ -39,7 +39,7 @@ const meaning = computed(() => {
           {{ todayName.transliteration }}
         </p>
 
-        <p class="text-xs text-themed-muted text-center">
+        <p class="text-xs text-themed-muted text-center" dir="auto">
           {{ meaning }}
         </p>
       </div>

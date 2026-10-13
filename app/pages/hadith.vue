@@ -333,17 +333,17 @@ const chipClass = (active: boolean) => [
 
             <button
               type="button"
-              class="w-full text-left space-y-3"
+              class="w-full text-start space-y-3"
               :aria-expanded="expandedIds.has(hadith.id)"
               @click="toggleHadith(hadith.id)"
             >
               <!-- Arabic text -->
-              <p class="font-arabic text-xl text-right leading-[2.2] text-themed" dir="rtl" lang="ar">
+              <p class="font-arabic text-xl text-end leading-[2.2] text-themed" dir="rtl" lang="ar">
                 {{ hadith.arabic }}
               </p>
 
               <!-- Translation (always visible) -->
-              <p class="text-sm text-themed-secondary leading-relaxed">
+              <p class="text-sm text-themed-secondary leading-relaxed" dir="auto">
                 {{ getTranslation(hadith) }}
               </p>
 
@@ -366,11 +366,11 @@ const chipClass = (active: boolean) => [
                   </p>
 
                   <!-- Other translations -->
-                  <div v-for="lang in ['de', 'en', 'tr'].filter(l => l !== locale)" :key="lang">
+                  <div v-for="lang in ['de', 'en', 'tr'].filter(l => l !== (locale === 'ar' ? 'en' : locale))" :key="lang">
                     <p class="text-[10px] text-themed-faint uppercase">
                       {{ lang === 'de' ? 'Deutsch' : lang === 'en' ? 'English' : 'Türkçe' }}
                     </p>
-                    <p class="text-xs text-themed-muted leading-relaxed">
+                    <p class="text-xs text-themed-muted leading-relaxed" dir="auto">
                       {{ hadith.translations[lang as keyof typeof hadith.translations] }}
                     </p>
                   </div>

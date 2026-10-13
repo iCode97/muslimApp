@@ -30,11 +30,11 @@ function onRange(key: 'arabicSize' | 'translationSize', event: Event) {
 
 <template>
   <BottomSheet :open="open" :title="t('reader.title')" @update:open="emit('update:open', $event)">
-    <div class="space-y-5 pb-2 max-h-[70vh] overflow-y-auto pr-1">
+    <div class="space-y-5 pb-2 max-h-[70vh] overflow-y-auto pe-1">
       <!-- Preview -->
       <div class="glass-subtle rounded-2xl px-4 py-3 space-y-1">
         <p
-          class="font-arabic text-right leading-loose text-themed"
+          class="font-arabic text-end leading-loose text-themed"
           dir="rtl"
           lang="ar"
           :style="{ fontSize: `${reader.settings.value.arabicSize}px` }"

@@ -158,6 +158,6 @@ export function fastingKindsFor(ctx: FastingContext): FastingKind[] {
 
 export function pickLocalized(info: LocalizedInfo, locale: string): string {
   if (locale === 'tr') return info.tr
-  if (locale === 'en') return info.en
+  if (locale === 'en' || locale === 'ar') return info.en // no Arabic copy: English fallback
   return info.de
 }

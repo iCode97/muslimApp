@@ -49,11 +49,20 @@ export const FAQ_CATEGORIES: FaqEntry['category'][] = [
 // Localization
 // ---------------------------------------------------------------------------
 
-/** Pick the text for a locale; falls back de → en → any non-empty value. */
+/** Locales without their own content translations that read English before German (e.g. Arabic UI). */
+const EN_FALLBACK_LOCALES = new Set(['ar'])
+
+/**
+ * Pick the text for a locale; falls back de → en → any non-empty value.
+ * Locales without own content (ar) fall back en → de → any non-empty value.
+ */
 export function localize(text: LocalizedText | undefined | null, locale: string): string {
   if (!text) return ''
   const direct = (text as unknown as Record<string, string | undefined>)[locale]
   if (direct && direct.trim()) return direct
+  if (EN_FALLBACK_LOCALES.has(locale)) {
+    return text.en?.trim() ? text.en : (text.de || text.tr || '')
+  }
   return text.de?.trim() ? text.de : (text.en || text.tr || '')
 }
 
@@ -201,7 +210,7 @@ export function searchGlossary(
   index: GlossaryIndexEntry[] = GLOSSARY_INDEX,
 ): GlossaryTerm[] {
   const q = normalizeSearch(query)
-  const loc = (['de', 'en', 'tr'].includes(locale) ? locale : 'de') as LearnLocale
+  const loc = (['de', 'en', 'tr'].includes(locale) ? locale : EN_FALLBACK_LOCALES.has(locale) ? 'en' : 'de') as LearnLocale
   const byName = (a: GlossaryTerm, b: GlossaryTerm) =>
     normalizeSearch(a.term).localeCompare(normalizeSearch(b.term))
   if (!q) return index.map(e => e.term).sort(byName)

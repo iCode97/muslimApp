@@ -131,7 +131,8 @@ function closeOfflineHint() {
   gap: 10px;
   width: 100%;
   max-width: 420px;
-  padding: 10px 10px 10px 14px;
+  padding: 10px;
+  padding-inline-start: 14px;
   border-radius: 18px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }

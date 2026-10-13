@@ -41,13 +41,13 @@ const gradeLabel = computed(() => {
       </span>
     </div>
 
-    <p v-if="item.occasion" class="text-xs text-themed-muted leading-relaxed">
+    <p v-if="item.occasion" class="text-xs text-themed-muted leading-relaxed" dir="auto">
       <HonorificText :text="localize(item.occasion, locale)" />
     </p>
 
     <p
       :class="[
-        'font-arabic text-right text-themed whitespace-pre-line',
+        'font-arabic text-end text-themed whitespace-pre-line',
         size === 'lg' ? 'text-2xl leading-[2.3]' : 'text-xl leading-[2.2]',
       ]"
       dir="rtl"
@@ -59,17 +59,18 @@ const gradeLabel = computed(() => {
     <p
       v-if="showTransliteration"
       class="text-sm text-[var(--color-gold)] italic leading-relaxed whitespace-pre-line"
+      dir="ltr"
     >
       {{ item.transliteration }}
     </p>
 
-    <p v-if="showTranslation" class="text-sm text-themed-secondary leading-relaxed">
+    <p v-if="showTranslation" class="text-sm text-themed-secondary leading-relaxed" dir="auto">
       <HonorificText :text="localize(item.translation, locale)" />
     </p>
 
     <div v-if="item.virtue" class="virtue rounded-xl px-3 py-2 text-xs leading-relaxed">
       <p class="font-semibold text-[var(--color-gold)] mb-0.5">{{ t('adhkar.virtue') }}</p>
-      <p class="text-themed-secondary">
+      <p class="text-themed-secondary" dir="auto">
         <HonorificText :text="localize(item.virtue, locale)" />
       </p>
       <p v-if="item.virtueSource" class="text-themed-faint mt-1">{{ item.virtueSource }}</p>

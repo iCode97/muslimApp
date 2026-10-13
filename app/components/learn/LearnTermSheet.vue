@@ -30,7 +30,7 @@ function openRelated(id: string) {
     <div v-if="term" class="space-y-4 pb-4">
       <div class="flex items-baseline justify-between gap-3">
         <span class="font-arabic text-3xl text-[var(--color-gold)] leading-relaxed" lang="ar" dir="rtl">{{ term.arabic }}</span>
-        <span v-if="term.aliases?.length" class="text-xs text-themed-muted text-right">
+        <span v-if="term.aliases?.length" class="text-xs text-themed-muted text-end">
           {{ t('glossary.alsoKnownAs', { aliases: term.aliases.join(', ') }) }}
         </span>
       </div>

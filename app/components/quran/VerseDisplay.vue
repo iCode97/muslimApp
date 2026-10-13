@@ -207,9 +207,9 @@ watch(() => props.wordByWord, () => { selectedPosition.value = null })
         aria-live="polite"
       >
         <template v-if="selectedWord">
-          <p class="font-medium text-themed">
+          <p class="font-medium text-themed" dir="auto">
             {{ selectedWord.translation || '–' }}
-            <span v-if="wordsFallback" class="ml-1 text-[10px] uppercase text-themed-faint">EN</span>
+            <span v-if="wordsFallback" class="ms-1 text-[10px] uppercase text-themed-faint">EN</span>
           </p>
           <p v-if="selectedWord.transliteration" class="text-xs text-themed-muted italic">
             {{ selectedWord.transliteration }}
@@ -224,7 +224,7 @@ watch(() => props.wordByWord, () => { selectedPosition.value = null })
     <!-- Arabic text (RTL) — tappable to toggle per-verse translations -->
     <p
       v-else-if="verse.textUthmani"
-      class="font-arabic leading-loose text-themed text-right cursor-pointer hover:text-[var(--color-primary-light)] transition-colors duration-200"
+      class="font-arabic leading-loose text-themed text-end cursor-pointer hover:text-[var(--color-primary-light)] transition-colors duration-200"
       dir="rtl"
       lang="ar"
       role="button"
@@ -245,6 +245,7 @@ watch(() => props.wordByWord, () => { selectedPosition.value = null })
       v-if="transliteration"
       class="text-themed-muted italic leading-relaxed"
       lang="en"
+      dir="ltr"
       :style="{ fontSize: `${translationSize}px` }"
     >
       {{ transliteration }}
@@ -255,8 +256,8 @@ watch(() => props.wordByWord, () => { selectedPosition.value = null })
       <div v-if="visibleTranslations.length > 0" class="space-y-2 pt-2 border-t border-[var(--glass-border)]">
         <div v-for="def in visibleTranslations" :key="def.id">
           <span class="text-[10px] tracking-wider font-medium text-themed-secondary uppercase">{{ t(def.labelKey) }}</span>
-          <span class="text-[10px] text-themed-faint ml-1.5">{{ def.source }}</span>
-          <p class="text-themed-secondary leading-relaxed mt-0.5" :style="{ fontSize: `${translationSize}px` }">
+          <span class="text-[10px] text-themed-faint ms-1.5">{{ def.source }}</span>
+          <p class="text-themed-secondary leading-relaxed mt-0.5" :style="{ fontSize: `${translationSize}px` }" dir="auto">
             {{ getTranslation(def.id) }}
           </p>
         </div>

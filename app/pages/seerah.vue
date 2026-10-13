@@ -183,7 +183,7 @@ const categoryIcons: Record<string, string> = {
         <GlassCard>
           <button
             type="button"
-            class="w-full text-left space-y-3"
+            class="w-full text-start space-y-3"
             :aria-expanded="expandedIds.has(chapter.id)"
             @click="toggleChapter(chapter.id)"
           >
@@ -192,7 +192,7 @@ const categoryIcons: Record<string, string> = {
               <span class="text-2xl" aria-hidden="true">{{ chapter.icon }}</span>
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2">
-                  <span class="text-xs text-[var(--color-gold)]">{{ chapter.year }}</span>
+                  <span class="text-xs text-[var(--color-gold)]">{{ localizeEra(chapter.year, locale) }}</span>
                   <span
                     v-if="progress.isRead(chapter.id)"
                     class="text-[10px] text-[var(--color-primary-light)]"
@@ -212,7 +212,7 @@ const categoryIcons: Record<string, string> = {
             <!-- Expanded content -->
             <Transition name="expand">
               <div v-if="expandedIds.has(chapter.id)" class="space-y-3 pt-3 border-t border-[var(--glass-border)]">
-                <p class="text-sm text-themed-secondary leading-relaxed whitespace-pre-line">
+                <p class="text-sm text-themed-secondary leading-relaxed whitespace-pre-line" dir="auto">
                   <HonorificText :text="getContent(chapter)" />
                 </p>
 
@@ -234,9 +234,9 @@ const categoryIcons: Record<string, string> = {
     </div>
 
     <!-- Timeline view -->
-    <div v-else class="relative pl-6 sm:pl-10">
+    <div v-else class="relative ps-6 sm:ps-10">
       <!-- Vertical rail -->
-      <div class="absolute left-[11px] sm:left-[19px] top-2 bottom-2 w-px bg-gradient-to-b from-[var(--color-primary)] via-[var(--color-gold)] to-[var(--color-primary)] opacity-40" />
+      <div class="absolute start-[11px] sm:start-[19px] top-2 bottom-2 w-px bg-gradient-to-b from-[var(--color-primary)] via-[var(--color-gold)] to-[var(--color-primary)] opacity-40" />
 
       <div class="space-y-5">
         <div
@@ -248,7 +248,7 @@ const categoryIcons: Record<string, string> = {
           <div
             aria-hidden="true"
             :class="[
-              'absolute -left-6 sm:-left-10 top-1 flex items-center justify-center',
+              'absolute -start-6 sm:-start-10 top-1 flex items-center justify-center',
               'w-6 h-6 sm:w-10 sm:h-10 rounded-full transition-all',
               progress.isRead(chapter.id)
                 ? 'bg-[var(--color-primary)] ring-2 ring-[var(--color-primary-light)]/40'
@@ -261,13 +261,13 @@ const categoryIcons: Record<string, string> = {
           <GlassCard>
             <button
               type="button"
-              class="w-full text-left space-y-2"
+              class="w-full text-start space-y-2"
               :aria-expanded="expandedIds.has(chapter.id)"
               @click="toggleChapter(chapter.id)"
             >
               <div class="flex items-baseline justify-between gap-2">
                 <span class="text-[11px] font-semibold text-[var(--color-gold)] tracking-wide uppercase">
-                  {{ chapter.year }}
+                  {{ localizeEra(chapter.year, locale) }}
                 </span>
                 <span
                   v-if="progress.isRead(chapter.id)"

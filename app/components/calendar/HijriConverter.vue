@@ -5,7 +5,7 @@
  */
 import { todayIso } from '~/utils/hijri-dates'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const haptics = useHaptics()
 const {
   hijriMonths, getMonthName, getMonthInfo, gregorianToHijri, hijriToGregorian, formatGregorian,
@@ -44,6 +44,7 @@ const canConvert = computed(() =>
 
 function formatHijri(p: { day: number, month: number, year: number }): string {
   const info = getMonthInfo(p.month)
+  if (locale.value === 'ar') return `${p.day} ${info ? getMonthName(info) : p.month} ${p.year} هـ`
   return `${p.day}. ${info ? getMonthName(info) : p.month} ${p.year} AH`
 }
 

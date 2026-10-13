@@ -2,6 +2,8 @@
  * Small geo helpers (pure functions).
  */
 
+import { intlTag } from './locale'
+
 const EARTH_RADIUS_KM = 6371.0088
 
 const toRad = (deg: number) => (deg * Math.PI) / 180
@@ -22,7 +24,7 @@ export function haversineKm(lat1: number, lon1: number, lat2: number, lon2: numb
  */
 export function formatDistance(km: number, locale = 'de'): string {
   if (!Number.isFinite(km) || km < 0) return ''
-  const nf = (digits: number) => new Intl.NumberFormat(locale, {
+  const nf = (digits: number) => new Intl.NumberFormat(intlTag(locale), {
     minimumFractionDigits: digits,
     maximumFractionDigits: digits,
   })

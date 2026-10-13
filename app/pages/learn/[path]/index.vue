@@ -62,8 +62,8 @@ const ctaTarget = computed(() => {
           {{ t('learn.lessonsCount', { count: lessons.length }) }} · {{ t('learn.minutes', { count: pathMinutes(path) }) }}
         </span>
       </div>
-      <h1 class="text-2xl font-semibold">{{ localize(path.title, locale) }}</h1>
-      <p class="text-sm text-themed-muted leading-relaxed">{{ localize(path.description, locale) }}</p>
+      <h1 class="text-2xl font-semibold" dir="auto">{{ localize(path.title, locale) }}</h1>
+      <p class="text-sm text-themed-muted leading-relaxed" dir="auto">{{ localize(path.description, locale) }}</p>
     </header>
 
     <!-- Progress + CTA -->
@@ -118,7 +118,7 @@ const ctaTarget = computed(() => {
               <template v-else>{{ i + 1 }}</template>
             </span>
             <span class="flex-1 min-w-0">
-              <span class="block text-sm font-medium leading-snug">{{ localize(lesson.title, locale) }}</span>
+              <span class="block text-sm font-medium leading-snug" dir="auto">{{ localize(lesson.title, locale) }}</span>
               <span class="flex items-center gap-2 mt-1 text-[11px] text-themed-faint flex-wrap">
                 <span class="tabular-nums">{{ t('learn.minutes', { count: lesson.minutes }) }}</span>
                 <span v-if="progress.isCompleted(path.id, lesson.id)" class="text-[var(--color-primary-light)]">

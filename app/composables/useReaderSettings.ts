@@ -47,6 +47,8 @@ export function useReaderSettings() {
   /** Active translation ids; before the user ever chose, the app locale's translation. */
   const activeTranslations = computed<number[]>(() => {
     if (settings.value.translations) return settings.value.translations
+    // Arabic UI: Arabic text only by default; translations can be enabled in the reader settings.
+    if (locale.value === 'ar') return []
     return [TRANSLATION_IDS[locale.value as keyof typeof TRANSLATION_IDS] ?? TRANSLATION_IDS.en]
   })
 

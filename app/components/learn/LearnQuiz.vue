@@ -141,6 +141,7 @@ function optionState(i: number): 'idle' | 'correct' | 'wrong' | 'dim' {
         ref="headingRef"
         tabindex="-1"
         class="text-base font-medium leading-snug outline-none"
+        dir="auto"
       >
         {{ localize(current.question, locale) }}
       </h3>
@@ -164,7 +165,7 @@ function optionState(i: number): 'idle' | 'correct' | 'wrong' | 'dim' {
           @keydown="onKeydown($event, i)"
         >
           <span class="quiz-letter" aria-hidden="true">{{ String.fromCharCode(65 + i) }}</span>
-          <span class="flex-1 text-left text-sm leading-snug">{{ localize(opt, locale) }}</span>
+          <span class="flex-1 text-start text-sm leading-snug" dir="auto">{{ localize(opt, locale) }}</span>
           <AppIcon v-if="optionState(i) === 'correct'" name="checkCircle" :size="20" class="flex-shrink-0 text-[var(--color-primary-light)]" />
           <AppIcon v-else-if="optionState(i) === 'wrong'" name="close" :size="20" class="flex-shrink-0 text-[var(--color-danger)]" />
         </button>

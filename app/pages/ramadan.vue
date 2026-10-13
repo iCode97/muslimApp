@@ -70,7 +70,7 @@ const daySummary = computed(() => {
 const nextStartLabel = computed(() => {
   const d = ramadan.nextRamadanStartDate.value
   if (!d) return ''
-  return new Date(Date.UTC(d.year, d.month - 1, d.day)).toLocaleDateString(locale.value, {
+  return new Date(Date.UTC(d.year, d.month - 1, d.day)).toLocaleDateString(intlTag(locale.value), {
     timeZone: 'UTC',
     weekday: 'long',
     day: 'numeric',

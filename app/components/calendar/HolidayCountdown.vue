@@ -22,7 +22,7 @@ onMounted(() => {
   <GlassCard v-else-if="nextHoliday" variant="default" padding="md">
     <button
       type="button"
-      class="flex w-full items-center gap-4 text-left countdown-btn"
+      class="flex w-full items-center gap-4 text-start countdown-btn"
       aria-haspopup="dialog"
       @click="haptics.light(); sheetOpen = true"
     >
@@ -36,7 +36,7 @@ onMounted(() => {
         <p class="text-xs text-themed-muted uppercase tracking-wider">
           {{ t('dashboard.nextHoliday') }}
         </p>
-        <p class="font-semibold text-themed truncate mt-0.5">
+        <p class="font-semibold text-themed truncate mt-0.5" dir="auto">
           {{ getHolidayName(nextHoliday) }}
         </p>
         <p class="text-xs text-themed-muted mt-0.5">
