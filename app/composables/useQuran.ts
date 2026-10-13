@@ -51,6 +51,7 @@ const LOCALE_MAP: Record<string, string> = {
   de: 'de',
   en: 'en',
   tr: 'tr',
+  ar: 'en', // surah name translations: English fallback (Arabic names come from nameArabic)
 }
 
 const CACHE_PREFIX = 'muslimapp-quran'

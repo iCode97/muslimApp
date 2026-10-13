@@ -116,6 +116,10 @@ const ICONS: Record<string, string> = {
     '<path d="M12 4 V6" /><path d="M7 14 A5 5 0 0 1 17 14" /><path d="M5 21 V14 H19 V21" /><path d="M3 21 H21" /><path d="M10 21 V18 A2 2 0 0 1 14 18 V21" /><path d="M3.5 21 V11 L5 8 L6.5 11 V14" />',
 }
 
+/** Icons that point in a reading direction → mirrored in RTL (see .icon-dir in main.css). */
+const DIRECTIONAL = new Set(['chevronRight', 'arrowLeft', 'arrowRight'])
+const isDirectional = computed(() => DIRECTIONAL.has(props.name))
+
 const svg = computed(() => ICONS[props.name] ?? '')
 /** Unknown names (e.g. an emoji from content data) render as text instead of an empty box. */
 const isRegistered = computed(() => props.name in ICONS)
@@ -138,6 +142,7 @@ const dimension = computed(() => typeof props.size === 'number' ? `${props.size}
     :stroke-width="stroke"
     stroke-linecap="round"
     stroke-linejoin="round"
+    :class="isDirectional ? 'icon-dir' : undefined"
     :width="dimension"
     :height="dimension"
     :aria-hidden="true"

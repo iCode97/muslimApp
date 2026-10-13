@@ -92,7 +92,7 @@ function openSheet() {
             icon="🔍"
             @update:model-value="onSearchInput"
           />
-          <div v-if="searchLoading" class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+          <div v-if="searchLoading" class="absolute end-3 top-1/2 -translate-y-1/2 pointer-events-none">
             <span class="animate-spin inline-block text-themed-muted text-sm">⟳</span>
           </div>
         </div>
@@ -101,7 +101,7 @@ function openSheet() {
           <button
             v-for="(suggestion, index) in suggestions"
             :key="index"
-            class="w-full text-left px-3 py-2.5 rounded-lg glass-subtle hover:bg-[var(--color-primary)]/10 transition-colors flex items-center gap-2"
+            class="w-full text-start px-3 py-2.5 rounded-lg glass-subtle hover:bg-[var(--color-primary)]/10 transition-colors flex items-center gap-2"
             @click="handleSelect(suggestion)"
           >
             <AppIcon name="location" :size="14" class="shrink-0 text-themed-muted" />

@@ -220,7 +220,8 @@ export function useNotifications() {
     const lam = loc ? resolveLatitudeAdjustment(calc.latitudeAdjustment, loc.latitude) : undefined
     const locale = i18n.locale.value
     return {
-      locale: locale === 'en' || locale === 'tr' ? locale : 'de',
+      // Server push copy exists in de/en/tr only → Arabic users get English
+      locale: locale === 'tr' ? 'tr' : locale === 'en' || locale === 'ar' ? 'en' : 'de',
       timezone: deviceTimeZone(),
       location: loc
         ? { lat: Math.round(loc.latitude * 100) / 100, lng: Math.round(loc.longitude * 100) / 100, timezone: tz }

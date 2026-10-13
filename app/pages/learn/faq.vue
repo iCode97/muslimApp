@@ -88,12 +88,12 @@ function toggle(id: string) {
         <h2 class="text-sm">
           <button
             type="button"
-            class="faq-q w-full flex items-center gap-3 p-4 text-left"
+            class="faq-q w-full flex items-center gap-3 p-4 text-start"
             :aria-expanded="expanded.has(entry.id)"
             :aria-controls="`${uid}-${entry.id}`"
             @click="toggle(entry.id)"
           >
-            <span class="flex-1 min-w-0 font-medium leading-snug">{{ localize(entry.question, locale) }}</span>
+            <span class="flex-1 min-w-0 font-medium leading-snug" dir="auto">{{ localize(entry.question, locale) }}</span>
             <AppIcon
               name="chevronDown"
               :size="18"

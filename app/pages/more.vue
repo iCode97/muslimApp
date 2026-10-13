@@ -121,7 +121,7 @@ watch(() => favorites.items.value.length, (n) => {
         <li
           v-for="(item, idx) in favorites.items.value"
           :key="item.id"
-          class="glass rounded-2xl flex items-center gap-2 pl-3 pr-2 py-2"
+          class="glass rounded-2xl flex items-center gap-2 ps-3 pe-2 py-2"
         >
           <AppIcon :name="item.icon" :size="20" class="text-[var(--color-primary-light)] flex-shrink-0" />
           <span class="flex-1 min-w-0 text-sm font-medium truncate">{{ t(item.label) }}</span>
@@ -177,7 +177,7 @@ watch(() => favorites.items.value.length, (n) => {
             </span>
           </NuxtLink>
           <button
-            class="icon-btn self-center mr-2"
+            class="icon-btn self-center me-2"
             :class="favorites.isFavorite(tool.id) ? 'text-[var(--color-gold)]' : 'text-themed-faint'"
             :aria-pressed="favorites.isFavorite(tool.id)"
             :aria-label="favorites.isFavorite(tool.id)

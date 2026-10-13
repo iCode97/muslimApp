@@ -52,7 +52,7 @@ export function useLocation() {
   // Get accept-language header based on current locale
   function getAcceptLang(): string {
     const locale = i18n.locale.value
-    return locale === 'tr' ? 'tr' : locale === 'en' ? 'en' : 'de'
+    return locale === 'tr' ? 'tr' : locale === 'en' ? 'en' : locale === 'ar' ? 'ar' : 'de'
   }
 
   // Build a display name from parts: "City, State, Country"

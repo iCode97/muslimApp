@@ -89,6 +89,28 @@ body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
+/* Arabic UI language: Noto Sans Arabic for interface text (Quranic text keeps Amiri via .font-arabic). */
+:lang(ar) body,
+[dir="rtl"] body {
+  font-family: 'Noto Sans Arabic', 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Letter-spacing breaks Arabic letter joining → neutralise tracking utilities in Arabic. */
+:lang(ar) [class*="tracking-"] {
+  letter-spacing: normal !important;
+}
+
+/* Directional glyphs/icons (chevrons, arrows) mirror in right-to-left layouts.
+   :dir() (not [dir] ancestors) so LTR islands such as media controls stay unmirrored.
+   The individual `scale` property composes with Tailwind's rotate-* utilities. */
+.icon-dir:dir(rtl) {
+  scale: -1 1;
+}
+span.icon-dir,
+a.icon-dir {
+  display: inline-block;
+}
+
 /* Arabic text font */
 .font-arabic {
   font-family: 'Amiri', 'Traditional Arabic', serif;
@@ -309,25 +331,21 @@ body {
 .app-container {
   width: 100%;
   max-width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
 }
 
 @media (min-width: 768px) {
   .app-container {
     max-width: 42rem; /* 672px — tablet */
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
+    padding-inline: 1.5rem;
   }
 }
 
 @media (min-width: 1024px) {
   .app-container {
     max-width: 64rem; /* 1024px — desktop, 3-col bento */
-    padding-left: 2.5rem;
-    padding-right: 2.5rem;
+    padding-inline: 2.5rem;
   }
 }
 
@@ -506,7 +524,7 @@ body::before {
   background: var(--glass-bg-subtle);
   backdrop-filter: blur(var(--glass-blur-strong));
   -webkit-backdrop-filter: blur(var(--glass-blur-strong));
-  border-right: 1px solid var(--glass-border);
+  border-inline-end: 1px solid var(--glass-border);
 }
 
 .sidebar-modern:hover {
@@ -527,6 +545,9 @@ body::before {
   opacity: 0;
   transform: translateX(-8px);
   transition: opacity 0.2s ease 0.1s, transform 0.2s ease 0.1s;
+}
+[dir="rtl"] .sidebar-modern .sidebar-brand-text {
+  transform: translateX(8px);
 }
 
 .sidebar-modern:hover .sidebar-brand-text {

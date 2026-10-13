@@ -18,8 +18,11 @@ const tab = ref<Tab>('surahs')
 function onTabKeydown(event: KeyboardEvent) {
   const i = TABS.indexOf(tab.value)
   let next = i
-  if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (i + 1) % TABS.length
-  else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (i - 1 + TABS.length) % TABS.length
+  // Left/Right follow the reading direction (RTL: Right = previous)
+  const forward = isRtlLocale(locale.value) ? 'ArrowLeft' : 'ArrowRight'
+  const backward = isRtlLocale(locale.value) ? 'ArrowRight' : 'ArrowLeft'
+  if (event.key === forward || event.key === 'ArrowDown') next = (i + 1) % TABS.length
+  else if (event.key === backward || event.key === 'ArrowUp') next = (i - 1 + TABS.length) % TABS.length
   else if (event.key === 'Home') next = 0
   else if (event.key === 'End') next = TABS.length - 1
   else return
@@ -169,7 +172,7 @@ function revelationPlace(place: string): string {
           <div class="flex-1 min-w-0">
             <div class="flex items-center justify-between">
               <span class="font-medium text-themed truncate">{{ t('quran.juz') }} {{ j.n }}</span>
-              <span class="font-arabic text-xl text-themed-secondary shrink-0 ml-2" dir="rtl" lang="ar">{{ j.surahArabic }}</span>
+              <span class="font-arabic text-xl text-themed-secondary shrink-0 ms-2" dir="rtl" lang="ar">{{ j.surahArabic }}</span>
             </div>
             <p class="text-xs text-themed-muted mt-0.5">
               {{ j.surahName }} {{ j.surahId }}:{{ j.verse }}
@@ -210,7 +213,7 @@ function revelationPlace(place: string): string {
               <div class="flex-1 min-w-0">
                 <div class="flex items-center justify-between">
                   <span class="font-medium text-themed truncate">{{ surah.nameSimple }}</span>
-                  <span class="font-arabic text-xl text-themed-secondary shrink-0 ml-2" lang="ar">{{ surah.nameArabic }}</span>
+                  <span class="font-arabic text-xl text-themed-secondary shrink-0 ms-2" lang="ar">{{ surah.nameArabic }}</span>
                 </div>
                 <div class="flex items-center gap-2 text-xs text-themed-muted mt-0.5">
                   <span>{{ surah.translatedName }}</span>
@@ -309,7 +312,7 @@ function revelationPlace(place: string): string {
             <div class="flex-1 min-w-0">
               <div class="flex items-center justify-between">
                 <span class="font-medium text-themed truncate">{{ surah.nameSimple }}</span>
-                <span class="font-arabic text-xl text-themed-secondary shrink-0 ml-2" lang="ar">{{ surah.nameArabic }}</span>
+                <span class="font-arabic text-xl text-themed-secondary shrink-0 ms-2" lang="ar">{{ surah.nameArabic }}</span>
               </div>
               <div class="flex items-center gap-2 text-xs text-themed-muted mt-0.5">
                 <span>{{ surah.translatedName }}</span>

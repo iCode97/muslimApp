@@ -17,7 +17,7 @@ const haptics = useHaptics()
       <AppIcon name="arrowRight" :size="18" />
     </span>
     <span class="flex-1 min-w-0">
-      <span class="block text-sm font-medium text-themed">{{ localize(label, locale) }}</span>
+      <span class="block text-sm font-medium text-themed" dir="auto">{{ localize(label, locale) }}</span>
       <span class="block text-xs text-themed-muted mt-0.5">{{ t('learn.linkOpen') }}</span>
     </span>
     <AppIcon name="chevronRight" :size="18" class="text-themed-faint flex-shrink-0" />

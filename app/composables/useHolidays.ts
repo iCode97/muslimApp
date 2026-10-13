@@ -72,20 +72,22 @@ export function useHolidays() {
   // Get localized holiday name
   function getHolidayName(holiday: Holiday | { nameDE: string, nameEN?: string, nameTR: string }): string {
     if (locale.value === 'tr') return holiday.nameTR
-    if (locale.value === 'en') return (holiday as Holiday).nameEN ?? holiday.nameDE
+    // ar: no Arabic holiday names in the data set → English fallback
+    if (locale.value === 'en' || locale.value === 'ar') return (holiday as Holiday).nameEN ?? holiday.nameDE
     return holiday.nameDE
   }
 
   // Get localized holiday description
   function getHolidayDescription(holiday: Holiday): string {
     if (locale.value === 'tr') return holiday.descriptionTR
-    if (locale.value === 'en') return holiday.descriptionEN
+    if (locale.value === 'en' || locale.value === 'ar') return holiday.descriptionEN
     return holiday.descriptionDE
   }
 
   // Get localized month name
   function getMonthName(monthInfo: HijriMonthInfo): string {
     if (locale.value === 'tr') return monthInfo.nameTR
+    if (locale.value === 'ar') return monthInfo.nameAR
     if (locale.value === 'en') return monthInfo.nameEN
     return monthInfo.nameDE
   }
@@ -349,7 +351,7 @@ export function useHolidays() {
 
   // ---- Hijri date converter -----------------------------------------------
 
-  const localeTag = computed(() => (locale.value === 'tr' ? 'tr-TR' : locale.value === 'en' ? 'en-GB' : 'de-DE'))
+  const localeTag = computed(() => (locale.value === 'tr' ? 'tr-TR' : locale.value === 'en' ? 'en-GB' : locale.value === 'ar' ? intlTag('ar') : 'de-DE'))
 
   /** Gregorian ISO date → Hijri parts (via proxy). */
   async function gregorianToHijri(iso: string): Promise<{ day: number, month: number, year: number }> {

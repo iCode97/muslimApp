@@ -46,7 +46,7 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap',
+          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Amiri:wght@400;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap',
         },
       ],
     },
@@ -112,9 +112,10 @@ export default defineNuxtConfig({
 
   i18n: {
     locales: [
-      { code: 'de', name: 'Deutsch', file: 'de.json' },
-      { code: 'en', name: 'English', file: 'en.json' },
-      { code: 'tr', name: 'Türkçe', file: 'tr.json' },
+      { code: 'de', name: 'Deutsch', file: 'de.json', dir: 'ltr', language: 'de-DE' },
+      { code: 'en', name: 'English', file: 'en.json', dir: 'ltr', language: 'en-US' },
+      { code: 'tr', name: 'Türkçe', file: 'tr.json', dir: 'ltr', language: 'tr-TR' },
+      { code: 'ar', name: 'العربية', file: 'ar.json', dir: 'rtl', language: 'ar' },
     ],
     defaultLocale: 'de',
     lazy: true,

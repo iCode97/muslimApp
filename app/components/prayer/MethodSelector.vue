@@ -45,7 +45,7 @@ function choose(id: number) {
           v-for="m in PRAYER_METHODS"
           :key="m.id"
           :class="[
-            'w-full flex items-center justify-between gap-3 px-3 py-3 rounded-xl text-left transition-all',
+            'w-full flex items-center justify-between gap-3 px-3 py-3 rounded-xl text-start transition-all',
             prayerTimes.method.value === m.id
               ? 'glass-primary text-[var(--color-primary-light)]'
               : 'glass-subtle text-themed-secondary hover:text-themed'

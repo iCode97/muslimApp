@@ -65,7 +65,7 @@ function choose(id: number) {
       </p>
 
       <!-- Content -->
-      <div class="max-h-[55vh] overflow-y-auto pr-1" tabindex="0" :aria-label="`${t('tafsir.title')} ${verseKey ?? ''}`">
+      <div class="max-h-[55vh] overflow-y-auto pe-1" tabindex="0" :aria-label="`${t('tafsir.title')} ${verseKey ?? ''}`">
         <div v-if="tafsirApi.loading.value" class="py-8 flex justify-center" role="status" :aria-label="t('common.loading')">
           <LoadingSpinner size="sm" />
         </div>

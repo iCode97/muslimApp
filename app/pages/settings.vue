@@ -207,19 +207,21 @@ const minutesOptions = [0, 5, 10, 15, 30]
         <h3 class="text-sm font-medium text-themed-muted uppercase tracking-wider">
           {{ t('settings.language') }}
         </h3>
-        <div class="flex gap-2">
+        <div class="grid grid-cols-2 gap-2">
           <button
             v-for="loc in availableLocales"
             :key="loc.code"
             :class="[
-              'flex-1 py-2 px-3 rounded-xl text-sm font-medium transition-all duration-200',
+              'py-2 px-3 rounded-xl text-sm font-medium transition-all duration-200',
               locale === loc.code
                 ? 'bg-[var(--color-primary)] text-white'
                 : 'glass-subtle text-themed-secondary hover:text-themed',
             ]"
+            :lang="loc.code"
             @click="switchLocale(loc.code)"
           >
-            {{ loc.code === 'de' ? '🇩🇪' : loc.code === 'tr' ? '🇹🇷' : '🇬🇧' }}
+            <!-- Arabic gets no flag (the language spans many countries) -->
+            <template v-if="loc.code !== 'ar'">{{ loc.code === 'de' ? '🇩🇪' : loc.code === 'tr' ? '🇹🇷' : '🇬🇧' }}</template>
             {{ loc.name }}
           </button>
         </div>
@@ -265,8 +267,8 @@ const minutesOptions = [0, 5, 10, 15, 30]
           <!-- Tap to change (search / GPS) -->
           <LocationSelector />
           <p class="text-xs text-themed-faint">
-            {{ Math.abs(location.latitude).toFixed(4) }}°{{ location.latitude >= 0 ? 'N' : 'S' }},
-            {{ Math.abs(location.longitude).toFixed(4) }}°{{ location.longitude >= 0 ? 'E' : 'W' }}
+            <bdi dir="ltr">{{ Math.abs(location.latitude).toFixed(4) }}°{{ location.latitude >= 0 ? 'N' : 'S' }},
+            {{ Math.abs(location.longitude).toFixed(4) }}°{{ location.longitude >= 0 ? 'E' : 'W' }}</bdi>
             <template v-if="location.timezone">
               · {{ t('settings.timezone') }}: {{ location.timezone }}
             </template>
@@ -401,7 +403,7 @@ const minutesOptions = [0, 5, 10, 15, 30]
           <!-- Morning slot -->
           <div class="flex items-center justify-between gap-3 glass-subtle rounded-xl px-3 py-2">
             <button
-              class="flex items-center gap-2 flex-1 min-w-0 text-left"
+              class="flex items-center gap-2 flex-1 min-w-0 text-start"
               @click="dhikrReminders.toggleSlot('morning')"
             >
               <span class="text-lg">🌅</span>
@@ -427,7 +429,7 @@ const minutesOptions = [0, 5, 10, 15, 30]
           <!-- Evening slot -->
           <div class="flex items-center justify-between gap-3 glass-subtle rounded-xl px-3 py-2">
             <button
-              class="flex items-center gap-2 flex-1 min-w-0 text-left"
+              class="flex items-center gap-2 flex-1 min-w-0 text-start"
               @click="dhikrReminders.toggleSlot('evening')"
             >
               <span class="text-lg">🌙</span>
@@ -502,7 +504,7 @@ const minutesOptions = [0, 5, 10, 15, 30]
           </div>
           <p class="text-xs text-themed-faint">
             {{ offlineQuran.status.value.surahsDownloaded }}/114 {{ t('quran.surahs') }}
-            · ~{{ offlineQuran.status.value.sizeEstimateMB }} MB
+            · <bdi dir="ltr">~{{ offlineQuran.status.value.sizeEstimateMB }} MB</bdi>
           </p>
           <button
             class="text-xs text-[var(--color-danger)] hover:underline"
@@ -565,7 +567,7 @@ const minutesOptions = [0, 5, 10, 15, 30]
           class="w-full flex items-center justify-between px-3 py-2 rounded-xl glass-subtle"
           @click="showMethodPicker = !showMethodPicker"
         >
-          <div class="text-left">
+          <div class="text-start">
             <p class="text-sm text-themed-secondary">
               🕌 {{ PRAYER_METHODS.find(m => m.id === prayerTimes.method.value)?.name || 'Diyanet' }}
             </p>
@@ -583,7 +585,7 @@ const minutesOptions = [0, 5, 10, 15, 30]
               v-for="m in PRAYER_METHODS"
               :key="m.id"
               :class="[
-                'w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left transition-all',
+                'w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-start transition-all',
                 prayerTimes.method.value === m.id
                   ? 'bg-[var(--color-primary)] bg-opacity-20 text-[var(--color-primary-light)]'
                   : 'hover:bg-[var(--glass-bg-subtle)] text-themed-secondary'
@@ -623,7 +625,7 @@ const minutesOptions = [0, 5, 10, 15, 30]
                   v-for="school in ASR_SCHOOLS"
                   :key="school"
                   :class="[
-                    'py-2 px-3 rounded-xl text-left transition-all',
+                    'py-2 px-3 rounded-xl text-start transition-all',
                     prayerTimes.settings.value.school === school
                       ? 'bg-[var(--color-primary)] text-white'
                       : 'glass-subtle text-themed-secondary hover:text-themed',
@@ -686,7 +688,7 @@ const minutesOptions = [0, 5, 10, 15, 30]
                       −
                     </button>
                     <span class="w-14 text-center text-xs tabular-nums text-themed">
-                      {{ formatAdjustment(prayerTimes.settings.value.adjustments[prayer]) }} min
+                      <bdi dir="ltr">{{ formatAdjustment(prayerTimes.settings.value.adjustments[prayer]) }} min</bdi>
                     </span>
                     <button
                       class="w-7 h-7 rounded-lg glass-subtle text-themed-secondary hover:text-themed text-sm font-bold disabled:opacity-40"

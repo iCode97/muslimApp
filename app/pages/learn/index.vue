@@ -116,7 +116,7 @@ function selectLevel(id: KnowledgeLevel) {
           <span id="resume-heading" class="block text-[11px] font-semibold uppercase tracking-wider text-[var(--color-primary-light)]">
             {{ t('learn.continue') }}
           </span>
-          <span class="block font-semibold text-sm truncate">{{ resume.lessonTitle }}</span>
+          <span class="block font-semibold text-sm truncate" dir="auto">{{ resume.lessonTitle }}</span>
           <span class="block text-xs text-themed-muted truncate">
             {{ resume.pathTitle }} · {{ t('learn.lessonsDone', { done: resume.summary.done, total: resume.summary.total }) }}
           </span>

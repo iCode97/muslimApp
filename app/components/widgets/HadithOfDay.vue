@@ -40,12 +40,12 @@ const translation = computed(() => {
       </div>
 
       <!-- Arabic text -->
-      <p class="font-arabic text-lg text-right leading-[2] text-themed" dir="rtl" lang="ar">
+      <p class="font-arabic text-lg text-end leading-[2] text-themed" dir="rtl" lang="ar">
         {{ todayHadith.arabic }}
       </p>
 
       <!-- Translation -->
-      <p class="text-sm text-themed-secondary leading-relaxed">
+      <p class="text-sm text-themed-secondary leading-relaxed" dir="auto">
         {{ translation }}
       </p>
 

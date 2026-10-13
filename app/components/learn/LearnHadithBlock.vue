@@ -35,7 +35,7 @@ const gradeLabel = computed(() => {
     </div>
     <p
       v-if="arabic"
-      class="font-arabic text-xl text-right leading-[2.2] text-themed"
+      class="font-arabic text-xl text-end leading-[2.2] text-themed"
       dir="rtl"
       lang="ar"
     >

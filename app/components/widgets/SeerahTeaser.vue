@@ -29,7 +29,7 @@ const preview = computed(() => {
           <h3 class="text-xs font-semibold text-themed-muted uppercase tracking-wider">
             {{ t('seerah.storyOfDay') }}
           </h3>
-          <span class="text-xs text-[var(--color-gold)]">{{ todayChapter.year }}</span>
+          <span class="text-xs text-[var(--color-gold)]">{{ localizeEra(todayChapter.year, locale) }}</span>
         </div>
 
         <div class="flex items-start gap-3">
@@ -38,7 +38,7 @@ const preview = computed(() => {
             <p class="text-sm font-medium text-themed">
               {{ t(todayChapter.titleKey) }}
             </p>
-            <p class="text-xs text-themed-muted mt-1 leading-relaxed line-clamp-3">
+            <p class="text-xs text-themed-muted mt-1 leading-relaxed line-clamp-3" dir="auto">
               <HonorificText :text="preview" />
             </p>
           </div>

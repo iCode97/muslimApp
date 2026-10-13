@@ -56,8 +56,8 @@ function toggle() {
       :class="[
         'absolute rounded-full bg-white shadow transition-all duration-200 w-5 h-5',
         size === 'sm'
-          ? ['top-0.5', modelValue ? 'left-[18px]' : 'left-0.5']
-          : ['top-1', modelValue ? 'left-6' : 'left-1'],
+          ? ['top-0.5', modelValue ? 'start-[18px]' : 'start-0.5']
+          : ['top-1', modelValue ? 'start-6' : 'start-1'],
       ]"
     />
   </button>

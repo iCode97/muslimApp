@@ -76,7 +76,7 @@ function addToCalendar() {
           <p v-if="hijriLabel" class="text-xs text-themed-muted">
             {{ hijriLabel }}
           </p>
-          <p class="text-xs text-themed-faint mt-0.5">
+          <p class="text-xs text-themed-faint mt-0.5" dir="auto">
             {{ getHolidayDescription(holiday) }}
           </p>
         </div>
@@ -88,7 +88,7 @@ function addToCalendar() {
 
       <!-- Meaning & practices -->
       <section v-if="info" class="space-y-1.5">
-        <p class="text-sm text-themed-secondary leading-relaxed">
+        <p class="text-sm text-themed-secondary leading-relaxed" dir="auto">
           {{ info.text }}
         </p>
         <p class="text-[11px] text-themed-faint">
@@ -108,7 +108,7 @@ function addToCalendar() {
         <h3 v-if="showBlockTitle" class="text-sm font-semibold text-themed">
           {{ block.title }}
         </h3>
-        <p class="text-sm text-themed-secondary leading-relaxed">
+        <p class="text-sm text-themed-secondary leading-relaxed" dir="auto">
           {{ block.text }}
         </p>
         <p class="text-[11px] text-themed-faint">
@@ -129,7 +129,7 @@ function addToCalendar() {
           :disabled="!holiday.gregorianIso"
           @click="addToCalendar"
         >
-          <AppIcon name="calendar" :size="18" class="mr-2" />
+          <AppIcon name="calendar" :size="18" class="me-2" />
           {{ t('calendar.addToCalendar') }}
         </GlassButton>
         <p v-if="exportNote" role="status" class="text-xs text-themed-muted text-center">

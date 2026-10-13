@@ -34,7 +34,7 @@ watch(() => [props.surahId, locale.value], () => {
   <GlassCard padding="md">
     <button
       type="button"
-      class="w-full flex items-center justify-between gap-2 text-left"
+      class="w-full flex items-center justify-between gap-2 text-start"
       :aria-expanded="expanded"
       :aria-controls="panelId"
       @click="toggle"
@@ -62,7 +62,7 @@ watch(() => [props.surahId, locale.value], () => {
         <!-- eslint-disable-next-line vue/no-v-html -- sanitized by sanitizeQuranHtml (whitelist, no attributes) -->
         <div
           v-if="info.html"
-          class="info-content text-sm text-themed-secondary leading-relaxed max-h-[50vh] overflow-y-auto pr-1"
+          class="info-content text-sm text-themed-secondary leading-relaxed max-h-[50vh] overflow-y-auto pe-1"
           lang="en"
           tabindex="0"
           :aria-label="t('quran.aboutSurah')"

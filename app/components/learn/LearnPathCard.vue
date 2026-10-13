@@ -24,8 +24,8 @@ const finished = computed(() => total.value > 0 && props.done >= total.value)
       <AppIcon :name="finished ? 'checkCircle' : path.icon" :size="22" />
     </span>
     <span class="flex-1 min-w-0 space-y-1.5">
-      <span class="block font-medium text-sm">{{ localize(path.title, locale) }}</span>
-      <span class="block text-xs text-themed-muted line-clamp-2">{{ localize(path.description, locale) }}</span>
+      <span class="block font-medium text-sm" dir="auto">{{ localize(path.title, locale) }}</span>
+      <span class="block text-xs text-themed-muted line-clamp-2" dir="auto">{{ localize(path.description, locale) }}</span>
       <span class="flex items-center gap-2 text-[11px] text-themed-faint tabular-nums">
         <span>{{ t('learn.lessonsCount', { count: total }) }}</span>
         <span aria-hidden="true">·</span>

@@ -9,7 +9,8 @@ import { SEERAH_CATEGORIES } from '~/data/seerah'
 
 const ROOT = join(__dirname, '..', '..')
 const APP_DIR = join(ROOT, 'app')
-const LOCALES = ['de', 'en', 'tr'] as const
+const LOCALES = ['de', 'en', 'tr', 'ar'] as const
+const OTHERS = ['en', 'tr', 'ar'] as const
 
 type Json = { [k: string]: Json | string }
 
@@ -40,9 +41,9 @@ function walk(dir: string, exts: string[]): string[] {
 const messages = Object.fromEntries(LOCALES.map(l => [l, flatten(load(l))])) as Record<typeof LOCALES[number], Record<string, string>>
 
 describe('i18n parity', () => {
-  it('de, en and tr have identical key sets', () => {
+  it('de, en, tr and ar have identical key sets', () => {
     const de = Object.keys(messages.de).sort()
-    for (const l of ['en', 'tr'] as const) {
+    for (const l of OTHERS) {
       const keys = new Set(Object.keys(messages[l]))
       const missing = de.filter(k => !keys.has(k))
       const extra = [...keys].filter(k => !(k in messages.de))
@@ -66,12 +67,33 @@ describe('i18n parity', () => {
     const ph = (s: string) => [...new Set([...s.matchAll(/\{(\w+)\}/g)].map(m => m[1]))].sort().join(',')
     const mismatches: string[] = []
     for (const [key, de] of Object.entries(messages.de)) {
-      for (const l of ['en', 'tr'] as const) {
+      for (const l of OTHERS) {
         const other = messages[l][key]
         if (other !== undefined && ph(de) !== ph(other)) mismatches.push(`${l}:${key}`)
       }
     }
     expect(mismatches).toEqual([])
+  })
+
+  // Turkish has no singular/plural distinction after numerals, so tr legitimately uses a single form.
+  it('uses the same number of plural forms (| pipes) in de, en and ar', () => {
+    const forms = (s: string) => s.split(' | ').length
+    const mismatches: string[] = []
+    for (const [key, de] of Object.entries(messages.de)) {
+      for (const l of ['en', 'ar'] as const) {
+        const other = messages[l][key]
+        if (other !== undefined && forms(de) !== forms(other)) mismatches.push(`${l}:${key}`)
+      }
+    }
+    expect(mismatches).toEqual([])
+  })
+
+  it('ar.json is real Arabic (script check) and keeps the brand name', () => {
+    expect(messages.ar['app.name']).toBe('MuslimApp')
+    const arabic = /[\u0600-\u06FF]/
+    // Arabic-script values are expected for the vast majority of keys.
+    const noArabic = Object.entries(messages.ar).filter(([, v]) => !arabic.test(v)).length
+    expect(noArabic / Object.keys(messages.ar).length).toBeLessThan(0.1)
   })
 })
 
@@ -100,8 +122,8 @@ describe('i18n key usage', () => {
     expect(missing).toEqual([])
   })
 
-  it('every literal key exists in en.json and tr.json too', () => {
-    for (const l of ['en', 'tr'] as const) {
+  it('every literal key exists in en.json, tr.json and ar.json too', () => {
+    for (const l of OTHERS) {
       const missing = [...literalKeys.keys()].filter(k => !(k in messages[l]))
       expect({ locale: l, missing }).toEqual({ locale: l, missing: [] })
     }
