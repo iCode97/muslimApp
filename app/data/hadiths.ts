@@ -1,8 +1,27 @@
 /**
  * Curated Hadith collection.
- * ~50 well-known hadiths from Sahih Bukhari, Sahih Muslim, and other authentic sources.
+ * 100 well-known hadiths from Sahih al-Bukhari, Sahih Muslim, the Sunan collections and others.
  * Arabic text + translations in DE/EN/TR.
+ *
+ * Authenticity grading (`grade`): every hadith found in Sahih al-Bukhari or Sahih Muslim is
+ * `sahih`. For other collections a grade is only set where the established verdict is known
+ * (the grader is named in `gradeNote`); otherwise `unverified`. Entries whose source looked
+ * doubtful carry "Quelle prüfen" in `gradeNote` — see docs/CONTENT-REVIEW.md.
  */
+
+export type HadithGrade = 'sahih' | 'hasan' | 'daif' | 'unverified'
+
+export type HadithCollectionName =
+  | 'Bukhari' | 'Muslim' | 'Abu Dawud' | 'Tirmidhi' | 'Nasa\'i' | 'Ibn Majah'
+  | 'Ahmad' | 'Malik' | 'Nawawi40' | 'other'
+
+export interface HadithCollectionRef {
+  name: HadithCollectionName
+  /** Hadith number in that collection (sunnah.com numbering), if known. */
+  number?: string
+  /** Display name for `other` (e.g. "al-Bayhaqi"). */
+  label?: string
+}
 
 export interface Hadith {
   id: number
@@ -13,8 +32,25 @@ export interface Hadith {
     en: string
     tr: string
   }
-  source: string       // e.g. "Bukhari 1", "Muslim 2564"
+  source: string       // display string, e.g. "Bukhari 1, Muslim 1907"
+  collections: HadithCollectionRef[] // structured form of `source`
   narrator?: string    // e.g. "Abu Huraira"
+  grade: HadithGrade
+  gradeNote?: string   // who graded it, e.g. "at-Tirmidhi: hasan sahih; al-Albani: sahih"
+  review: 'draft' | 'reviewed'
+}
+
+/** Display / filter order of grades. */
+export const HADITH_GRADES: readonly HadithGrade[] = ['sahih', 'hasan', 'daif', 'unverified']
+
+/** Canonical order of collections (the six books first), used for sorting. */
+export const HADITH_COLLECTION_ORDER: readonly HadithCollectionName[] = [
+  'Bukhari', 'Muslim', 'Abu Dawud', 'Tirmidhi', 'Nasa\'i', 'Ibn Majah', 'Malik', 'Ahmad', 'Nawawi40', 'other',
+]
+
+/** Primary (first-listed) collection of a hadith — used for sorting by collection. */
+export function primaryCollection(h: Hadith): HadithCollectionName {
+  return h.collections[0]?.name ?? 'other'
 }
 
 export const HADITH_CATEGORIES = [
@@ -34,7 +70,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Ameller niyetlere göredir. Herkese niyet ettiği şey vardır.',
     },
     source: 'Bukhari 1, Muslim 1907',
+    collections: [{ name: 'Bukhari', number: '1' }, { name: 'Muslim', number: '1907' }],
     narrator: 'Umar ibn al-Khattab',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 2,
@@ -46,7 +86,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Sizden biriniz kendisi için sevdiğini kardeşi için de sevmedikçe iman etmiş olmaz.',
     },
     source: 'Bukhari 13, Muslim 45',
+    collections: [{ name: 'Bukhari', number: '13' }, { name: 'Muslim', number: '45' }],
     narrator: 'Anas ibn Malik',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 3,
@@ -58,7 +102,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Allah\'a ve ahiret gününe iman eden ya hayır söylesin ya da sussun.',
     },
     source: 'Bukhari 6018, Muslim 47',
+    collections: [{ name: 'Bukhari', number: '6018' }, { name: 'Muslim', number: '47' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 4,
@@ -70,7 +118,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Din nasihattir.',
     },
     source: 'Muslim 55',
+    collections: [{ name: 'Muslim', number: '55' }],
     narrator: 'Tamim ad-Dari',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
 
   // === CHARACTER ===
@@ -84,7 +136,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kıyamet günü bana en sevgili ve en yakın olanınız, ahlakı en güzel olanınızdır.',
     },
     source: 'Tirmidhi 2018',
+    collections: [{ name: 'Tirmidhi', number: '2018' }],
     narrator: 'Jabir',
+    grade: 'hasan',
+    gradeNote: 'at-Tirmidhi: hasan gharib; al-Albani: sahih',
+    review: 'draft',
   },
   {
     id: 6,
@@ -96,7 +152,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kızma!',
     },
     source: 'Bukhari 6116',
+    collections: [{ name: 'Bukhari', number: '6116' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari',
+    review: 'draft',
   },
   {
     id: 7,
@@ -108,7 +168,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kardeşinin yüzüne gülümsemen sadakadır.',
     },
     source: 'Tirmidhi 1956',
+    collections: [{ name: 'Tirmidhi', number: '1956' }],
     narrator: 'Abu Dharr',
+    grade: 'hasan',
+    gradeNote: 'at-Tirmidhi: hasan gharib; al-Albani: sahih',
+    review: 'draft',
   },
   {
     id: 8,
@@ -120,7 +184,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Müslüman, dilinden ve elinden Müslümanların güvende olduğu kimsedir.',
     },
     source: 'Bukhari 10, Muslim 40',
+    collections: [{ name: 'Bukhari', number: '10' }, { name: 'Muslim', number: '40' }],
     narrator: 'Abdullah ibn Amr',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 9,
@@ -132,7 +200,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Sadaka malı eksiltmez. Allah affeden kulun ancak şerefini artırır.',
     },
     source: 'Muslim 2588',
+    collections: [{ name: 'Muslim', number: '2588' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
 
   // === PRAYER ===
@@ -146,7 +218,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Namaz dinin direğidir.',
     },
     source: 'Baihaqi',
+    collections: [{ name: 'other', label: 'al-Bayhaqi' }],
     narrator: 'Umar ibn al-Khattab',
+    grade: 'daif',
+    gradeNote: 'al-Bayhaqi (Shu\'ab al-Iman), Kette unterbrochen; al-\'Iraqi und al-Albani: da\'if',
+    review: 'draft',
   },
   {
     id: 11,
@@ -158,7 +234,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kulun Rabbine en yakın olduğu an secdedeyken olduğu andır. O halde çok dua edin.',
     },
     source: 'Muslim 482',
+    collections: [{ name: 'Muslim', number: '482' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
   {
     id: 12,
@@ -170,7 +250,11 @@ export const HADITHS: Hadith[] = [
       tr: 'İki serin vaktin (sabah ve ikindi) namazını kılan cennete girer.',
     },
     source: 'Bukhari 574, Muslim 635',
+    collections: [{ name: 'Bukhari', number: '574' }, { name: 'Muslim', number: '635' }],
     narrator: 'Abu Musa al-Aschari',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
 
   // === KNOWLEDGE ===
@@ -184,7 +268,11 @@ export const HADITHS: Hadith[] = [
       tr: 'İlim öğrenmek her Müslümana farzdır.',
     },
     source: 'Ibn Majah 224',
+    collections: [{ name: 'Ibn Majah', number: '224' }],
     narrator: 'Anas ibn Malik',
+    grade: 'hasan',
+    gradeNote: 'as-Suyuti: hasan (durch die Gesamtheit der Überlieferungswege); al-Albani: sahih',
+    review: 'draft',
   },
   {
     id: 14,
@@ -196,7 +284,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kim ilim aramak için bir yola girerse Allah ona cennete giden yolu kolaylaştırır.',
     },
     source: 'Muslim 2699',
+    collections: [{ name: 'Muslim', number: '2699' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
   {
     id: 15,
@@ -208,7 +300,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Benden bir ayet bile olsa tebliğ edin.',
     },
     source: 'Bukhari 3461',
+    collections: [{ name: 'Bukhari', number: '3461' }],
     narrator: 'Abdullah ibn Amr',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari',
+    review: 'draft',
   },
 
   // === COMMUNITY ===
@@ -222,7 +318,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Müminler sevgi ve merhamette bir vücut gibidir. Bir uzuv rahatsızlanınca diğer uzuvlar uykusuzluk ve ateşle ona ortak olurlar.',
     },
     source: 'Bukhari 6011, Muslim 2586',
+    collections: [{ name: 'Bukhari', number: '6011' }, { name: 'Muslim', number: '2586' }],
     narrator: 'Nu\'man ibn Bashir',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 17,
@@ -234,7 +334,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Mümin müminin kardeşidir. Birbirlerini bir binanın tuğlaları gibi desteklerler.',
     },
     source: 'Bukhari 481, Muslim 2585',
+    collections: [{ name: 'Bukhari', number: '481' }, { name: 'Muslim', number: '2585' }],
     narrator: 'Abu Musa al-Aschari',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 18,
@@ -246,7 +350,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Komşusu zararından emin olmayan kişi cennete giremez.',
     },
     source: 'Muslim 46',
+    collections: [{ name: 'Muslim', number: '46' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
 
   // === DAILY LIFE ===
@@ -260,7 +368,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Bizi aldatan bizden değildir.',
     },
     source: 'Muslim 101',
+    collections: [{ name: 'Muslim', number: '101' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
   {
     id: 20,
@@ -272,7 +384,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Allah, birinizin bir iş yaptığında onu güzel yapmasını sever.',
     },
     source: 'Baihaqi, Tabarani',
+    collections: [{ name: 'other', label: 'al-Bayhaqi' }, { name: 'other', label: 'at-Tabarani' }],
     narrator: 'Aischa',
+    grade: 'hasan',
+    gradeNote: 'al-Albani: hasan (as-Silsila as-Sahiha)',
+    review: 'draft',
   },
   {
     id: 21,
@@ -284,7 +400,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Hepiniz çobansınız ve hepiniz sürünüzden sorumlusunuz.',
     },
     source: 'Bukhari 893, Muslim 1829',
+    collections: [{ name: 'Bukhari', number: '893' }, { name: 'Muslim', number: '1829' }],
     narrator: 'Abdullah ibn Umar',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 22,
@@ -296,7 +416,11 @@ export const HADITHS: Hadith[] = [
       tr: 'En hayırlınız ailesine en hayırlı olanınızdır. Ben de aileme en hayırlı olanınızım.',
     },
     source: 'Tirmidhi 3895, Ibn Majah 1977',
+    collections: [{ name: 'Tirmidhi', number: '3895' }, { name: 'Ibn Majah', number: '1977' }],
     narrator: 'Aischa',
+    grade: 'sahih',
+    gradeNote: 'at-Tirmidhi: hasan gharib sahih; al-Albani: sahih',
+    review: 'draft',
   },
 
   // === MERCY ===
@@ -310,7 +434,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Merhamet edenler — Rahman onlara merhamet eder. Yeryüzündekilere merhamet edin ki gökteki de size merhamet etsin.',
     },
     source: 'Abu Dawud 4941, Tirmidhi 1924',
+    collections: [{ name: 'Abu Dawud', number: '4941' }, { name: 'Tirmidhi', number: '1924' }],
     narrator: 'Abdullah ibn Amr',
+    grade: 'sahih',
+    gradeNote: 'at-Tirmidhi: hasan sahih; al-Albani: sahih',
+    review: 'draft',
   },
   {
     id: 24,
@@ -322,7 +450,11 @@ export const HADITHS: Hadith[] = [
       tr: 'İnsanlara merhamet etmeyene Allah da merhamet etmez.',
     },
     source: 'Bukhari 7376, Muslim 2319',
+    collections: [{ name: 'Bukhari', number: '7376' }, { name: 'Muslim', number: '2319' }],
     narrator: 'Jarir ibn Abdullah',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 25,
@@ -334,7 +466,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Merhamet ancak bedbaht olandan alınır.',
     },
     source: 'Abu Dawud 4942, Tirmidhi 1923',
+    collections: [{ name: 'Abu Dawud', number: '4942' }, { name: 'Tirmidhi', number: '1923' }],
     narrator: 'Abu Huraira',
+    grade: 'hasan',
+    gradeNote: 'at-Tirmidhi: hasan; al-Albani: hasan',
+    review: 'draft',
   },
 
   // === GOOD DEEDS ===
@@ -348,7 +484,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Allah\'a en sevimli ameller az da olsa devamlı yapılanıdır.',
     },
     source: 'Bukhari 6464, Muslim 783',
+    collections: [{ name: 'Bukhari', number: '6464' }, { name: 'Muslim', number: '783' }],
     narrator: 'Aischa',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 27,
@@ -360,7 +500,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Nerede olursan ol Allah\'tan kork. Kötülüğün arkasından iyilik yap ki onu silsin. İnsanlara güzel ahlakla davran.',
     },
     source: 'Tirmidhi 1987',
+    collections: [{ name: 'Tirmidhi', number: '1987' }],
     narrator: 'Abu Dharr & Muadh ibn Jabal',
+    grade: 'hasan',
+    gradeNote: 'at-Tirmidhi: hasan sahih; al-Albani: hasan (an-Nawawi, 40 Hadithe Nr. 18)',
+    review: 'draft',
   },
   {
     id: 28,
@@ -372,7 +516,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kim iman ederek ve sevabını Allah\'tan bekleyerek Ramazan orucunu tutarsa geçmiş günahları bağışlanır.',
     },
     source: 'Bukhari 38, Muslim 760',
+    collections: [{ name: 'Bukhari', number: '38' }, { name: 'Muslim', number: '760' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 29,
@@ -384,7 +532,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Allah sizin suretlerinize ve mallarınıza bakmaz, kalplerinize ve amellerinize bakar.',
     },
     source: 'Muslim 2564',
+    collections: [{ name: 'Muslim', number: '2564' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
   {
     id: 30,
@@ -396,7 +548,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Temizlik imanın yarısıdır.',
     },
     source: 'Muslim 223',
+    collections: [{ name: 'Muslim', number: '223' }],
     narrator: 'Abu Malik al-Aschari',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
 
   // === More FAITH ===
@@ -410,7 +566,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Dünya müminin zindanı, kâfirin cennetidir.',
     },
     source: 'Muslim 2956',
+    collections: [{ name: 'Muslim', number: '2956' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
   {
     id: 32,
@@ -422,7 +582,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kolaylaştırın, zorlaştırmayın. Müjdeleyin, nefret ettirmeyin.',
     },
     source: 'Bukhari 69, Muslim 1734',
+    collections: [{ name: 'Bukhari', number: '69' }, { name: 'Muslim', number: '1734' }],
     narrator: 'Anas ibn Malik',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
 
   // === More CHARACTER ===
@@ -436,7 +600,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Bir Müslümanın kardeşini üç günden fazla terk etmesi helal değildir.',
     },
     source: 'Bukhari 6077, Muslim 2559',
+    collections: [{ name: 'Bukhari', number: '6077' }, { name: 'Muslim', number: '2559' }],
     narrator: 'Abu Ayyub al-Ansari',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim — Muslim-Nummer prüfen (Abu Ayyub ggf. Nr. 2560)',
+    review: 'draft',
   },
   {
     id: 34,
@@ -448,7 +616,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Zandan sakının! Çünkü zan, sözlerin en yalanıdır.',
     },
     source: 'Bukhari 6064, Muslim 2563',
+    collections: [{ name: 'Bukhari', number: '6064' }, { name: 'Muslim', number: '2563' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 35,
@@ -460,7 +632,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Güçlü kişi güreşte yenen değil, öfke anında kendine hâkim olan kimsedir.',
     },
     source: 'Bukhari 6114, Muslim 2609',
+    collections: [{ name: 'Bukhari', number: '6114' }, { name: 'Muslim', number: '2609' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
 
   // === More COMMUNITY ===
@@ -474,7 +650,11 @@ export const HADITHS: Hadith[] = [
       tr: 'İnsanların en hayırlısı insanlara en faydalı olandır.',
     },
     source: 'Tabarani, Daraqutni',
+    collections: [{ name: 'other', label: 'at-Tabarani' }, { name: 'other', label: 'ad-Daraqutni' }],
     narrator: 'Jabir',
+    grade: 'hasan',
+    gradeNote: 'al-Albani: hasan (Sahih al-Jami\')',
+    review: 'draft',
   },
   {
     id: 37,
@@ -486,7 +666,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kim kardeşinin ihtiyacını giderirse Allah da onun ihtiyacını giderir.',
     },
     source: 'Bukhari 2442, Muslim 2580',
+    collections: [{ name: 'Bukhari', number: '2442' }, { name: 'Muslim', number: '2580' }],
     narrator: 'Abdullah ibn Umar',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
 
   // === More DEEDS ===
@@ -500,7 +684,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kim Allah\'ın kitabından bir harf okursa ona bir hasene yazılır. Her hasene on katıyla mükâfatlandırılır.',
     },
     source: 'Tirmidhi 2910',
+    collections: [{ name: 'Tirmidhi', number: '2910' }],
     narrator: 'Abdullah ibn Masud',
+    grade: 'sahih',
+    gradeNote: 'at-Tirmidhi: hasan sahih gharib; al-Albani: sahih',
+    review: 'draft',
   },
   {
     id: 39,
@@ -512,7 +700,11 @@ export const HADITHS: Hadith[] = [
       tr: 'İnsan öldüğünde ameli kesilir, ancak üç şey hariç: sadaka-i cariye, faydalı ilim ve kendisine dua eden salih evlat.',
     },
     source: 'Muslim 1631',
+    collections: [{ name: 'Muslim', number: '1631' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
   {
     id: 40,
@@ -524,7 +716,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Güzel söz sadakadır.',
     },
     source: 'Bukhari 2989, Muslim 1009',
+    collections: [{ name: 'Bukhari', number: '2989' }, { name: 'Muslim', number: '1009' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
 
   // === More MERCY / DAILY ===
@@ -538,7 +734,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kim bir müminin dünya sıkıntılarından birini giderirse Allah da onun kıyamet sıkıntılarından birini giderir.',
     },
     source: 'Muslim 2699',
+    collections: [{ name: 'Muslim', number: '2699' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
   {
     id: 42,
@@ -550,7 +750,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Zarar vermek de zarara uğramak da yoktur.',
     },
     source: 'Ibn Majah 2341',
+    collections: [{ name: 'Ibn Majah', number: '2341' }],
     narrator: 'Abu Said al-Khudri',
+    grade: 'unverified',
+    gradeNote: 'Quelle prüfen: Ibn Majah 2341 wird von Ibn \'Abbas überliefert, nicht von Abu Sa\'id al-Khudri (dessen Version: ad-Daraqutni, al-Hakim; an-Nawawi, 40 Hadithe Nr. 32: hasan)',
+    review: 'draft',
   },
   {
     id: 43,
@@ -562,7 +766,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Helal yiyen, sünnete göre amel eden ve insanların zararından emin oldukları kişi cennete girer.',
     },
     source: 'Tirmidhi 2520',
+    collections: [{ name: 'Tirmidhi', number: '2520' }],
     narrator: 'Abu Said al-Khudri',
+    grade: 'unverified',
+    gradeNote: 'at-Tirmidhi: hasan gharib; spätere Bewertungen uneinheitlich — prüfen',
+    review: 'draft',
   },
 
   // === RAMADAN ===
@@ -576,7 +784,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kim inanarak ve karşılığını Allah\'tan bekleyerek Ramazan orucunu tutarsa geçmiş günahları bağışlanır.',
     },
     source: 'Bukhari 38, Muslim 760',
+    collections: [{ name: 'Bukhari', number: '38' }, { name: 'Muslim', number: '760' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 45,
@@ -588,7 +800,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kim inanarak ve karşılığını Allah\'tan bekleyerek Ramazan\'da namaz kılarsa geçmiş günahları bağışlanır.',
     },
     source: 'Bukhari 37, Muslim 759',
+    collections: [{ name: 'Bukhari', number: '37' }, { name: 'Muslim', number: '759' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 46,
@@ -600,7 +816,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Ramazan geldiğinde cennet kapıları açılır, cehennem kapıları kapanır ve şeytanlar zincire vurulur.',
     },
     source: 'Bukhari 1899, Muslim 1079',
+    collections: [{ name: 'Bukhari', number: '1899' }, { name: 'Muslim', number: '1079' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 47,
@@ -612,7 +832,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kim bir oruçluya iftar ettirirse, oruçlunun ecrinden hiçbir şey eksilmeksizin onun ecri kadar sevap kazanır.',
     },
     source: 'Tirmidhi 807',
+    collections: [{ name: 'Tirmidhi', number: '807' }],
     narrator: 'Zaid ibn Khalid al-Juhani',
+    grade: 'sahih',
+    gradeNote: 'at-Tirmidhi: hasan sahih; al-Albani: sahih',
+    review: 'draft',
   },
   {
     id: 48,
@@ -624,7 +848,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Oruç bir kalkandır. Oruçlu kişi kötü söz söylemesin ve cahilce davranmasın.',
     },
     source: 'Bukhari 1894, Muslim 1151',
+    collections: [{ name: 'Bukhari', number: '1894' }, { name: 'Muslim', number: '1151' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
 
   // === PATIENCE ===
@@ -638,7 +866,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Müminin durumu ne güzeldir! Onun her hali hayırdır.',
     },
     source: 'Muslim 2999',
+    collections: [{ name: 'Muslim', number: '2999' }],
     narrator: 'Suhaib ar-Rumi',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
   {
     id: 50,
@@ -650,7 +882,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Gerçek sabır, musibetin ilk anındaki sabırdır.',
     },
     source: 'Bukhari 1283, Muslim 926',
+    collections: [{ name: 'Bukhari', number: '1283' }, { name: 'Muslim', number: '926' }],
     narrator: 'Anas ibn Malik',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 51,
@@ -662,7 +898,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Müslümanın başına gelen yorgunluk, hastalık, üzüntü, keder, sıkıntı ve gamdan, hatta batırılan dikene varıncaya kadar, Allah bunlar sebebiyle onun günahlarını bağışlar.',
     },
     source: 'Bukhari 5641, Muslim 2573',
+    collections: [{ name: 'Bukhari', number: '5641' }, { name: 'Muslim', number: '2573' }],
     narrator: 'Abu Said al-Khudri',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 52,
@@ -674,7 +914,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Bil ki zafer sabırla, ferahlık sıkıntıyla ve kolaylık zorlukla birliktedir.',
     },
     source: 'Tirmidhi 2516',
+    collections: [{ name: 'Tirmidhi', number: '2516' }],
     narrator: 'Abdullah ibn Abbas',
+    grade: 'unverified',
+    gradeNote: 'Quelle prüfen: dieser Wortlaut steht nicht in at-Tirmidhi 2516 (Ibn \'Abbas, hasan sahih), sondern in der längeren Version bei Ahmad (vgl. an-Nawawi, 40 Hadithe Nr. 19)',
+    review: 'draft',
   },
   {
     id: 53,
@@ -686,7 +930,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kim sabretmeye çalışırsa Allah ona sabır verir. Hiç kimseye sabırdan daha hayırlı ve geniş bir nimet verilmemiştir.',
     },
     source: 'Bukhari 1469, Muslim 1053',
+    collections: [{ name: 'Bukhari', number: '1469' }, { name: 'Muslim', number: '1053' }],
     narrator: 'Abu Said al-Khudri',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
 
   // === GRATITUDE ===
@@ -700,7 +948,11 @@ export const HADITHS: Hadith[] = [
       tr: 'İnsanlara teşekkür etmeyen, Allah\'a şükretmez.',
     },
     source: 'Tirmidhi 1954',
+    collections: [{ name: 'Tirmidhi', number: '1954' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'at-Tirmidhi: hasan sahih; al-Albani: sahih',
+    review: 'draft',
   },
   {
     id: 55,
@@ -712,7 +964,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Sizden aşağıda olanlara bakın, yukarıda olanlara bakmayın. Bu, Allah\'ın nimetini küçümsememeniz için daha uygundur.',
     },
     source: 'Muslim 2963',
+    collections: [{ name: 'Muslim', number: '2963' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
   {
     id: 56,
@@ -724,7 +980,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Allah, yemek yiyip O\'na hamd eden ve su içip O\'na hamd eden kuldan razı olur.',
     },
     source: 'Muslim 2734',
+    collections: [{ name: 'Muslim', number: '2734' }],
     narrator: 'Anas ibn Malik',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
   {
     id: 57,
@@ -736,6 +996,10 @@ export const HADITHS: Hadith[] = [
       tr: 'Şükrederseniz, elbette size nimetimi artırırım.',
     },
     source: 'Quran 14:7',
+    collections: [{ name: 'other', label: 'Quran', number: '14:7' }],
+    grade: 'unverified',
+    gradeNote: 'Quelle prüfen: Koranvers (Sure Ibrahim 14:7), kein Hadith',
+    review: 'draft',
   },
 
   // === CHILDREN ===
@@ -749,7 +1013,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Küçüklerimize merhamet etmeyen ve büyüklerimize saygı göstermeyen bizden değildir.',
     },
     source: 'Tirmidhi 1919',
+    collections: [{ name: 'Tirmidhi', number: '1919' }],
     narrator: 'Abdullah ibn Amr',
+    grade: 'unverified',
+    gradeNote: 'Quelle prüfen: at-Tirmidhi 1919 wird von Anas ibn Malik überliefert; die Version von Abdullah ibn \'Amr ist at-Tirmidhi 1920 / Abu Dawud 4943 (al-Albani: sahih)',
+    review: 'draft',
   },
   {
     id: 59,
@@ -761,7 +1029,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Hepiniz çobansınız ve hepiniz sürünüzden sorumlusunuz.',
     },
     source: 'Bukhari 893, Muslim 1829',
+    collections: [{ name: 'Bukhari', number: '893' }, { name: 'Muslim', number: '1829' }],
     narrator: 'Abdullah ibn Umar',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 60,
@@ -773,7 +1045,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kim iki kız çocuğunu yetişkinliğe kadar yetiştirirse, kıyamet gününde o ve ben şu iki parmak gibi yanyana oluruz.',
     },
     source: 'Muslim 2631',
+    collections: [{ name: 'Muslim', number: '2631' }],
     narrator: 'Anas ibn Malik',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
   {
     id: 61,
@@ -785,7 +1061,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Çocuklarınızı terbiye edin ve onlara güzel ahlak öğretin.',
     },
     source: 'Ibn Majah 3671',
+    collections: [{ name: 'Ibn Majah', number: '3671' }],
     narrator: 'Abdullah ibn Abbas',
+    grade: 'unverified',
+    gradeNote: 'Quelle prüfen: Ibn Majah 3671 lautet „akrimu awladakum …“ und wird von Anas ibn Malik überliefert (al-Albani: da\'if); arabischer Text und Überlieferer weichen ab',
+    review: 'draft',
   },
 
   // === ECONOMY ===
@@ -799,7 +1079,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Hiçbir kimse kendi elinin emeğiyle kazandığından daha hayırlı bir yemek yememiştir.',
     },
     source: 'Bukhari 2072',
+    collections: [{ name: 'Bukhari', number: '2072' }],
     narrator: 'Al-Miqdam',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari',
+    review: 'draft',
   },
   {
     id: 63,
@@ -811,7 +1095,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Veren el, alan elden hayırlıdır.',
     },
     source: 'Bukhari 1427, Muslim 1033',
+    collections: [{ name: 'Bukhari', number: '1427' }, { name: 'Muslim', number: '1033' }],
     narrator: 'Abdullah ibn Umar',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim — Bukhari-Nummer prüfen (1427 = Hakim ibn Hizam; Ibn \'Umar ggf. Nr. 1429)',
+    review: 'draft',
   },
   {
     id: 64,
@@ -823,7 +1111,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Sadaka malı eksiltmez.',
     },
     source: 'Muslim 2588',
+    collections: [{ name: 'Muslim', number: '2588' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
   {
     id: 65,
@@ -835,7 +1127,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Doğru ve güvenilir tüccar, peygamberler, sıddıklar ve şehitlerle beraberdir.',
     },
     source: 'Tirmidhi 1209',
+    collections: [{ name: 'Tirmidhi', number: '1209' }],
     narrator: 'Abu Said al-Khudri',
+    grade: 'unverified',
+    gradeNote: 'at-Tirmidhi: hasan; spätere Bewertungen uneinheitlich — prüfen',
+    review: 'draft',
   },
   {
     id: 66,
@@ -847,7 +1143,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Bizi aldatan bizden değildir.',
     },
     source: 'Muslim 101',
+    collections: [{ name: 'Muslim', number: '101' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
 
   // === PRAYER (extended) ===
@@ -861,7 +1161,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Cemaatle kılınan namaz, tek başına kılınan namazdan yirmi yedi derece üstündür.',
     },
     source: 'Bukhari 645, Muslim 650',
+    collections: [{ name: 'Bukhari', number: '645' }, { name: 'Muslim', number: '650' }],
     narrator: 'Ibn Umar',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 73,
@@ -873,7 +1177,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Sabah namazının iki rekâtlık sünneti, dünya ve içindekilerden daha hayırlıdır.',
     },
     source: 'Muslim 725',
+    collections: [{ name: 'Muslim', number: '725' }],
     narrator: 'Aischa',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
   {
     id: 74,
@@ -885,7 +1193,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Namazı sanki veda namazıymış gibi kıl.',
     },
     source: 'Ibn Majah 4171',
+    collections: [{ name: 'Ibn Majah', number: '4171' }],
     narrator: 'Abu Ayyub al-Ansari',
+    grade: 'hasan',
+    gradeNote: 'al-Albani: hasan (as-Silsila as-Sahiha)',
+    review: 'draft',
   },
 
   // === KNOWLEDGE (extended) ===
@@ -899,7 +1211,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Sizin en hayırlınız Kur\'an\'ı öğrenen ve öğretendir.',
     },
     source: 'Bukhari 5027',
+    collections: [{ name: 'Bukhari', number: '5027' }],
     narrator: 'Uthman ibn Affan',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari',
+    review: 'draft',
   },
   {
     id: 76,
@@ -911,7 +1227,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kendisine ilim sorulup da gizleyen kimse, kıyamet gününde ateşten bir gem ile gem vurulur.',
     },
     source: 'Abu Dawud 3658, Tirmidhi 2649',
+    collections: [{ name: 'Abu Dawud', number: '3658' }, { name: 'Tirmidhi', number: '2649' }],
     narrator: 'Abu Huraira',
+    grade: 'hasan',
+    gradeNote: 'at-Tirmidhi: hasan; al-Albani: sahih',
+    review: 'draft',
   },
   {
     id: 77,
@@ -923,7 +1243,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Âlimin abide üstünlüğü, dolunayın diğer yıldızlara üstünlüğü gibidir.',
     },
     source: 'Abu Dawud 3641, Tirmidhi 2685',
+    collections: [{ name: 'Abu Dawud', number: '3641' }, { name: 'Tirmidhi', number: '2685' }],
     narrator: 'Abu Umama al-Bahili',
+    grade: 'unverified',
+    gradeNote: 'Quelle prüfen: das Gleichnis mit dem Vollmond stammt von Abu ad-Darda\' (Abu Dawud 3641, at-Tirmidhi 2682); Abu Umamas Hadith (at-Tirmidhi 2685) hat einen anderen Wortlaut',
+    review: 'draft',
   },
 
   // === FAITH (extended) ===
@@ -937,7 +1261,11 @@ export const HADITHS: Hadith[] = [
       tr: 'İslam beş temel üzerine kurulmuştur: Allah\'tan başka ilah olmadığına ve Muhammed\'in O\'nun elçisi olduğuna şahitlik etmek, namazı dosdoğru kılmak, zekâtı vermek, haccetmek ve Ramazan orucunu tutmak.',
     },
     source: 'Bukhari 8, Muslim 16',
+    collections: [{ name: 'Bukhari', number: '8' }, { name: 'Muslim', number: '16' }],
     narrator: 'Ibn Umar',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 79,
@@ -949,7 +1277,11 @@ export const HADITHS: Hadith[] = [
       tr: 'İmanın yetmişten fazla şubesi vardır ve haya da imanın bir şubesidir.',
     },
     source: 'Bukhari 9, Muslim 35',
+    collections: [{ name: 'Bukhari', number: '9' }, { name: 'Muslim', number: '35' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
 
   // === COMMUNITY (extended) ===
@@ -963,7 +1295,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Aranızda selamı yayın.',
     },
     source: 'Muslim 54',
+    collections: [{ name: 'Muslim', number: '54' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
   {
     id: 81,
@@ -975,7 +1311,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kim hasta olan birisini veya Allah için bir kardeşini ziyaret ederse, bir münadi ona: "Sen güzelsin ve yolun mübarek olsun" diye seslenir.',
     },
     source: 'Tirmidhi 2008',
+    collections: [{ name: 'Tirmidhi', number: '2008' }],
     narrator: 'Abu Huraira',
+    grade: 'hasan',
+    gradeNote: 'at-Tirmidhi: hasan gharib; al-Albani: hasan',
+    review: 'draft',
   },
 
   // === DAILY LIFE (extended) ===
@@ -989,7 +1329,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Allah\'ın adını an, sağ elinle ye ve yanındakinden ye.',
     },
     source: 'Bukhari 5376, Muslim 2022',
+    collections: [{ name: 'Bukhari', number: '5376' }, { name: 'Muslim', number: '2022' }],
     narrator: 'Umar ibn Abi Salama',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 83,
@@ -1001,7 +1345,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Bir adam evine girdiğinde ve yemek yerken Allah\'ı anarsa, şeytan: "Burada sizin için gecelik ve akşam yemeği yok" der.',
     },
     source: 'Muslim 2018',
+    collections: [{ name: 'Muslim', number: '2018' }],
     narrator: 'Jabir',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
 
   // === MERCY (extended) ===
@@ -1015,7 +1363,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Allah yumuşaktır ve yumuşaklığı sever. Yumuşaklığa, sertliğe ve başka şeylere vermediğini verir.',
     },
     source: 'Muslim 2593',
+    collections: [{ name: 'Muslim', number: '2593' }],
     narrator: 'Aischa',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
 
   // === GRATITUDE (extended) ===
@@ -1029,7 +1381,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Pek çok insanın aldanmaya devam ettiği iki nimet: sağlık ve boş vakit.',
     },
     source: 'Bukhari 6412',
+    collections: [{ name: 'Bukhari', number: '6412' }],
     narrator: 'Ibn Abbas',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari',
+    review: 'draft',
   },
   {
     id: 86,
@@ -1041,7 +1397,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Allah\'ım! Seni zikretmem, Sana şükretmem ve Sana güzel ibadet etmem konusunda bana yardım et.',
     },
     source: 'Abu Dawud 1522',
+    collections: [{ name: 'Abu Dawud', number: '1522' }],
     narrator: 'Muadh ibn Jabal',
+    grade: 'sahih',
+    gradeNote: 'an-Nawawi: Isnad sahih; al-Albani: sahih',
+    review: 'draft',
   },
 
   // === CHILDREN (extended) ===
@@ -1055,7 +1415,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Üç kız çocuğu olan, onlara sabreden, imkânları ölçüsünde onları yediren, içiren ve giydiren kimse için bu kızlar, kıyamet günü ateşe karşı bir perde olur.',
     },
     source: 'Ibn Majah 3669',
+    collections: [{ name: 'Ibn Majah', number: '3669' }],
     narrator: 'Ukba ibn Amir',
+    grade: 'sahih',
+    gradeNote: 'al-Albani: sahih (Sahih Ibn Majah)',
+    review: 'draft',
   },
 
   // === ECONOMY (extended) ===
@@ -1069,7 +1433,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Helal açıktır, haram da açıktır. İkisi arasında ise pek çok insanın bilmediği şüpheli şeyler vardır.',
     },
     source: 'Bukhari 52, Muslim 1599',
+    collections: [{ name: 'Bukhari', number: '52' }, { name: 'Muslim', number: '1599' }],
     narrator: 'Nu\'man ibn Bashir',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
 
   // === AFTERLIFE (extended) ===
@@ -1083,7 +1451,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Dünya müminin zindanı, kâfirin cennetidir.',
     },
     source: 'Muslim 2956',
+    collections: [{ name: 'Muslim', number: '2956' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
   {
     id: 68,
@@ -1095,7 +1467,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Lezzetleri yok edeni, yani ölümü çokça hatırlayın.',
     },
     source: 'Tirmidhi 2307',
+    collections: [{ name: 'Tirmidhi', number: '2307' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'at-Tirmidhi: hasan sahih gharib; al-Albani: hasan sahih',
+    review: 'draft',
   },
   {
     id: 69,
@@ -1107,7 +1483,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Dünyada bir garip veya bir yolcu gibi ol.',
     },
     source: 'Bukhari 6416',
+    collections: [{ name: 'Bukhari', number: '6416' }],
     narrator: 'Abdullah ibn Umar',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari',
+    review: 'draft',
   },
   {
     id: 70,
@@ -1119,7 +1499,11 @@ export const HADITHS: Hadith[] = [
       tr: 'İnsan öldüğünde ameli kesilir, ancak üç şey hariç: sadaka-i cariye, faydalı ilim veya kendisine dua eden salih evlat.',
     },
     source: 'Muslim 1631',
+    collections: [{ name: 'Muslim', number: '1631' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih Muslim',
+    review: 'draft',
   },
   {
     id: 71,
@@ -1131,7 +1515,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kabir, ahiretin ilk durağıdır.',
     },
     source: 'Tirmidhi 2308',
+    collections: [{ name: 'Tirmidhi', number: '2308' }],
     narrator: 'Uthman ibn Affan',
+    grade: 'hasan',
+    gradeNote: 'at-Tirmidhi: hasan gharib; al-Albani: hasan',
+    review: 'draft',
   },
 
   // === AFTERLIFE (extended) ===
@@ -1145,7 +1533,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kıyamet gününde bir kulun ayakları, ömrünü nerede tükettiği, ilmiyle ne yaptığı, malını nereden kazanıp nereye harcadığı ve bedenini nerede eskittiği sorulmadan yerinden kımıldamaz.',
     },
     source: 'Tirmidhi 2417',
+    collections: [{ name: 'Tirmidhi', number: '2417' }],
     narrator: 'Abdullah ibn Masud',
+    grade: 'unverified',
+    gradeNote: 'Quelle prüfen: at-Tirmidhi 2417 (dieser Wortlaut) wird von Abu Barza al-Aslami überliefert (at-Tirmidhi: hasan sahih); die Version von Ibn Mas\'ud ist Nr. 2416',
+    review: 'draft',
   },
   {
     id: 90,
@@ -1157,7 +1549,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kim Allah\'a kavuşmayı severse, Allah da ona kavuşmayı sever.',
     },
     source: 'Bukhari 6508, Muslim 2683',
+    collections: [{ name: 'Bukhari', number: '6508' }, { name: 'Muslim', number: '2683' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim — Bukhari-Nummer prüfen (6507 = \'Ubada ibn as-Samit, 6508 = Abu Musa)',
+    review: 'draft',
   },
   {
     id: 100,
@@ -1169,7 +1565,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Dünya Allah katında bir sivrisinek kanadı kadar değer taşısaydı, Allah kâfire ondan bir yudum su bile içirmezdi.',
     },
     source: 'Tirmidhi 2320',
+    collections: [{ name: 'Tirmidhi', number: '2320' }],
     narrator: 'Sahl ibn Sa\'d',
+    grade: 'sahih',
+    gradeNote: 'at-Tirmidhi: sahih gharib; al-Albani: sahih',
+    review: 'draft',
   },
 
   // === RAMADAN (extended) ===
@@ -1183,7 +1583,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Âdemoğlunun her ameli kendinedir; ancak oruç hariç. Çünkü o Benim içindir ve onun karşılığını Ben veririm.',
     },
     source: 'Bukhari 7492, Muslim 1151',
+    collections: [{ name: 'Bukhari', number: '7492' }, { name: 'Muslim', number: '1151' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 92,
@@ -1195,7 +1599,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Sahur yiyin, zira sahurda bereket vardır.',
     },
     source: 'Bukhari 1923, Muslim 1095',
+    collections: [{ name: 'Bukhari', number: '1923' }, { name: 'Muslim', number: '1095' }],
     narrator: 'Anas ibn Malik',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
 
   // === CHARACTER (extended) ===
@@ -1209,7 +1617,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Mümin, müminin aynasıdır.',
     },
     source: 'Abu Dawud 4918',
+    collections: [{ name: 'Abu Dawud', number: '4918' }],
     narrator: 'Abu Huraira',
+    grade: 'hasan',
+    gradeNote: 'al-Albani: hasan (Sahih Abi Dawud)',
+    review: 'draft',
   },
   {
     id: 94,
@@ -1221,7 +1633,11 @@ export const HADITHS: Hadith[] = [
       tr: 'İmanı en mükemmel olan mümin, ahlakı en güzel olandır. En hayırlınız da eşlerine karşı en hayırlı olanınızdır.',
     },
     source: 'Tirmidhi 1162, Abu Dawud 4682',
+    collections: [{ name: 'Tirmidhi', number: '1162' }, { name: 'Abu Dawud', number: '4682' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'at-Tirmidhi: hasan sahih; al-Albani: hasan sahih',
+    review: 'draft',
   },
 
   // === GOOD DEEDS (extended) ===
@@ -1235,7 +1651,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Yoldan eziyeti kaldırmak sadakadır.',
     },
     source: 'Bukhari 2989, Muslim 1009',
+    collections: [{ name: 'Bukhari', number: '2989' }, { name: 'Muslim', number: '1009' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
   {
     id: 96,
@@ -1247,7 +1667,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Kim Allah\'ın rızasını umarak bir mescit inşa ederse, Allah da ona cennette benzerini inşa eder.',
     },
     source: 'Bukhari 450, Muslim 533',
+    collections: [{ name: 'Bukhari', number: '450' }, { name: 'Muslim', number: '533' }],
     narrator: 'Uthman ibn Affan',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari & Sahih Muslim (muttafaq ʿalayh)',
+    review: 'draft',
   },
 
   // === PATIENCE (extended) ===
@@ -1261,7 +1685,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Mükâfatın büyüklüğü, belanın büyüklüğüyle orantılıdır. Allah bir topluluğu sevdiğinde onları sınar.',
     },
     source: 'Tirmidhi 2396, Ibn Majah 4031',
+    collections: [{ name: 'Tirmidhi', number: '2396' }, { name: 'Ibn Majah', number: '4031' }],
     narrator: 'Anas ibn Malik',
+    grade: 'hasan',
+    gradeNote: 'at-Tirmidhi: hasan gharib; al-Albani: hasan',
+    review: 'draft',
   },
   {
     id: 98,
@@ -1273,7 +1701,11 @@ export const HADITHS: Hadith[] = [
       tr: 'Mümin erkek ve kadın üzerindeki bela; nefsi, evladı ve malı konusunda, hiçbir günahı kalmaksızın Allah\'a kavuşuncaya kadar devam eder.',
     },
     source: 'Tirmidhi 2399',
+    collections: [{ name: 'Tirmidhi', number: '2399' }],
     narrator: 'Abu Huraira',
+    grade: 'sahih',
+    gradeNote: 'at-Tirmidhi: hasan sahih; al-Albani: hasan sahih',
+    review: 'draft',
   },
 
   // === COMMUNITY (extended) ===
@@ -1287,6 +1719,10 @@ export const HADITHS: Hadith[] = [
       tr: 'Kardeşine zalim de olsa mazlum da olsa yardım et.',
     },
     source: 'Bukhari 2443',
+    collections: [{ name: 'Bukhari', number: '2443' }],
     narrator: 'Anas ibn Malik',
+    grade: 'sahih',
+    gradeNote: 'Sahih al-Bukhari',
+    review: 'draft',
   },
 ]

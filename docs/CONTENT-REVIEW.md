@@ -71,3 +71,36 @@ Vereinfachte Standardschrift, teils Auszüge (Ref nennt ganzen Vers): 2:255, 31:
 - [ ] Tirmidhi 745/747 (Fasten Montag/Donnerstag) — unsicher
 - [ ] Ohne Nummer zitiert: Aschura (Bukhari), Weiße Tage (Tirmidhi/Nasa'i über Abu Dharr), Tasu'a (Muslim), Mondsichtung Ramadan, Fasten im Scha'ban
 - [ ] Kandil-Nächte (Regaip, Miraç, Berat) als türkisch-islamische Tradition mit Hinweis auf Gelehrtenkritik — Formulierung prüfen
+
+## Hadith-Sammlung (`app/data/hadiths.ts`)
+
+Alle 100 Hadithe tragen `review: 'draft'`, einen Authentizitätsgrad (`grade`) und strukturierte
+Quellen (`collections`). Regel: alles aus Sahih al-Bukhari / Sahih Muslim ist `sahih`; sonst nur
+mit benannter Bewertung (`gradeNote`, z. B. at-Tirmidhi, al-Albani), andernfalls `unverified`.
+Stand: 77 sahih · 13 hasan · 1 da'if · 9 unverified. Die `gradeNote`-Angaben der Sunan-Hadithe
+stammen aus dem Gedächtnis des erstellenden Agents und sind gegen sunnah.com / Dorar zu prüfen.
+
+### „Quelle prüfen" (Quelle, Nummer oder Überlieferer vermutlich falsch → `unverified`)
+- [ ] #42 Ibn Majah 2341 — „la darar wa la dirar": Nr. 2341 wird von Ibn 'Abbas überliefert, im Datensatz steht Abu Sa'id al-Khudri (dessen Version: ad-Daraqutni / al-Hakim, Nawawi40 Nr. 32)
+- [ ] #52 Tirmidhi 2516 — „wisse, dass der Sieg mit der Geduld kommt …": Wortlaut fehlt bei at-Tirmidhi, stammt aus der längeren Version bei Ahmad (vgl. Nawawi40 Nr. 19)
+- [ ] #57 Quran 14:7 — Koranvers, kein Hadith; in eine andere Sammlung verschieben oder ersetzen
+- [ ] #58 Tirmidhi 1919 — Nr. 1919 wird von Anas ibn Malik überliefert; im Datensatz steht Abdullah ibn 'Amr (dessen Version: Tirmidhi 1920 / Abu Dawud 4943)
+- [ ] #61 Ibn Majah 3671 — dort „akrimu awladakum …" von Anas (al-Albani: da'if); arabischer Text („addibu …") und Überlieferer (Ibn 'Abbas) weichen ab
+- [ ] #77 Abu Dawud 3641, Tirmidhi 2685 — Vollmond-Gleichnis ist der Hadith von Abu ad-Darda' (Abu Dawud 3641, Tirmidhi **2682**); im Datensatz stehen Tirmidhi 2685 und Abu Umama
+- [ ] #89 Tirmidhi 2417 — Wortlaut und Nr. passen zu Abu Barza al-Aslami; im Datensatz steht Ibn Mas'ud (dessen Version: Nr. 2416)
+
+### Grad nicht festgelegt (`unverified`, Bewertungen uneinheitlich)
+- [ ] #43 Tirmidhi 2520 — „wer Erlaubtes isst, nach der Sunna handelt …" (at-Tirmidhi: hasan gharib; spätere Bewertungen uneinheitlich)
+- [ ] #65 Tirmidhi 1209 — „der ehrliche, vertrauenswürdige Händler …" (at-Tirmidhi: hasan; spätere Bewertungen uneinheitlich)
+
+### Als da'if markiert (redaktionell entscheiden: mit Kennzeichnung behalten oder entfernen)
+- [ ] #10 Baihaqi (ohne Nummer) — „Das Gebet ist die Säule der Religion" (Kette unterbrochen; al-'Iraqi, al-Albani: da'if)
+
+### Sahih, aber Nummer prüfen (Grad bleibt sahih, da in Bukhari/Muslim)
+- [ ] #33 Bukhari 6077, Muslim 2559 — Muslim-Nummer für Abu Ayyub evtl. 2560
+- [ ] #63 Bukhari 1427, Muslim 1033 — Bukhari 1427 ist von Hakim ibn Hizam; Ibn 'Umars Version evtl. 1429
+- [ ] #90 Bukhari 6508, Muslim 2683 — Bukhari 6507 ('Ubada) / 6508 (Abu Musa), Überlieferer im Datensatz: Abu Huraira
+
+### Quellen ohne Nummer (Grad gesetzt, Fundstelle ergänzen)
+- [ ] #20 Baihaqi, Tabarani — „Allah liebt es, wenn … gewissenhaft" (al-Albani: hasan)
+- [ ] #36 Tabarani, Daraqutni — „Die besten Menschen sind die nützlichsten" (al-Albani: hasan)
