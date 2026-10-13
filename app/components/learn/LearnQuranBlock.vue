@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { localize, parseQuranRef, type LocalizedText } from '~/data/learn'
+import { localize, parseQuranRef, type LocalizedText } from '~/data/learn/core'
 
 const props = defineProps<{
   reference: string

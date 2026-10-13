@@ -1,7 +1,8 @@
 {
   "app": {
     "name": "MuslimApp",
-    "tagline": "İslami yardımcınız"
+    "tagline": "İslami yardımcınız",
+    "description": "Namaz vakitleri, Kur'an, kıble, hicri takvim ve öğrenme merkezi: ücretsiz, hesapsız ve izlemesiz."
   },
   "nav": {
     "dashboard": "Bugün",
@@ -418,7 +419,9 @@
     "moveDown": "{name} aşağı taşı",
     "addFavorite": "{name} favorilere ekle",
     "removeFavorite": "{name} favorilerden kaldır",
-    "appSection": "Uygulama"
+    "appSection": "Uygulama",
+    "privacy": "Gizlilik",
+    "privacyDesc": "Hangi veriler saklanır ve verilerini sil"
   },
   "tasbih": {
     "title": "Tesbih",
@@ -938,6 +941,97 @@
     "empty": "Henüz favori kaydedilmedi",
     "emptyHint": "Kuran okuyucuda ayetin yanındaki kalbe dokun",
     "remove": "Kaldır"
+  },
+  "privacy": {
+    "title": "Gizlilik",
+    "subtitle": "Son güncelleme: Ekim 2026",
+    "linkDesc": "Uygulamanın hangi verileri sakladığı ve nereye gönderdiği",
+    "tldrTitle": "Kısaca",
+    "tldr": "MuslimApp'te kullanıcı hesabı, izleme, analiz aracı ve reklam yoktur. Ayarların, ilerlemen ve konumun cihazında kalır. Yalnızca Web Push ile namaz hatırlatıcılarını etkinleştirirsen sunucumuz az miktarda veri saklar (aşağıya bakın) ve hatırlatıcıları kapattığında bu verileri hemen siler.",
+    "controller": {
+      "title": "Veri sorumlusu",
+      "p1": "GDPR anlamında bu uygulamanın ve sunucusunun sorumlusu:",
+      "placeholderTag": "Yer tutucu",
+      "placeholderNote": "İşletmeci tarafından doldurulmalıdır: Bu bilgiler henüz girilmedi (app/pages/privacy.vue içindeki OPERATOR sabiti). Lütfen yayından önce tamamlayın, bir künye (impressum) ekleyin ve metnin tamamını hukuken kontrol ettirin.",
+      "value": "[lütfen doldurun]",
+      "name": "Ad / Şirket",
+      "address": "Adres",
+      "email": "E-posta",
+      "phone": "Telefon (isteğe bağlı)",
+      "hosting": "Barındırma sağlayıcısı ve sunucu günlükleri"
+    },
+    "local": {
+      "title": "Cihazında neler saklanır",
+      "p1": "MuslimApp tüm verilerini yerel olarak tarayıcında veya yüklü uygulamada saklar. Bu veriler bize iletilmez:",
+      "li1": "Ayarlar, konum, namaz takibi, okuma ve öğrenme ilerlemesi, favoriler, yer imleri, tesbih sayacı ve hatırlatıcı ayarları localStorage içinde (tüm anahtarlar \"muslimapp-\" ile başlar).",
+      "li2": "Çevrimdışı kullanım için indirilen Kur'an, tarayıcının IndexedDB alanında (\"muslimapp-quran-offline\").",
+      "li3": "Service Worker önbellekleri: uygulama dosyaları, ziyaret edilen sayfalar, namaz vakitleri, Kur'an yanıtları ve daha önce dinlenen tilavetler; böylece uygulama çevrimdışı da çalışır.",
+      "li4": "Dil seçimini hatırlayan \"muslimapp-locale\" adlı bir çerez.",
+      "note": "Bu depolama uygulamanın çalışması için teknik olarak gereklidir veya senin açık isteğinle yapılır. Her şeyi istediğin zaman silebilirsin (\"Verileri sil\" bölümüne bakın)."
+    },
+    "noTracking": {
+      "title": "Hesap yok, izleme yok",
+      "p1": "Kayıt ve kullanıcı hesabı yoktur. Analiz, istatistik veya reklam hizmeti kullanmıyor, izleme betikleri yüklemiyor ve profil oluşturmuyoruz. Yukarıda belirtilen dil çerezi dışında çerez kullanılmaz."
+    },
+    "fonts": {
+      "title": "Yazı tipleri",
+      "p1": "Yazı tipleri (Inter, Amiri ve Noto Sans Arabic) kendi sunucumuzdan sunulur. Google Fonts'a veya başka bir yazı tipi sağlayıcısına bağlantı kurulmaz."
+    },
+    "thirdParty": {
+      "title": "Üçüncü taraflara bağlantılar (doğrudan tarayıcından)",
+      "p1": "Bazı özellikler içerikleri doğrudan harici hizmetlerden yükler. Her web isteğinde olduğu gibi bu hizmetler IP adresini ve isteğin kendisini alır. Buna etkimiz yoktur; sağlayıcıların kendi gizlilik politikaları geçerlidir.",
+      "li1": "api.quran.com (Quran.com): sure okuduğunda veya aradığında Kur'an metni ve mealler.",
+      "li2": "verses.quran.com ve audio.qurancdn.com: bir tilaveti veya kelime kelime sesi çaldığında ses dosyaları.",
+      "li3": "nominatim.openstreetmap.org (OpenStreetMap Foundation): koordinatlarını yer adına çevirme ve yer arama. Koordinatların veya arama terimin gönderilir.",
+      "li4": "overpass-api.de (OpenStreetMap verileri): cami arama. Kayıtlı konumunun koordinatları ve arama yarıçapı gönderilir, yalnızca aramayı başlattığında.",
+      "li5": "OpenStreetMap veya Apple Haritalar: yalnızca cami aramasında bir rota açtığında ilgili hizmet yeni bir sekmede açılır."
+    },
+    "aladhan": {
+      "title": "Namaz vakitleri ve Hicri tarih (sunucumuz üzerinden Aladhan)",
+      "p1": "Namaz vakitleri ve tarih dönüşümleri Aladhan API'sinden (aladhan.com) gelir. Tarayıcın Aladhan'a doğrudan bağlanmaz; isteği ileten sunucumuza sorar. Yalnızca hesaplama parametreleri iletilir (koordinatlar, hesaplama yöntemi, ikindi mezhebi, ayarlamalar, tarih). IP adresin, çerezlerin ve diğer başlıklar iletilmez; Aladhan yalnızca sunucumuzun adresini görür.",
+      "p2": "Yanıtlar sunucuda en fazla 24 saat önbelleğe alınır (koordinatlar yaklaşık 1 km'ye yuvarlanır) ve herhangi bir kişiyle ilişkilendirilmez."
+    },
+    "location": {
+      "title": "Konum",
+      "p1": "Konumun yalnızca tarayıcıda izin verdikten sonra (GPS) veya elle girdiğinde, namaz vakitleri, kıble yönü ve cami arama için kullanılır. Yerel olarak saklanır ve cihazından yalnızca burada açıklanan durumlarda çıkar: sunucumuz üzerinden Aladhan istekleri, Nominatim ile yer adı, Overpass ile cami arama ve yalnızca push hatırlatıcıları etkinse yaklaşık 1 km'ye yuvarlanmış olarak sunucumuza."
+    },
+    "push": {
+      "title": "Push hatırlatıcıları (isteğe bağlı)",
+      "p1": "Namaz veya zikir hatırlatıcılarını etkinleştirir ve bu sunucuda Web Push kuruluysa tarayıcın bildirim izni ister. Hatırlatıcılar uygulama kapalıyken de ulaşsın diye sunucumuz cihaz başına şunları saklar:",
+      "li1": "tarayıcının push adresi (endpoint) ve anahtarları; tarayıcı veya cihaz üreticisinin push hizmeti (Google, Mozilla, Apple veya Microsoft) mesajları bunlarla iletir;",
+      "li2": "uygulama dili ve cihazının saat dilimi;",
+      "li3": "konumun, iki ondalık basamağa (yaklaşık 1 km) yuvarlanmış olarak, yerin saat dilimiyle birlikte;",
+      "li4": "hesaplama parametreleri (yöntem, ikindi mezhebi, yüksek enlem kuralı, dakika ayarlamaları) ve hatırlatıcı ayarları (hangi namazlar, ne kadar önce, zikir saatleri);",
+      "li5": "oluşturma ve güncelleme zamanı ile daha önce gönderilen hatırlatıcıların kimlikleri (çift bildirimi önlemek için; 3 gün sonra otomatik silinir).",
+      "p2": "Ad yok, e-posta adresi yok, hesap yok. Tek amaç hatırlatıcılarını göndermektir. Tüm hatırlatıcıları kapattığında kayıt sunucudan hemen silinir; push hizmeti adresin artık geçerli olmadığını bildirdiğinde de silinir. Kötüye kullanımı önlemek için IP adresin yalnızca kısa süreliğine bellekte, push uç noktalarının istek sınırlaması için kullanılır ve kalıcı olarak saklanmaz.",
+      "note": "Hukuki dayanak, hatırlatıcıları kapatarak istediğin zaman geri çekebileceğin rızandır (GDPR m. 6/1-a)."
+    },
+    "backup": {
+      "title": "Yedekleme (dışa ve içe aktarma)",
+      "p1": "Ayarlar'dan tüm yerel verileri JSON dosyası olarak dışa aktarabilir ve tekrar içe aktarabilirsin. Dosya yalnızca cihazında oluşturulur ve bize gönderilmez. Dosya, kayıtlı konumun ve ilerlemen gibi bilgileri içerir. Güvenli bir yerde sakla."
+    },
+    "delete": {
+      "title": "Verileri sil",
+      "p1": "Aşağıdaki düğme bu cihazdaki uygulamanın tüm verilerini siler:",
+      "li1": "tüm ayarlar ve ilerleme (localStorage \"muslimapp-*\") ile dil çerezi,",
+      "li2": "indirilen çevrimdışı Kur'an (IndexedDB) ve uygulamanın önbellekleri,",
+      "li3": "push aboneliği ve sunucumuzdaki ilgili kayıt.",
+      "p2": "Ardından uygulama yeniden yüklenir. Bu geri alınamaz; gerekirse önce bir yedek dışa aktar. Site verilerini tarayıcı ayarlarından da kaldırabilirsin.",
+      "button": "Tüm yerel verileri sil",
+      "working": "Siliniyor …",
+      "confirmTitle": "Tüm yerel veriler silinsin mi?",
+      "confirm": "Ayarlar, ilerleme, favoriler, konum ve çevrimdışı Kur'an bu cihazdan kalıcı olarak silinecek.",
+      "confirmLabel": "Hepsini sil",
+      "error": "Silme işlemi tamamlanamadı. Lütfen site verilerini ayrıca tarayıcı ayarlarından kaldır."
+    },
+    "rights": {
+      "title": "Hakların",
+      "p1": "GDPR uyarınca bilgi alma, düzeltme, silme, işlemenin kısıtlanması, veri taşınabilirliği ve itiraz haklarına ve bir veri koruma denetim makamına şikayette bulunma hakkına sahipsin. Hesap tutmadığımız ve push kayıtlarını bir kişiyle ilişkilendiremediğimiz için verileri silmenin en kolay yolu kendin yapmaktır: yukarıdaki düğmeyle veya hatırlatıcıları kapatarak. Diğer tüm talepler için veri sorumlusuna başvur (yukarıya bakın)."
+    },
+    "changes": {
+      "title": "Değişiklikler",
+      "p1": "Uygulama değiştiğinde bu metni güncelleriz. Son güncelleme tarihi bu sayfanın en üstündedir."
+    }
   },
   "pwa": {
     "updateAvailable": "Yeni sürüm mevcut",

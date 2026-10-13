@@ -58,6 +58,10 @@ const duaSources = [
         <div class="space-y-2">
           <p class="font-medium text-sm">{{ t('about.appVersion', { version: APP_VERSION }) }}</p>
           <p class="text-xs text-themed-muted leading-relaxed">{{ t('about.appDescription') }}</p>
+          <NuxtLink
+            to="/privacy"
+            class="inline-block text-xs text-[var(--color-primary-light)] underline-offset-2 hover:underline"
+          >{{ t('privacy.title') }}</NuxtLink>
         </div>
       </GlassCard>
     </section>

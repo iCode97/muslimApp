@@ -5,8 +5,13 @@
  */
 import { getLesson, getLessonIndex, getPath, localize, nextLesson, prevLesson } from '~/data/learn'
 
+// definePageMeta is hoisted into the router (app entry chunk), so the lesson catalogue must only be
+// imported lazily here — a static import would pull ~800 KB of lesson content into the entry.
 definePageMeta({
-  validate: route => !!getLesson(String(route.params.path), String(route.params.lesson)),
+  validate: async (route) => {
+    const { getLesson } = await import('~/data/learn')
+    return !!getLesson(String(route.params.path), String(route.params.lesson))
+  },
 })
 
 const { t, locale } = useI18n()

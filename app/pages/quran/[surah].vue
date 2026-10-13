@@ -24,6 +24,19 @@ const surahId = computed(() => Number(route.params.surah))
 
 const surah = computed(() => quran.getSurah(surahId.value))
 
+const seoTitle = computed(() => surah.value
+  ? `${surah.value.nameSimple} (${surah.value.nameArabic}) — ${t('quran.title')} — MuslimApp`
+  : `${t('quran.title')} — MuslimApp`)
+const seoDescription = computed(() => surah.value
+  ? `${surah.value.nameSimple} · ${surah.value.translatedName} · ${surah.value.versesCount} ${t('quran.verses')}`
+  : t('app.description'))
+useSeoMeta({
+  title: () => seoTitle.value,
+  description: () => seoDescription.value,
+  ogTitle: () => seoTitle.value,
+  ogDescription: () => seoDescription.value,
+})
+
 // useQuran exposes readonly state; VerseDisplay takes the plain Verse shape.
 const verses = computed(() => quran.currentVerses.value as unknown as Verse[])
 

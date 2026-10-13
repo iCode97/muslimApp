@@ -3,7 +3,7 @@
  * Lesson quiz — one question at a time, immediate feedback with explanation,
  * score summary and retry. Emits `finished` once per run.
  */
-import { localize, type QuizQuestion } from '~/data/learn'
+import { localize, type QuizQuestion } from '~/data/learn/core'
 
 const props = defineProps<{
   questions: QuizQuestion[]

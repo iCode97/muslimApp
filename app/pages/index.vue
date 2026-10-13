@@ -3,6 +3,7 @@
  * Dashboard — Configurable widget-based home screen.
  * Users can enable/disable and reorder widgets via edit mode.
  */
+import { defineAsyncComponent } from 'vue'
 
 const { t } = useI18n()
 // Location + prayer times are loaded/refreshed globally (plugins/app-init.client.ts)
@@ -30,6 +31,17 @@ const greeting = computed(() => {
   return t('dashboard.goodNight')
 })
 
+// The learning widget needs the lesson catalogue (~800 KB of content). It is not server-rendered
+// (that would make the browser preload the catalogue for every home page view): a placeholder of the
+// same height is rendered instead and the widget is mounted once the browser is idle.
+const LearnContinueLazy = defineAsyncComponent(() => import('~/components/widgets/LearnContinue.vue'))
+const learnWidgetReady = ref(false)
+onMounted(() => {
+  const show = () => { learnWidgetReady.value = true }
+  if ('requestIdleCallback' in window) window.requestIdleCallback(show, { timeout: 2500 })
+  else setTimeout(show, 1200)
+})
+
 // Widget component mapping — resolved at runtime for dynamic <component :is="...">
 const widgetComponents: Record<string, ReturnType<typeof resolveComponent>> = {
   'prayer-countdown': resolveComponent('PrayerCountdown'),
@@ -44,7 +56,6 @@ const widgetComponents: Record<string, ReturnType<typeof resolveComponent>> = {
   'seerah-teaser': resolveComponent('SeerahTeaser'),
   'progress-overview': resolveComponent('ProgressOverview'),
   'prayer-tracker': resolveComponent('PrayerTrackerWidget'),
-  'learn-continue': resolveComponent('LearnContinue'),
   'adhkar': resolveComponent('AdhkarWidget'),
 }
 </script>
@@ -62,9 +73,12 @@ const widgetComponents: Record<string, ReturnType<typeof resolveComponent>> = {
             {{ t('dashboard.greeting') }}
           </h1>
           <!-- Hijri Date -->
-          <div v-if="hijriDisplay" class="flex items-center gap-2 text-sm text-[var(--color-gold)] pt-1">
-            <span>☪</span>
-            <span>{{ hijriDisplay }}</span>
+          <!-- min-h reserves the line while the Hijri date loads (avoids a layout shift) -->
+          <div class="flex items-center gap-2 text-sm text-[var(--color-gold)] pt-1 min-h-[1.5rem]">
+            <template v-if="hijriDisplay">
+              <span>☪</span>
+              <span>{{ hijriDisplay }}</span>
+            </template>
           </div>
         </div>
 
@@ -84,7 +98,8 @@ const widgetComponents: Record<string, ReturnType<typeof resolveComponent>> = {
     </header>
 
     <!-- Location -->
-    <div class="animate-fade-in stagger-1">
+    <!-- min-h: reserve the one-line location selector (known only after localStorage is read) -->
+    <div class="animate-fade-in stagger-1 min-h-8">
       <LocationSetupCTA />
       <LocationSelector v-if="location" />
     </div>
@@ -172,7 +187,10 @@ const widgetComponents: Record<string, ReturnType<typeof resolveComponent>> = {
             widget.colSpan === 2 ? 'bento-span-2' : '',
           ]"
         >
-          <component :is="widgetComponents[widget.id]" />
+          <div v-if="widget.id === 'learn-continue'" class="min-h-[8.1rem] lg:min-h-[9.1rem]">
+            <LearnContinueLazy v-if="learnWidgetReady" />
+          </div>
+          <component :is="widgetComponents[widget.id]" v-else />
         </div>
       </template>
     </div>

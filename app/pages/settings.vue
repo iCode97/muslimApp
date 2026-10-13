@@ -813,6 +813,12 @@ const minutesOptions = [0, 5, 10, 15, 30]
         >
           ☪ {{ t('onboarding.reopen') }}
         </button>
+        <NuxtLink
+          to="/privacy"
+          class="block text-xs text-themed-secondary hover:text-themed underline-offset-2 hover:underline transition-colors"
+        >
+          🛡 {{ t('privacy.title') }}
+        </NuxtLink>
       </div>
     </GlassCard>
     </div><!-- end grid -->

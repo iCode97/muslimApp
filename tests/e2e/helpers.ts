@@ -160,7 +160,6 @@ export async function mockExternalApis(page: Page, baseURL: string) {
     return route.fulfill({ status: 204, body: '' })
   })
 
-  await page.route('**://fonts.googleapis.com/**', route => route.fulfill({ status: 200, contentType: 'text/css', body: '' }))
   await page.route('**://api.quran.com/**', mockQuranApi)
   await page.route('**/api/aladhan/**', mockAladhan)
   // Web Push: report "not configured" so the app stays in local-reminder mode

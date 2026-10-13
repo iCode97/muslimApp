@@ -107,6 +107,7 @@ onMounted(() => {
             <NuxtLink
               :to="tab.path"
               :aria-current="nav.isTabActive(tab) ? 'page' : undefined"
+              :aria-label="tab.id === 'more' ? `${t(tab.label)}: ${t('more.subtitle')}` : undefined"
               :class="[
                 'liquid-nav-item',
                 nav.isTabActive(tab)

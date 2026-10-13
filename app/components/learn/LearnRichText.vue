@@ -3,7 +3,7 @@
  * Renders learning-center text. Supports **bold** only; everything is output as
  * text nodes (no v-html), so content can never inject markup.
  */
-import { parseBold } from '~/data/learn'
+import { parseBold } from '~/data/learn/core'
 
 const props = defineProps<{ text: string }>()
 

@@ -51,9 +51,9 @@ function openSheet() {
       <div class="flex justify-center">
         <AppIcon name="location" :size="32" class="text-[var(--color-primary-light)]" />
       </div>
-      <h3 class="text-lg font-semibold text-themed">
+      <h2 class="text-lg font-semibold text-themed">
         {{ t('location.setupTitle') }}
-      </h3>
+      </h2>
       <p class="text-sm text-themed-secondary">
         {{ t('location.setupDescription') }}
       </p>
