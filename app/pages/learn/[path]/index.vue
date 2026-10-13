@@ -4,8 +4,12 @@
  */
 import { getPath, localize, pathMinutes } from '~/data/learn'
 
+// Lazy import on purpose: definePageMeta is hoisted into the router (entry chunk), see [lesson].vue.
 definePageMeta({
-  validate: route => !!getPath(String(route.params.path)),
+  validate: async (route) => {
+    const { getPath } = await import('~/data/learn')
+    return !!getPath(String(route.params.path))
+  },
 })
 
 const { t, locale } = useI18n()

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { localize, pathMinutes, type LearningPath } from '~/data/learn'
+import { localize, pathMinutes, type LearningPath } from '~/data/learn/core'
 
 const props = defineProps<{
   path: LearningPath

@@ -2,7 +2,7 @@
 /**
  * Renders one lesson content block. Headings are h2 (the lesson title is the h1).
  */
-import { localize, type LessonBlock } from '~/data/learn'
+import { localize, type LessonBlock } from '~/data/learn/core'
 
 defineProps<{ block: LessonBlock }>()
 const emit = defineEmits<{ 'open-term': [id: string] }>()

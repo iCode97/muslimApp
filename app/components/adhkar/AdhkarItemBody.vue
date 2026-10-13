@@ -5,7 +5,7 @@
  * (reading) mode and the list mode of /adhkar.
  */
 import type { Dhikr } from '~/data/adhkar'
-import { localize } from '~/data/learn'
+import { localize } from '~/data/learn/core'
 
 const props = withDefaults(defineProps<{
   item: Dhikr

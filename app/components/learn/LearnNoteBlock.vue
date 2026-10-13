@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { localize, type LocalizedText } from '~/data/learn'
+import { localize, type LocalizedText } from '~/data/learn/core'
 
 const props = defineProps<{
   variant: 'tip' | 'important' | 'differences'
