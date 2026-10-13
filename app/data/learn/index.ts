@@ -13,17 +13,21 @@ import type {
 } from './types'
 import { BASICS_PATH } from './paths/basics'
 import { NEW_MUSLIM_PATH } from './paths/new-muslim'
-import { GLOSSARY } from './glossary'
+import { FIQH_PATH } from './paths/fiqh'
+import { GLOSSARY as BASE_GLOSSARY } from './glossary'
+import { FIQH_TERMS } from './glossary-fiqh'
 import { FAQ } from './faq'
 
 export type { FaqEntry, GlossaryTerm, KnowledgeLevel, LearningPath, Lesson, LocalizedText } from './types'
 export type { LessonBlock, QuizQuestion, ReviewStatus } from './types'
-export { GLOSSARY, FAQ }
+/** Full glossary: core terms plus terms contributed by individual paths. */
+export const GLOSSARY: GlossaryTerm[] = [...BASE_GLOSSARY, ...FIQH_TERMS]
+export { FAQ }
 
 export type LearnLocale = 'de' | 'en' | 'tr'
 
 /** Available learning paths, in display order. */
-export const LEARNING_PATHS: LearningPath[] = [BASICS_PATH, NEW_MUSLIM_PATH]
+export const LEARNING_PATHS: LearningPath[] = [BASICS_PATH, NEW_MUSLIM_PATH, FIQH_PATH]
 
 export interface UpcomingPath {
   /** Used for i18n keys `learn.upcoming.<id>` / `learn.upcoming.<id>Desc`. */
@@ -34,7 +38,6 @@ export interface UpcomingPath {
 
 /** Announced paths without content yet ("Bald verfügbar"). */
 export const UPCOMING_PATHS: UpcomingPath[] = [
-  { id: 'fiqh', icon: 'prayer', level: 'practice' },
   { id: 'aqida', icon: 'names', level: 'deepen' },
 ]
 

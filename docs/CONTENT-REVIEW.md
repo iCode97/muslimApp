@@ -93,3 +93,30 @@ Arabischer Wortlaut hat höchste Priorität — jeder Eintrag wird wörtlich rez
 - [ ] Tugend-Quellen: Ayat al-Kursi vor dem Schlafen (Bukhari 2311), letzte zwei Verse al-Baqara (Bukhari 5009, Muslim 807)
 - [ ] 100× Tahlil im Morgen-Set: Bukhari 6403 / Muslim 2691
 - [ ] Alle Übersetzungen eigene Wiedergabe — insbesondere Türkisch muttersprachlich prüfen
+
+## Pfad „Fiqh des Alltags" (`paths/fiqh.ts`) + `glossary-fiqh.ts` (18 Begriffe)
+
+### Hadith-Nummern (ziemlich, aber nicht ganz sicher)
+- [ ] Bukhari 946 (Asr bei Banu Qurayza; Muslim 1770 nennt Zuhr)
+- [ ] Bukhari 60 / Muslim 241 (Fersen) · Muslim 234 (Dua nach Wudu, „sinngemäß")
+- [ ] Bukhari 338 / Muslim 368 ('Ammar, Tayammum) · Bukhari 218 / Muslim 292 (zwei Gräber)
+- [ ] Muslim 279 (Hundegefäß, mit Erde) · Abu Dawud 83 / Tirmidhi 69 (Meerwasser)
+- [ ] Bukhari 1224 / Muslim 570 (Ibn Buhayna) · Bukhari 1229 / Muslim 573 (Dhul-Yadayn) · Bukhari 401 / Muslim 572
+- [ ] Bukhari 1111 / Muslim 704 (Zusammenlegen auf Reisen) · Muslim 686 (Ya'la/'Umar, „Sadaqa")
+- [ ] Muslim 865 (Jumu'a vernachlässigen) · Bukhari 723 / Muslim 433 (gerade Reihen) · Bukhari 691 / Muslim 427 · Muslim 673
+- [ ] Muslim 1587 (sechs Güter) · Muslim 2588 · Bukhari 2072 (al-Miqdam) · Bukhari 7288 / Muslim 1337 · Bukhari 7352 / Muslim 1716
+
+### Positionen der Rechtsschulen
+- [ ] Zwei Qulla „≈190–270 Liter"; hanafitische Dirham-Toleranz bei Najasa; malikitische Position
+- [ ] Hund: Positionen der vier Schulen
+- [ ] Anzahl der Fard-Teile von Wudu (Hanafi 4, Schafi'i 6, Maliki 7, Hanbali 6 mit Tasmiya wajib) und Ghusl
+- [ ] Wudu-Brecher je Schule (Berührung des anderen Geschlechts, Blut/Erbrechen, Berühren der Scham, Kamelfleisch, lautes Lachen)
+- [ ] Tayammum: Anzahl der Schläge, zulässiges Material, Gültigkeitsdauer
+- [ ] Niyya als Bedingung (Hanafi/Hanbali) vs. Teil des Gebets (Schafi'i/Maliki); Awrah-Details; hanafitische Arkan
+- [ ] Sajdat as-Sahw vor/nach dem Salam je Schule; Qada absichtlich versäumter Gebete (Ibn Hazm / Ibn Taymiyya als Minderheit); Tartib
+- [ ] Reisedistanz „80–90 km", Aufenthaltsgrenzen (15 vs. ~4 Tage); Zusammenlegen (Hanafi nur Arafa/Muzdalifa)
+- [ ] Jumu'a-Mindestzahl (3/12/40); Gebet beim Eintreten während der Khutba; Rezitation hinter dem Imam
+- [ ] Zeitpunkt der Fasten-Niyya; Augentropfen/Kohl, Schröpfen; Schwangere/Stillende und Fidya; Fidya-Mengen; Kaffara bei absichtlichem Essen
+- [ ] Zakat: Schmuck (Hanafi), Nisab-Zeitpunkt, Schuldenabzug, Silber-Nisab, „ca. 2,577 %" im Sonnenjahr, Zakat al-Fitr in Geld (Hanafi)
+- [ ] „Rund 500 Rechtsverse" und Verbreitungsgebiete der Schulen
+- [ ] Gekürzte Koranübersetzungen: 4:59, 5:6, 2:144, 4:101, 2:184, 2:187, 9:103, 2:168, 62:9, 83:1-3
