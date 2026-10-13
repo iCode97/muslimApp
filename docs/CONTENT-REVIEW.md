@@ -153,3 +153,28 @@ stammen aus dem Gedächtnis des erstellenden Agents und sind gegen sunnah.com / 
 ### Quellen ohne Nummer (Grad gesetzt, Fundstelle ergänzen)
 - [ ] #20 Baihaqi, Tabarani — „Allah liebt es, wenn … gewissenhaft" (al-Albani: hasan)
 - [ ] #36 Tabarani, Daraqutni — „Die besten Menschen sind die nützlichsten" (al-Albani: hasan)
+
+## Pfade „Aqida" (`paths/aqida.ts`) und „Hajj & Umrah" (`paths/hajj.ts`) + `glossary-aqida.ts` (44 Begriffe)
+
+### Hadith-Nummern
+- [ ] Abu Dawud 2041 (hasan) — der Prophet ﷺ erwidert den Gruß
+- [ ] Bukhari 1562 / Muslim 1211 ('Aischa, drei Ihram-Arten) · Muslim 975 (Dua für die Gräber, Buraida)
+- [ ] Bukhari 1531 (Dhat 'Irq durch 'Umar) · Bukhari 1539 (Parfüm vor Ihram) · Bukhari 1193 / Muslim 1399 (Quba' samstags)
+- [ ] Bukhari 3207 / Muslim 162 (al-Bayt al-Ma'mur; Erzähler bei Bukhari über Malik ibn Sa'sa'a)
+- [ ] Bukhari 3194 statt 7404 („Meine Barmherzigkeit übertrifft Meinen Zorn")
+- [ ] Nur als Quelle: Musnad Ahmad (Riya' als „kleiner Schirk", ohne Nummer), Abu Dawud 4753 (drei Fragen im Grab), Tirmidhi 1071 (Munkar und Nakir), Abu Dawud Kitab al-Mahdi
+- [ ] Talbiya-Arabisch (Bukhari 1549) und Rückkehr-Dua (Bukhari 1797)
+
+### Fiqh des Hajj
+- [ ] Sofortige Pflicht des Hajj (Mehrheit ja, Schafi'i Aufschub möglich); Umrah Pflicht (Schafi'i/Hanbali) vs. Sunna mu'akkada (Hanafi/Maliki)
+- [ ] Mahram (Hanafi/Hanbali Pflicht; Schafi'i/Maliki sichere Gruppe); beste Hajj-Art je Schule
+- [ ] Mindestmaß beim Haarekürzen; Wudu beim Tawaf; Sa'i wajib (Hanafi) vs. Rukn; Reihenfolge am 10.
+- [ ] Ehevertrag im Ihram (Hanafi gültig); Tawaf al-Wada' Sunna (Maliki); Wuquf-Dauer; Jeddah als Miqat; Steinigung durch Stellvertreter
+- [ ] Praktische Angaben (Impfpflicht, Rawda-Termine, Opfergutscheine, saudische Genehmigungs-/Mahram-Regeln) ändern sich — Aktualität prüfen
+
+### Aqida
+- [ ] Wortlaut der Aussage Imam Maliks zum Istiwa'; asch'aritische 7 Eigenschaften vs. maturiditisches Takwin
+- [ ] Ahad-Hadithe in der Glaubenslehre; Qada'/Qadar-Definitionen; 'Isma und kleine Fehltritte (Zalla)
+- [ ] Fünf Prophetenqualitäten (Diyanet-Lehrbuchliste); Mahdi „nach vielen Gelehrten"; Iblis Engel/Dschinn; Ahl al-Fatra
+- [ ] Tawassul und Grabbesuchsbräuche als Meinungsspektrum; „alle drei Schulen zu Ahl as-Sunna"; Sterbedaten der Schulgründer
+- [ ] Koran-Refs ohne Arabisch über ganze Bereiche: 23:99-100, 17:13-14, 36:78-79, 81:28-29, 3:96-97
