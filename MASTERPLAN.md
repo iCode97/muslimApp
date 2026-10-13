@@ -1,7 +1,7 @@
 # MuslimApp — Masterplan
 
 > **Vision:** Der Anlaufpunkt für alle, die sich mit dem Islam befassen — vom Neugierigen über die Praktizierende bis zum Vertiefenden. Eine mobile-first Progressive Web App (PWA) mit Gebetszeiten, Koran-Reader, Lernzentrum, Adhkar, Hadith, islamischem Kalender und praktischen Werkzeugen.
-> **Erstellt:** 22. März 2026 | **Letztes Update:** 13. Oktober 2026 | **Status:** Phase 1–10 abgeschlossen · Version 2.0 umgesetzt (siehe [V2-PLAN.md](./V2-PLAN.md)) · **Phase 11 (Plattform) in Arbeit** — Arabisch/RTL umgesetzt; Datenschutzseite, maskierbares Icon und Performance offen
+> **Erstellt:** 22. März 2026 | **Letztes Update:** 13. Oktober 2026 | **Status:** Phase 1–10 abgeschlossen · Version 2.0 umgesetzt (siehe [V2-PLAN.md](./V2-PLAN.md)) · **Phase 1–11 umgesetzt** — offen: fachliche Inhaltsprüfung, Betreiberangaben im Datenschutz, rechtliche Prüfung
 
 ---
 
@@ -131,11 +131,11 @@ Neuer Tab **Lernen** mit Wissensstufen (Entdecken · Praktizieren · Vertiefen),
 - [x] **Favoriten** — Verse speichern; Werkzeuge im Hub anpinnen
 - [x] Integration: Nav-Einträge, Dashboard-Widgets, Erinnerungen öffnen `/adhkar`
 
-### Phase 11 — Plattform 🔄 In Arbeit
+### Phase 11 — Plattform ✅ Abgeschlossen
 - [x] **Arabische Oberfläche (`ar`) mit RTL-Layout** — `i18n/ar.json`, logische CSS-Eigenschaften, gespiegelte Icons, lateinische Ziffern (`ar-u-nu-latn`), Kompass/Medien-Steuerung bewusst LTR; Inhalte fallen auf Englisch zurück
-- [ ] **Lighthouse-Audit** (Performance, A11y, PWA) und Behebung der Befunde — offen
-- [ ] **Maskable-Icon** — offen (aktuell nur runde Icons auf transparentem Grund; das SVG dient als Maskable-Platzhalter)
-- [ ] **Datenschutzseite** in der App — offen (Inhalt liegt als Abschnitt in der README vor)
+- [x] **Lighthouse-Audit** — Performance `/` 44 → 72, `/quran/1` 55 → 75, `/learn/basics` 57 → 84; A11y 100 / Best Practices 100 / SEO 90. Entry-Chunk 1,17 MB → 324 KB (Lerninhalte lazy), SSR-HTML Brotli/Gzip, CLS-Fixes, lokalisierte SEO-Meta
+- [x] **Maskable-Icon** — vollflächige PNGs 192/512 + maskable 512 + Apple-Touch-Icon 180
+- [x] **Datenschutzseite** `/privacy` (DE/EN/TR/AR) inkl. „Alle lokalen Daten löschen"; Schriften selbst gehostet (keine Google-Fonts-Anfragen mehr). **Offen:** Betreiberangaben (`OPERATOR` in `app/pages/privacy.vue`) und rechtliche Prüfung
 - [ ] Cloudflare-Pages-/Edge-Deployment — zurückgestellt (Scheduler benötigt Node-Prozess)
 
 ---
@@ -504,10 +504,8 @@ Vollständig dokumentiert in [V2-PLAN.md](./V2-PLAN.md) (bleibt als historischer
 | **iOS-Push-Besonderheiten** | Mittel | Web Push funktioniert auf iOS/iPadOS ab 16.4 nur für zum Home-Bildschirm hinzugefügte PWAs und nach Berechtigung per Nutzeraktion; Zustellung und Hintergrundverhalten schwanken. Notification-Trigger (geplante lokale Benachrichtigungen) gibt es nur in Chromium |
 | **Overpass-Zuverlässigkeit** | Mittel | Öffentlicher Dienst mit Lastspitzen/Timeouts und Fair-Use-Limits; Daten abhängig von OSM-Tagging (Namen/Betreiber teils leer). Optionen: Fallback-Instanz, Server-Proxy mit Cache |
 | Tafsir auf Deutsch/Türkisch nicht verfügbar | Mittel | quran.com liefert nur englische und arabische Tafsire; eigene Quelle oder Lizenz nötig |
-| Lighthouse-Audit | Mittel | Performance/A11y/PWA messen und Befunde beheben |
-| Maskable-Icon | Niedrig | Eigenes Artwork mit Safe-Zone erstellen |
-| Datenschutzseite in der App | Mittel | Text aus der README (Push-Daten, Drittanbieter-Anfragen, lokale Speicherung) übernehmen |
-| `docker-compose.yml` bereinigen | Niedrig | Veralteter `NUXT_PUBLIC_ALADHAN_BASE_URL`-Eintrag (Aladhan-URL ist server-only: `NUXT_ALADHAN_BASE_URL`) |
+| Performance weiter steigern | Niedrig | Startseite FCP/LCP unter Lighthouse-Drosselung ~3,5–4 s: ~45 Modulepreloads, 5 render-blockierende CSS-Dateien; Erstbesuch-CLS 0,15 durch Standort-CTA |
+| **Betreiberangaben & Rechtsprüfung** | Hoch (vor Launch) | Verantwortlicher/Impressum in `app/pages/privacy.vue` (`OPERATOR`) ergänzen; Datenschutztext juristisch prüfen lassen |
 | Cloudflare Pages / Edge | Niedrig | Würde Push-Storage/Scheduler-Umbau erfordern |
 | User-Accounts / Cloud-Sync | Niedrig | Erfordert Backend; JSON-Export/-Import überbrückt das |
 | Diyanet-Integration | Niedrig | Instabile Quelle; Aladhan reicht für Gebetszeiten aus |

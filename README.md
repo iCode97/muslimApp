@@ -187,7 +187,7 @@ Alle genutzten Dienste sind kostenlos und benötigen keinen API-Key.
 | verses.quran.com · audio.qurancdn.com · mirrors.quranicaudio.com | Vers-, Wort- und Sure-Audio | Rezitationen der jeweiligen Rezitatoren, bereitgestellt über quran.com/Quran.Foundation |
 | [OpenStreetMap Overpass](https://overpass-api.de) | Moscheen in der Nähe | Daten © OpenStreetMap-Mitwirkende, [ODbL](https://www.openstreetmap.org/copyright) |
 | [OpenStreetMap Nominatim](https://nominatim.openstreetmap.org) | Geocoding (Stadtsuche, Reverse-Geocoding) | © OpenStreetMap-Mitwirkende, ODbL |
-| Google Fonts | Schriften Inter und Amiri | Werden vom Browser geladen |
+| Schriften (Inter, Amiri, Noto Sans Arabic) | SIL Open Font License | Selbst gehostet unter `public/fonts/` — keine Anfragen an Google |
 
 Der Quellcode dieses Projekts ist privat. Die Inhalte der Lernpfade, des Glossars, der FAQ und der Kalender-Erklärungen wurden für diese App erstellt und sind noch nicht fachlich geprüft.
 
@@ -195,10 +195,12 @@ Der Quellcode dieses Projekts ist privat. Die Inhalte der Lernpfade, des Glossar
 
 ## Datenschutz
 
+Die vollständige Erklärung steht in der App unter **`/privacy`** (DE/EN/TR/AR) — dort lassen sich auch alle lokalen Daten mit einem Klick löschen. **Vor dem Launch:** Betreiberangaben (`OPERATOR` in `app/pages/privacy.vue`) ergänzen und den Text rechtlich prüfen lassen.
+
 - **Fast alles bleibt auf dem Gerät:** Standort, Einstellungen, Lesezeichen, Favoriten, Tracker, Lernfortschritt usw. liegen in localStorage/IndexedDB und lassen sich per JSON-Backup exportieren. Es gibt keine Konten und kein Tracking.
 - **Serverseitig gespeichert wird ausschließlich, wenn du Web-Push-Erinnerungen aktivierst:** die Push-Subscription (Endpoint und Schlüssel), Sprache, Zeitzone, Standort **auf 2 Nachkommastellen gerundet (~1 km)**, Berechnungsparameter, Erinnerungs-Einstellungen sowie technische Zeitstempel/Versand-Markierungen. Beim Deaktivieren (oder wenn der Push-Dienst die Subscription für ungültig erklärt) wird der Eintrag gelöscht.
 - Für die Rate-Begrenzung hält der Server IP-Adressen kurzzeitig im Arbeitsspeicher (nicht persistent).
-- **Dienste von Dritten:** Gebetszeiten-Anfragen enthalten die Koordinaten und gehen über den eigenen Server an Aladhan. Stadtsuche/Reverse-Geocoding (Nominatim), Moscheesuche (Overpass), Koran-Daten/Audio (quran.com-Dienste) und Google Fonts werden direkt vom Browser kontaktiert und sehen dabei die IP-Adresse.
+- **Dienste von Dritten:** Gebetszeiten-Anfragen enthalten die Koordinaten und gehen über den eigenen Server an Aladhan. Stadtsuche/Reverse-Geocoding (Nominatim), Moscheesuche (Overpass), und Koran-Daten/Audio (quran.com-Dienste) werden direkt vom Browser kontaktiert und sehen dabei die IP-Adresse.
 
 ---
 
